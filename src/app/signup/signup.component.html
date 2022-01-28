@@ -10,8 +10,14 @@ Signup
     <form [formGroup]="signupForm" (ngSubmit)="signup()">
         <p>
             <mat-form-field appearance="outline">
-                <mat-label>Full Name</mat-label>
-                <input autocomplete="off" formControlName="displayName" type="text" matInput placeholder="Display Name">
+                <mat-label>Owner</mat-label>
+                <input autocomplete="off" formControlName="owner" type="text" matInput placeholder="Owner">
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-label>Location Name</mat-label>
+                <input autocomplete="off" formControlName="location_name" type="text" matInput placeholder="Display Name">
             </mat-form-field>
         </p>
         <p>

@@ -46,11 +46,12 @@ export class AuthService {
 
                 this.afs.doc('/users/' + emailLower)                        // on a successful signup, create a document in 'users' collection with the new user's info
                     .set({
+                        id: this.afs.createId(),
                         accountType: 'endUser',
-                        displayName: user.displayName,
-                        displayName_lower: user.displayName.toLowerCase(),
+                        owner: user.owner,
+                        location_name: user.location_name,
                         email: user.email,
-                        email_lower: emailLower
+                        email_lower: emailLower,
                     });
 
                     result.user.sendEmailVerification();                    // immediately send the user a verification email
