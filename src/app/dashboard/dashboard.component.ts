@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
         this.jobsService.getJobsList().subscribe(res => {
             this.Jobs = res.map(e => {
                 return{
+                    //Test
                     // id: e.payload.doc.id,
                     ...e.payload.doc.data() as {}
                 } as Job;
