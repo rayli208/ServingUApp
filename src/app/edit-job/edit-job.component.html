@@ -1,0 +1,52 @@
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input type="text" formControlName="title" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input type="text" formControlName="location" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <input type="text" formControlName="description" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>School</mat-label>
+            <select formControlName="school" matNativeControl required>
+                <option value="West Chester University">West Chester University</option>
+            </select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Hours</mat-label>
+            <select formControlName="hours" matNativeControl required>
+                <option value="0-8">0-8</option>
+                <option value="8-20">8-20</option>
+                <option value="20+">20+</option>
+            </select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input type="text" formControlName="phone" matInput placeholder="Contact Number" required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="email" formControlName="email" matInput placeholder="Contact Email" required>
+        </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>
+    <button mat-raised-button type="reset">Reset</button>
+</form>

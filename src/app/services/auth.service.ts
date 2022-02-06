@@ -1,9 +1,7 @@
-import { AnimationDriver } from '@angular/animations/browser';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -28,7 +26,7 @@ export class AuthService {
         return this.afAuth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 console.log('Auth Service: loginUser: success');
-                // this.router.navigate(['/dashboard']);
+                this.router.navigate(['/dashboard']);
             })
             .catch(error => {
                 console.log('Auth Service: login error...');
@@ -46,15 +44,16 @@ export class AuthService {
 
                 this.afs.doc('/users/' + emailLower)                        // on a successful signup, create a document in 'users' collection with the new user's info
                     .set({
-                        id: this.afs.createId(),
                         accountType: 'endUser',
                         owner: user.owner,
                         location_name: user.location_name,
                         email: user.email,
+                        phone: user.phone,
+                        openings: user.openings,
                         email_lower: emailLower,
                     });
 
-                    result.user.sendEmailVerification();                    // immediately send the user a verification email
+                result.user.sendEmailVerification();                    // immediately send the user a verification email
             })
             .catch(error => {
                 console.log('Auth Service: signup error', error);

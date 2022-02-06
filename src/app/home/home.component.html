@@ -25,7 +25,8 @@ Home
 
 <br>
 
-<section>
+<!--See all this only if you are logged in-->
+<section *ngIf="(afAuth.user | async)">
     <button mat-raised-button color="primary" routerLink="/dashboard">
         <mat-icon>dashboard</mat-icon>
         <span>Dashboard</span>
@@ -33,6 +34,10 @@ Home
     <button mat-raised-button color="primary" routerLink="/admin">
         <mat-icon>admin_panel_settings</mat-icon>
         <span>Admin Dashboard</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/create">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>Create</span>
     </button>
 </section>
 

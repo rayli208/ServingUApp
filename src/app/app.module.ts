@@ -55,8 +55,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-// import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
+import { CreateJobComponent } from './create-job/create-job.component';
+import { ListJobsComponent } from './list-jobs/list-jobs.component';
+import { EditJobComponent } from './edit-job/edit-job.component';
 
 @NgModule({
     declarations: [
@@ -67,16 +69,17 @@ import { environment } from '../environments/environment';
         ForgotPasswordComponent,
         VerifyEmailComponent,
         DashboardComponent,
-        AdminDashboardComponent
+        AdminDashboardComponent,
+        CreateJobComponent,
+        ListJobsComponent,
+        EditJobComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-
-        AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
-        AngularFirestoreModule,                                 // imports firebase/firestore, only needed for database features
-        // AngularFireStorageModule,                               // imports firebase/storage only needed for storage features
+        AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
+        AngularFirestoreModule,  // imports firebase/firestore, only needed for database features
         AngularFireDatabaseModule,
 
         MatAutocompleteModule,
@@ -113,7 +116,6 @@ import { environment } from '../environments/environment';
         MatToolbarModule,
         MatTooltipModule,
         MatTreeModule,
-
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,

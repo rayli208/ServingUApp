@@ -1,16 +1,8 @@
-Admin Dashboard
-
-<br>
-<br>
 <button mat-raised-button color="primary" routerLink="/home">
     <mat-icon>home</mat-icon>
     <span>Home</span>
 </button>
-
-
-<br>
-<br>
-
+<h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
 <div *ngIf="(user | async)?.accountType == 'admin'; else notAdmin">
     hello admin!
     <br>
