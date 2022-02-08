@@ -46,7 +46,7 @@ export class CreateJobComponent implements OnInit {
   //Set User ID so jobs have link to their owners
   setUserId(){
     this.afAuth.authState.subscribe(async user => {
-      if (user.uid) {
+      if (user && user.uid) {
         this.jobForm.patchValue({
           uid: user.uid,
         });

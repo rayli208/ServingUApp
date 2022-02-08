@@ -1,13 +1,25 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Job } from '../models/job.model';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    ) { }
+
+  
+  getUserId(){
+    this.afAuth.authState.subscribe(async user => {
+      if (user.uid) {
+        console.log(user.uid);
+      }
+    });
+  }
 
   getJobDoc(id) {
     return this.afs
@@ -16,9 +28,9 @@ export class JobsService {
       .valueChanges();
   }
 
-  getJobsList() {
+  getJobsListForUser(userId) {
     return this.afs
-      .collection("jobs")
+      .collection("jobs", ref => ref.where('uid', '==', userId))
       .snapshotChanges();
   }
 

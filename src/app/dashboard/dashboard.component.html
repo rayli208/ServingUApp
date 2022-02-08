@@ -14,26 +14,36 @@
     <mat-list-item>Email Verification Status: {{ (afAuth.user | async)?.emailVerified }}</mat-list-item>
 </mat-list>
 
-<div style="background-color: grey; border-radius: 3px; margin-top: 15px;">
-    <h1>This is ALL the jobs</h1>
-    
-    <div *ngFor="let job of Jobs; let i = index" style="background-color: yellow; border-radius: 3px; margin: 10px; padding: 10px;">
-        <div><h1>{{job.uid}}</h1></div>
-        <div>{{job.id}}</div>
-        <div>{{job.employeerId}}</div>
-        <div>{{job.title}}</div>
-        <div>{{job.location}}</div>
-        <div>{{job.desciption}}</div>
-        <div>{{job.school}}</div>
-        <div>{{job.hours}}</div>
-        <div>{{job.phone}}</div>
-        <div>{{job.email}}</div>
-        <div>{{job.hired}}</div>
-        <div>
-            <button (click)="removeJob(job)" mat-raised-button>Delete</button>
-        </div>
-        <div>
-            <button routerLink="/update-job/{{job.id}}" mat-raised-button>Edit</button>
-        </div>
+<div class="dashboard-container">
+    <h1>Client Openings</h1>
+
+    <div *ngFor="let job of Jobs; let i = index">
+        <mat-card class="dashboard-job-card">
+            <div class="dashboard-job-card-content">
+                <div>
+                    <mat-card-title>{{job.title}}</mat-card-title>
+                    <mat-card-subtitle>{{job.location}}</mat-card-subtitle>
+                    <mat-card-content>
+                        <p>Job Id: {{job.id}}</p>
+                        <p>Uid: {{job.uid}}</p>
+                        <p>School: {{job.school}}</p>
+                        <p>Desciption: {{job.description}}</p>
+                        <p>Hours: {{job.hours}}</p>
+                        <p>Hired Status: {{job.hired}}</p>
+                    </mat-card-content>
+                </div>
+
+                <div class="dashboard-job-card-actions">
+                    <button mat-raised-button matTooltip="{{job.phone}}" aria-label="{{job.phone}}">
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
+                        <i class="fas fa-envelope"></i>
+                    </button>
+                    <button routerLink="/update-job/{{job.id}}" mat-raised-button><i class="fas fa-edit"></i></button>
+                    <button (click)="removeJob(job)" mat-raised-button><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+        </mat-card>
     </div>
 </div>

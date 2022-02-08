@@ -1,0 +1,19 @@
+.dashboard-container{
+    background-color: tan;
+    padding: 20px;
+}
+
+.dashboard-job-card{
+    padding: 15px;
+}
+
+.dashboard-job-card-content{
+    display: flex;
+}
+
+.dashboard-job-card-actions{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: auto;
+}
