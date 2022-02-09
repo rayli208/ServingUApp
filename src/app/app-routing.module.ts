@@ -12,10 +12,9 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 //Job Components
 import { CreateJobComponent } from './create-job/create-job.component';
-import { ListJobsComponent } from './list-jobs/list-jobs.component';
 import { EditJobComponent } from './edit-job/edit-job.component';
 
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from './_guards/auth.guard';
 
 
 const routes: Routes = [
@@ -30,7 +29,6 @@ const routes: Routes = [
     { path: 'verify-email', component: VerifyEmailComponent },
     //Job Components
     { path: 'create', component: CreateJobComponent, canActivate: [AuthGuard] },
-    // { path: 'list-jobs', component: ListJobsComponent, canActivate: [AuthGuard] },
     { path: 'update-job/:id', component: EditJobComponent, canActivate: [AuthGuard] },
     //Random
     { path: '**', component: HomeComponent },                       // catch-all in case no other path matched

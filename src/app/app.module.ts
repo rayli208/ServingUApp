@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+//App Components
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -12,7 +13,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
-
+//Mat Components
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,7 +58,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import { CreateJobComponent } from './create-job/create-job.component';
-import { ListJobsComponent } from './list-jobs/list-jobs.component';
 import { EditJobComponent } from './edit-job/edit-job.component';
 
 @NgModule({
@@ -71,7 +71,6 @@ import { EditJobComponent } from './edit-job/edit-job.component';
         DashboardComponent,
         AdminDashboardComponent,
         CreateJobComponent,
-        ListJobsComponent,
         EditJobComponent
     ],
     imports: [
@@ -81,7 +80,7 @@ import { EditJobComponent } from './edit-job/edit-job.component';
         AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
         AngularFirestoreModule,  // imports firebase/firestore, only needed for database features
         AngularFireDatabaseModule,
-
+        //Mat Components
         MatAutocompleteModule,
         MatBadgeModule,
         MatButtonModule,

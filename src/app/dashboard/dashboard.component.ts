@@ -1,15 +1,15 @@
-import { JobsService } from './../services/jobs.service';
-import { Job } from './../models/job.model';
+import { JobsService } from '../_services/jobs.service';
+import { Job } from '../_models/job.model';
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css']
+    styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
     userId;

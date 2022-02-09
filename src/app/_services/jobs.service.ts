@@ -1,6 +1,6 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-import { Job } from '../models/job.model';
+import { Job } from '../_models/job.model';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({

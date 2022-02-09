@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service'
+import { AuthService } from '../_services/auth.service'
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
     selector: 'app-verify-email',
     templateUrl: './verify-email.component.html',
-    styleUrls: ['./verify-email.component.css']
+    styleUrls: ['./verify-email.component.scss']
 })
 export class VerifyEmailComponent implements OnInit {
 

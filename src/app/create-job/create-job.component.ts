@@ -1,14 +1,13 @@
 import { Router } from '@angular/router';
-import { JobsService } from './../services/jobs.service';
+import { JobsService } from '../_services/jobs.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-create-job',
   templateUrl: './create-job.component.html',
-  styleUrls: ['./create-job.component.css']
+  styleUrls: ['./create-job.component.scss']
 })
 export class CreateJobComponent implements OnInit {
   public jobForm: FormGroup;
