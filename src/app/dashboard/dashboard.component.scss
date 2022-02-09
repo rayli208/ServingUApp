@@ -1,5 +1,7 @@
+@import '../_styles/variables.scss';
+
 .dashboard-container{
-    background-color: tan;
+    background-color: $brand-tertiary;
     padding: 20px;
 }
 
