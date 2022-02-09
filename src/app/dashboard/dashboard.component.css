@@ -17,3 +17,11 @@
     flex-direction: column;
     margin-left: auto;
 }
+
+.border-red{
+    border: 3px solid red;
+}
+
+.border-green{
+    border: 3px solid lime;
+}

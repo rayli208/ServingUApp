@@ -28,6 +28,7 @@ export class CreateJobComponent implements OnInit {
       hours: [''],
       phone: [''],
       email: [''],
+      website: [''],
       hired: false
     })
   }

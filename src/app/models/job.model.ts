@@ -9,5 +9,6 @@ export class Job {
     hours: string;
     phone: number;
     email: string;
+    website: string;
     hired: boolean;
 }

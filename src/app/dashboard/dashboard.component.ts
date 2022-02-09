@@ -1,4 +1,3 @@
-import { AuthService } from './../services/auth.service';
 import { JobsService } from './../services/jobs.service';
 import { Job } from './../models/job.model';
 import { Component, OnInit } from '@angular/core';

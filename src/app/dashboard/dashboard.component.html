@@ -18,30 +18,54 @@
     <h1>Client Openings</h1>
 
     <div *ngFor="let job of Jobs; let i = index">
-        <mat-card class="dashboard-job-card">
+        <!--Outline border based off hire status-->
+        <mat-card [ngClass]="{'border-red': job.hired === false, 'border-green' : job.hired === true }" class="dashboard-job-card">
             <div class="dashboard-job-card-content">
                 <div>
                     <mat-card-title>{{job.title}}</mat-card-title>
                     <mat-card-subtitle>{{job.location}}</mat-card-subtitle>
                     <mat-card-content>
-                        <p>Job Id: {{job.id}}</p>
-                        <p>Uid: {{job.uid}}</p>
-                        <p>School: {{job.school}}</p>
-                        <p>Desciption: {{job.description}}</p>
-                        <p>Hours: {{job.hours}}</p>
-                        <p>Hired Status: {{job.hired}}</p>
+                        <div>Desciption: {{job.description}}</div>
+                        <div>Job Id: {{job.id}}</div>
+                        <div>Uid: {{job.uid}}</div>
+                        <div>School:
+                            <mat-chip-list>
+                                <mat-chip color="accent" selected>{{job.school}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                        <div>Hours: {{job.hours}}</div>
+                        <div>Hired Status: {{job.hired}}</div>
+
+
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Error Handling
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    When opening an issue, report on bugs using these ID's as reference
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div>Job Id: {{job.id}}</div>
+                            <div>User: {{job.uid}}</div>
+                        </mat-expansion-panel>
                     </mat-card-content>
                 </div>
 
                 <div class="dashboard-job-card-actions">
                     <button mat-raised-button matTooltip="{{job.phone}}" aria-label="{{job.phone}}">
-                        <i class="fas fa-phone"></i>
-                    </button>
+                        <i class="fa-solid fa-phone-volume"></i> </button>
                     <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fa-solid fa-envelope"></i> </button>
+                    <button mat-raised-button matTooltip="{{job.website}}" aria-label="{{job.website}}">
+                        <i class="fa-solid fa-wifi"></i>
                     </button>
-                    <button routerLink="/update-job/{{job.id}}" mat-raised-button><i class="fas fa-edit"></i></button>
-                    <button (click)="removeJob(job)" mat-raised-button><i class="fas fa-trash-alt"></i></button>
+                    <button routerLink="/update-job/{{job.id}}" mat-raised-button>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button (click)="removeJob(job)" mat-raised-button>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             </div>
         </mat-card>

@@ -43,6 +43,7 @@ export class EditJobComponent implements OnInit {
         hours: this.jobRef.hours,
         phone: this.jobRef.phone,
         email: this.jobRef.email,
+        website: this.jobRef.website,
         hired: false,
       })
     })
