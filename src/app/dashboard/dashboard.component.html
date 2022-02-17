@@ -1,16 +1,17 @@
 <button mat-raised-button color="primary" routerLink="/home">
-    <mat-icon>home</mat-icon>
     <span>Home</span>
 </button>
 <h1><i class="fas fa-user"></i>Dashboard</h1>
 <mat-list *ngIf="(user | async)">
     <mat-list-item>Id: {{ userId }}</mat-list-item>
     <mat-list-item>Account Type: {{ (user | async)?.accountType }}</mat-list-item>
+    <mat-list-item>IsPaying: {{ (user | async)?.isPaying }}</mat-list-item>
     <mat-list-item>Owner: {{ (user | async)?.owner }}</mat-list-item>
     <mat-list-item>Location Name: {{ (user | async)?.location_name }}</mat-list-item>
     <mat-list-item>Email (lower): {{ (user | async)?.email_lower }}</mat-list-item>
-    <mat-list-item>Phone (lower): {{ (user | async)?.phone }}</mat-list-item>
-    <mat-list-item>Total Jobs (lower): {{ (user | async)?.openings }}</mat-list-item>
+    <mat-list-item>Phone {{ (user | async)?.phone }}</mat-list-item>
+    <mat-list-item>Website: {{ (user | async)?.website }}</mat-list-item>
+    <mat-list-item>Total Jobs: {{ (user | async)?.openings }}</mat-list-item>
     <mat-list-item>Email Verification Status: {{ (afAuth.user | async)?.emailVerified }}</mat-list-item>
 </mat-list>
 
@@ -28,11 +29,6 @@
                         <div>Desciption: {{job.description}}</div>
                         <div>Job Id: {{job.id}}</div>
                         <div>Uid: {{job.uid}}</div>
-                        <div>School:
-                            <mat-chip-list>
-                                <mat-chip color="accent" selected>{{job.school}}</mat-chip>
-                            </mat-chip-list>
-                        </div>
                         <div>Hours: {{job.hours}}</div>
                         <div>Hired Status: {{job.hired}}</div>
                         <mat-expansion-panel>
@@ -55,9 +51,6 @@
                         <i class="fa-solid fa-phone-volume"></i> </button>
                     <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
                         <i class="fa-solid fa-envelope"></i> </button>
-                    <button mat-raised-button matTooltip="{{job.website}}" aria-label="{{job.website}}">
-                        <i class="fa-solid fa-wifi"></i>
-                    </button>
                     <button routerLink="/update-job/{{job.id}}" mat-raised-button>
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>

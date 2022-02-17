@@ -5,10 +5,8 @@ export class Job {
     title: string;
     location: string;
     description: string;
-    school: string;
     hours: string;
     phone: number;
     email: string;
-    website: string;
     hired: boolean;
 }

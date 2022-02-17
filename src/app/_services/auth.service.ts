@@ -45,10 +45,13 @@ export class AuthService {
                 this.afs.doc('/users/' + emailLower)                        // on a successful signup, create a document in 'users' collection with the new user's info
                     .set({
                         accountType: 'endUser',
+                        isPaying: true,
                         owner: user.owner,
                         location_name: user.location_name,
                         email: user.email,
                         phone: user.phone,
+                        website: user.website,
+                        school: user.school,
                         openings: user.openings,
                         email_lower: emailLower,
                     });

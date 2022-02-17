@@ -34,6 +34,20 @@ Signup
         </p>
         <p>
             <mat-form-field appearance="outline">
+                <mat-label>Website</mat-label>
+                <input formControlName="website" type="text" matInput placeholder="Website">
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-label>School</mat-label>
+                <select formControlName="school" matNativeControl required>
+                    <option value="West Chester University">West Chester University</option>
+                </select>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
                 <mat-label>Openings</mat-label>
                 <input formControlName="openings" type="number" matInput placeholder="# of Openings">
             </mat-form-field>

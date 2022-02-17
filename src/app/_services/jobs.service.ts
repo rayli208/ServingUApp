@@ -58,7 +58,6 @@ export class JobsService {
         title: job.title,
         location: job.location,
         description: job.description,
-        school: job.school,
         hours: job.hours,
         phone: job.phone,
         email: job.email,

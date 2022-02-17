@@ -60,6 +60,9 @@ import { environment } from '../environments/environment';
 import { CreateJobComponent } from './create-job/create-job.component';
 import { EditJobComponent } from './edit-job/edit-job.component';
 
+import { ToastrModule } from 'ngx-toastr';
+
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -77,6 +80,7 @@ import { EditJobComponent } from './edit-job/edit-job.component';
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
         AngularFirestoreModule,  // imports firebase/firestore, only needed for database features
         AngularFireDatabaseModule,

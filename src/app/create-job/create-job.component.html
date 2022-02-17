@@ -20,14 +20,6 @@
         </div>
         <div>
             <mat-form-field appearance="outline">
-                <mat-label>School</mat-label>
-                <select formControlName="school" matNativeControl required>
-                    <option value="West Chester University">West Chester University</option>
-                </select>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field appearance="outline">
                 <mat-label>Hours</mat-label>
                 <select formControlName="hours" matNativeControl required>
                     <option value="0-8">0-8</option>
@@ -46,12 +38,6 @@
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
                 <input type="email" formControlName="email" matInput placeholder="Contact Email" required>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field appearance="outline">
-                <mat-label>Website</mat-label>
-                <input type="text" formControlName="website" matInput placeholder="Website" required>
             </mat-form-field>
         </div>
         <button mat-raised-button color="primary" type="submit" [disabled]="!jobForm.valid">Create</button>
