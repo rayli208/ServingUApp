@@ -1,1 +1,47 @@
+<section>
+    <button mat-raised-button color="primary" routerLink="/login" *ngIf="!(afAuth.user | async)">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+    </button>
+    <button mat-raised-button color="primary" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/signup" *ngIf="!(afAuth.user | async)">
+        <mat-icon>person_add</mat-icon>
+        <span>Sign up</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/forgot-password" *ngIf="!(afAuth.user | async)">
+        <mat-icon>help_outline</mat-icon>
+        <span>Forgot password</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/verify-email" *ngIf="(afAuth.user | async)">
+        <mat-icon>help_outline</mat-icon>
+        <span>Resend email verification</span>
+    </button>
+</section>
+
+<!--See all this only if you are logged in-->
+<section *ngIf="(afAuth.user | async)">
+    <button mat-raised-button color="primary" routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/admin">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>Admin Dashboard</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/create">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>Create</span>
+    </button>
+</section>
+<mat-card *ngIf="(afAuth.user | async)">
+    <mat-icon>check_circle</mat-icon>
+    <span>User is logged in</span>
+</mat-card>
+<mat-card *ngIf="!(afAuth.user | async)">
+    <mat-icon>do_not_disturb</mat-icon>
+    <span>User is not logged in</span>
+</mat-card>
 <router-outlet></router-outlet>

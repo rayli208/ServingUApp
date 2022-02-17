@@ -1,11 +1,4 @@
-Verify Email
-<br>
-<br>
-<button mat-raised-button color="primary" routerLink="/home">
-    <mat-icon>home</mat-icon>
-    <span>Home</span>
-</button>
-
+<h1>Verify Email</h1>
 <mat-card *ngIf="!(afAuth.user | async)">
     <mat-icon>do_not_disturb</mat-icon>
     <span>User is not logged in -- the user needs to be logged in to resend the verification email</span>
