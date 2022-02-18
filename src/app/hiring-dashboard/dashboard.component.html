@@ -1,4 +1,4 @@
-<h1><i class="fas fa-user"></i>Dashboard</h1>
+<h1><i class="fas fa-user"></i>Hiring Dashboard</h1>
 <mat-list *ngIf="(user | async)">
     <mat-list-item>Id: {{ userId }}</mat-list-item>
     <mat-list-item>Account Type: {{ (user | async)?.accountType }}</mat-list-item>
@@ -14,10 +14,18 @@
 
 <div class="dashboard-container">
     <h1>Client Openings</h1>
+    <ng-container *ngIf="(user | async)">
+        <button [disabled]="(user | async)?.openings <= Jobs?.length || !(afAuth.user | async)?.emailVerified"
+            mat-raised-button color="primary" routerLink="/create">
+            <mat-icon>admin_panel_settings</mat-icon>
+            <span>Create</span>
+        </button>
+    </ng-container>
 
     <div *ngFor="let job of Jobs; let i = index">
         <!--Outline border based off hire status-->
-        <mat-card [ngClass]="{'border-red': job.hired === false, 'border-green' : job.hired === true }" class="dashboard-job-card">
+        <mat-card [ngClass]="{'border-red': job.hired === false, 'border-green' : job.hired === true }"
+            class="dashboard-job-card">
             <div class="dashboard-job-card-content">
                 <div>
                     <mat-card-title>{{job.title}}</mat-card-title>

@@ -9,7 +9,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { HiringDashboardComponent } from './hiring-dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 //Mat Components
@@ -61,6 +61,8 @@ import { EditJobComponent } from './edit-job/edit-job.component';
 
 import { ToastrModule } from 'ngx-toastr';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
+import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
 
 
 @NgModule({
@@ -70,11 +72,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
         LoginComponent,
         ForgotPasswordComponent,
         VerifyEmailComponent,
-        DashboardComponent,
+        HiringDashboardComponent,
         AdminDashboardComponent,
         CreateJobComponent,
         EditJobComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        EmployeeDashboardComponent,
+        TimesheetDashboardComponent
     ],
     imports: [
         BrowserModule,

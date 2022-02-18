@@ -8,20 +8,28 @@ export class NotificationService {
   
   constructor(private toastr: ToastrService) { }
   
-  showSuccess(message, title){
-      this.toastr.success(message, title)
+  showSuccess(message: string, title: string){
+      this.toastr.success(message, title, {
+        positionClass: 'toast-bottom-right' 
+     });
   }
   
-  showError(message, title){
-      this.toastr.error(message, title)
+  showError(message: string, title: string){
+      this.toastr.error(message, title, {
+        positionClass: 'toast-bottom-right' 
+     })
   }
   
-  showInfo(message, title){
-      this.toastr.info(message, title)
+  showInfo(message: string, title: string){
+      this.toastr.info(message, title, {
+        positionClass: 'toast-bottom-right' 
+     })
   }
   
-  showWarning(message, title){
-      this.toastr.warning(message, title)
+  showWarning(message: string, title: string){
+      this.toastr.warning(message, title, {
+        positionClass: 'toast-bottom-right' 
+     })
   }
   
 }

@@ -21,5 +21,4 @@ export class AppComponent implements OnInit{
       this.afAuth.signOut();
       this.router.navigate(['/login']);                // when the user is logged in, navigate them to dashboard
   }
-  title = 'ServingU App';
 }

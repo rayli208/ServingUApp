@@ -1,3 +1,4 @@
+<!--See all this only if you are logged out-->
 <section>
     <button mat-raised-button color="primary" routerLink="/login" *ngIf="!(afAuth.user | async)">
         <mat-icon>login</mat-icon>
@@ -23,17 +24,21 @@
 
 <!--See all this only if you are logged in-->
 <section *ngIf="(afAuth.user | async)">
-    <button mat-raised-button color="primary" routerLink="/dashboard">
+    <button mat-raised-button color="primary" routerLink="/hiring-dashboard">
         <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
+        <span>Hiring</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/employee-dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Employees</span>
+    </button>
+    <button mat-raised-button color="primary" routerLink="/timesheet-dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Timesheet</span>
     </button>
     <button mat-raised-button color="primary" routerLink="/admin">
         <mat-icon>admin_panel_settings</mat-icon>
         <span>Admin Dashboard</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/create">
-        <mat-icon>admin_panel_settings</mat-icon>
-        <span>Create</span>
     </button>
 </section>
 <mat-card *ngIf="(afAuth.user | async)">
@@ -44,4 +49,5 @@
     <mat-icon>do_not_disturb</mat-icon>
     <span>User is not logged in</span>
 </mat-card>
+<!--Router-->
 <router-outlet></router-outlet>

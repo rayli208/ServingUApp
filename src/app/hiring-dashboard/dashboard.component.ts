@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class HiringDashboardComponent implements OnInit {
     userId;
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
     Jobs: Job[];
@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit {
                 this.userId = user.uid;
                 let emailLower = user.email.toLowerCase();
                 this.user = this.afs.collection('users').doc(emailLower).valueChanges();
-
 
                 this.jobsService.getJobsListForUser(this.userId).subscribe(res => {
                     this.Jobs = res.map(e => {
