@@ -38,7 +38,7 @@ export class CreateJobComponent implements OnInit {
   //Create job and redirect to dashboard
   onSubmit() {
     this.jobsService.createJob(this.jobForm.value);
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['hiring-dashboard']);
   }
 
   //Set User ID so jobs have link to their owners

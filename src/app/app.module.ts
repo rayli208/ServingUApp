@@ -63,6 +63,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
 import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
+import { CreateEmployeeDialogComponent } from './_dialogs/create-employee-dialog/create-employee-dialog.component';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-das
         EditJobComponent,
         PageNotFoundComponent,
         EmployeeDashboardComponent,
-        TimesheetDashboardComponent
+        TimesheetDashboardComponent,
+        CreateEmployeeDialogComponent
     ],
     imports: [
         BrowserModule,

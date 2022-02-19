@@ -54,6 +54,7 @@ export class EmployeesService {
       .doc(id)
       .update({
         name: employee.name,
+        position: employee.position,
         hours: employee.hours,
         phone: employee.phone,
         email: employee.email,

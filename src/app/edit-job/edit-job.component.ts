@@ -54,6 +54,6 @@ export class EditJobComponent implements OnInit {
     console.log(this.editForm.value);
 
     this.jobService.updateJob(this.editForm.value, id);
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['hiring-dashboard']);
   }
 }

@@ -1,0 +1,43 @@
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" novalidate>
+    <h1 mat-dialog-title>Create an Employee</h1>
+    <div mat-dialog-content>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input type="text" formControlName="name" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Position</mat-label>
+                <input type="text" formControlName="position" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Hours</mat-label>
+                <select formControlName="hours" matNativeControl required>
+                    <option value="0-8">0-8</option>
+                    <option value="8-20">8-20</option>
+                    <option value="20+">20+</option>
+                </select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Phone</mat-label>
+                <input type="tel" formControlName="phone" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input type="email" formControlName="email" matInput required>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid">Create</button>
+    </div>
+</form>
