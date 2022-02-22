@@ -19,5 +19,13 @@
                 </mat-card-content>
             </div>
         </div>
+        <div>
+            <button (click)="editEmployee(employee)" mat-raised-button>
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button (click)="removeEmployee(employee)" mat-raised-button>
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
     </mat-card>
 </div>

@@ -1,3 +1,4 @@
+import { EditJobDialogComponent } from '../_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
 import { JobsService } from '../_services/jobs.service';
 import { Job } from '../_models/job.model';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 
 @Component({
     selector: 'app-dashboard',
@@ -16,7 +19,9 @@ export class HiringDashboardComponent implements OnInit {
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
     Jobs: Job[];
 
-    constructor(private afAuth: AngularFireAuth,
+    constructor(
+        public dialog: MatDialog,
+        private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private jobsService: JobsService,
     ) {
@@ -41,8 +46,20 @@ export class HiringDashboardComponent implements OnInit {
                 });
             }
         });
+    }
 
+    createJob(): void {
+        const dialogRef = this.dialog.open(CreateJobDialogComponent, {});
+        //Run code after closing dialog
+        dialogRef.afterClosed().subscribe(result => { });
+    }
 
+    editJob(job: Job) {
+        const dialogRef = this.dialog.open(EditJobDialogComponent, {
+            data: job
+        });
+        //Run code after closing dialog
+        dialogRef.afterClosed().subscribe(result => { });
     }
 
     removeJob(job) {

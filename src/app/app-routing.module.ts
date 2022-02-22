@@ -11,11 +11,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-
-//Job Components
-import { CreateJobComponent } from './create-job/create-job.component';
-import { EditJobComponent } from './edit-job/edit-job.component';
-
 import { AuthGuard } from './_guards/auth.guard';
 
 
@@ -30,9 +25,6 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'verify-email', component: VerifyEmailComponent },
-    //Job Components
-    { path: 'create', component: CreateJobComponent, canActivate: [AuthGuard] },
-    { path: 'update-job/:id', component: EditJobComponent, canActivate: [AuthGuard] },
     //Random
     { path: '**', component: PageNotFoundComponent },                       // catch-all in case no other path matched
 ];

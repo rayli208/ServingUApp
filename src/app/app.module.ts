@@ -11,6 +11,10 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { HiringDashboardComponent } from './hiring-dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
+import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
+import { CreateEmployeeDialogComponent } from './_dialogs/employee/create-employee-dialog/create-employee-dialog.component';
 
 //Mat Components
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -56,14 +60,11 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
-import { CreateJobComponent } from './create-job/create-job.component';
-import { EditJobComponent } from './edit-job/edit-job.component';
 
 import { ToastrModule } from 'ngx-toastr';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
-import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
-import { CreateEmployeeDialogComponent } from './_dialogs/create-employee-dialog/create-employee-dialog.component';
+import { EditEmployeeDialogComponent } from './_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
+import { EditJobDialogComponent } from './_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
+import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 
 
 @NgModule({
@@ -75,12 +76,13 @@ import { CreateEmployeeDialogComponent } from './_dialogs/create-employee-dialog
         VerifyEmailComponent,
         HiringDashboardComponent,
         AdminDashboardComponent,
-        CreateJobComponent,
-        EditJobComponent,
         PageNotFoundComponent,
         EmployeeDashboardComponent,
         TimesheetDashboardComponent,
-        CreateEmployeeDialogComponent
+        CreateEmployeeDialogComponent,
+        EditEmployeeDialogComponent,
+        EditJobDialogComponent,
+        CreateJobDialogComponent
     ],
     imports: [
         BrowserModule,

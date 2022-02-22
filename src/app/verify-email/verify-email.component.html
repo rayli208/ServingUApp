@@ -15,9 +15,9 @@
     <button mat-raised-button color="primary" [disabled]="mailSent" (click)="resendVerificationEmail()">Resend verification email</button>
     <div *ngIf="mailSent">
         <p>An email has been sent!</p>
-        <button mat-raised-button color="primary" routerLink="/home">
+        <button mat-raised-button color="primary" routerLink="/Login">
             <mat-icon>home</mat-icon>
-            <span>Return Home</span>
+            <span>Return Login</span>
         </button>
     </div>
 </mat-card>

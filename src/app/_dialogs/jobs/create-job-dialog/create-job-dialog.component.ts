@@ -1,15 +1,16 @@
-import { Router } from '@angular/router';
-import { JobsService } from '../_services/jobs.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { JobsService } from 'src/app/_services/jobs.service';
 
 @Component({
-  selector: 'app-create-job',
-  templateUrl: './create-job.component.html',
-  styleUrls: ['./create-job.component.scss']
+  selector: 'app-create-job-dialog',
+  templateUrl: './create-job-dialog.component.html',
+  styleUrls: ['./create-job-dialog.component.css']
 })
-export class CreateJobComponent implements OnInit {
+export class CreateJobDialogComponent implements OnInit {
   public jobForm: FormGroup;
   
   constructor(
@@ -17,6 +18,7 @@ export class CreateJobComponent implements OnInit {
     public formBuilder: FormBuilder,
     public router: Router,
     private afAuth: AngularFireAuth,
+    public dialogRef: MatDialogRef<CreateJobDialogComponent>,
   ) {
     this.jobForm = this.formBuilder.group({
       uid: [''],
@@ -37,8 +39,9 @@ export class CreateJobComponent implements OnInit {
   
   //Create job and redirect to dashboard
   onSubmit() {
+    console.log(this.jobForm.value);
     this.jobsService.createJob(this.jobForm.value);
-    this.router.navigate(['hiring-dashboard']);
+    this.dialogRef.close();
   }
 
   //Set User ID so jobs have link to their owners

@@ -1,4 +1,4 @@
-<form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
+<form [formGroup]="jobForm" (ngSubmit)="onSubmit()" novalidate>
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Title</mat-label>
@@ -15,14 +15,6 @@
         <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
             <input type="text" formControlName="description" matInput required>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>School</mat-label>
-            <select formControlName="school" matNativeControl required>
-                <option value="West Chester University">West Chester University</option>
-            </select>
         </mat-form-field>
     </div>
     <div>
@@ -47,6 +39,6 @@
             <input type="email" formControlName="email" matInput placeholder="Contact Email" required>
         </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>
-    <button mat-raised-button type="reset">Reset</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!jobForm.valid">Create</button>
 </form>

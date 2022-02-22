@@ -5,6 +5,7 @@
     <mat-list-item>IsPaying: {{ (user | async)?.isPaying }}</mat-list-item>
     <mat-list-item>Owner: {{ (user | async)?.owner }}</mat-list-item>
     <mat-list-item>Location Name: {{ (user | async)?.location_name }}</mat-list-item>
+    <mat-list-item>School: {{ (user | async)?.school }}</mat-list-item>
     <mat-list-item>Email (lower): {{ (user | async)?.email_lower }}</mat-list-item>
     <mat-list-item>Phone {{ (user | async)?.phone }}</mat-list-item>
     <mat-list-item>Website: {{ (user | async)?.website }}</mat-list-item>
@@ -16,7 +17,7 @@
     <h1>Client Openings</h1>
     <ng-container *ngIf="(user | async)">
         <button [disabled]="(user | async)?.openings <= Jobs?.length || !(afAuth.user | async)?.emailVerified"
-            mat-raised-button color="primary" routerLink="/create">
+            mat-raised-button color="primary" (click)="createJob()">
             <mat-icon>admin_panel_settings</mat-icon>
             <span>Create</span>
         </button>
@@ -54,7 +55,7 @@
                         <i class="fa-solid fa-phone-volume"></i> </button>
                     <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
                         <i class="fa-solid fa-envelope"></i> </button>
-                    <button routerLink="/update-job/{{job.id}}" mat-raised-button>
+                    <button (click)="editJob(job)"  mat-raised-button>
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button (click)="removeJob(job)" mat-raised-button>
