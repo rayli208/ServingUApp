@@ -1,5 +1,12 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
     <div>
+        <img (click)="fileUploader.click()" [src]="imgSrc" width="150px" height="150px" style="cursor: pointer;">
+    </div>
+    <div>
+        <label for="Image">Image File</label>
+        <input #fileUploader type="file" (change)="detectNewImage($event)" accept="*.png.jpg.jpeg">
+    </div>
+    <div>
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input type="text" formControlName="name" matInput required>
@@ -32,6 +39,9 @@
             <mat-label>Position</mat-label>
             <input type="text" formControlName="position" matInput required>
         </mat-form-field>
+    </div>
+    <div>
+        <mat-checkbox color="primary" formControlName="employeed">Active</mat-checkbox>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>

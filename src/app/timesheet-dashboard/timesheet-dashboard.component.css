@@ -1,0 +1,6 @@
+.mat-expansion-panel-header-title, .mat-expansion-panel-header-description{
+    display: inline-block;
+    flex-grow: none;
+    width: 0%;
+    margin-right: 16px;
+}

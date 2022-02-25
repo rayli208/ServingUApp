@@ -7,6 +7,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { EmployeesService } from '../_services/employees.service';
 import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -22,12 +24,16 @@ export class EmployeeDashboardComponent implements OnInit {
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private storage: AngularFireStorage,
   ) {
     this.user = null;
   }
 
+
+
   ngOnInit(): void {
+
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -36,7 +42,6 @@ export class EmployeeDashboardComponent implements OnInit {
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
           this.Employees = res.map(e => {
-            // console.log(e.payload.doc.data());
             return {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
@@ -57,7 +62,9 @@ export class EmployeeDashboardComponent implements OnInit {
 
 
   removeEmployee(employee: Employee) {
+    console.log(employee.imgUrl);
     if (confirm("Are you sure you want to delete " + employee.name)) {
+      this.storage.storage.refFromURL(employee.imgUrl).delete();
       this.employeesService.deleteEmployee(employee);
     }
   }
@@ -66,6 +73,15 @@ export class EmployeeDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(EditEmployeeDialogComponent, {
       data: employee
     });
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  createSchedule(name: string, uid: string){
+    const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {data: {
+      name: name,
+      uid: uid
+    }});
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
   }

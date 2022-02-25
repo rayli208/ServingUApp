@@ -2,6 +2,13 @@
     <h1 mat-dialog-title>Create an Employee</h1>
     <div mat-dialog-content>
         <div>
+            <img (click)="fileUploader.click()" [src]="imgSrc" width="150px" height="150px" style="cursor: pointer;">
+        </div>
+        <div>
+            <label for="Image">Image File</label>
+            <input #fileUploader type="file" (change)="detectNewImage($event)" accept="*.png.jpg.jpeg">
+        </div>
+        <div>
             <mat-form-field appearance="outline">
                 <mat-label>Name</mat-label>
                 <input type="text" formControlName="name" matInput required>

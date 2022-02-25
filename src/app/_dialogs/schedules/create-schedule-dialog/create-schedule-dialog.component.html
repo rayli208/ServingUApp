@@ -1,0 +1,29 @@
+<form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" novalidate>
+    <div>{{scheduleForm.get("employeeName").value}}</div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Start Time</mat-label>
+            <input type="text" formControlName="startTime" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>End Time</mat-label>
+            <input type="text" formControlName="endTime" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input type="text" formControlName="date" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Notes</mat-label>
+            <input type="text" formControlName="note" matInput required>
+        </mat-form-field>
+    </div>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid">Create</button>
+</form>

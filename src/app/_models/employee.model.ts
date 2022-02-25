@@ -6,5 +6,6 @@ export class Employee {
     hours: string;
     phone: string;
     email: string;
+    imgUrl: string;
     employeed: boolean;
 }

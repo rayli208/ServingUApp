@@ -1,2 +1,22 @@
 <h1><i class="fas fa-user"></i>Timesheet Dashboard</h1>
-<p>timesheet-dashboard works!</p>
+
+<div class="example-action-buttons">
+    <button mat-raised-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-raised-button (click)="accordion.closeAll()">Collapse All</button>
+    <button mat-raised-button (click)="onPrint()"><i class="fa-solid fa-print"></i></button>
+  </div>
+  <mat-accordion multi>
+    <mat-expansion-panel *ngFor="let day of daysOfWeek; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{ day | date :'EEEE'}}
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ day | date :'MMMM d'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div>John Doe</div>
+      <div>8am - 6pm</div>
+      <div>*kiss me</div>
+    </mat-expansion-panel>
+  </mat-accordion>

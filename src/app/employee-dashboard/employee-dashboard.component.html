@@ -1,31 +1,71 @@
-
 <h1><i class="fas fa-user"></i>Employee Dashboard</h1>
-<p>employee-dashboard works!</p>
-<button mat-raised-button color="primary"  (click)="createEmployee()">Create Employee</button>
+<button mat-raised-button color="primary" (click)="createEmployee()">Create Employee</button>
 
-<div *ngFor="let employee of Employees; let i = index">
-    <!--Outline border based off hire status-->
-    <mat-card class="dashboard-employee-card">
-        <div class="dashboard-employee-card-content">
-            <div>
-                <mat-card-title>{{employee.name}}</mat-card-title>
-                <mat-card-subtitle>{{employee.position}} - {{employee.id}}</mat-card-subtitle>
-                <mat-card-content>
-                    <div>Hours: {{employee.hours}}</div>
-                    <div>Hired Status: {{employee.employeed}}</div>
-                    <div>Phone: {{employee.phone}}</div>
-                    <div>Email: {{employee.email}}</div>
-                    <div>User Id: {{employee.uid}}</div>
-                </mat-card-content>
-            </div>
+<mat-tab-group>
+    <mat-tab label="Active Employees">
+        <div *ngFor="let employee of Employees; let i = index">
+            <!--Outline border based off hire status-->
+            <mat-card *ngIf="employee.employeed" class="dashboard-employee-card">
+                <div class="dashboard-employee-card-content">
+                    <div>
+                        <div>
+                            <img src="{{employee.imgUrl}}" height="250px" width="250px">
+                        </div>
+                        <mat-card-title>{{employee.name}}</mat-card-title>
+                        <mat-card-subtitle>{{employee.position}} - {{employee.id}}</mat-card-subtitle>
+                        <mat-card-content>
+                            <div>Hours: {{employee.hours}}</div>
+                            <div style="background-color: red;">Hired Status: {{employee.employeed}}</div>
+                            <div>Phone: {{employee.phone}}</div>
+                            <div>Email: {{employee.email}}</div>
+                            <div>User Id: {{employee.uid}}</div>
+                        </mat-card-content>
+                    </div>
+                </div>
+                <div>
+                    <button (click)="createSchedule(employee.name, employee.uid)" mat-raised-button>
+                        <i class="fa-solid fa-calendar-days"></i>
+                                        </button>
+                    <button (click)="editEmployee(employee)" mat-raised-button>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button (click)="removeEmployee(employee)" mat-raised-button>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </mat-card>
         </div>
-        <div>
-            <button (click)="editEmployee(employee)" mat-raised-button>
-                <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-            <button (click)="removeEmployee(employee)" mat-raised-button>
-                <i class="fa-solid fa-trash-can"></i>
-            </button>
+    </mat-tab>
+
+    <mat-tab label="Terminated">
+        <div *ngFor="let employee of Employees; let i = index">
+            <!--Outline border based off hire status-->
+            <mat-card *ngIf="!employee.employeed" class="dashboard-employee-card">
+                <div class="dashboard-employee-card-content">
+                    <div>
+                        <div>
+                            <img src="{{employee.imgUrl}}" height="250px" width="250px">
+                        </div>
+                        <mat-card-title>{{employee.name}}</mat-card-title>
+                        <mat-card-subtitle>{{employee.position}} - {{employee.id}}</mat-card-subtitle>
+                        <mat-card-content>
+                            <div>Hours: {{employee.hours}}</div>
+                            <div style="background-color: red;">Hired Status: {{employee.employeed}}</div>
+                            <div>Phone: {{employee.phone}}</div>
+                            <div>Email: {{employee.email}}</div>
+                            <div>User Id: {{employee.uid}}</div>
+                        </mat-card-content>
+                    </div>
+                </div>
+                <div>
+                    <button (click)="editEmployee(employee)" mat-raised-button>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button (click)="removeEmployee(employee)" mat-raised-button>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </mat-card>
         </div>
-    </mat-card>
-</div>
+    </mat-tab>
+</mat-tab-group>

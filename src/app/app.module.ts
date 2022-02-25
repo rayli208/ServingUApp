@@ -58,6 +58,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 
@@ -65,6 +66,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { EditEmployeeDialogComponent } from './_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { EditJobDialogComponent } from './_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
 import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/create-job-dialog.component';
+import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
+import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 
 
 @NgModule({
@@ -82,14 +85,17 @@ import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/crea
         CreateEmployeeDialogComponent,
         EditEmployeeDialogComponent,
         EditJobDialogComponent,
-        CreateJobDialogComponent
+        CreateJobDialogComponent,
+        CreateScheduleDialogComponent,
+        EditScheduleDialogComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything
+        AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything,
+        AngularFireStorageModule, //imports storage bin
         AngularFirestoreModule,  // imports firebase/firestore, only needed for database features
         AngularFireDatabaseModule,
         //Mat Components

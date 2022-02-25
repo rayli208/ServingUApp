@@ -58,6 +58,7 @@ export class EmployeesService {
         hours: employee.hours,
         phone: employee.phone,
         email: employee.email,
+        imgUrl: employee.imgUrl,
         employeed: employee.employeed
       })
   }
