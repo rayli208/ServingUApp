@@ -20,7 +20,8 @@ export class CreateScheduleDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)data: any
   ) {
     this.scheduleForm = this.formBuilder.group({
-      uid: [data.uid],
+      userId: [data.userId],
+      employeeId: [data.employeeId],
       employeeName: [data.name],
       startTime: [''],
       endTime: [''],

@@ -77,10 +77,11 @@ export class EmployeeDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  createSchedule(name: string, uid: string){
+  createSchedule(name: string, userId: string, employeeId: string){
     const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {data: {
       name: name,
-      uid: uid
+      userId: userId,
+      employeeId: employeeId
     }});
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
