@@ -1,0 +1,12 @@
+/** No CSS for this example */
+::ng-deep mat-form-field {
+    width: 100%;
+  }
+  
+  ::ng-deep .mat-calendar-body-cell.selected > .mat-calendar-body-cell-content,
+  ::ng-deep .mat-calendar-body-cell.selected:hover > .mat-calendar-body-cell-content,
+  ::ng-deep .mat-calendar-body-cell.selected > .mat-calendar-body-cell-content:hover {
+    background-color: #673ab7 !important;
+    color: #fff !important;
+  }
+  

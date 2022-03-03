@@ -37,8 +37,6 @@ export class EmployeeDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-        let emailLower = user.email.toLowerCase();
-        this.user = this.afs.collection('users').doc(emailLower).valueChanges();
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
           this.Employees = res.map(e => {

@@ -3,8 +3,8 @@ export class Schedule {
     userId: string;
     employeeId: string;
     employeeName: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
     date: Date;
     note: string;
 }

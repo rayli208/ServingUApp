@@ -19,11 +19,17 @@ export class ScheduleService {
       .valueChanges();
   }
 
-  getSchedulesListForUser(employeeId) {
+  getSchedulesListForUser(userId) {
     return this.afs
-      .collection("schedules", ref => ref.where('uid', '==', employeeId))
+      .collection("schedules", ref => ref.where('userId', '==', userId))
       .snapshotChanges();
   }
+
+  // getSchedulesListForUser(employeeId) {
+  //   return this.afs
+  //     .collection("schedules", ref => ref.where('employeeId', '==', employeeId))
+  //     .snapshotChanges();
+  // }
 
   createSchedule(schedule: Schedule) {
     return new Promise<any>((resolve, reject) => {

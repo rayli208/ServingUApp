@@ -32,12 +32,9 @@ export class HiringDashboardComponent implements OnInit {
         this.afAuth.authState.subscribe(user => {
             if (user) {
                 this.userId = user.uid;
-                let emailLower = user.email.toLowerCase();
-                this.user = this.afs.collection('users').doc(emailLower).valueChanges();
 
                 this.jobsService.getJobsListForUser(this.userId).subscribe(res => {
                     this.Jobs = res.map(e => {
-                        console.log(e.payload.doc.data());
                         return {
                             id: e.payload.doc.id,
                             ...e.payload.doc.data() as {}
