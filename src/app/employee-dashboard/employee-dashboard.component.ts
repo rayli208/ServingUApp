@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { EmployeesService } from '../_services/employees.service';
 import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
@@ -23,7 +22,6 @@ export class EmployeeDashboardComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
   ) {

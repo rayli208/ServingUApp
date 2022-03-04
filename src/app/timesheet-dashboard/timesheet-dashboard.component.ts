@@ -1,10 +1,11 @@
+import { EditScheduleDialogComponent } from './../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { ScheduleService } from './../_services/schedule.service';
 import { Schedule } from './../_models/schedule.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-timesheet-dashboard',
@@ -19,16 +20,21 @@ export class TimesheetDashboardComponent implements OnInit {
   Schedules: Schedule[];
 
   constructor(
+    public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private scheduleService: ScheduleService,
   ) {
     this.user = null;
   }
   ngOnInit(): void {
+    this.generateSchedule();
+  }
+
+
+  generateSchedule(){
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-        console.log(this.userId);
 
         this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
           this.Schedules = res.map(e => {
@@ -43,13 +49,6 @@ export class TimesheetDashboardComponent implements OnInit {
       }
     });
   }
-
-
-
-
-
-
-
   //Figure out what the current two weeks look like
   getDaysOfWeek() {
     var curr = new Date(); // get current date
@@ -93,6 +92,24 @@ export class TimesheetDashboardComponent implements OnInit {
     return result;
   }
 
+  //Edit Function
+  editSchedule(schedule: Schedule) {
+    const dialogRef = this.dialog.open(EditScheduleDialogComponent, {
+      data: schedule
+    });
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  //Remove Schedule 
+  deleteSchedule(schedule: Schedule, j, i) {
+    if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
+      this.scheduleService.deleteSchedule(schedule);
+      this.dailySchedules[i].schedules.splice(j, 1);
+    }
+  }
+
+  //Print Function
   onPrint() {
     this.accordion.openAll();
     setTimeout(() => {
