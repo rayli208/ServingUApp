@@ -1,0 +1,19 @@
+<div>Employee: {{employeeRef?.name}}</div>
+<hr>
+<div *ngIf="Schedules?.length">
+    <h1>Schedule</h1>
+    <div *ngFor="let schedule of Schedules; let i = index">
+        <mat-card>
+            <div>Date: {{schedule.date.toDate() | date}}</div>
+            <div>Start Time: {{schedule.startTime | convertToAMorPM}}</div>
+            <div>End Time: {{schedule.endTime | convertToAMorPM}}</div>
+            <div>Note: {{schedule.note}}</div>
+            <div (click)="editSchedule(schedule)"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div (click)="deleteSchedule(schedule)"><i class="fa-solid fa-trash-can"></i></div>
+        </mat-card>
+
+    </div>
+</div>
+
+
+<button (click)="backToSchedule()">Back</button>

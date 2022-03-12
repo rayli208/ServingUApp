@@ -1,3 +1,4 @@
+import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'hiring-dashboard', component: HiringDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'timesheet-dashboard', component: TimesheetDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'employee-schedul-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },

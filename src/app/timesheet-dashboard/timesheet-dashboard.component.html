@@ -24,13 +24,9 @@
         <div>Start Time: {{schedule.startTime | convertToAMorPM}}</div>
         <div>End Time: {{schedule.endTime | convertToAMorPM}}</div>
         <div>Note: {{schedule.note}}</div>
-        <div (click)="editSchedule(schedule)"><i class="fa-solid fa-pen-to-square"></i></div>
+        <div (click)="editSchedule(schedule, j, i)"><i class="fa-solid fa-pen-to-square"></i></div>
         <div (click)="deleteSchedule(schedule, j, i)"><i class="fa-solid fa-trash-can"></i></div>
       </mat-card>
-
-
-
-
     </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -69,6 +69,7 @@ import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/crea
 import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
+import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { HoursPipe } from './_pipes/hours.pipe';
         CreateJobDialogComponent,
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
-        HoursPipe
+        HoursPipe,
+        EmployeeScheduleDashboardComponent
     ],
     imports: [
         BrowserModule,

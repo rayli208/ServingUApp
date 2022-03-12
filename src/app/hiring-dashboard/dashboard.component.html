@@ -12,9 +12,8 @@
     <mat-list-item>Total Jobs: {{ (user | async)?.openings }}</mat-list-item>
     <mat-list-item>Email Verification Status: {{ (afAuth.user | async)?.emailVerified }}</mat-list-item>
 </mat-list>
-
 <div class="dashboard-container">
-    <h1>Client Openings</h1>
+    <h1>Client Openings {{Jobs?.length}}/{{ (user | async)?.openings }}</h1>
     <ng-container *ngIf="(user | async)">
         <button [disabled]="(user | async)?.openings <= Jobs?.length || !(afAuth.user | async)?.emailVerified"
             mat-raised-button color="primary" (click)="createJob()">
@@ -55,7 +54,7 @@
                         <i class="fa-solid fa-phone-volume"></i> </button>
                     <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
                         <i class="fa-solid fa-envelope"></i> </button>
-                    <button (click)="editJob(job)"  mat-raised-button>
+                    <button (click)="editJob(job)" mat-raised-button>
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button (click)="removeJob(job)" mat-raised-button>

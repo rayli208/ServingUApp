@@ -24,8 +24,11 @@
                 </div>
                 <div>
                     <button (click)="createSchedule(employee.name, employee.uid, employee.id)" mat-raised-button>
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </button>
+                    <button routerLink="/employee-schedul-dashboard/{{employee.id}}" mat-raised-button>
                         <i class="fa-solid fa-calendar-days"></i>
-                                        </button>
+                    </button>
                     <button (click)="editEmployee(employee)" mat-raised-button>
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>

@@ -93,12 +93,14 @@ export class TimesheetDashboardComponent implements OnInit {
   }
 
   //Edit Function
-  editSchedule(schedule: Schedule) {
+  editSchedule(schedule: Schedule, j, i) {
     const dialogRef = this.dialog.open(EditScheduleDialogComponent, {
       data: schedule
     });
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => { 
+      this.dailySchedules[i].schedules.splice(j, 1, result);
+    });
   }
 
   //Remove Schedule 
