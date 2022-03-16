@@ -1,14 +1,37 @@
 <h1><i class="fas fa-user"></i>Timesheet Dashboard</h1>
 
 <div class="example-action-buttons">
-  <button mat-raised-button (click)="accordion.openAll()">Expand All</button>
-  <button mat-raised-button (click)="accordion.closeAll()">Collapse All</button>
+  <!-- <button mat-raised-button (click)="accordion.openAll()">Expand All</button>
+  <button mat-raised-button (click)="accordion.closeAll()">Collapse All</button> -->
   <button mat-raised-button (click)="onPrint()"><i class="fa-solid fa-print"></i></button>
 </div>
 
+<div *ngFor="let day of dailySchedules; let i = index">
+  <div class="timesheet-dashboard-date">
+    <div>{{day.date | date :'EEEE'}}, {{day.date | date :'MMMM d'}}</div>
+    <div><button>ADD</button></div>
+  </div>
+  <div *ngIf="!day.schedule">There is no employee scheduled for this day.</div>
+  <ng-container *ngFor="let schedule of day.schedules; let j = index">
+    <div class="timesheet-dashboard-schedule-card" *ngIf="schedule">
+      <div>
+        <div class="timesheet-dashboard-name">
+          <span>{{schedule.employeeName}}</span>
+          <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
+            class="fa-solid fa-circle-info"></i>
+        </div>
+        <div class="timesheet-dashboard-hours">Hours: {{schedule.startTime | convertToAMorPM}} -
+          {{schedule.endTime | convertToAMorPM}}</div>
+      </div>
+      <div class="timesheet-dashboard-icons">
+        <div (click)="editSchedule(schedule, j, i)"><i class="fa-solid fa-pen-to-square"></i></div>
+        <div (click)="deleteSchedule(schedule, j, i)"><i class="fa-solid fa-trash-can"></i></div>
+      </div>
+    </div>
+  </ng-container>
+</div>
 
-
-<mat-accordion multi>
+<!-- <mat-accordion multi>
   <mat-expansion-panel *ngFor="let day of dailySchedules; let i = index">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -29,4 +52,4 @@
       </mat-card>
     </div>
   </mat-expansion-panel>
-</mat-accordion>
+</mat-accordion> -->

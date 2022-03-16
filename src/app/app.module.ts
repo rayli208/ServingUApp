@@ -70,6 +70,7 @@ import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-sched
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
+import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 
 
 @NgModule({
@@ -91,7 +92,8 @@ import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboar
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
         HoursPipe,
-        EmployeeScheduleDashboardComponent
+        EmployeeScheduleDashboardComponent,
+        ProfileDashboardComponent
     ],
     imports: [
         BrowserModule,

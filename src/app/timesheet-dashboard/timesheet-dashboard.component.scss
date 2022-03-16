@@ -1,0 +1,54 @@
+@import './../_styles/variables.scss';
+
+.timesheet-dashboard-date {
+    font-size: 20px;
+    color: $brand-secondary;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.timesheet-dashboard-schedule-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: rgba(250, 247, 247, .5);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.timesheet-dashboard-name {
+    font-size: 20px;
+    color: $brand-secondary;
+    font-weight: 600;
+    margin-bottom: 5px;
+
+    i{
+        font-size: 12px;
+        color: $brand-primary;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: top;
+    }
+}
+
+.timesheet-dashboard-hours {
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.timesheet-dashboard-icons{
+    display: flex;
+    font-size: 20px;
+    color: $brand-primary;
+    align-items: center;
+    justify-content: end;
+    cursor: pointer;
+    
+    div{
+        margin-left: 10px;
+    }
+}

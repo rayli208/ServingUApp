@@ -1,45 +1,65 @@
 <!--See all this only if you are logged out-->
-<section>
-    <button mat-raised-button color="primary" routerLink="/login" *ngIf="!(afAuth.user | async)">
-        <mat-icon>login</mat-icon>
-        <span>Login</span>
-    </button>
-    <button mat-raised-button color="primary" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Log out</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/signup" *ngIf="!(afAuth.user | async)">
-        <mat-icon>person_add</mat-icon>
-        <span>Sign up</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/forgot-password" *ngIf="!(afAuth.user | async)">
-        <mat-icon>help_outline</mat-icon>
-        <span>Forgot password</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/verify-email" *ngIf="(afAuth.user | async)">
-        <mat-icon>help_outline</mat-icon>
-        <span>Resend email verification</span>
-    </button>
-</section>
-
+<header class="app-header" >
+    <img src="../assets/img/Logo.png">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/login" *ngIf="!(afAuth.user | async)">
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+        </button>
+        <button mat-menu-item routerLink="/signup" *ngIf="!(afAuth.user | async)">
+            <mat-icon>person_add</mat-icon>
+            <span>Sign up</span>
+        </button>
+        <button mat-menu-item routerLink="/forgot-password" *ngIf="!(afAuth.user | async)">
+            <mat-icon>help_outline</mat-icon>
+            <span>Forgot password</span>
+        </button>
+        <button mat-menu-itemrouterLink="/verify-email"
+            *ngIf="(afAuth.user | async) && !(afAuth.user | async)?.emailVerified">
+            <mat-icon>help_outline</mat-icon>
+            <span>Resend email verification</span>
+        </button>
+      </mat-menu>
+</header>
 <!--See all this only if you are logged in-->
-<section *ngIf="(afAuth.user | async)">
-    <button mat-raised-button color="primary" routerLink="/hiring-dashboard">
-        <mat-icon>dashboard</mat-icon>
-        <span>Hiring</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/employee-dashboard">
-        <mat-icon>dashboard</mat-icon>
-        <span>Employees</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/timesheet-dashboard">
-        <mat-icon>dashboard</mat-icon>
-        <span>Timesheet</span>
-    </button>
-    <button mat-raised-button color="primary" routerLink="/admin">
-        <mat-icon>admin_panel_settings</mat-icon>
-        <span>Admin Dashboard</span>
-    </button>
+<section class="app-navigation" *ngIf="(afAuth.user | async)">
+    <div>
+        <a routerLink="/hiring-dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-utensils"></i>
+            <div>Jobs</div>
+        </a>
+    </div>
+    <div>
+        <a routerLink="/employee-dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-address-book"></i>
+            <div>Employees</div>
+        </a>
+    </div>
+    <div>
+        <a routerLink="/timesheet-dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-calendar"></i>
+            <div>Timesheet</div>
+        </a>
+    </div>
+    <div>
+        <a routerLink="/profile-dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-user"></i>
+            <div>Profile</div>
+        </a>
+    </div>
+    <!-- <div>
+        <a routerLink="/admin" routerLinkActive="active">
+            <i class="fa-solid fa-lock"></i>
+            <div>Admin</div>
+        </a>
+    </div> -->
 </section>
 <mat-card *ngIf="(afAuth.user | async)">
     <mat-icon>check_circle</mat-icon>

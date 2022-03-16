@@ -1,7 +1,6 @@
 <h1><i class="fas fa-user"></i>Employee Dashboard</h1>
 <button mat-raised-button color="primary" (click)="createEmployee()">Create Employee</button>
-
-<mat-tab-group>
+<div><mat-tab-group>
     <mat-tab label="Active Employees">
         <div *ngFor="let employee of Employees; let i = index">
             <!--Outline border based off hire status-->
@@ -71,4 +70,4 @@
             </mat-card>
         </div>
     </mat-tab>
-</mat-tab-group>
+</mat-tab-group></div>

@@ -1,17 +1,4 @@
 <h1><i class="fas fa-user"></i>Hiring Dashboard</h1>
-<mat-list *ngIf="(user | async)">
-    <mat-list-item>Id: {{ userId }}</mat-list-item>
-    <mat-list-item>Account Type: {{ (user | async)?.accountType }}</mat-list-item>
-    <mat-list-item>IsPaying: {{ (user | async)?.isPaying }}</mat-list-item>
-    <mat-list-item>Owner: {{ (user | async)?.owner }}</mat-list-item>
-    <mat-list-item>Location Name: {{ (user | async)?.location_name }}</mat-list-item>
-    <mat-list-item>School: {{ (user | async)?.school }}</mat-list-item>
-    <mat-list-item>Email (lower): {{ (user | async)?.email_lower }}</mat-list-item>
-    <mat-list-item>Phone {{ (user | async)?.phone }}</mat-list-item>
-    <mat-list-item>Website: {{ (user | async)?.website }}</mat-list-item>
-    <mat-list-item>Total Jobs: {{ (user | async)?.openings }}</mat-list-item>
-    <mat-list-item>Email Verification Status: {{ (afAuth.user | async)?.emailVerified }}</mat-list-item>
-</mat-list>
 <div class="dashboard-container">
     <h1>Client Openings {{Jobs?.length}}/{{ (user | async)?.openings }}</h1>
     <ng-container *ngIf="(user | async)">

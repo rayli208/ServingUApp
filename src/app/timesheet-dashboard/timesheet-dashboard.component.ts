@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-timesheet-dashboard',
   templateUrl: './timesheet-dashboard.component.html',
-  styleUrls: ['./timesheet-dashboard.component.css']
+  styleUrls: ['./timesheet-dashboard.component.scss']
 })
 export class TimesheetDashboardComponent implements OnInit {
   dailySchedules: any[] = [];
@@ -113,9 +113,10 @@ export class TimesheetDashboardComponent implements OnInit {
 
   //Print Function
   onPrint() {
-    this.accordion.openAll();
-    setTimeout(() => {
-      window.print();
-    }, 1500);
+    // this.accordion.openAll();
+    // setTimeout(() => {
+    //   window.print();
+    // }, 1500);
+    window.print();
   }
 }

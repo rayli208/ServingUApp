@@ -1,6 +1,144 @@
-@media print
-{    
-    section, mat-card{
+@import './_styles/variables.scss';
+
+.app-header{
+    border-bottom: 1px solid #ccc;
+    background-color: $white;
+    text-align: center;
+    position: relative;
+    margin: 0px -15px;
+    
+    img{
+        height: 30px;
+        margin: 10px 0px;
+        display: inline-block;
+    }
+
+    button{
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        color: $brand-primary;
+    }
+}
+
+.app-navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 10;
+
+    div:after{
+        content: '';
+        display: inline-block;
+        width: 0px;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    div {
+        height: 100%;
+        display: block;
+        text-align: center;
+        background-color: $brand-primary;
+
+        a {
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            opacity: 50%;
+            color: $text-muted;
+            font-family: $font1;
+            text-transform: uppercase;
+            padding: 0px 15px;
+
+            i {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+
+            div {
+                font-size: 12px;
+            }
+        }
+
+        a:hover {
+            opacity: 100%;
+            color: $white !important;
+        }
+
+        a.active {
+            opacity: 100%;
+            color: $white !important;
+        }
+
+    }
+}
+
+
+@media (max-width:1200px) {
+
+    .app-navigation {
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        top: auto;
+        flex-direction: row;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+
+        div {
+            width: 100%;
+            display: block;
+            text-align: center;
+            background-color: $brand-primary;
+
+            a {
+                display: inline-block;
+                cursor: pointer;
+                text-decoration: none;
+                opacity: 50%;
+                color: $text-muted;
+                font-family: $font1;
+                text-transform: uppercase;
+                padding: 15px 0px;
+
+                i {
+                    font-size: 20px;
+                    margin-bottom: 5px;
+                }
+
+                div {
+                    font-size: 14px;
+                }
+            }
+
+            a:hover {
+                opacity: 100%;
+                color: $white !important;
+            }
+
+            a.active {
+                opacity: 100%;
+                color: $white !important;
+            }
+
+        }
+    }
+
+}
+
+
+
+
+@media print {
+
+    section,
+    mat-card {
         display: none;
     }
 }
