@@ -1,13 +1,64 @@
-<mat-list *ngIf="(user | async)">
-    <mat-list-item>Id: {{ userId }}</mat-list-item>
-    <mat-list-item>Account Type: {{ (user | async)?.accountType }}</mat-list-item>
-    <mat-list-item>IsPaying: {{ (user | async)?.isPaying }}</mat-list-item>
-    <mat-list-item>Owner: {{ (user | async)?.owner }}</mat-list-item>
-    <mat-list-item>Location Name: {{ (user | async)?.location_name }}</mat-list-item>
-    <mat-list-item>School: {{ (user | async)?.school }}</mat-list-item>
-    <mat-list-item>Email (lower): {{ (user | async)?.email_lower }}</mat-list-item>
-    <mat-list-item>Phone {{ (user | async)?.phone }}</mat-list-item>
-    <mat-list-item>Website: {{ (user | async)?.website }}</mat-list-item>
-    <mat-list-item>Total Jobs: {{ (user | async)?.openings }}</mat-list-item>
-    <mat-list-item>Email Verification Status: {{ (afAuth.user | async)?.emailVerified }}</mat-list-item>
-</mat-list>
+<div class="profile-dashboard-card" *ngIf="(user | async)">
+    <!--Admin or User-->
+    <div class="profile-dashboard-card-header">
+        <i *ngIf="(user | async)?.accountType == 'endUser'" class="fa-solid fa-user"></i>
+        <i *ngIf="(user | async)?.accountType == 'admin'" class="fa-solid fa-shield-halved"></i>
+        Personal Info: </div>
+    <!--Paying Customers-->
+    <div class="profile-dashboard-card-paying">
+        <span *ngIf="(user | async)?.isPaying" class="fa-stack green" style="vertical-align: top;">
+            <i class="fa-regular fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-dollar-sign fa-stack-1x"></i>
+        </span>
+        <span *ngIf="!(user | async)?.isPaying" class="fa-stack red" style="vertical-align: top;">
+            <i class="fa-regular fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-sack-xmark fa-stack-1x"></i>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Owner: </span>
+        <span>
+            {{ (user | async)?.owner }}         
+            <i *ngIf="(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-check green"></i>
+            <i *ngIf="!(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-xmark red"></i>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Id: </span>
+        <span>
+            {{ userId }}
+            <i (click)="copyText(userId)" class="fa-regular fa-copy primary"></i>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Location Name: </span>
+        <span>{{ (user | async)?.location_name }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>School: </span>
+        <span>{{ (user | async)?.school }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Email: </span>
+        <span>{{ (user | async)?.email_lower }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Phone: </span>
+        <span>{{ (user | async)?.phone }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Website: </span>
+        <span>
+            {{ (user | async)?.website }}
+            <a target="_blank" href="{{(user | async)?.website}}" class="fa-solid fa-link primary"></a>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Total Jobs: </span>
+        <span>{{ (user | async)?.openings }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Active Employees: </span>
+        <span>{{Employees?.length}}</span>
+    </div>
+</div>

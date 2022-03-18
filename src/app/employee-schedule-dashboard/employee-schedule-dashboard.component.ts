@@ -38,11 +38,9 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as Schedule;
-      })
-      //Sort Schedules in chronological order
-      this.Schedules.sort(function (x, y) {
+      }).sort((x:any, y: any) => {
         return x.date - y.date;
-      })
+      });
     });
   }
 
