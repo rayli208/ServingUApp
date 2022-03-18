@@ -1,32 +1,36 @@
 <!--See all this only if you are logged out-->
-<header class="app-header" >
+<header class="app-header">
+    <div class="app-header-status">
+        <i *ngIf="(afAuth.user | async)" class="fa-solid fa-circle"></i>
+        <i *ngIf="!(afAuth.user | async)" class="fa-solid fa-circle-dot"></i>
+    </div>
     <img src="../assets/img/Logo.png">
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
+    </button>
+    <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/login" *ngIf="!(afAuth.user | async)">
-            <mat-icon>login</mat-icon>
+            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></mat-icon>
             <span>Login</span>
         </button>
-        <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
+        <button mat-menu-item (click)="logout()" *ngIf="(afAuth.user | async)">
+            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></mat-icon>
             <span>Log out</span>
         </button>
         <button mat-menu-item routerLink="/signup" *ngIf="!(afAuth.user | async)">
-            <mat-icon>person_add</mat-icon>
+            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-user-plus"></i></mat-icon>
             <span>Sign up</span>
         </button>
         <button mat-menu-item routerLink="/forgot-password" *ngIf="!(afAuth.user | async)">
-            <mat-icon>help_outline</mat-icon>
+            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-question"></i></mat-icon>
             <span>Forgot password</span>
         </button>
         <button mat-menu-itemrouterLink="/verify-email"
             *ngIf="(afAuth.user | async) && !(afAuth.user | async)?.emailVerified">
-            <mat-icon>help_outline</mat-icon>
+            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-arrows-rotate"></i></mat-icon>
             <span>Resend email verification</span>
         </button>
-      </mat-menu>
+    </mat-menu>
 </header>
 <!--See all this only if you are logged in-->
 <section class="app-navigation" *ngIf="(afAuth.user | async)">
@@ -61,13 +65,5 @@
         </a>
     </div> -->
 </section>
-<mat-card *ngIf="(afAuth.user | async)">
-    <mat-icon>check_circle</mat-icon>
-    <span>User is logged in</span>
-</mat-card>
-<mat-card *ngIf="!(afAuth.user | async)">
-    <mat-icon>do_not_disturb</mat-icon>
-    <span>User is not logged in</span>
-</mat-card>
 <!--Router-->
 <router-outlet></router-outlet>

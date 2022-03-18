@@ -1,19 +1,25 @@
-<div>Employee: {{employeeRef?.name}}</div>
-<hr>
-<div *ngIf="Schedules?.length">
-    <h1>Schedule</h1>
-    <div *ngFor="let schedule of Schedules; let i = index">
-        <mat-card>
-            <div>Date: {{schedule.date.toDate() | date}}</div>
-            <div>Start Time: {{schedule.startTime | convertToAMorPM}}</div>
-            <div>End Time: {{schedule.endTime | convertToAMorPM}}</div>
-            <div>Note: {{schedule.note}}</div>
+<div class="employee-schedule-dashboard-name">
+    <div>Employee: {{employeeRef?.name}}</div>
+    <button class="employee-schedule-dashboard-back"><i (click)="backToSchedule()" class="fa-solid fa-angles-left"></i></button>
+    
+</div>
+<div *ngFor="let schedule of Schedules; let i = index">
+    <div class="employee-schedule-dashboard-schedule-card">
+        <div>
+            <div class="employee-schedule-dashboard-date">
+                <span>{{schedule.date.toDate() | date}}</span>
+                <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
+                    class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="employee-schedule-dashboard-hours">Hours: {{schedule.startTime | convertToAMorPM}} -
+                {{schedule.endTime | convertToAMorPM}}</div>
+        </div>
+        <div class="employee-schedule-dashboard-icons">
             <div (click)="editSchedule(schedule)"><i class="fa-solid fa-pen-to-square"></i></div>
             <div (click)="deleteSchedule(schedule)"><i class="fa-solid fa-trash-can"></i></div>
-        </mat-card>
-
+        </div>
     </div>
 </div>
 
 
-<button (click)="backToSchedule()">Back</button>
+

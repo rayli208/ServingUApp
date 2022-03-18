@@ -1,15 +1,21 @@
 @import './../_styles/variables.scss';
 
-.timesheet-dashboard-date {
+.employee-schedule-dashboard-name {
     font-size: 20px;
     color: $brand-secondary;
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
     margin-bottom: 15px;
+
+    i{
+        font-size: 20px;
+        color: $brand-primary;
+        cursor: pointer;
+    }
 }
 
-.timesheet-dashboard-date-add{
+.employee-schedule-dashboard-back{
     background-color: $white;
     border: 1px solid $brand-primary;
     color: $brand-primary;
@@ -19,7 +25,7 @@
     cursor: pointer;
 }
 
-.timesheet-dashboard-schedule-none{
+.employee-schedule-dashboard-schedule-none{
     font-style: italic;
     margin-bottom: 15px;
     margin-top: -10px;
@@ -27,7 +33,7 @@
     color: $text-muted;
 }
 
-.timesheet-dashboard-schedule-card {
+.employee-schedule-dashboard-schedule-card {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -37,7 +43,7 @@
     justify-content: space-between;
 }
 
-.timesheet-dashboard-name {
+.employee-schedule-dashboard-date {
     font-size: 20px;
     color: $brand-secondary;
     font-weight: 600;
@@ -52,14 +58,14 @@
     }
 }
 
-.timesheet-dashboard-hours {
+.employee-schedule-dashboard-hours {
     font-size: 12px;
     color: #00000050;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.timesheet-dashboard-icons{
+.employee-schedule-dashboard-icons{
     display: flex;
     font-size: 20px;
     color: $brand-primary;

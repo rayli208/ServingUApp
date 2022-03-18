@@ -6,6 +6,20 @@
     text-align: center;
     position: relative;
     margin: 0px -15px;
+
+    .app-header-status{
+        position: absolute;
+        left: 15px;
+        top: 19px;
+
+        .fa-circle{
+            color: #22C795;
+        }
+
+        .fa-circle-dot{
+            color: #FF0000;
+        }
+    }
     
     img{
         height: 30px;
@@ -19,6 +33,10 @@
         top: 5px;
         color: $brand-primary;
     }
+}
+
+.app-header-status-icon{
+    font-size: 20px;
 }
 
 .app-navigation {

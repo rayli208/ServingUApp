@@ -24,7 +24,7 @@ const routes: Routes = [
     { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'timesheet-dashboard', component: TimesheetDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
-    { path: 'employee-schedul-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },

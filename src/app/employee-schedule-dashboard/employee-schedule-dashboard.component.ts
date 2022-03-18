@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-employee-schedule-dashboard',
   templateUrl: './employee-schedule-dashboard.component.html',
-  styleUrls: ['./employee-schedule-dashboard.component.css']
+  styleUrls: ['./employee-schedule-dashboard.component.scss']
 })
 export class EmployeeScheduleDashboardComponent implements OnInit {
   employeeRef: any;
@@ -38,6 +38,10 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as Schedule;
+      })
+      //Sort Schedules in chronological order
+      this.Schedules.sort(function (x, y) {
+        return x.date - y.date;
       })
     });
   }
