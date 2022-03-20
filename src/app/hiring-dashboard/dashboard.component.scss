@@ -1,23 +1,95 @@
 @import '../_styles/variables.scss';
 
-.dashboard-container{
-    padding: 20px;
-}
-
-.dashboard-job-card{
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.dashboard-job-card-actions{
+#dashboard-job-wrapper_scroller {
+    /* snap mandatory on horizontal axis  */
+    scroll-snap-type: x mandatory;
+    overflow-x: scroll;
+    overflow-y: hidden;
     display: flex;
+    align-items: center;
+    /* Enable Safari touch scrolling physics which is needed for scroll snap */
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    width: 100%;
+}
+
+#dashboard-job-wrapper_scroller::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+#dashboard-job-wrapper_scroller div {
+    /* snap align center  */
+    scroll-snap-align: center;
+    position: relative;
+}
+
+.dashboard-job-wrapper .btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    font-size: 35px;
+}
+
+#dashboard-job-wrapper_scroller div.dashboard-job-card-container {
+    min-height: 99px;
+    min-width: 75%;
+    max-width: 33%;
+    padding: 10px;
+}
+
+.dashboard-job-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    display: block;
     justify-content: space-between;
+    box-shadow: none;
+    background-color: rgba(250, 247, 247, 0.5);
 }
 
-.border-red{
-    border: 3px solid red;
+.dashboard-job-wrapper .btn.next {
+    right: -13px;
 }
 
-.border-green{
-    border: 3px solid lime;
+.dashboard-job-wrapper .btn.prev {
+    left: -13px;
+}
+
+.dashboard-job-card-header{
+    font-size: 20px;
+    font-weight: 600;
+    color: $black;
+}
+
+.dashboard-job-card-sub{
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.dashboard-job-card-row{
+    margin-bottom: 10px;
+}
+
+.dashboard-job-card-row span:first-of-type{
+    display: inline-block;
+    width: 20%;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.dashboard-job-card-row span:last-of-type{
+    display: inline-block;
+    width: 80%;
+    font-size: 14px;
+
+    i{
+        cursor: pointer;
+    }
 }

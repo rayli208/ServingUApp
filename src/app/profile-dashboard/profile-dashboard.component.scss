@@ -20,6 +20,7 @@
     margin-top: 15px;
     margin-bottom: 15px;
     position: relative;
+    background-color: rgba(250, 247, 247, 0.5);
 }
 
 .profile-dashboard-card-paying{
@@ -41,14 +42,15 @@
 
 .profile-dashboard-card-row span:first-of-type{
     display: inline-block;
-    width: 30%;
+    width: 20%;
     font-size: 14px;
     font-weight: 600;
+    text-transform: uppercase;
 }
 
 .profile-dashboard-card-row span:last-of-type{
     display: inline-block;
-    width: 70%;
+    width: 80%;
     font-size: 14px;
 
     i{

@@ -9,46 +9,64 @@
         </button>
     </ng-container>
 
-    <div *ngFor="let job of Jobs; let i = index">
-        <!--Outline border based off hire status-->
-        <mat-card [ngClass]="{'border-red': job.hired === false, 'border-green' : job.hired === true }"
-            class="dashboard-job-card">
-            <div class="dashboard-job-card-content">
-                <div>
-                    <mat-card-title>{{job.title}}</mat-card-title>
-                    <mat-card-subtitle>{{job.location}}</mat-card-subtitle>
-                    <mat-card-content>
-                        <div>Desciption: {{job.description}}</div>
-                        <div>Hours: {{job.hours}}</div>
-                        <div>Hired Status: {{job.hired}}</div>
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    Error Handling
-                                </mat-panel-title>
-                                <mat-panel-description>
-                                    When opening an issue, report on bugs using these ID's as reference
-                                </mat-panel-description>
-                            </mat-expansion-panel-header>
-                            <div>Job Id: {{job.id}}</div>
-                            <div>User: {{job.uid}}</div>
-                        </mat-expansion-panel>
-                    </mat-card-content>
+    <div class="dashboard-job-wrapper">
+        <div id="dashboard-job-wrapper_scroller">
+            <ng-container *ngFor="let job of Jobs; let i = index">
+                <div class="dashboard-job-card-container">
+                    <div class="dashboard-job-card">
+                        <div class="dashboard-job-card-content">
+                            <div class="dashboard-job-card-header">{{job.title}}</div>
+                            <div class="dashboard-job-card-sub">{{ job.location }}</div>
+                            <div class="dashboard-job-card-row">
+                                <span>Hired Status: </span>
+                                <span>
+                                    {{ job.hired }}
+                                </span>
+                            </div>
+                            <div class="dashboard-job-card-row">
+                                <span>Phone: </span>
+                                <span>
+                                    {{ job.phone }}
+                                </span>
+                            </div>
+                            <div class="dashboard-job-card-row">
+                                <span>Email: </span>
+                                <span>
+                                    {{ job.email }}
+                                </span>
+                            </div>
+                            <div class="dashboard-job-card-row">
+                                <span>Description: </span>
+                                <span>
+                                    {{ job.description }}
+                                </span>
+                            </div>
+                            <div class="dashboard-job-card-row">
+                                <span>Hours: </span>
+                                <span>
+                                    {{ job.hours }}
+                                </span>
+                            </div>
+                            <div class="dashboard-job-card-row">
+                                <span>Job Id: </span>
+                                <span>
+                                    {{ job.id }}
+                                </span>
+                            </div>
+                            <div>
+                                <button (click)="editJob(job)" mat-raised-button>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button (click)="removeJob(job)" mat-raised-button>
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="dashboard-job-card-actions">
-                    <button mat-raised-button matTooltip="{{job.phone}}" aria-label="{{job.phone}}">
-                        <i class="fa-solid fa-phone-volume"></i> </button>
-                    <button mat-raised-button matTooltip="{{job.email}}" aria-label="{{job.email}}">
-                        <i class="fa-solid fa-envelope"></i> </button>
-                    <button (click)="editJob(job)" mat-raised-button>
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button (click)="removeJob(job)" mat-raised-button>
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            </div>
-        </mat-card>
+            </ng-container>
+        </div>
+        <span id="dashboard-job-wrapper_scroller-left" class="btn prev fas fa-chevron-circle-left"></span>
+        <span id="dashboard-job-wrapper_scroller-right" class="btn next fas fa-chevron-circle-right"></span>
     </div>
 </div>
