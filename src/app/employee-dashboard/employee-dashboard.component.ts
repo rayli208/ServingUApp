@@ -8,11 +8,12 @@ import { EmployeesService } from '../_services/employees.service';
 import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
+import { NotificationService } from '../_services/notification.service';
 
 @Component({
   selector: 'app-employee-dashboard',
   templateUrl: './employee-dashboard.component.html',
-  styleUrls: ['./employee-dashboard.component.css']
+  styleUrls: ['./employee-dashboard.component.scss']
 })
 export class EmployeeDashboardComponent implements OnInit {
   userId;
@@ -24,6 +25,7 @@ export class EmployeeDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
+    private toastr: NotificationService,
   ) {
     this.user = null;
   }
@@ -81,5 +83,20 @@ export class EmployeeDashboardComponent implements OnInit {
     }});
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  copyText(val: string) {
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.toastr.showSuccess('', 'Copied Text!')
   }
 }

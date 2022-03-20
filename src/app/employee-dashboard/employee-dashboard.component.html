@@ -1,73 +1,114 @@
 <h1><i class="fas fa-user"></i>Employee Dashboard</h1>
 <button mat-raised-button color="primary" (click)="createEmployee()">Create Employee</button>
-<div><mat-tab-group>
-    <mat-tab label="Active Employees">
-        <div *ngFor="let employee of Employees; let i = index">
-            <!--Outline border based off hire status-->
-            <mat-card *ngIf="employee.employeed" class="dashboard-employee-card">
-                <div class="dashboard-employee-card-content">
-                    <div>
-                        <div>
-                            <img src="{{employee.imgUrl}}" height="250px" width="250px">
+<div>
+    <mat-tab-group>
+        <mat-tab label="Active Employees">
+            <div *ngFor="let employee of Employees; let i = index">
+                <!--Outline border based off hire status-->
+                <ng-container *ngIf="employee.employeed">
+                    <mat-expansion-panel class="employee-dashboard-card">
+                        <mat-expansion-panel-header class="employee-dashboard-card-header">
+                            <img class="employee-dashboard-card-header-profile" src="{{employee.imgUrl}}">
+                            <div>
+                                <div class="employee-dashboard-card-header-name">{{employee.name}}</div>
+                                <div class="employee-dashboard-card-header-position">{{employee.position}}</div>
+                            </div>
+                            <div class="employee-dashboard-card-buttons">
+                                <button (click)="createSchedule(employee.name, employee.uid, employee.id); $event.stopPropagation()"
+                                    mat-raised-button>
+                                    <i class="fa-solid fa-calendar-plus"></i>
+                                </button>
+                                <button routerLink="/employee-schedule-dashboard/{{employee.id}}" mat-raised-button>
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </button>
+                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </mat-expansion-panel-header>
+                        <div class="employee-dashboard-row">
+                            <span>Id: </span>
+                            <span>
+                                {{employee.id}}
+                                <i (click)="copyText(employee.id)" class="fa-regular fa-copy primary"></i>
+                            </span>
                         </div>
-                        <mat-card-title>{{employee.name}}</mat-card-title>
-                        <mat-card-subtitle>{{employee.position}} - {{employee.id}}</mat-card-subtitle>
-                        <mat-card-content>
-                            <div>Hours: {{employee.hours}}</div>
-                            <div style="background-color: red;">Hired Status: {{employee.employeed}}</div>
-                            <div>Phone: {{employee.phone}}</div>
-                            <div>Email: {{employee.email}}</div>
-                            <div>User Id: {{employee.uid}}</div>
-                        </mat-card-content>
-                    </div>
-                </div>
-                <div>
-                    <button (click)="createSchedule(employee.name, employee.uid, employee.id)" mat-raised-button>
-                        <i class="fa-solid fa-calendar-plus"></i>
-                    </button>
-                    <button routerLink="/employee-schedule-dashboard/{{employee.id}}" mat-raised-button>
-                        <i class="fa-solid fa-calendar-days"></i>
-                    </button>
-                    <button (click)="editEmployee(employee)" mat-raised-button>
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button (click)="removeEmployee(employee)" mat-raised-button>
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            </mat-card>
-        </div>
-    </mat-tab>
+                        <div class="employee-dashboard-row">
+                            <span>User Id: </span>
+                            <span>
+                                {{employee.uid}}
+                                <i (click)="copyText(employee.uid)" class="fa-regular fa-copy primary"></i>
+                            </span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Hours: </span>
+                            <span>{{employee.hours}}</span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Phone: </span>
+                            <span>
+                                {{employee.phone}}
+                                <a href="tel:{{employee.phone}}" class="fa-solid fa-phone-flip primary"></a>
+                            </span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Email: </span>
+                            <span>
+                                {{employee.email}}
+                                <a target="_blank" [href]="'mailto:' + employee.email" class="fa-solid fa-envelope primary"></a>
+                            </span>
+                        </div>
+                    </mat-expansion-panel>
+                </ng-container>
+            </div>
+        </mat-tab>
 
-    <mat-tab label="Terminated">
-        <div *ngFor="let employee of Employees; let i = index">
-            <!--Outline border based off hire status-->
-            <mat-card *ngIf="!employee.employeed" class="dashboard-employee-card">
-                <div class="dashboard-employee-card-content">
-                    <div>
-                        <div>
-                            <img src="{{employee.imgUrl}}" height="250px" width="250px">
+        <mat-tab label="Terminated">
+            <div *ngFor="let employee of Employees; let i = index">
+                <!--Outline border based off hire status-->
+                <ng-container *ngIf="!employee.employeed">
+                    <mat-expansion-panel class="employee-dashboard-card">
+                        <mat-expansion-panel-header class="employee-dashboard-card-header">
+                            <img class="employee-dashboard-card-header-profile" src="{{employee.imgUrl}}">
+                            <div>
+                                <div class="employee-dashboard-card-header-name">{{employee.name}}</div>
+                                <div class="employee-dashboard-card-header-position">{{employee.position}}</div>
+                            </div>
+                            <div class="employee-dashboard-card-buttons">
+                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </mat-expansion-panel-header>
+                        <div class="employee-dashboard-row">
+                            <span>Id: </span>
+                            <span>{{employee.id}}</span>
                         </div>
-                        <mat-card-title>{{employee.name}}</mat-card-title>
-                        <mat-card-subtitle>{{employee.position}} - {{employee.id}}</mat-card-subtitle>
-                        <mat-card-content>
-                            <div>Hours: {{employee.hours}}</div>
-                            <div style="background-color: red;">Hired Status: {{employee.employeed}}</div>
-                            <div>Phone: {{employee.phone}}</div>
-                            <div>Email: {{employee.email}}</div>
-                            <div>User Id: {{employee.uid}}</div>
-                        </mat-card-content>
-                    </div>
-                </div>
-                <div>
-                    <button (click)="editEmployee(employee)" mat-raised-button>
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button (click)="removeEmployee(employee)" mat-raised-button>
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            </mat-card>
-        </div>
-    </mat-tab>
-</mat-tab-group></div>
+                        <div class="employee-dashboard-row">
+                            <span>User Id: </span>
+                            <span>{{employee.uid}}</span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Hours: </span>
+                            <span>{{employee.hours}}</span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Phone: </span>
+                            <span>{{employee.phone}}</span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Email: </span>
+                            <span>{{employee.email}}</span>
+                        </div>
+                    </mat-expansion-panel>
+                </ng-container>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

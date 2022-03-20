@@ -1,0 +1,79 @@
+@import './../_styles/variables.scss';
+
+.primary{
+    color: $brand-primary;
+    text-decoration: none;
+}
+
+.employee-dashboard-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    display: block;
+    justify-content: space-between;
+    box-shadow: none;
+}
+
+.employee-dashboard-card-header{
+    height: 65px;
+    position: relative;
+}
+
+.employee-dashboard-card-buttons{
+    position: absolute;
+    top: 15px;
+    right: 65px;
+
+    button{
+        margin-left: 10px;
+        color: $brand-primary;
+    }
+}
+
+.employee-dashboard-card-header:hover {
+    background: $white !important;
+}
+
+.employee-dashboard-card-header-profile{
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+}
+
+.employee-dashboard-card-header-name{
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+.employee-dashboard-card-header-position{
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+.employee-dashboard-row{
+    margin-top: 10px;
+    margin-left: 90px;
+}
+
+.employee-dashboard-row span:first-of-type{
+    display: inline-block;
+    width: 20%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.employee-dashboard-row span:last-of-type{
+    display: inline-block;
+    width: 80%;
+    font-size: 14px;
+
+    i{
+        cursor: pointer;
+    }
+}
