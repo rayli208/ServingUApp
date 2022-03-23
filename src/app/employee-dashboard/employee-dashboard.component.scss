@@ -79,3 +79,14 @@
         cursor: pointer;
     }
 }
+
+
+@media (max-width:768px) {
+    .employee-dashboard-row span:first-of-type{
+        width: 40%;
+    }
+    
+    .employee-dashboard-row span:last-of-type{
+        width: 60%;
+    }
+}

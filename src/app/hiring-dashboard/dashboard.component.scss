@@ -1,5 +1,16 @@
 @import '../_styles/variables.scss';
 
+.dashboard-container-actions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-container-actions-header{
+    font-size: 20px;
+    font-weight: 600;
+    color: $black;
+}
+
 #dashboard-job-wrapper_scroller {
     /* snap mandatory on horizontal axis  */
     scroll-snap-type: x mandatory;
@@ -24,18 +35,10 @@
     position: relative;
 }
 
-.dashboard-job-wrapper .btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    font-size: 35px;
-}
-
 #dashboard-job-wrapper_scroller div.dashboard-job-card-container {
     min-height: 99px;
-    min-width: 75%;
-    max-width: 33%;
+    min-width: 32%;
+    max-width: 32%;
     padding: 10px;
 }
 
@@ -62,6 +65,15 @@
     font-size: 20px;
     font-weight: 600;
     color: $black;
+
+    i{
+        cursor: pointer;
+        font-size: 16px;
+        color: $brand-primary;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: top;
+    }
 }
 
 .dashboard-job-card-sub{
@@ -91,5 +103,45 @@
 
     i{
         cursor: pointer;
+    }
+}
+
+.dashboard-job-card-row-footer{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+#dashboard-job-wrapper_scroller-left, #dashboard-job-wrapper_scroller-right{
+    font-size: 20px;
+    color: $brand-primary;
+    display: inline-block;
+    margin: 0px 5px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#dashboard-job-wrapper_scroller-left.grey, #dashboard-job-wrapper_scroller-right.grey{
+    color: $text-muted;
+    cursor: not-allowed;
+}
+
+@media (max-width:1200px) {
+    #dashboard-job-wrapper_scroller div.dashboard-job-card-container {
+        min-height: 99px;
+        min-width: 70%;
+        max-width: 70%;
+        padding: 10px;
+    }
+}
+
+
+@media (max-width:768px) {
+    .dashboard-job-card-row span:first-of-type{
+        width: 40%;
+    }
+    
+    .dashboard-job-card-row span:last-of-type{
+        width: 60%;
     }
 }
