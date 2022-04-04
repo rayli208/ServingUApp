@@ -3,6 +3,7 @@
     <button class="employee-schedule-dashboard-back"><i (click)="backToSchedule()" class="fa-solid fa-angles-left"></i></button>
     
 </div>
+<div class="employee-schedule-dashboard-none" *ngIf="!Schedules?.length">{{employeeRef?.name}} is currently not scheduled. Please go back to employee dashboard to set his schedule.</div>
 <div *ngFor="let schedule of Schedules; let i = index">
     <div class="employee-schedule-dashboard-schedule-card">
         <div>

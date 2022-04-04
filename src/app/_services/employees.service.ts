@@ -40,7 +40,6 @@ export class EmployeesService {
   }
 
   deleteEmployee(employee: Employee) {
-    this.toastr.showWarning('','Employee has been deleted.');
     return this.afs
       .collection("employees")
       .doc(employee.id).

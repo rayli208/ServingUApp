@@ -208,9 +208,9 @@
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Notes</mat-label>
-            <input type="text" formControlName="note" matInput required>
+            <input type="text" formControlName="note" matInput>
         </mat-form-field>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid || !editForm.dirty" style="float: right;">Update</button>
 </form>

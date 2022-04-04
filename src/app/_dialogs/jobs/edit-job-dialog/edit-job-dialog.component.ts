@@ -7,7 +7,7 @@ import { JobsService } from 'src/app/_services/jobs.service';
 @Component({
   selector: 'app-edit-job-dialog',
   templateUrl: './edit-job-dialog.component.html',
-  styleUrls: ['./edit-job-dialog.component.css']
+  styleUrls: ['./edit-job-dialog.component.scss']
 })
 export class EditJobDialogComponent implements OnInit {
   public job: Job;
@@ -27,6 +27,7 @@ export class EditJobDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
+    console.log(this.editForm.value);
     this.jobsService.updateJob(this.editForm.value, this.job.id);
     this.dialogRef.close();
   }

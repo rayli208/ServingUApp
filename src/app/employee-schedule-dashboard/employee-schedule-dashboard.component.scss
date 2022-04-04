@@ -70,10 +70,18 @@
     font-size: 20px;
     color: $brand-primary;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     cursor: pointer;
     
     div{
         margin-left: 10px;
     }
+}
+
+.employee-schedule-dashboard-none{
+    font-style: italic;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: $text-muted;
 }

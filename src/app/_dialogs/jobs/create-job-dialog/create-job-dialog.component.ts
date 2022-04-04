@@ -8,7 +8,7 @@ import { JobsService } from 'src/app/_services/jobs.service';
 @Component({
   selector: 'app-create-job-dialog',
   templateUrl: './create-job-dialog.component.html',
-  styleUrls: ['./create-job-dialog.component.css']
+  styleUrls: ['./create-job-dialog.component.scss']
 })
 export class CreateJobDialogComponent implements OnInit {
   public jobForm: FormGroup;
@@ -28,7 +28,8 @@ export class CreateJobDialogComponent implements OnInit {
       hours: [''],
       phone: [''],
       email: [''],
-      hired: false
+      hired: false,
+      archived: false
     })
   }
 

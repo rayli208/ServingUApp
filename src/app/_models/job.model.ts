@@ -9,4 +9,5 @@ export class Job {
     phone: number;
     email: string;
     hired: boolean;
+    archived: boolean;
 }

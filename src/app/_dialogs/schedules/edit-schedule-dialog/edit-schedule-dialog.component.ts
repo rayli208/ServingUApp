@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-edit-schedule-dialog',
   templateUrl: './edit-schedule-dialog.component.html',
-  styleUrls: ['./edit-schedule-dialog.component.css']
+  styleUrls: ['./edit-schedule-dialog.component.scss']
 })
 export class EditScheduleDialogComponent implements OnInit {
   public schedule: Schedule;

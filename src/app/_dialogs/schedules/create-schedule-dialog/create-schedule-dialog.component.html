@@ -225,9 +225,9 @@
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Notes</mat-label>
-            <input type="text" formControlName="note" matInput required>
+            <input type="text" formControlName="note" matInput>
         </mat-form-field>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid">Create</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid"  style="float: right;">Create</button>
 </form>

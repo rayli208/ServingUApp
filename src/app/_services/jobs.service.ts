@@ -70,7 +70,8 @@ export class JobsService {
         hours: job.hours,
         phone: job.phone,
         email: job.email,
-        hired: job.hired
+        hired: job.hired,
+        archived: job.archived
       })
   }
 }

@@ -1,5 +1,13 @@
 @import '../_styles/variables.scss';
 
+.green{
+    color: $green;
+}
+
+.yellow{
+    color: $yellow;
+}
+
 .dashboard-container-actions{
     display: flex;
     justify-content: space-between;
@@ -42,15 +50,30 @@
     padding: 10px;
 }
 
-.dashboard-job-card {
+.dashboard-job-card, .dashboard-job-card-archived {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
     margin-top: 15px;
-    display: block;
     justify-content: space-between;
     box-shadow: none;
     background-color: rgba(250, 247, 247, 0.5);
+}
+
+.dashboard-job-card{
+    display: block;
+}
+
+.dashboard-job-card-archived-container{
+    display: block;
+    text-align: center;
+}
+
+.dashboard-job-card-archived{
+    text-align: left;
+    display: inline-block;
+    width: 29%;
+    margin: 1%;
 }
 
 .dashboard-job-wrapper .btn.next {
@@ -133,6 +156,13 @@
         max-width: 70%;
         padding: 10px;
     }
+
+
+    .dashboard-job-card-archived{
+        display: inline-block;
+        width: 48%;
+        margin: 0% 2% 2% 0%;
+    }
 }
 
 
@@ -143,5 +173,11 @@
     
     .dashboard-job-card-row span:last-of-type{
         width: 60%;
+    }
+
+    .dashboard-job-card-archived{
+        display: inline-block;
+        width: 98%;
+        margin: 1%;
     }
 }

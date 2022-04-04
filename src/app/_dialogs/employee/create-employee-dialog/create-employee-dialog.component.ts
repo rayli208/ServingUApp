@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators'
 @Component({
   selector: 'app-create-employee-dialog',
   templateUrl: './create-employee-dialog.component.html',
-  styleUrls: ['./create-employee-dialog.component.css']
+  styleUrls: ['./create-employee-dialog.component.scss']
 })
 export class CreateEmployeeDialogComponent implements OnInit {
   imgSrc: string = '../../../../assets/img/placeholder.png';

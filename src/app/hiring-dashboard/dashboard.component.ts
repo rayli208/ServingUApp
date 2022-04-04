@@ -1,13 +1,14 @@
 import { EditJobDialogComponent } from '../_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
 import { JobsService } from '../_services/jobs.service';
 import { Job } from '../_models/job.model';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
     selector: 'app-dashboard',
@@ -18,8 +19,12 @@ export class HiringDashboardComponent implements OnInit {
     userId;
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
     Jobs: Job[];
+    activeJobs: Job[];
+    archivedJobs: Job[];
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
+    @ViewChild(MatAccordion) accordion: MatAccordion;
+
 
     constructor(
         public dialog: MatDialog,
@@ -60,7 +65,12 @@ export class HiringDashboardComponent implements OnInit {
                             ...e.payload.doc.data() as {}
                         } as Job;
                     })
+
+                    this.activeJobs = this.Jobs.filter((job) => job.archived === false);
+                    this.archivedJobs = this.Jobs.filter((job) => job.archived === true);
                 });
+
+
             }
         });
     }
@@ -86,7 +96,8 @@ export class HiringDashboardComponent implements OnInit {
     }
 
     archiveJob(job) {
-        console.log(job);
+        job.archived = !job.archived;
+        this.jobsService.updateJob(job, job.id);
     }
 
     //ALL SCROLLING ACTIONS

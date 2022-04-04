@@ -1,3 +1,4 @@
+import { ScheduleService } from 'src/app/_services/schedule.service';
 import { CreateEmployeeDialogComponent } from '../_dialogs/employee/create-employee-dialog/create-employee-dialog.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +10,7 @@ import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-
 import { AngularFireStorage } from '@angular/fire/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { NotificationService } from '../_services/notification.service';
+import { Schedule } from '../_models/schedule.model';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -19,6 +21,7 @@ export class EmployeeDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   Employees: Employee[];
+  Schedules: any[];
 
   constructor(
     public dialog: MatDialog,
@@ -26,6 +29,7 @@ export class EmployeeDashboardComponent implements OnInit {
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
     private toastr: NotificationService,
+    public scheduleService: ScheduleService
   ) {
     this.user = null;
   }
@@ -60,10 +64,24 @@ export class EmployeeDashboardComponent implements OnInit {
 
 
   removeEmployee(employee: Employee) {
-    console.log(employee.imgUrl);
     if (confirm("Are you sure you want to delete " + employee.name)) {
+      //Get all schedules for that employee
+      this.scheduleService.getSchedulesListForEmployee(employee.id).subscribe(res => {
+        this.Schedules = res.map(e => {
+          return {
+            id: e.payload.doc.id,
+            ...e.payload.doc.data() as {}
+          } as Schedule;
+        });
+        //Delete all schedules associated to employee
+        this.Schedules.forEach(x => this.scheduleService.deleteSchedule(x));
+      });
+      //Delete all images associated to employee
       this.storage.storage.refFromURL(employee.imgUrl).delete();
+      //Delete employee
       this.employeesService.deleteEmployee(employee);
+      //Toastr
+      this.toastr.showWarning('', 'Employee has been deleted.');
     }
   }
 
@@ -75,12 +93,15 @@ export class EmployeeDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  createSchedule(name: string, userId: string, employeeId: string){
-    const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {data: {
-      name: name,
-      userId: userId,
-      employeeId: employeeId
-    }});
+  createSchedule(name: string, userId: string, employeeId: string) {
+    console.log(employeeId);
+    const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {
+      data: {
+        name: name,
+        userId: userId,
+        employeeId: employeeId
+      }
+    });
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
   }

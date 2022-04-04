@@ -44,5 +44,5 @@
         <mat-checkbox color="primary" formControlName="employeed">Active</mat-checkbox>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid || !editForm.dirty"  style="float: right;">Update</button>
 </form>
