@@ -62,7 +62,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 
-import { ToastrModule } from 'ngx-toastr';
 import { EditEmployeeDialogComponent } from './_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { EditJobDialogComponent } from './_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
 import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/create-job-dialog.component';
@@ -99,7 +98,6 @@ import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        ToastrModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase),  // imports firebase/app needed for everything,
         AngularFireStorageModule, //imports storage bin
         AngularFirestoreModule,  // imports firebase/firestore, only needed for database features

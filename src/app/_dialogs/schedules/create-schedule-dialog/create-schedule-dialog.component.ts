@@ -1,10 +1,8 @@
 import { ScheduleService } from './../../../_services/schedule.service';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { NotificationService } from 'src/app/_services/notification.service';
 
 @Component({
   selector: 'app-create-schedule-dialog',
@@ -16,7 +14,6 @@ export class CreateScheduleDialogComponent implements OnInit {
     public scheduleService: ScheduleService,
     public formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CreateScheduleDialogComponent>,
-    private toastr: NotificationService,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
     this.scheduleForm = this.formBuilder.group({
@@ -95,7 +92,6 @@ export class CreateScheduleDialogComponent implements OnInit {
 
       this.scheduleService.createSchedule(this.scheduleForm.value);
     }
-    this.toastr.showSuccess('', 'Schedule has been submited!')
   }
 
 }

@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Schedule } from '../_models/schedule.model';
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { NotificationService } from '../_services/notification.service';
 
 @Component({
   selector: 'app-employee-schedule-dashboard',
@@ -22,7 +21,6 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
     public dialog: MatDialog,
     public employeesService: EmployeesService,
     public scheduleService: ScheduleService,
-    private toastr: NotificationService,
   ) { }
 
 
@@ -59,7 +57,7 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
   deleteSchedule(schedule: Schedule) {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
       this.scheduleService.deleteSchedule(schedule);
-      this.toastr.showWarning('', 'Schedule has been deleted.');
+      console.log("Schedule has been  deleted");
     }
   }
 

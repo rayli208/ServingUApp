@@ -4,7 +4,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
-import { NotificationService } from '../_services/notification.service';
 
 @Component({
     selector: 'app-profile-dashboard',
@@ -19,7 +18,6 @@ export class ProfileDashboardComponent implements OnInit {
     constructor(
         private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
-        private toastr: NotificationService,
         private employeesService: EmployeesService,
 
     ) {
@@ -56,6 +54,6 @@ export class ProfileDashboardComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
-        this.toastr.showSuccess('', 'Copied Text!')
+        console.log("Copied text");
       }
 }

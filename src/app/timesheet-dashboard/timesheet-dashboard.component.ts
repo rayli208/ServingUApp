@@ -6,7 +6,6 @@ import { MatAccordion } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
-import { NotificationService } from '../_services/notification.service';
 
 @Component({
   selector: 'app-timesheet-dashboard',
@@ -24,7 +23,6 @@ export class TimesheetDashboardComponent implements OnInit {
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private scheduleService: ScheduleService,
-    private toastr: NotificationService,
   ) {
     this.user = null;
   }
@@ -108,7 +106,7 @@ export class TimesheetDashboardComponent implements OnInit {
   //Remove Schedule 
   deleteSchedule(schedule: Schedule, j, i) {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
-      this.toastr.showWarning('', 'Schedule has been deleted.');
+      console.log("Schedule has been deleted");
       this.scheduleService.deleteSchedule(schedule);
       this.dailySchedules[i].schedules.splice(j, 1);
     }

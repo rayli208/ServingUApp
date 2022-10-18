@@ -1,7 +1,6 @@
 import { Schedule } from './../_models/schedule.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,6 @@ import { NotificationService } from './notification.service';
 export class ScheduleService {
 
   constructor(private afs: AngularFirestore,
-    private toastr: NotificationService
   ) { }
 
   //Get a schedule by a dog ID
@@ -53,7 +51,7 @@ export class ScheduleService {
   
   //Update a schedule
   updateSchedule(schedule: Schedule, employeeId) {
-    this.toastr.showInfo('', 'Schedule has been edited.')
+    console.log("Schedule has been edited.")
     return this.afs
       .collection("schedules")
       .doc(employeeId)

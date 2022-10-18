@@ -1,4 +1,3 @@
-import { NotificationService } from './notification.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Job } from '../_models/job.model';
@@ -11,7 +10,6 @@ export class JobsService {
 
   constructor(private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private toastr: NotificationService
   ) { }
 
 
@@ -41,17 +39,17 @@ export class JobsService {
       this.afs
         .collection("jobs")
         .add(job)
-        .then(() => {           
-          this.toastr.showSuccess('', 'Job has been created!')
+        .then(() => {        
+          console.log("Job has been created!")   
         , error => {
-          this.toastr.showError('Please contact IT for further assistance.', 'There has been an error creating the job.')
+          console.log("Please contact IT for further assistance.', 'There has been an error creating the job.")   
           return reject(error);
         } });
     });
   }
 
   deleteJob(job: Job) {
-    this.toastr.showWarning('','Job has been deleted.');
+    console.log("Job has been deleted.")   
     return this.afs
       .collection("jobs")
       .doc(job.id).
@@ -59,7 +57,7 @@ export class JobsService {
   }
 
   updateJob(job: Job, id) {
-    this.toastr.showInfo('','Job has been edited.')
+    console.log("Job has been edited.")   
     return this.afs
       .collection("jobs")
       .doc(id)

@@ -9,7 +9,6 @@ import { EmployeesService } from '../_services/employees.service';
 import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
-import { NotificationService } from '../_services/notification.service';
 import { Schedule } from '../_models/schedule.model';
 
 @Component({
@@ -28,7 +27,6 @@ export class EmployeeDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
-    private toastr: NotificationService,
     public scheduleService: ScheduleService
   ) {
     this.user = null;
@@ -80,8 +78,8 @@ export class EmployeeDashboardComponent implements OnInit {
       this.storage.storage.refFromURL(employee.imgUrl).delete();
       //Delete employee
       this.employeesService.deleteEmployee(employee);
-      //Toastr
-      this.toastr.showWarning('', 'Employee has been deleted.');
+      //log
+      console.log("Employee has been deleted");
     }
   }
 
@@ -118,6 +116,6 @@ export class EmployeeDashboardComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this.toastr.showSuccess('', 'Copied Text!')
+    console.log("copied text");
   }
 }

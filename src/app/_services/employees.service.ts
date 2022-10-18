@@ -1,5 +1,4 @@
 import { Employee } from './../_models/employee.model';
-import { NotificationService } from './notification.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 
@@ -9,7 +8,6 @@ import { Injectable } from '@angular/core';
 export class EmployeesService {
 
   constructor(private afs: AngularFirestore,
-    private toastr: NotificationService
   ) { }
 
   getEmployeeDoc(id) {
@@ -30,10 +28,10 @@ export class EmployeesService {
       this.afs
         .collection("employees")
         .add(employee)
-        .then(() => {           
-          this.toastr.showSuccess('', 'Employee has been created!')
+        .then(() => { 
+          console.log("Employee has been created!")          
         , error => {
-          this.toastr.showError('Please contact IT for further assistance.', 'There has been an error creating the Employee.')
+          console.log("'Please contact IT for further assistance.', 'There has been an error creating the Employee.")          
           return reject(error);
         } });
     });
@@ -47,7 +45,7 @@ export class EmployeesService {
   }
 
   updateEmployee(employee: Employee, id) {
-    this.toastr.showInfo('','Employee has been edited.')
+    console.log("Employee has been edited")
     return this.afs
       .collection("employees")
       .doc(id)
