@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Job } from 'src/app/_models/job.model';
 import { JobsService } from 'src/app/_services/jobs.service';
@@ -11,11 +11,11 @@ import { JobsService } from 'src/app/_services/jobs.service';
 })
 export class EditJobDialogComponent implements OnInit {
   public job: Job;
-  public editForm: FormGroup;
+  public editForm: UntypedFormGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Job,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public jobsService:JobsService,
     public dialogRef: MatDialogRef<EditJobDialogComponent>,
     ) { 

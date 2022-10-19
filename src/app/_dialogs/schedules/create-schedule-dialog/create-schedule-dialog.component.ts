@@ -1,6 +1,6 @@
 import { ScheduleService } from './../../../_services/schedule.service';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
@@ -12,7 +12,7 @@ import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepi
 export class CreateScheduleDialogComponent implements OnInit {
   constructor(
     public scheduleService: ScheduleService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<CreateScheduleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
@@ -27,7 +27,7 @@ export class CreateScheduleDialogComponent implements OnInit {
     });
   }
 
-  public scheduleForm: FormGroup;
+  public scheduleForm: UntypedFormGroup;
 
   //Date Picker Functionality
   public CLOSE_ON_SELECTED = false;

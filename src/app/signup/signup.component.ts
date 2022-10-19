@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-signup',
@@ -11,7 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class SignupComponent implements OnInit {
 
     isProgressVisible: boolean;
-    signupForm: FormGroup;
+    signupForm: UntypedFormGroup;
     firebaseErrorMessage: string;
 
     constructor(private authService: AuthService, private router: Router) {
@@ -24,15 +24,15 @@ export class SignupComponent implements OnInit {
             this.router.navigate(['/dashboard']);
         }
 
-        this.signupForm = new FormGroup({
-            'owner': new FormControl('', Validators.required),
-            'location_name': new FormControl('', Validators.required),
-            'email': new FormControl('', [Validators.required, Validators.email]),
-            'phone': new FormControl('', Validators.required),
-            'website': new FormControl('', Validators.required),
-            'school': new FormControl('', Validators.required),
-            'openings': new FormControl('', Validators.required),
-            'password': new FormControl('', Validators.required),
+        this.signupForm = new UntypedFormGroup({
+            'owner': new UntypedFormControl('', Validators.required),
+            'location_name': new UntypedFormControl('', Validators.required),
+            'email': new UntypedFormControl('', [Validators.required, Validators.email]),
+            'phone': new UntypedFormControl('', Validators.required),
+            'website': new UntypedFormControl('', Validators.required),
+            'school': new UntypedFormControl('', Validators.required),
+            'openings': new UntypedFormControl('', Validators.required),
+            'password': new UntypedFormControl('', Validators.required),
         });
     }
 

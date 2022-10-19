@@ -1,6 +1,6 @@
 import { EmployeesService } from '../../../_services/employees.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -15,13 +15,13 @@ export class CreateEmployeeDialogComponent implements OnInit {
   imgSrc: string = '../../../../assets/img/placeholder.png';
   selectedImage: any = null;
   isSubmitted: boolean = false;
-  public employeeForm: FormGroup;
+  public employeeForm: UntypedFormGroup;
 
   constructor(
     private afAuth: AngularFireAuth,
     private storage: AngularFireStorage,
     public employeesService: EmployeesService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<CreateEmployeeDialogComponent>,
 
   ) {

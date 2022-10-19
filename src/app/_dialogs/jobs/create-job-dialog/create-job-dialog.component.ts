@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { JobsService } from 'src/app/_services/jobs.service';
@@ -11,11 +11,11 @@ import { JobsService } from 'src/app/_services/jobs.service';
   styleUrls: ['./create-job-dialog.component.scss']
 })
 export class CreateJobDialogComponent implements OnInit {
-  public jobForm: FormGroup;
+  public jobForm: UntypedFormGroup;
   
   constructor(
     public jobsService: JobsService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public router: Router,
     private afAuth: AngularFireAuth,
     public dialogRef: MatDialogRef<CreateJobDialogComponent>,

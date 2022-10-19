@@ -1,6 +1,6 @@
 import { Schedule } from './../../../_models/schedule.model';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ScheduleService } from 'src/app/_services/schedule.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -11,11 +11,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class EditScheduleDialogComponent implements OnInit {
   public schedule: Schedule;
-  public editForm: FormGroup;
+  public editForm: UntypedFormGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Schedule,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public scheduleService: ScheduleService,
     public dialogRef: MatDialogRef<EditScheduleDialogComponent>,
   ) {

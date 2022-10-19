@@ -1,7 +1,7 @@
 import { Employee } from '../../../_models/employee.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators'
@@ -17,11 +17,11 @@ export class EditEmployeeDialogComponent implements OnInit {
   didChange: boolean = false;
 
   public employee: Employee;
-  public editForm: FormGroup;
+  public editForm: UntypedFormGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Employee,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public employeesService: EmployeesService,
     public dialogRef: MatDialogRef<EditEmployeeDialogComponent>,
     private storage: AngularFireStorage,
