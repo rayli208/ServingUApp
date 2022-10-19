@@ -3,8 +3,8 @@ import { JobsService } from '../_services/jobs.service';
 import { Job } from '../_models/job.model';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';

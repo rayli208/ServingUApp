@@ -1,5 +1,5 @@
 import { Employee } from './../_models/employee.model';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 
 @Injectable({
