@@ -1,3 +1,4 @@
+import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
     { path: 'hiring-dashboard', component: HiringDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'timesheet-dashboard', component: TimesheetDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'tables-dashboard', component: TablesDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent },
