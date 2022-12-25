@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Message } from '../_models/message.model';
+import { MessagesService } from './../_services/messages.service';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -6,10 +8,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tables-dashboard.component.css']
 })
 export class TablesDashboardComponent implements OnInit {
+  message: Message = {
+    channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
+    to: '12156670266',
+    type: 'text',
+    content: {
+      text: 'This is a test messsage'
+    }
+  };
 
-  constructor() { }
+  constructor(
+    public messagesService: MessagesService,
+  ) { 
+
+  }
 
   ngOnInit(): void {
+  }
+
+  test(){
+    console.log("sending message");
+    this.messagesService.createMessage(this.message);
+    console.log("Hopefully it sent");
   }
 
 }

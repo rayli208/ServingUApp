@@ -1,5 +1,5 @@
 import { ScheduleService } from './../../../_services/schedule.service';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -7,7 +7,8 @@ import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepi
 @Component({
   selector: 'app-create-schedule-dialog',
   templateUrl: './create-schedule-dialog.component.html',
-  styleUrls: ['./create-schedule-dialog.component.scss']
+  styleUrls: ['./create-schedule-dialog.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateScheduleDialogComponent implements OnInit {
   constructor(
@@ -28,49 +29,41 @@ export class CreateScheduleDialogComponent implements OnInit {
   }
 
   public scheduleForm: UntypedFormGroup;
+  daysSelected: any[] = [];
+  event: any;
 
-  //Date Picker Functionality
-  public CLOSE_ON_SELECTED = false;
-  public init = new Date();
-  public resetModel = new Date(0);
-  public model = [];
-  @ViewChild('picker', { static: true }) _picker: MatDatepicker<Date>;
+  isSelected = (event: any) => {
+    const date =
+      event.getFullYear() +
+      "-" +
+      ("00" + (event.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("00" + event.getDate()).slice(-2);
+    return this.daysSelected.find(x => x == date) ? "selected" : null;
+  };
 
-  public dateClass = (date: Date) => {
-    if (this._findDate(date) !== -1) {
-      return ['selected'];
-    }
-    return [];
+  select(event: any, calendar: any) {
+    const date =
+      event.getFullYear() +
+      "-" +
+      ("00" + (event.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("00" + event.getDate()).slice(-2);
+    const index = this.daysSelected.findIndex(x => x == date);
+    if (index < 0) this.daysSelected.push(date);
+    else this.daysSelected.splice(index, 1);
+
+    calendar.updateTodaysDate();
   }
 
-  public dateChanged(event: MatDatepickerInputEvent<Date>): void {
-    if (event.value) {
-      const date = event.value;
-      const index = this._findDate(date);
-      if (index === -1) {
-        this.model.push(date);
-      } else {
-        this.model.splice(index, 1)
+  deleteDate(date: any) {
+    for (let i = 0; i < this.daysSelected.length; i++) {
+      if (this.daysSelected[i] === date) {
+        this.daysSelected.splice(i, 1);
       }
-      this.resetModel = new Date(0);
-      if (!this.CLOSE_ON_SELECTED) {
-        const closeFn = this._picker.close;
-        this._picker.close = () => { };
-        this._picker['_popupComponentRef'].instance._calendar.monthView._createWeekCells()
-        setTimeout(() => {
-          this._picker.close = closeFn;
-        });
-      }
     }
-  }
 
-  public remove(date: Date): void {
-    const index = this._findDate(date);
-    this.model.splice(index, 1)
-  }
-
-  private _findDate(date: Date): number {
-    return this.model.map((m) => +m).indexOf(+date);
+    console.log(this.daysSelected);
   }
 
   //Set ID of owner of job on load
@@ -80,7 +73,7 @@ export class CreateScheduleDialogComponent implements OnInit {
 
   //Create job and redirect to dashboard
   onSubmit() {
-    this.loopThroughDates(this.model);
+    this.loopThroughDates(this.daysSelected);
     this.dialogRef.close();
   }
 

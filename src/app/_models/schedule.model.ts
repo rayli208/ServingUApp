@@ -5,6 +5,6 @@ export class Schedule {
     employeeName: string;
     startTime: string;
     endTime: string;
-    date: Date;
+    date: string;
     note: string;
 }

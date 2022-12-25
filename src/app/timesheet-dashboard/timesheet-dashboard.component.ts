@@ -13,11 +13,13 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./timesheet-dashboard.component.scss']
 })
 export class TimesheetDashboardComponent implements OnInit {
-  dailySchedules: any[] = [];
-  @ViewChild(MatAccordion) accordion: MatAccordion;
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
-  Schedules: Schedule[];
+
+  Schedules: Schedule[]; //ALL Schedules
+  daysOfWeek: string[] = []; // array to store the days of the week
+  base: number = 0; //What week we are on always starts on THIS week
+  populatedSchedulesWithDates: any[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -26,12 +28,8 @@ export class TimesheetDashboardComponent implements OnInit {
   ) {
     this.user = null;
   }
-  ngOnInit(): void {
-    this.generateSchedule();
-  }
 
-
-  generateSchedule(){
+  generateSchedule() {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -43,54 +41,81 @@ export class TimesheetDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Schedule;
           });
+          console.log("THE SCHEDULES", this.Schedules)
 
-          this.getDaysOfWeek();
+          this.populateSchedule();
         });
       }
     });
   }
-  //Figure out what the current two weeks look like
-  getDaysOfWeek() {
-    var curr = new Date(); // get current date
-    var first = curr.getDate() - curr.getDay() + 1;
-    var firstDay = new Date(curr.setDate(first));
 
-    for (var i = 0; i < 13; i++) {
-      var schedules: Schedule[] = [];
+  // function to populate the array
+  populateDaysOfWeek(offset: number): void {
+    // get the current date and time
+    const now = new Date();
 
-      var workDay: Date = this.setStartOfDay(this.addDays(firstDay, i));
-      var dayStartTime = workDay.getTime()/1000;
+    // set the date to the previous Monday
+    now.setDate(now.getDate() - now.getDay() + 1);
 
-      for(let j = 0; j < this.Schedules.length; j++)
-      {
-        var d: any = this.Schedules[j].date;
+    // add the specified offset (in weeks) to the date
+    now.setDate(now.getDate() + 7 * offset);
 
-        if(d.seconds == dayStartTime){
-          schedules.push(this.Schedules[j])
-        }
-      }
+    // empty the array
+    this.daysOfWeek = [];
 
-      var dailySchedule = {
-        date: workDay,
-        schedules: schedules
-      }
-      this.dailySchedules.push(dailySchedule);
+    // loop for two weeks
+    for (let i = 0; i < 14; i++) {
+      // add the current date to the array in the yyyy-mm-dd format
+      this.daysOfWeek.push(now.toISOString().slice(0, 10));
+
+      // increment the date by one day
+      now.setDate(now.getDate() + 1);
     }
   }
 
-  //Offsets a day by specific number of days
-  addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
+  ngOnInit(): void {
+    this.generateSchedule();
   }
 
-  //Gets date with no hours, no seconds, no milliseconds
-  setStartOfDay(d: Date) : Date{
-    var result = new Date(d);
-    result.setHours(0, 0, 0, 0);
-    return result;
+
+  // function to increment the dates by one week
+  incrementWeek(): void {
+    this.base++;
+    this.populateSchedule();
   }
+
+  // function to decrement the dates by one week
+  decrementWeek(): void {
+    this.base--;
+    this.populateSchedule();
+  }
+
+  //Populates grand object with all the dates an employee works
+  populateSchedule(): void {
+    this.populateDaysOfWeek(this.base);
+    this.populatedSchedulesWithDates = [];
+
+    for (var i = 0; i < this.daysOfWeek.length; i++) {
+      let schedule = [];
+
+
+      for (let j = 0; j < this.Schedules.length; j++) {
+        var d: any = this.Schedules[j].date;
+
+        if (d == this.daysOfWeek[i]) {
+          schedule.push(this.Schedules[j])
+        }
+      }
+
+      this.populatedSchedulesWithDates.push({
+        date: this.daysOfWeek[i],
+        schedule: schedule
+      });
+    }
+
+    console.log(this.populatedSchedulesWithDates)
+  }
+
 
   //Edit Function
   editSchedule(schedule: Schedule, j, i) {
@@ -99,7 +124,7 @@ export class TimesheetDashboardComponent implements OnInit {
     });
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { 
-      this.dailySchedules[i].schedules.splice(j, 1, result);
+      this.populatedSchedulesWithDates[i].schedules?.splice(j, 1, result);
     });
   }
 
@@ -108,7 +133,7 @@ export class TimesheetDashboardComponent implements OnInit {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
       console.log("Schedule has been deleted");
       this.scheduleService.deleteSchedule(schedule);
-      this.dailySchedules[i].schedules.splice(j, 1);
+      this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
     }
   }
 

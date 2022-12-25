@@ -38,8 +38,8 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
           id: e.payload.doc.id,
           ...e.payload.doc.data() as {}
         } as Schedule;
-      }).sort((x:any, y: any) => {
-        return x.date - y.date;
+      }).sort((a, b) => {
+        return new Date(a.date).valueOf() - new Date(b.date).valueOf();
       });
     });
   }

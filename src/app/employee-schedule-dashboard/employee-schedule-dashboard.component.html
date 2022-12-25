@@ -8,7 +8,7 @@
     <div class="employee-schedule-dashboard-schedule-card">
         <div>
             <div class="employee-schedule-dashboard-date">
-                <span>{{schedule.date.toDate() | date}}</span>
+                <span>{{schedule.date | date}}</span>
                 <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
                     class="fa-solid fa-circle-info"></i>
             </div>

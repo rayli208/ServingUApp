@@ -208,19 +208,24 @@
         </mat-form-field>
     </div>
     <div>
-        <mat-form-field>
-            <mat-chip-list #chipList aria-label="Choose a date" (click)="picker.open()">
-                <mat-chip *ngFor="let value of model" [selectable]="false" [removable]="true" (removed)="remove(value)">
-                    {{ value | date }}
-                    <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                </mat-chip>
-                <input [value]="resetModel" matInput [matDatepicker]="picker" formControlName="date"
-                    placeholder="Choose a date" (dateChange)="dateChanged($event)" [matChipInputFor]="chipList"
-                    hidden />
+        <button mat-icon-button [matMenuTriggerFor]="appMenu" (click)="$event.preventDefault()">
+            <mat-icon>calendar_today</mat-icon>
+        </button>
+        <mat-menu #appMenu="matMenu" class="drop-calendar">
+            <div (click)="$event.stopPropagation()">
+                <mat-calendar #calendar (selectedChange)="select($event,calendar)" [dateClass]="isSelected">
+                </mat-calendar>
+            </div>
+        </mat-menu>
+        <div style="max-width: 450px; margin-bottom: 15px;">
+            <mat-chip-list>
+                <ng-container>
+                    <mat-chip *ngFor="let value of daysSelected" (click)="deleteDate(value)">
+                        {{ value | date }}
+                    </mat-chip>
+                </ng-container>
             </mat-chip-list>
-            <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker [startAt]="init" [dateClass]="dateClass"></mat-datepicker>
-        </mat-form-field>
+        </div>
     </div>
     <div>
         <mat-form-field appearance="outline">
@@ -229,5 +234,6 @@
         </mat-form-field>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid"  style="float: right;">Create</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid"
+        style="float: right;">Create</button>
 </form>
