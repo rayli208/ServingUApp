@@ -21,8 +21,8 @@ export class CreateScheduleDialogComponent implements OnInit {
       userId: [data.userId],
       employeeId: [data.employeeId],
       employeeName: [data.name],
-      startTime: [''],
-      endTime: [''],
+      startTime: ['09:00'],
+      endTime: ['17:00'],
       date: [''],
       note: [''],
     });
@@ -31,7 +31,7 @@ export class CreateScheduleDialogComponent implements OnInit {
   public scheduleForm: UntypedFormGroup;
   daysSelected: any[] = [];
   event: any;
-
+  
   isSelected = (event: any) => {
     const date =
       event.getFullYear() +

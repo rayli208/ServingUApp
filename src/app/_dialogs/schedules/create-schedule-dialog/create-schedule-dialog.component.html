@@ -234,6 +234,6 @@
         </mat-form-field>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid"
+    <button mat-raised-button color="primary" type="submit" [disabled]="!scheduleForm.valid || daysSelected.length == 0"
         style="float: right;">Create</button>
 </form>

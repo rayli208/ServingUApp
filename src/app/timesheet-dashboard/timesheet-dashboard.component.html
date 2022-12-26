@@ -5,7 +5,7 @@
 <button (click)="decrementWeek()">Decrement</button>
 
 
-<div *ngFor="let day of populatedSchedulesWithDates; let i = index">
+<!-- <div *ngFor="let day of populatedSchedulesWithDates; let i = index">
   <div class="timesheet-dashboard-date">
     <div>{{day.date}}</div>
   </div>
@@ -28,5 +28,50 @@
         <div (click)="deleteSchedule(schedule, j, i)"><i class="fa-solid fa-trash-can"></i></div>
       </div>
     </div>
+  </ng-container>
+</div> -->
+
+<div class="timesheet-weekly-schedule">
+  <ng-container *ngFor="let day of populatedSchedulesWithDates; let i = index">
+    <div class="timesheet-weekly-schedule-day">
+      <div class="timesheet-weekly-schedule-name">{{day.date}}</div>
+      <div class="timesheet-weekly-schedule-none" *ngIf="day.schedule?.length < 1">
+        Empty
+      </div>
+      <ng-container *ngFor="let schedule of day.schedule; let j = index">
+        <div class="timesheet-weekly-schedule-card" *ngIf="schedule">
+          <div>
+            <div class="timesheet-weekly-name">
+              <span>{{schedule.employeeName}}</span>
+              <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
+                class="fa-solid fa-circle-info"></i>
+            </div>
+            <hr>
+            <div class="timesheet-weekly-hours">
+              <div class="timesheet-weekly-hours-container">
+                <div>Start:</div>
+                <div>
+                  {{schedule.startTime | convertToAMorPM}}
+                </div>
+              </div>
+              <div class="timesheet-weekly-hours-container">
+                <div>
+                  End:
+                </div>
+                <div>
+                  {{schedule.endTime | convertToAMorPM}}
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="timesheet-dashboard-icons">
+            <div (click)="editSchedule(schedule, j, i)"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div (click)="deleteSchedule(schedule, j, i)"><i class="fa-solid fa-trash-can"></i></div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
   </ng-container>
 </div>

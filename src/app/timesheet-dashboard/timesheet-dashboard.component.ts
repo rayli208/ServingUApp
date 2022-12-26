@@ -41,15 +41,15 @@ export class TimesheetDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Schedule;
           });
-          console.log("THE SCHEDULES", this.Schedules)
 
+          //Once we have all the schedules loaded, populate them into the actual object we display
           this.populateSchedule();
         });
       }
     });
   }
 
-  // function to populate the array
+  // function to populate the days of the week array
   populateDaysOfWeek(offset: number): void {
     // get the current date and time
     const now = new Date();
@@ -73,6 +73,7 @@ export class TimesheetDashboardComponent implements OnInit {
     }
   }
 
+  //Initialize the component
   ngOnInit(): void {
     this.generateSchedule();
   }
