@@ -154,7 +154,8 @@
 
 
 @media print {
-
+    .app-header,
+    .app-navigation,
     section,
     mat-card {
         display: none;

@@ -16,6 +16,10 @@ export class TimesheetDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
 
+
+  selectedView: string = 'Horizontal';
+  views: string[] = ['Vertical', 'Horizontal'];
+
   Schedules: Schedule[]; //ALL Schedules
   daysOfWeek: string[] = []; // array to store the days of the week
   base: number = 0; //What week we are on always starts on THIS week
@@ -113,8 +117,6 @@ export class TimesheetDashboardComponent implements OnInit {
         schedule: schedule
       });
     }
-
-    console.log(this.populatedSchedulesWithDates)
   }
 
 
@@ -124,7 +126,7 @@ export class TimesheetDashboardComponent implements OnInit {
       data: schedule
     });
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { 
+    dialogRef.afterClosed().subscribe(result => {
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1, result);
     });
   }
@@ -132,7 +134,6 @@ export class TimesheetDashboardComponent implements OnInit {
   //Remove Schedule 
   deleteSchedule(schedule: Schedule, j, i) {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
-      console.log("Schedule has been deleted");
       this.scheduleService.deleteSchedule(schedule);
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
     }
@@ -140,10 +141,66 @@ export class TimesheetDashboardComponent implements OnInit {
 
   //Print Function
   onPrint() {
-    // this.accordion.openAll();
-    // setTimeout(() => {
-    //   window.print();
-    // }, 1500);
     window.print();
+  }
+
+  // This function takes a string in the format "YYYY-MM-DD" and returns a string in the format "Day of the week MM/DD/YY"
+  public formatDate(date: string): string {
+    // Create a new date object from the input string
+    const dateObject = new Date(date);
+
+    // Get the day of the week as a string (e.g. "Sunday")
+    const dayOfWeek = this.getDayOfWeek(dateObject.getDay());
+
+    // Get the month as a string (e.g. "01")
+    const month = this.getMonth(dateObject.getMonth());
+
+    // Get the day as a string (e.g. "15")
+    const day = this.getDay(dateObject.getDate());
+
+    // Get the year as a string (e.g. "23")
+    const year = this.getYear(dateObject.getFullYear());
+
+    // Return the formatted string
+    return `${dayOfWeek} - ${month}/${day}/${year}`;
+  }
+
+  // This function takes a number (0-6) and returns the corresponding day of the week as a string
+  private getDayOfWeek(dayOfWeek: number): string {
+    switch (dayOfWeek) {
+      case 0:
+        return 'Sunday';
+      case 1:
+        return 'Monday';
+      case 2:
+        return 'Tuesday';
+      case 3:
+        return 'Wednesday';
+      case 4:
+        return 'Thursday';
+      case 5:
+        return 'Friday';
+      case 6:
+        return 'Saturday';
+      default:
+        throw new Error('Invalid day of week');
+    }
+  }
+
+  // This function takes a number (0-11) and returns the corresponding month as a string
+  private getMonth(month: number): string {
+    month += 1; // The month parameter is zero-based (0 = January, 1 = February, etc.), so we need to add 1 to get the correct month number
+    return month < 10 ? `0${month}` : `${month}`; // If the month is less than 10, we need to add a leading zero (e.g. "01" for January)
+  }
+
+  // This function takes a number (1-31) and returns the corresponding day as a string
+  private getDay(day: number): string {
+    return day < 10 ? `0${day}` : `${day}`; // If the day is less than 10, we need to add a leading zero (e.g. "01" for the first day of the month)
+  }
+
+  // This function takes a number (e.g. 2023) and returns the last two digits as a string (e.g. "23")
+  private getYear(year: number): string {
+    const yearString = year.toString();
+    return yearString.slice(-2); // Return the last two characters of the year string
   }
 }
