@@ -1,13 +1,33 @@
-body{
+@import './app//_styles/variables.scss';
+
+body {
     margin: 0px;
     margin-left: 97px;
     padding: 0px 15px;
 }
 
+.green-snackbar {
+    color: $white;
+    background: $green70;
+    border: 1px solid $green;
+}
+
+.yellow-snackbar {
+    color: $white;
+    background: $yellow70;
+    border: 1px solid $yellow;
+}
+
+.red-snackbar {
+    color: $white;
+    background: $red70;
+    border: 1px solid $red;
+}
+
 
 @media (max-width:1200px) {
 
-    body{
+    body {
         margin-left: 0px;
         padding-bottom: 95px;
     }

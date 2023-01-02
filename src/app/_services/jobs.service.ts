@@ -2,14 +2,22 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { Job } from '../_models/job.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
+    private _snackBar: MatSnackBar
   ) { }
 
 
@@ -39,25 +47,33 @@ export class JobsService {
       this.afs
         .collection("jobs")
         .add(job)
-        .then(() => {        
-          console.log("Job has been created!")   
-        , error => {
-          console.log("Please contact IT for further assistance.', 'There has been an error creating the job.")   
-          return reject(error);
-        } });
+        .then(() => {
+          this._snackBar.open('Job has been created!', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['green-snackbar']
+          });
+        });
     });
   }
 
   deleteJob(job: Job) {
-    console.log("Job has been deleted.")   
     return this.afs
       .collection("jobs")
-      .doc(job.id).
-      delete();
+      .doc(job.id)
+      .delete()
+      .then(() => {
+        this._snackBar.open('Job has been deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      });
   }
 
   updateJob(job: Job, id) {
-    console.log("Job has been edited.")   
     return this.afs
       .collection("jobs")
       .doc(id)
@@ -70,6 +86,14 @@ export class JobsService {
         email: job.email,
         hired: job.hired,
         archived: job.archived
-      })
+      })      
+      .then(() => {
+        this._snackBar.open('Job has been edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+        });
+      });
   }
 }
