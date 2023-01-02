@@ -10,7 +10,7 @@ import { MessagesService } from './../_services/messages.service';
 export class TablesDashboardComponent implements OnInit {
   message: Message = {
     channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
-    to: '12674718383',
+    to: '12156670266',
     type: 'text',
     content: {
       text: 'This is a test messsage'
