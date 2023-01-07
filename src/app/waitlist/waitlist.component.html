@@ -1,0 +1,45 @@
+<div class="waitlist-container">
+    <h1>Waitlist: </h1>
+    <form class="waitlist-form" (ngSubmit)="addContact()">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Name:</mat-label>
+                <input type="text" [(ngModel)]="name" name="name" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Phone Number:</mat-label>
+                <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" matInput required
+                    (input)="formatPhoneNumber()">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Estimated Wait (<i>minutes</i>):</mat-label>
+                <input type="number" [(ngModel)]="waitTime" name="waitTime" matInput required>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="!name || !phoneNumber || !waitTime">Add</button>
+    </form>
+    <br>
+    <div *ngFor="let contact of contacts">
+        <div class="waitlist-card">
+            <div class="waitlist-card-name">{{ contact.name }}</div>
+            <div class="waitlist-card-content">
+                <b>Phone: </b>
+                <span>{{contact.phoneNumber}}</span>
+                <i class="fa-solid fa-phone-flip primary"></i>
+            </div>
+            <div class="waitlist-card-content">
+                <b>Estimated Wait: </b>
+                <span>{{ contact.waitTime }} minutes</span>
+                <i class="fa-solid fa-stopwatch primary"></i>
+            </div>
+            <hr>
+            <div class="waitlist-card-delete" (click)="deleteContact(contact)"><i class="fa-solid fa-trash-can"></i>
+            </div>
+        </div>
+    </div>
+</div>

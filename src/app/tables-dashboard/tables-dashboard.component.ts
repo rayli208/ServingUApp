@@ -5,7 +5,7 @@ import { MessagesService } from './../_services/messages.service';
 @Component({
   selector: 'app-tables-dashboard',
   templateUrl: './tables-dashboard.component.html',
-  styleUrls: ['./tables-dashboard.component.css']
+  styleUrls: ['./tables-dashboard.component.scss']
 })
 export class TablesDashboardComponent implements OnInit {
   message: Message = {

@@ -71,6 +71,7 @@ import { HoursPipe } from './_pipes/hours.pipe';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
+import { WaitlistComponent } from './waitlist/waitlist.component';
 
 
 @NgModule({
@@ -94,7 +95,8 @@ import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.co
         HoursPipe,
         EmployeeScheduleDashboardComponent,
         ProfileDashboardComponent,
-        TablesDashboardComponent
+        TablesDashboardComponent,
+        WaitlistComponent
     ],
     imports: [
         BrowserModule,
