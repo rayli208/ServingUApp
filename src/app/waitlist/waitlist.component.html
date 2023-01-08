@@ -16,6 +16,12 @@
         </div>
         <div>
             <mat-form-field appearance="outline">
+                <mat-label>Total Party:</mat-label>
+                <input type="number" [(ngModel)]="totalParty" name="totalParty" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
                 <mat-label>Estimated Wait (<i>minutes</i>):</mat-label>
                 <input type="number" [(ngModel)]="waitTime" name="waitTime" matInput required>
             </mat-form-field>
@@ -24,7 +30,7 @@
             [disabled]="!name || !phoneNumber || !waitTime">Add</button>
     </form>
     <br>
-    <div *ngFor="let contact of contacts">
+    <div *ngFor="let contact of contacts; let i = index" [@myAnimationTrigger]>
         <div class="waitlist-card">
             <div class="waitlist-card-name">{{ contact.name }}</div>
             <div class="waitlist-card-content">
@@ -41,6 +47,11 @@
                 <b>Estimated Wait: </b>
                 <span>{{ contact.waitTime }} minutes</span>
                 <i class="fa-regular fa-hourglass-half primary"></i>
+            </div>
+            <div class="waitlist-card-content">
+                <b>Total Party: </b>
+                <span>{{ contact.totalParty }} {{ contact.totalParty === 1 ? 'person' : 'people' }}</span>
+                <i class="fa-solid fa-people-group primary"></i>
             </div>
             <hr>
             <div class="waitlist-card-delete" (click)="deleteContact(contact)"><i class="fa-solid fa-trash-can"></i>

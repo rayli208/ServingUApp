@@ -1,15 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../_models/contact.model';
+import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
 
 @Component({
   selector: 'app-waitlist',
   templateUrl: './waitlist.component.html',
-  styleUrls: ['./waitlist.component.scss']
+  styleUrls: ['./waitlist.component.scss'],
+  animations: [
+    trigger('myAnimationTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 })),
+      ]),
+      transition('* => *', [
+        group([
+          query(':enter', [
+            style({ transform: 'translateY(-100%)' }),
+            animateChild()
+          ]),
+          query(':leave', [
+            animateChild()
+          ])
+        ]),
+        query(':enter', [
+          animate('500ms ease-out', style({ transform: 'translateY(0)' }))
+        ])
+      ])
+    ]),
+  ],
 })
+
 export class WaitlistComponent implements OnInit {
   name: string;
   phoneNumber: string;
   waitTime: number;
+  totalParty: number;
   reservationMade: string;
   estimatedTime: string;
   contacts: Contact[] = [];
@@ -27,6 +55,7 @@ export class WaitlistComponent implements OnInit {
         name: this.name,
         phoneNumber: this.phoneNumber,
         waitTime: this.waitTime,
+        totalParty: this.totalParty,
         reservationMade: this.calculateTime(0).toString(),
         estimatedTime: this.calculateTime(this.waitTime).toString()
       };
@@ -35,6 +64,7 @@ export class WaitlistComponent implements OnInit {
       this.name = '';
       this.phoneNumber = '';
       this.waitTime = null;
+      this.totalParty = null;
       this.reservationMade = '';
       this.estimatedTime = '';
     }
