@@ -10,6 +10,8 @@ export class WaitlistComponent implements OnInit {
   name: string;
   phoneNumber: string;
   waitTime: number;
+  reservationMade: string;
+  estimatedTime: string;
   contacts: Contact[] = [];
 
   ngOnInit() {
@@ -24,13 +26,17 @@ export class WaitlistComponent implements OnInit {
       const contact = {
         name: this.name,
         phoneNumber: this.phoneNumber,
-        waitTime: this.waitTime
+        waitTime: this.waitTime,
+        reservationMade: this.calculateTime(0).toString(),
+        estimatedTime: this.calculateTime(this.waitTime).toString()
       };
       this.contacts.push(contact);
       localStorage.setItem('contacts', JSON.stringify(this.contacts));
       this.name = '';
       this.phoneNumber = '';
       this.waitTime = null;
+      this.reservationMade = '';
+      this.estimatedTime = '';
     }
   }
 
@@ -57,5 +63,30 @@ export class WaitlistComponent implements OnInit {
       }
     }
     this.phoneNumber = formattedPhoneNumber;
+  }
+
+  // This function takes in a number of minutes and returns the current time plus that number of minutes
+  // as a string in the "HH:MM AM/PM" format
+  calculateTime(min: number): string {
+    // Get the current date and time
+    const currentTime = new Date();
+    // Add the number of minutes to the current time
+    currentTime.setMinutes(currentTime.getMinutes() + min);
+
+    // Extract the hours, minutes, and AM/PM suffix from the current time
+    let hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert the hours to a 12-hour format
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+
+    // Format the time as a string in the "HH:MM AM/PM" format
+    const timeString = `${hours}:${minutes} ${ampm}`;
+    return timeString;
   }
 }

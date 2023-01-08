@@ -33,12 +33,20 @@
                 <i class="fa-solid fa-phone-flip primary"></i>
             </div>
             <div class="waitlist-card-content">
+                <b>Reservation Made At: </b>
+                <span>{{ contact.reservationMade }}</span>
+                <i class="fa-solid fa-stopwatch primary"></i>
+            </div>
+            <div class="waitlist-card-content">
                 <b>Estimated Wait: </b>
                 <span>{{ contact.waitTime }} minutes</span>
-                <i class="fa-solid fa-stopwatch primary"></i>
+                <i class="fa-regular fa-hourglass-half primary"></i>
             </div>
             <hr>
             <div class="waitlist-card-delete" (click)="deleteContact(contact)"><i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div class="waitlist-card-eta">
+                Estimated time: {{contact.estimatedTime}}
             </div>
         </div>
     </div>

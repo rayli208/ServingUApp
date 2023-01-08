@@ -15,6 +15,7 @@
 
 
 .waitlist-card {
+    position: relative;
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -42,6 +43,14 @@
     font-size: 20px;
     color: $brand-primary;
     cursor: pointer;
+}
+
+.waitlist-card-eta{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 14px;
+    font-style: italic;
 }
 
 .primary{
