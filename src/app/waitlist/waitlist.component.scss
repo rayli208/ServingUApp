@@ -13,6 +13,11 @@
     }
 }
 
+.message{
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 15px;
+}
 
 .waitlist-card {
     position: relative;
@@ -26,7 +31,7 @@
 
 .waitlist-card.text-sent {
     border: 2px solid $green;
-    background-color: rgba($green70, .2);
+    background-color: rgba($green70, .1);
 }
 
 
@@ -71,7 +76,7 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    font-size: 14px;
+    font-size: 12px;
     font-style: italic;
 }
 

@@ -44,8 +44,8 @@ import { AuthService } from '../_services/auth.service';
 })
 
 export class WaitlistComponent implements OnInit {
-  user: Observable<any>;  
-  currentEmployeer: any; 
+  user: Observable<any>;
+  currentEmployeer: any;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   name: string;
@@ -56,9 +56,10 @@ export class WaitlistComponent implements OnInit {
   estimatedTime: string;
   hasRecievedText: boolean = false;
   contacts: Contact[] = [];
+  message: string;
 
   constructor(public messagesService: MessagesService, private _snackBar: MatSnackBar, private afAuth: AngularFireAuth, private authService: AuthService) {
-      this.user = null;
+    this.user = null;
   }
 
   ngOnInit() {
@@ -69,13 +70,13 @@ export class WaitlistComponent implements OnInit {
 
     this.afAuth.authState.subscribe(user => {
       if (user) {
-          let emailLower = user.email.toLowerCase();
-          this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
-            this.currentEmployeer = res;
-            console.log(this.currentEmployeer);
-          });
+        let emailLower = user.email.toLowerCase();
+        this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
+          this.currentEmployeer = res;
+          this.message = `Hello, your table is now ready at ${this.currentEmployeer.location_name}. Please come to the host stand to be seated. Thank you for choosing our restaurant!`;
+        });
       }
-  });
+    });
   }
 
   addContact() {
@@ -128,7 +129,7 @@ export class WaitlistComponent implements OnInit {
       to: phoneNumber,
       type: 'text',
       content: {
-        text: `Hello, your table is now ready at ${this.currentEmployeer.location_name}. Please come to the host stand to be seated. Thank you for choosing our restaurant!`
+        text: this.message
       }
     };
 
@@ -160,31 +161,42 @@ export class WaitlistComponent implements OnInit {
 
   // This function takes in a number of minutes and returns the current time plus that number of minutes
   // as a string in the "HH:MM AM/PM" format
-  calculateTime(min: number): string {
-    // Get the current date and time
+  calculateTime(minutes: number): string {
+    // Get the current time
     const currentTime = new Date();
     // Add the number of minutes to the current time
-    currentTime.setMinutes(currentTime.getMinutes() + min);
-
-    // Extract the hours, minutes, and AM/PM suffix from the current time
-    let hours = currentTime.getHours();
-    let minutes: any = currentTime.getMinutes();
-
-    if (minutes == 0) {
-      minutes = "00"
-    }
-
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-
-    // Convert the hours to a 12-hour format
-    if (hours > 12) {
-      hours -= 12;
-    } else if (hours === 0) {
-      hours = 12;
-    }
-
-    // Format the time as a string in the "HH:MM AM/PM" format
-    const timeString = `${hours}:${minutes} ${ampm}`;
-    return timeString;
+    currentTime.setMinutes(currentTime.getMinutes() + minutes);
+    // Return the new time in the "HH:MM AM/PM" format
+    return currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   }
+
+  // This function takes a time string in the format "HH:MM AM/PM" and adds 5 minutes to it
+  // It returns the resulting time string in the same format
+  addSubtract5Minutes(operator: string, contact: Contact): string {
+    // Parse the input time string into a JavaScript Date object
+    const timeAsDate = new Date(`1970-01-01 ${contact.estimatedTime}`);
+    // Add 5 minutes to the time
+    if(operator == "add"){
+      timeAsDate.setMinutes(timeAsDate.getMinutes() + 5);
+    }
+
+    if(operator == "subtract"){
+      timeAsDate.setMinutes(timeAsDate.getMinutes() - 5);
+    }
+
+    // Convert the resulting Date object back into a string in the desired format
+    const result = timeAsDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    // Set local variable
+    contact.estimatedTime = result;
+    // Retrieve the array from local storage
+    let array = JSON.parse(localStorage.getItem("contacts"));
+    // Find the object with the matching property
+    let obj = array.find(o => o.phoneNumber == contact.phoneNumber);
+    // Modify the object
+    obj.estimatedTime = result;
+    // Save the modified array back to local storage
+    localStorage.setItem("contacts", JSON.stringify(array));
+
+    return result;
+  }    
 }
