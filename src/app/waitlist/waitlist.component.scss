@@ -16,12 +16,19 @@
 
 .waitlist-card {
     position: relative;
-    border: 1px solid $brand-primary;
+    border: 2px solid $red;
     border-radius: 4px;
     padding: 15px;
     background-color: rgba(250, 247, 247, .5);
     margin-bottom: 15px;
 }
+
+
+.waitlist-card.text-sent {
+    border: 2px solid $green;
+    background-color: rgba($green70, .2);
+}
+
 
 
 .waitlist-card-name {
@@ -41,9 +48,24 @@
 
 .waitlist-card-delete {
     font-size: 20px;
-    color: $brand-primary;
+    color: $red;
     cursor: pointer;
+    display: inline-block;
 }
+
+
+.waitlist-card-text {
+    font-size: 20px;
+    color: $green;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.waitlist-card-actions{
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .waitlist-card-eta{
     position: absolute;

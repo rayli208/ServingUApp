@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../_models/contact.model';
+import { Message } from '../_models/message.model';
+import { MessagesService } from './../_services/messages.service';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
 
 @Component({
@@ -34,13 +41,19 @@ import { trigger, style, animate, transition, group, query, animateChild } from 
 })
 
 export class WaitlistComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   name: string;
   phoneNumber: string;
   waitTime: number;
   totalParty: number;
   reservationMade: string;
   estimatedTime: string;
+  hasRecievedText: boolean = false;
   contacts: Contact[] = [];
+
+  constructor(public messagesService: MessagesService, private _snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     const storedContacts = localStorage.getItem('contacts');
@@ -57,8 +70,10 @@ export class WaitlistComponent implements OnInit {
         waitTime: this.waitTime,
         totalParty: this.totalParty,
         reservationMade: this.calculateTime(0).toString(),
-        estimatedTime: this.calculateTime(this.waitTime).toString()
+        estimatedTime: this.calculateTime(this.waitTime).toString(),
+        hasRecievedText: this.hasRecievedText
       };
+
       this.contacts.push(contact);
       localStorage.setItem('contacts', JSON.stringify(this.contacts));
       this.name = '';
@@ -77,6 +92,38 @@ export class WaitlistComponent implements OnInit {
     this.contacts.splice(index, 1);
     // Update local storage
     localStorage.setItem('contacts', JSON.stringify(this.contacts));
+  }
+
+  textTableReady(contact: Contact) {
+    contact.hasRecievedText = true;
+    // Retrieve the array from local storage
+    let array = JSON.parse(localStorage.getItem("contacts"));
+    // Find the object with the matching property
+    let obj = array.find(o => o.phoneNumber == contact.phoneNumber);
+    // Modify the object
+    obj.hasRecievedText = true;
+    // Save the modified array back to local storage
+    localStorage.setItem("contacts", JSON.stringify(array));
+    //Fix phone number
+    const phoneNumber = '1' + contact.phoneNumber.replace(/-/g, "");
+
+    const message: Message = {
+      channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
+      to: phoneNumber,
+      type: 'text',
+      content: {
+        text: `Hello, your table is now ready at The Tasty Spoon. Please come to the host stand to be seated. Thank you for choosing our restaurant!`
+      }
+    };
+
+    // this.messagesService.createMessage(message);
+
+    this._snackBar.open('Text has been sent!', '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['green-snackbar']
+    })
   }
 
   formatPhoneNumber() {
@@ -105,7 +152,12 @@ export class WaitlistComponent implements OnInit {
 
     // Extract the hours, minutes, and AM/PM suffix from the current time
     let hours = currentTime.getHours();
-    const minutes = currentTime.getMinutes();
+    let minutes: any = currentTime.getMinutes();
+
+    if (minutes == 0) {
+      minutes = "00"
+    }
+
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
     // Convert the hours to a 12-hour format

@@ -5,4 +5,5 @@ export class Contact {
     totalParty: number;
     reservationMade: string;
     estimatedTime: string;
+    hasRecievedText: boolean;
 }

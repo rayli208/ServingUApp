@@ -31,7 +31,7 @@
     </form>
     <br>
     <div *ngFor="let contact of contacts; let i = index" [@myAnimationTrigger]>
-        <div class="waitlist-card">
+        <div class="waitlist-card" [ngClass]="{'text-sent': contact.hasRecievedText}">
             <div class="waitlist-card-name">{{ contact.name }}</div>
             <div class="waitlist-card-content">
                 <b>Phone: </b>
@@ -54,10 +54,17 @@
                 <i class="fa-solid fa-people-group primary"></i>
             </div>
             <hr>
-            <div class="waitlist-card-delete" (click)="deleteContact(contact)"><i class="fa-solid fa-trash-can"></i>
+            <div class="waitlist-card-actions">
+                <div class="waitlist-card-text" (click)="textTableReady(contact)">
+                    <i class="fa-solid fa-comment-sms"></i>
+                </div>
+                <div class="waitlist-card-delete" (click)="deleteContact(contact)">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
             </div>
+
             <div class="waitlist-card-eta">
-                Estimated time: {{contact.estimatedTime}}
+                Estimated time: ~{{contact.estimatedTime}}
             </div>
         </div>
     </div>
