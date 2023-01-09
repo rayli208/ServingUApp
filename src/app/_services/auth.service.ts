@@ -120,4 +120,11 @@ export class AuthService {
     getCurrentUser() {
         return this.afAuth.currentUser;                                 // returns user object for logged-in users, otherwise returns null 
     }
+
+    getCurrentUserInfo(email) {
+        return this.afs
+            .collection("users")
+            .doc(email)
+            .valueChanges();
+    }
 }

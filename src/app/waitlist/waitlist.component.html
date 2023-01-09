@@ -55,7 +55,7 @@
             </div>
             <hr>
             <div class="waitlist-card-actions">
-                <div class="waitlist-card-text" (click)="textTableReady(contact)">
+                <div *ngIf="!contact.hasRecievedText" class="waitlist-card-text" (click)="textTableReady(contact)">
                     <i class="fa-solid fa-comment-sms"></i>
                 </div>
                 <div class="waitlist-card-delete" (click)="deleteContact(contact)">

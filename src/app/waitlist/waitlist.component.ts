@@ -8,6 +8,9 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-waitlist',
@@ -41,6 +44,8 @@ import { trigger, style, animate, transition, group, query, animateChild } from 
 })
 
 export class WaitlistComponent implements OnInit {
+  user: Observable<any>;  
+  currentEmployeer: any; 
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   name: string;
@@ -52,7 +57,8 @@ export class WaitlistComponent implements OnInit {
   hasRecievedText: boolean = false;
   contacts: Contact[] = [];
 
-  constructor(public messagesService: MessagesService, private _snackBar: MatSnackBar) {
+  constructor(public messagesService: MessagesService, private _snackBar: MatSnackBar, private afAuth: AngularFireAuth, private authService: AuthService) {
+      this.user = null;
   }
 
   ngOnInit() {
@@ -60,6 +66,16 @@ export class WaitlistComponent implements OnInit {
     if (storedContacts) {
       this.contacts = JSON.parse(storedContacts);
     }
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+          let emailLower = user.email.toLowerCase();
+          this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
+            this.currentEmployeer = res;
+            console.log(this.currentEmployeer);
+          });
+      }
+  });
   }
 
   addContact() {
@@ -112,11 +128,11 @@ export class WaitlistComponent implements OnInit {
       to: phoneNumber,
       type: 'text',
       content: {
-        text: `Hello, your table is now ready at The Tasty Spoon. Please come to the host stand to be seated. Thank you for choosing our restaurant!`
+        text: `Hello, your table is now ready at ${this.currentEmployeer.location_name}. Please come to the host stand to be seated. Thank you for choosing our restaurant!`
       }
     };
 
-    // this.messagesService.createMessage(message);
+    this.messagesService.createMessage(message);
 
     this._snackBar.open('Text has been sent!', '', {
       horizontalPosition: this.horizontalPosition,
