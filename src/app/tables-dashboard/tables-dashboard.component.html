@@ -3,6 +3,12 @@
         <mat-drawer-content>
             <p>tables-dashboard works!</p>
             <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+            <div class="example-boundary">
+                <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
+                  I can only be dragged within the dotted container
+                </div>
+              </div>
+              
 
 
             <!-- <button (click)="test()">TEST MESSAGE</button> -->
