@@ -3,12 +3,15 @@
         <mat-drawer-content>
             <p>tables-dashboard works!</p>
             <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-            <div class="example-boundary">
-                <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
-                  I can only be dragged within the dotted container
+
+
+            <div #tableView class="table-view">
+                <div *ngFor="let table of tables" class="example-box" cdkDragBoundary=".table-view" cdkDrag
+                    (cdkDragEnded)="dragEnd($event, table)">
+                    {{table.number}}
                 </div>
-              </div>
-              
+            </div>
+
 
 
             <!-- <button (click)="test()">TEST MESSAGE</button> -->
