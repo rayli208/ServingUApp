@@ -9,7 +9,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { HiringDashboardComponent } from './hiring-dashboard/dashboard.component';
+import { HiringDashboardComponent } from './hiring-dashboard/hiring-dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
@@ -66,6 +66,7 @@ import { environment } from '../environments/environment';
 import { EditEmployeeDialogComponent } from './_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { EditJobDialogComponent } from './_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
 import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/create-job-dialog.component';
+import { CreateTableDialogComponent } from './_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
@@ -91,6 +92,7 @@ import { WaitlistComponent } from './waitlist/waitlist.component';
         EditEmployeeDialogComponent,
         EditJobDialogComponent,
         CreateJobDialogComponent,
+        CreateTableDialogComponent,
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
         HoursPipe,

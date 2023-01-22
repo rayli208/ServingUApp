@@ -12,8 +12,8 @@ import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
     selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss']
+    templateUrl: './hiring-dashboard.component.html',
+    styleUrls: ['./hiring-dashboard.component.scss']
 })
 export class HiringDashboardComponent implements OnInit {
     userId;

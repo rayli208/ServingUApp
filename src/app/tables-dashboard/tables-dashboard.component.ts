@@ -1,5 +1,7 @@
+import { CreateTableDialogComponent } from './../_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -8,6 +10,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./tables-dashboard.component.scss']
 })
 export class TablesDashboardComponent {
+
+
+  constructor(
+    public dialog: MatDialog,
+) {
+}
+
   @ViewChild('tableView', { read: ElementRef }) tableView: ElementRef;
 
   tables = [
@@ -52,4 +61,10 @@ export class TablesDashboardComponent {
       y: droppedTableRect.top - tableViewRect.top
     });
   }
+
+  createTable(): void {
+    const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
+}
 }

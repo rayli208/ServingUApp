@@ -9,7 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 //User components
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { HiringDashboardComponent } from './hiring-dashboard/dashboard.component';
+import { HiringDashboardComponent } from './hiring-dashboard/hiring-dashboard.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';

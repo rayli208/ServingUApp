@@ -1,0 +1,36 @@
+<form [formGroup]="tableForm" (ngSubmit)="onSubmit()" novalidate>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Table Number</mat-label>
+            <input type="number" formControlName="tableNumber" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Shape</mat-label>
+            <select formControlName="shape" matNativeControl required>
+                <option value="square">square</option>
+                <option value="rectangle">rectangle</option>
+                <option value="circle">circle</option>
+                <option value="triangle">triangle</option>
+                <option value="pentagon">pentagon</option>
+                <option value="hexagon">hexagon</option>
+            </select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Color</mat-label>
+            <input type="color" formControlName="color" matInput required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Number of seats</mat-label>
+            <input type="number" formControlName="seats" matInput required>
+        </mat-form-field>
+    </div>
+    
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!tableForm.valid" style="float: right;">Create</button>
+</form>
