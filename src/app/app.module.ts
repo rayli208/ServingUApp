@@ -73,7 +73,7 @@ import { HoursPipe } from './_pipes/hours.pipe';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
-import { WaitlistComponent } from './waitlist/waitlist.component';
+import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.component';
 import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
 
 
@@ -100,7 +100,7 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
         EmployeeScheduleDashboardComponent,
         ProfileDashboardComponent,
         TablesDashboardComponent,
-        WaitlistComponent,
+        TablesWaitlistComponent,
         TablesAllTableViewComponent
     ],
     imports: [

@@ -13,9 +13,9 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
-  selector: 'app-waitlist',
-  templateUrl: './waitlist.component.html',
-  styleUrls: ['./waitlist.component.scss'],
+  selector: 'app-tables-waitlist',
+  templateUrl: './tables-waitlist.component.html',
+  styleUrls: ['./tables-waitlist.component.scss'],
   animations: [
     trigger('myAnimationTrigger', [
       transition(':enter', [
@@ -43,7 +43,7 @@ import { AuthService } from '../_services/auth.service';
   ],
 })
 
-export class WaitlistComponent implements OnInit {
+export class TablesWaitlistComponent implements OnInit {
   user: Observable<any>;
   currentEmployeer: any;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
