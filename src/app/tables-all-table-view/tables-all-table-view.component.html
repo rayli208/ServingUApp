@@ -1,3 +1,16 @@
-<div *ngFor="let table of tables">
-    {{table.tableNumber}}
-</div>
+<ng-container *ngFor="let table of tables">
+    <div class="tables-all-table-view-card">
+        <div>Table number: {{table.tableNumber}}</div>
+        <div>Shape: {{table.shape}}</div>
+        <div>Seats: {{table.seats}} people</div>
+        <div>Color: {{table.color}}</div>
+        <div>X: {{table.positionX}}</div>
+        <div>Y: {{table.positionY}}</div>
+        <div>Is active: {{table.isActive}}</div>
+
+        <div class="employee-schedule-dashboard-icons">
+            <div (click)="editSchedule(schedule)"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div (click)="deleteTable(table)"><i class="fa-solid fa-trash-can"></i></div>
+        </div>
+    </div>
+</ng-container>

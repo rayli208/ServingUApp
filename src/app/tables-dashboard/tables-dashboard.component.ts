@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Table } from '../_models/table.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { TablesService } from '../_services/tables.service';
 
 
@@ -24,7 +23,6 @@ export class TablesDashboardComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
     private tablesService: TablesService,
 
   ) {

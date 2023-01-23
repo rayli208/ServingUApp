@@ -21,7 +21,6 @@ export class CreateTableDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateTableDialogComponent>,
   ) {
     this.tableForm = this.formBuilder.group({
-      id: [''],
       uid: [''],
       tableNumber: [],
       shape: [''],
