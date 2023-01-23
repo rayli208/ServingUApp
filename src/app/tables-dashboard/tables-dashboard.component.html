@@ -3,18 +3,26 @@
         <mat-drawer-content>
             <p>tables-dashboard works!</p>
             <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-
-
-            <div #tableView class="table-view">
-                <div *ngFor="let table of tables" class="example-box" cdkDragBoundary=".table-view" cdkDrag
-                    (cdkDragEnded)="dragEnd($event, table)">
-                    {{table.number}}
-                </div>
-            </div>
-
             <button mat-raised-button color="primary" (click)="createTable()">
                 <span>Add Table</span>
             </button>
+            <app-tables-all-table-view [tables]="totalTables"></app-tables-all-table-view>
+
+            
+
+
+
+
+
+
+            <div #tableView class="table-view">
+                <div *ngFor="let table of totalTables" class="example-box" cdkDragBoundary=".table-view" cdkDrag
+                    (cdkDragEnded)="dragEnd($event, table)">
+                    {{table.tableNumber}}
+                </div>
+            </div>
+
+
 
 
 

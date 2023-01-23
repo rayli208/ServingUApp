@@ -1,7 +1,13 @@
-import { CreateTableDialogComponent } from './../_dialogs/tables/create-table-dialog/create-table-dialog.component';
+import { CreateTableDialogComponent } from '../_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Table } from '../_models/table.model';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { TablesService } from '../_services/tables.service';
+
 
 
 @Component({
@@ -9,47 +15,42 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './tables-dashboard.component.html',
   styleUrls: ['./tables-dashboard.component.scss']
 })
-export class TablesDashboardComponent {
+export class TablesDashboardComponent implements OnInit {
+  userId;
+  user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+  totalTables: Table[];
 
 
   constructor(
     public dialog: MatDialog,
-) {
-}
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    private tablesService: TablesService,
+
+  ) {
+    this.user = null;
+  }
 
   @ViewChild('tableView', { read: ElementRef }) tableView: ElementRef;
 
-  tables = [
-    { number: 1,
-      shape: "square",
-      color: "#000000",
-      bgColor: "#ffffff",
-      seats: 6,
-    }, 
-    { number: 2,
-      shape: "circle",
-      color: "#000000",
-      bgColor: "#ffffff",
-      seats: 6,
-    }, 
-    { number: 3,
-      shape: "circle",
-      color: "#000000",
-      bgColor: "#ffffff",
-      seats: 6,
-    }, 
-    { number: 4,
-      shape: "hexgon",
-      color: "#000000",
-      bgColor: "#ffffff",
-      seats: 6,
-    }, 
-    { number: 5,
-      shape: "hexgon",
-      color: "#000000",
-      bgColor: "#ffffff",
-      seats: 6,
-    },   ];
+
+  ngOnInit(): void {
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+
+        this.tablesService.getTablesListForUser(this.userId).subscribe(res => {
+          this.totalTables = res.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Table;
+          })
+        });
+      }
+    });
+  }
 
   dragEnd(event: CdkDragEnd, table: any) {
     const droppedTable = event.source.element.nativeElement;
@@ -66,5 +67,5 @@ export class TablesDashboardComponent {
     const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
-}
+  }
 }

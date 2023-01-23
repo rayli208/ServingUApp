@@ -1,6 +1,6 @@
-import { EditScheduleDialogComponent } from './../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
-import { ScheduleService } from './../_services/schedule.service';
-import { Schedule } from './../_models/schedule.model';
+import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
+import { ScheduleService } from '../_services/schedule.service';
+import { Schedule } from '../_models/schedule.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { Observable } from 'rxjs';

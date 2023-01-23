@@ -74,6 +74,7 @@ import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboar
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { WaitlistComponent } from './waitlist/waitlist.component';
+import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
 
 
 @NgModule({
@@ -99,7 +100,8 @@ import { WaitlistComponent } from './waitlist/waitlist.component';
         EmployeeScheduleDashboardComponent,
         ProfileDashboardComponent,
         TablesDashboardComponent,
-        WaitlistComponent
+        WaitlistComponent,
+        TablesAllTableViewComponent
     ],
     imports: [
         BrowserModule,

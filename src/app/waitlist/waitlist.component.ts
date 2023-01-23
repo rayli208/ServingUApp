@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../_models/contact.model';
 import { Message } from '../_models/message.model';
-import { MessagesService } from './../_services/messages.service';
+import { MessagesService } from '../_services/messages.service';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
