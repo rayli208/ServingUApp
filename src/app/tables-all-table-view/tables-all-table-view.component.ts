@@ -1,6 +1,8 @@
+import { EditTableDialogComponent } from './../_dialogs/tables/edit-table-dialog/edit-table-dialog.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { Table } from '../_models/table.model';
 import { TablesService } from '../_services/tables.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tables-all-table-view',
@@ -11,6 +13,7 @@ export class TablesAllTableViewComponent implements OnInit {
   @Input() tables: Table[];
 
   constructor(
+    public dialog: MatDialog,
     private tablesService: TablesService,
   ) { }
 
@@ -25,5 +28,14 @@ export class TablesAllTableViewComponent implements OnInit {
       this.tablesService.deleteTable(table);
       console.log("Table has been  deleted");
     }
+  }
+
+
+  editTable(table: Table) {
+    const dialogRef = this.dialog.open(EditTableDialogComponent, {
+      data: table
+    });
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
   }
 }

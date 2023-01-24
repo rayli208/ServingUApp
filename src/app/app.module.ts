@@ -65,6 +65,7 @@ import { environment } from '../environments/environment';
 
 import { EditEmployeeDialogComponent } from './_dialogs/employee/edit-employee-dialog/edit-employee-dialog.component';
 import { EditJobDialogComponent } from './_dialogs/jobs/edit-job-dialog/edit-job-dialog.component';
+import { EditTableDialogComponent } from './_dialogs/tables/edit-table-dialog/edit-table-dialog.component';
 import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 import { CreateTableDialogComponent } from './_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
@@ -92,6 +93,7 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
         CreateEmployeeDialogComponent,
         EditEmployeeDialogComponent,
         EditJobDialogComponent,
+        EditTableDialogComponent,
         CreateJobDialogComponent,
         CreateTableDialogComponent,
         CreateScheduleDialogComponent,
