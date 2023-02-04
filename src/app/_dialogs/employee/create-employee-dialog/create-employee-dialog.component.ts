@@ -29,7 +29,7 @@ export class CreateEmployeeDialogComponent implements OnInit {
       uid: [''],
       name: [''],
       position: [''],
-      hours: [''],
+      employmentType: [''],
       phone: [''],
       email: [''],
       imgUrl: [''],

@@ -21,16 +21,17 @@
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Phone</mat-label>
-            <input type="text" formControlName="phone" matInput required>
+            <input type="text" formControlName="phone" matInput required appPhoneNumberFormat>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Hours</mat-label>
-            <select formControlName="hours" matNativeControl required>
-                <option value="0-8">0-8</option>
-                <option value="8-20">8-20</option>
-                <option value="20+">20+</option>
+            <mat-label>Employement Type</mat-label>
+            <select formControlName="employmentType" matNativeControl required>
+                <option value="part-time">Part-time</option>
+                <option value="full-time">Full-time</option>
+                <option value="seasonal">Seasonal</option>
+                <option value="all">All</option>
             </select>
         </mat-form-field>
     </div>

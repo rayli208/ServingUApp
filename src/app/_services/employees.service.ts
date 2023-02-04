@@ -73,7 +73,7 @@ export class EmployeesService {
       .update({
         name: employee.name,
         position: employee.position,
-        hours: employee.hours,
+        employmentType: employee.employmentType,
         phone: employee.phone,
         email: employee.email,
         imgUrl: employee.imgUrl,

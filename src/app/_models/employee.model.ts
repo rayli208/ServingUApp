@@ -3,7 +3,7 @@ export class Employee {
     uid: string;
     name: string;
     position: string;
-    hours: string;
+    employmentType: string;
     phone: string;
     email: string;
     imgUrl: string;
