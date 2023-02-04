@@ -38,4 +38,9 @@ export class TablesAllTableViewComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
   }
+
+  toggleActive(table: Table){
+    table.isActive = !table.isActive;
+    this.tablesService.updateTable(table, table.id);
+  }
 }

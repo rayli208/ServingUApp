@@ -2,9 +2,18 @@
 
 .tables-all-table-view-card {
     display: inline-block;
-    border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
     background-color: rgba(250, 247, 247, .5);
     margin: 0px 10px 15px;
+    cursor: pointer;
+}
+
+.tables-all-table-view-card.active{
+    border: 2px solid $green;
+
+}
+
+.tables-all-table-view-card.not-active{
+    border: 2px solid $red;
 }

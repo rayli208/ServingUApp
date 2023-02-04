@@ -1,5 +1,6 @@
 <ng-container *ngFor="let table of tables">
-    <div class="tables-all-table-view-card">
+    <div class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
+        [ngClass]="table.isActive ? 'active' : 'not-active' ">
         <div>Table number: {{table.tableNumber}}</div>
         <div>Shape: {{table.shape}}</div>
         <div>Seats: {{table.seats}} people</div>
