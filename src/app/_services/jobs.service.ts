@@ -79,13 +79,9 @@ export class JobsService {
       .doc(id)
       .update({
         title: job.title,
-        location: job.location,
         description: job.description,
-        hours: job.hours,
-        phone: job.phone,
-        email: job.email,
-        hired: job.hired,
-        archived: job.archived
+        totalPositions: job.totalPositions,
+        employmentType: job.employmentType,
       })      
       .then(() => {
         this._snackBar.open('Job has been edited!', '', {

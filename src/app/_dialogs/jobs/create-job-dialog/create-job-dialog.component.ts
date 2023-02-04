@@ -23,13 +23,9 @@ export class CreateJobDialogComponent implements OnInit {
     this.jobForm = this.formBuilder.group({
       uid: [''],
       title: [''],
-      location: [''],
       description: [''],
-      hours: [''],
-      phone: [''],
-      email: [''],
-      hired: false,
-      archived: false
+      totalPositions: 0,
+      employmentType: [''],
     })
   }
 

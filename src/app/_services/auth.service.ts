@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -51,8 +51,9 @@ export class AuthService {
                         email: user.email,
                         phone: user.phone,
                         website: user.website,
+                        address: user.address,
                         school: user.school,
-                        openings: user.openings,
+                        pin: user.pin,
                         email_lower: emailLower,
                     });
 

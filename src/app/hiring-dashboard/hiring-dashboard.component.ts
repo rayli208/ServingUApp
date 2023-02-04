@@ -19,8 +19,6 @@ export class HiringDashboardComponent implements OnInit {
     userId;
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
     Jobs: Job[];
-    activeJobs: Job[];
-    archivedJobs: Job[];
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -65,12 +63,7 @@ export class HiringDashboardComponent implements OnInit {
                             ...e.payload.doc.data() as {}
                         } as Job;
                     })
-
-                    this.activeJobs = this.Jobs.filter((job) => job.archived === false);
-                    this.archivedJobs = this.Jobs.filter((job) => job.archived === true);
                 });
-
-
             }
         });
     }
@@ -93,11 +86,6 @@ export class HiringDashboardComponent implements OnInit {
         if (confirm("Are you sure you want to delete " + job.title)) {
             this.jobsService.deleteJob(job);
         }
-    }
-
-    archiveJob(job) {
-        job.archived = !job.archived;
-        this.jobsService.updateJob(job, job.id);
     }
 
     //ALL SCROLLING ACTIONS

@@ -47,15 +47,15 @@
         <span>{{ (user | async)?.phone }}</span>
     </div>
     <div class="profile-dashboard-card-row">
+        <span>Pin: </span>
+        <span>{{ (user | async)?.pin }}</span>
+    </div>
+    <div class="profile-dashboard-card-row">
         <span>Website: </span>
         <span>
             {{ (user | async)?.website }}
             <a target="_blank" href="{{(user | async)?.website}}" class="fa-solid fa-link primary"></a>
         </span>
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Total Jobs: </span>
-        <span>{{ (user | async)?.openings }}</span>
     </div>
     <div class="profile-dashboard-card-row">
         <span>Active Employees: </span>

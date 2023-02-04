@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { PhoneNumberFormatDirective } from '../_directives/phone-number.directive';
 
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.scss']
+    styleUrls: ['./signup.component.scss'],
 })
+
 export class SignupComponent implements OnInit {
 
     isProgressVisible: boolean;
@@ -21,7 +23,7 @@ export class SignupComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.userLoggedIn) {                       // if the user's logged in, navigate them to the dashboard (NOTE: don't use afAuth.currentUser -- it's never null)
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/profile-dashboard']);
         }
 
         this.signupForm = new UntypedFormGroup({
@@ -30,8 +32,9 @@ export class SignupComponent implements OnInit {
             'email': new UntypedFormControl('', [Validators.required, Validators.email]),
             'phone': new UntypedFormControl('', Validators.required),
             'website': new UntypedFormControl('', Validators.required),
+            'address': new UntypedFormControl('', Validators.required),
             'school': new UntypedFormControl('', Validators.required),
-            'openings': new UntypedFormControl('', Validators.required),
+            'pin': new UntypedFormControl('', Validators.required),
             'password': new UntypedFormControl('', Validators.required),
         });
     }
@@ -43,7 +46,7 @@ export class SignupComponent implements OnInit {
         this.isProgressVisible = true;
         this.authService.signupUser(this.signupForm.value).then((result) => {
             if (result == null)                                 // null is success, false means there was an error
-                this.router.navigate(['/hiring-dashboard']);
+                this.router.navigate(['/profile-dashboard']);
             else if (result.isValid == false)
                 this.firebaseErrorMessage = result.message;
 

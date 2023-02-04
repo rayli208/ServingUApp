@@ -88,6 +88,7 @@
     font-size: 20px;
     font-weight: 600;
     color: $black;
+    margin-bottom: 10px;
 
     i{
         cursor: pointer;
@@ -113,15 +114,14 @@
 
 .dashboard-job-card-row span:first-of-type{
     display: inline-block;
-    width: 20%;
     font-size: 14px;
     font-weight: 600;
+    margin-right: 5px;
     text-transform: uppercase;
 }
 
 .dashboard-job-card-row span:last-of-type{
     display: inline-block;
-    width: 80%;
     font-size: 14px;
 
     i{

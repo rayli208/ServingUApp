@@ -10,7 +10,7 @@
         <p>
             <mat-form-field appearance="outline">
                 <mat-label>Location Name</mat-label>
-                <input autocomplete="off" formControlName="location_name" type="text" matInput placeholder="Display Name">
+                <input autocomplete="off" formControlName="location_name" type="text" matInput placeholder="Location Name">
             </mat-form-field>
         </p>
         <p>
@@ -22,7 +22,7 @@
         <p>
             <mat-form-field appearance="outline">
                 <mat-label>Phone</mat-label>
-                <input formControlName="phone" type="tel" matInput placeholder="Phone">
+                <input formControlName="phone" type="tel" matInput placeholder="Phone" appPhoneNumberFormat>
             </mat-form-field>
         </p>
         <p>
@@ -33,16 +33,23 @@
         </p>
         <p>
             <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <textarea rows="8" formControlName="address" type="text" matInput placeholder="Address"></textarea>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
                 <mat-label>School</mat-label>
                 <select formControlName="school" matNativeControl required>
+                    <option value="None">None</option>
                     <option value="West Chester University">West Chester University</option>
                 </select>
             </mat-form-field>
         </p>
         <p>
             <mat-form-field appearance="outline">
-                <mat-label>Openings</mat-label>
-                <input formControlName="openings" type="number" matInput placeholder="# of Openings">
+                <mat-label>Pin</mat-label>
+                <input autocomplete="off" formControlName="pin" matInput placeholder="Pin">
             </mat-form-field>
         </p>
         <p>

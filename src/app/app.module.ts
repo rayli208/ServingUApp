@@ -71,6 +71,7 @@ import { CreateTableDialogComponent } from './_dialogs/tables/create-table-dialo
 import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
+import { PhoneNumberFormatDirective } from './_directives/phone-number.directive';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
@@ -99,6 +100,7 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
         HoursPipe,
+        PhoneNumberFormatDirective,
         EmployeeScheduleDashboardComponent,
         ProfileDashboardComponent,
         TablesDashboardComponent,

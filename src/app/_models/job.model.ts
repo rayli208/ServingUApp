@@ -3,11 +3,7 @@ export class Job {
     uid: string;
     employeerId: string;
     title: string;
-    location: string;
     description: string;
-    hours: string;
-    phone: number;
-    email: string;
-    hired: boolean;
-    archived: boolean;
+    totalPositions: number;
+    employmentType: string;
 }
