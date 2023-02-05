@@ -17,6 +17,11 @@ export class AppComponent implements OnInit{
     
   }
 
+  checkLocalStorage(key: string): boolean {
+    const value = localStorage.getItem(key);
+    return value === 'true';
+  }
+
   logout(): void {
       this.afAuth.signOut();
       this.router.navigate(['/login']);                // when the user is logged in, navigate them to dashboard

@@ -42,26 +42,33 @@
 </header>
 <!--See all this only if you are logged in-->
 <section class="app-navigation" *ngIf="(afAuth.user | async)">
-    <div>
+    <div
+        *ngIf="(!checkLocalStorage('jobsActive') && !checkLocalStorage('employeesActive') && !checkLocalStorage('timesheetActive') && !checkLocalStorage('tablesActive'))">
+        <a routerLink="/profile-dashboard" routerLinkActive="active">
+            <i class="fa-solid fa-user"></i>
+            <div>Profile</div>
+        </a>
+    </div>
+    <div *ngIf="checkLocalStorage('jobsActive')">
         <a routerLink="/hiring-dashboard" routerLinkActive="active">
             <i class="fa-solid fa-utensils"></i>
             <div>Jobs</div>
         </a>
     </div>
-    <div>
+    <div *ngIf="checkLocalStorage('employeesActive')">
         <a routerLink="/employee-dashboard" routerLinkActive="active">
             <i class="fa-solid fa-address-book"></i>
             <i class="fa-solid fa-user-chef"></i>
             <div>Employees</div>
         </a>
     </div>
-    <div>
+    <div *ngIf="checkLocalStorage('timesheetActive')">
         <a routerLink="/timesheet-dashboard" routerLinkActive="active">
             <i class="fa-solid fa-calendar"></i>
             <div>Timesheet</div>
         </a>
     </div>
-    <div>
+    <div *ngIf="checkLocalStorage('tablesActive')">
         <a routerLink="/tables-dashboard" routerLinkActive="active">
             <i class="fa-solid fa-tablet-screen-button"></i>
             <div>Tables</div>
