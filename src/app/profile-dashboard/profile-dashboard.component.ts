@@ -23,6 +23,7 @@ export class ProfileDashboardComponent implements OnInit {
     ) {
         this.user = null;
     }
+    pinValue: '';
     jobsActive: boolean;
     employeesActive: boolean;
     timesheetActive: boolean;
@@ -84,6 +85,16 @@ export class ProfileDashboardComponent implements OnInit {
 
     toggleTablesActive() {
         localStorage.setItem('tablesActive', this.tablesActive.toString());
+    }
+
+    //Make sure nothing but numbers are being put into the input value
+    onInputChange(event: any) {
+        const currentValue = event.target.value;
+        const nextValue = currentValue.replace(/[^0-9]/g, '');
+        if (currentValue !== nextValue) {
+            this.pinValue = nextValue;
+            event.target.value = nextValue;
+        }
     }
 
     copyText(val: string) {
