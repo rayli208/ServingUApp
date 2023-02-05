@@ -159,29 +159,29 @@ export class TimesheetDashboardComponent implements OnInit {
     const day = this.getDay(dateObject.getDate());
 
     // Get the year as a string (e.g. "23")
-    const year = this.getYear(dateObject.getFullYear());
+    // const year = this.getYear(dateObject.getFullYear());
 
     // Return the formatted string
-    return `${dayOfWeek} - ${month}/${day}/${year}`;
+    return `${dayOfWeek} - ${month}/${day}`;
   }
 
   // This function takes a number (0-6) and returns the corresponding day of the week as a string
   private getDayOfWeek(dayOfWeek: number): string {
     switch (dayOfWeek) {
       case 0:
-        return 'Sunday';
+        return 'Sun';
       case 1:
-        return 'Monday';
+        return 'Mon';
       case 2:
-        return 'Tuesday';
+        return 'Tues';
       case 3:
-        return 'Wednesday';
+        return 'Wed';
       case 4:
-        return 'Thursday';
+        return 'Thurs';
       case 5:
-        return 'Friday';
+        return 'Fri';
       case 6:
-        return 'Saturday';
+        return 'Sat';
       default:
         throw new Error('Invalid day of week');
     }
