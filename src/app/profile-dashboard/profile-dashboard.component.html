@@ -18,7 +18,7 @@
     <div class="profile-dashboard-card-row">
         <span>Owner: </span>
         <span>
-            {{ (user | async)?.owner }}         
+            {{ (user | async)?.owner }}
             <i *ngIf="(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-check green"></i>
             <i *ngIf="!(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-xmark red"></i>
         </span>
@@ -60,5 +60,50 @@
     <div class="profile-dashboard-card-row">
         <span>Active Employees: </span>
         <span>{{Employees?.length}}</span>
+    </div>
+</div>
+<div class="profile-dashboard-card" *ngIf="(user | async)">
+    <div class="profile-dashboard-card-header">
+        Available Views:
+    </div>
+
+    <div class="profile-dashboard-card-row">
+        <span>Enter Pin: </span>
+        <span>
+            <div>
+                <mat-form-field>
+                    <mat-label>Pin</mat-label>
+                    <input [(ngModel)]="pinValue" type="number" matInput>
+                </mat-form-field>
+            </div>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Jobs: </span>
+        <span>
+            <mat-slide-toggle [color]="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="jobsActive"
+                (change)="toggleJobsActive()"></mat-slide-toggle>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Employee: </span>
+        <span>
+            <mat-slide-toggle [color]="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                [(ngModel)]="employeesActive" (change)="toggleEmployeesActive()"></mat-slide-toggle>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Timesheet: </span>
+        <span>
+            <mat-slide-toggle [color]="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                [(ngModel)]="timesheetActive" (change)="toggleTimesheetActive()"></mat-slide-toggle>
+        </span>
+    </div>
+    <div class="profile-dashboard-card-row">
+        <span>Tables: </span>
+        <span>
+            <mat-slide-toggle [color]="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                [(ngModel)]="tablesActive" (change)="toggleTablesActive()"></mat-slide-toggle>
+        </span>
     </div>
 </div>

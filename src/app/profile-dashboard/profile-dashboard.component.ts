@@ -23,6 +23,10 @@ export class ProfileDashboardComponent implements OnInit {
     ) {
         this.user = null;
     }
+    jobsActive: boolean;
+    employeesActive: boolean;
+    timesheetActive: boolean;
+    tablesActive: boolean;
 
     ngOnInit(): void {
         this.afAuth.authState.subscribe(user => {
@@ -32,14 +36,54 @@ export class ProfileDashboardComponent implements OnInit {
                 this.user = this.afs.collection('users').doc(emailLower).valueChanges();
                 this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
                     this.Employees = res.map(e => {
-                      return {
-                        id: e.payload.doc.id,
-                        ...e.payload.doc.data() as {}
-                      } as Employee;
+                        return {
+                            id: e.payload.doc.id,
+                            ...e.payload.doc.data() as {}
+                        } as Employee;
                     }).filter(x => x.employeed);
-                  });
+                });
             }
         });
+
+        if (!localStorage.getItem('jobsActive')) {
+            localStorage.setItem('jobsActive', 'false');
+        }
+        this.jobsActive = localStorage.getItem('jobsActive') === 'true';
+
+
+        if (!localStorage.getItem('employeesActive')) {
+            localStorage.setItem('employeesActive', 'false');
+        }
+        this.employeesActive = localStorage.getItem('employeesActive') === 'true';
+
+
+        if (!localStorage.getItem('timesheetActive')) {
+            localStorage.setItem('timesheetActive', 'false');
+        }
+        this.timesheetActive = localStorage.getItem('timesheetActive') === 'true';
+
+
+        if (!localStorage.getItem('tablesActive')) {
+            localStorage.setItem('tablesActive', 'false');
+        }
+        this.tablesActive = localStorage.getItem('tablesActive') === 'true';
+
+    }
+
+    toggleJobsActive() {
+        localStorage.setItem('jobsActive', this.jobsActive.toString());
+    }
+
+    toggleEmployeesActive() {
+        localStorage.setItem('employeesActive', this.employeesActive.toString());
+    }
+
+    toggleTimesheetActive() {
+        localStorage.setItem('timesheetActive', this.timesheetActive.toString());
+    }
+
+    toggleTablesActive() {
+        localStorage.setItem('tablesActive', this.tablesActive.toString());
     }
 
     copyText(val: string) {
@@ -55,5 +99,5 @@ export class ProfileDashboardComponent implements OnInit {
         document.execCommand('copy');
         document.body.removeChild(selBox);
         console.log("Copied text");
-      }
+    }
 }
