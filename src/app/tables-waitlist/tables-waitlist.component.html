@@ -27,7 +27,7 @@
             </mat-form-field>
         </div>
         <button mat-raised-button color="primary" type="submit"
-            [disabled]="!name || !phoneNumber || !waitTime">Add</button>
+            [disabled]="!name || !phoneNumber || !waitTime" onclick="addContact()">Add</button>
     </form>
     <br>
     <div class="message">Default Text: "{{message}}"</div>
