@@ -54,11 +54,16 @@ export class TablesDashboardComponent implements OnInit {
     const droppedTable = event.source.element.nativeElement;
     const tableViewRect = this.tableView.nativeElement.getBoundingClientRect();
     const droppedTableRect = droppedTable.getBoundingClientRect();
+    const newPositionX = (droppedTableRect.left - tableViewRect.left) - 2;
+    const newPositionY = (droppedTableRect.top - tableViewRect.top) - 2;
+    table.positionX = newPositionX;
+    table.positionY = newPositionY;
+    
+    this.tablesService.updateTable(table, table.id);
+  }
 
-    console.log(`Table ${table.number} Position:`, {
-      x: droppedTableRect.left - tableViewRect.left,
-      y: droppedTableRect.top - tableViewRect.top
-    });
+  logTable(table: Table){
+    console.log(table);
   }
 
   createTable(): void {

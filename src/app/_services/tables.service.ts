@@ -71,13 +71,13 @@ export class TablesService {
       .collection("tables")
       .doc(id)
       .update({
-        number: table.tableNumber,
+        tableNumber: table.tableNumber,
         shape: table.shape,
         color: table.color,
         seats: table.seats,
         isActive: table.isActive,
         positionX: table.positionX,
-        positionY: table.positionX
+        positionY: table.positionY
       }).then(() => {
         this._snackBar.open('Table has been edited!', '', {
           horizontalPosition: this.horizontalPosition,

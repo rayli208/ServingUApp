@@ -8,32 +8,25 @@
                 </button>
             </mat-card>
 
+            <!--Table Controls-->
             <div class="table-all-table-container">
                 <i class="table-all-table-container-no-tables" *ngIf="totalTables?.length == 0">There are no tables,
                     please make some!</i>
                 <app-tables-all-table-view [tables]="totalTables"></app-tables-all-table-view>
             </div>
 
-            <div style="height: 1000px; background-color: yellow;">
-                <div class="triangle">1</div>
-                <div class="square">1</div>
-                <div class="horizontal-rectangle">1</div>
-                <div class="verticle-rectangle">1</div>
-                <div class="circle">1</div>
-                <div class="pentagon">1</div>
-                <div class="hexagon">1</div>
-            </div>
 
-
-
-
-
-
-
-
+            <!--Table View-->
             <div #tableView class="table-view">
-                <div *ngFor="let table of totalTables" class="example-box" cdkDragBoundary=".table-view" cdkDrag
-                    (cdkDragEnded)="dragEnd($event, table)">
+                <div 
+                    *ngFor="let table of totalTables" 
+                    (click)="logTable(table);"
+                    class="example-box {{table.shape}}" 
+                    cdkDragBoundary=".table-view"
+                    cdkDrag (cdkDragEnded)="dragEnd($event, table)"
+                    [style.top]="table.positionY + 'px'" 
+                    [style.left]="table.positionX + 'px'" 
+                >
                     {{table.tableNumber}}
                 </div>
             </div>

@@ -21,32 +21,6 @@ mat-drawer-content {
   align-items: flex-start;
 }
 
-.example-box {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border: solid 1px #ccc;
-  cursor: move;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 4px;
-  z-index: 1;
-  box-sizing: border-box;
-  padding: 10px;
-  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
-
-.example-box:active {
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
 .table-view {
   position: relative;
   width: 1000px;
@@ -68,6 +42,18 @@ mat-drawer-content {
 }
 
 //SHAPES
+.square,
+.horizontal-rectangle,
+.verticle-rectangle,
+.circle,
+.triangle,
+.pentagon,
+.hexagon {
+  position: absolute;
+  cursor: move;
+  z-index: 1;
+}
+
 .square {
   background-color: green;
   border: 2px solid red;
@@ -77,6 +63,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .horizontal-rectangle {
   background-color: green;
   border: 2px solid red;
@@ -86,6 +73,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .verticle-rectangle {
   background-color: green;
   border: 2px solid red;
@@ -95,6 +83,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .circle {
   background-color: green;
   border: 2px solid red;
@@ -105,6 +94,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .pentagon {
   background-color: green;
   border: 2px solid red;
@@ -115,6 +105,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .hexagon {
   background-color: green;
   border: 2px solid red;
@@ -125,6 +116,7 @@ mat-drawer-content {
   justify-content: center;
   align-items: center;
 }
+
 .triangle {
   background-color: green;
   border: 2px solid red;
