@@ -44,7 +44,9 @@ export class TablesDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Table;
-          })
+          }).sort((a, b) => {
+            return a.tableNumber - b.tableNumber;
+          });          
         });
       }
     });
@@ -62,8 +64,9 @@ export class TablesDashboardComponent implements OnInit {
     this.tablesService.updateTable(table, table.id);
   }
 
-  logTable(table: Table){
-    console.log(table);
+  toggleActive(table: Table){
+    table.isActive = !table.isActive;
+    this.tablesService.updateTable(table, table.id);
   }
 
   createTable(): void {

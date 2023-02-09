@@ -20,10 +20,11 @@
             <div #tableView class="table-view">
                 <div 
                     *ngFor="let table of totalTables" 
-                    (click)="logTable(table);"
+                    (dblclick)="toggleActive(table)"
                     class="example-box {{table.shape}}" 
                     cdkDragBoundary=".table-view"
-                    cdkDrag (cdkDragEnded)="dragEnd($event, table)"
+                    cdkDrag 
+                    (cdkDragEnded)="dragEnd($event, table)"
                     [style.top]="table.positionY + 'px'" 
                     [style.left]="table.positionX + 'px'" 
                 >

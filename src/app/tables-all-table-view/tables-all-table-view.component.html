@@ -1,13 +1,12 @@
 <ng-container *ngFor="let table of tables">
     <div class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
         [ngClass]="table.isActive ? 'active' : 'not-active' ">
-        <div>Table number: {{table.tableNumber}}</div>
+        <div class="tables-all-table-view-card-number">{{table.tableNumber}}</div>
         <div>Shape: {{table.shape}}</div>
         <div>Seats: {{table.seats}} people</div>
         <div>Color: {{table.color}}</div>
         <div>X: {{table.positionX}}</div>
         <div>Y: {{table.positionY}}</div>
-        <div>Is active: {{table.isActive}}</div>
 
         <div class="employee-schedule-dashboard-icons">
             <div (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i></div>
