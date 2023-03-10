@@ -75,6 +75,7 @@ export class TablesService {
         shape: table.shape,
         color: table.color,
         seats: table.seats,
+        floorPlan: table.floorPlan,
         isActive: table.isActive,
         positionX: table.positionX,
         positionY: table.positionY

@@ -26,6 +26,7 @@ export class CreateTableDialogComponent implements OnInit {
       shape: [''],
       color: [''],
       seats: [],
+      floorPlan: [],
       isActive: false,
       positionX: 0,
       positionY: 0

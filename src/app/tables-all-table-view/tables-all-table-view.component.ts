@@ -11,6 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class TablesAllTableViewComponent implements OnInit {
   @Input() tables: Table[];
+  @Input() floorNumber: number;
+
 
   constructor(
     public dialog: MatDialog,

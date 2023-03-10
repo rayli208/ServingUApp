@@ -18,6 +18,7 @@ export class TablesDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   totalTables: Table[];
+  currentFloor: number = 1;
 
 
   constructor(
@@ -46,10 +47,28 @@ export class TablesDashboardComponent implements OnInit {
             } as Table;
           }).sort((a, b) => {
             return a.tableNumber - b.tableNumber;
-          });          
+          });
         });
       }
     });
+
+    // Check if the currentFloor value is in the local storage
+    const savedFloor = localStorage.getItem('currentFloor');
+    if (savedFloor) {
+      this.currentFloor = parseInt(savedFloor, 10);
+    }
+  }
+
+  decreaseFloorPlan() {
+    if (this.currentFloor > 1) {
+      this.currentFloor -= 1;
+      localStorage.setItem('currentFloor', this.currentFloor.toString());
+    }
+  }
+  
+  increaseFloorPlan() {
+    this.currentFloor += 1;
+    localStorage.setItem('currentFloor', this.currentFloor.toString());
   }
 
   dragEnd(event: CdkDragEnd, table: any) {
@@ -60,11 +79,11 @@ export class TablesDashboardComponent implements OnInit {
     const newPositionY = (droppedTableRect.top - tableViewRect.top) - 2;
     table.positionX = newPositionX;
     table.positionY = newPositionY;
-    
+
     this.tablesService.updateTable(table, table.id);
   }
 
-  toggleActive(table: Table){
+  toggleActive(table: Table) {
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
   }
