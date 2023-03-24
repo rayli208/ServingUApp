@@ -1,9 +1,7 @@
-@import './app//_styles/variables.scss';
+@import './app/_styles/variables.scss';
 
 body {
     margin: 0px;
-    margin-left: 97px;
-    padding: 0px 15px;
 }
 
 .green-snackbar {
@@ -22,14 +20,4 @@ body {
     color: $white;
     background: $red70;
     border: 1px solid $red;
-}
-
-
-@media (max-width:1200px) {
-
-    body {
-        margin-left: 0px;
-        padding-bottom: 95px;
-    }
-
 }

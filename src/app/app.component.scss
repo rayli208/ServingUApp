@@ -1,5 +1,14 @@
 @import './_styles/variables.scss';
 
+.app-drawer-container{
+    height: 100vh;
+}
+
+.app-drawer-container-content{
+    overflow-y: hidden;
+    padding: 0px 15px;
+}
+
 .app-header{
     border-bottom: 1px solid #ccc;
     background-color: $white;
@@ -35,19 +44,12 @@
     }
 }
 
-.app-header-status-icon{
-    font-size: 20px;
-}
 
 .app-navigation {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: fixed;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    z-index: 10;
+    height: 100%;
 
     div:after{
         content: '';
@@ -97,60 +99,22 @@
 }
 
 
-@media (max-width:1200px) {
-
-    .app-navigation {
-        display: flex;
-        justify-content: space-between;
-        position: fixed;
-        top: auto;
-        flex-direction: row;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-
-        div {
-            width: 100%;
-            display: block;
-            text-align: center;
-            background-color: $brand-primary;
-
-            a {
-                display: inline-block;
-                cursor: pointer;
-                text-decoration: none;
-                opacity: 50%;
-                color: $text-muted;
-                font-family: $font1;
-                text-transform: uppercase;
-                padding: 15px 0px;
-
-                i {
-                    font-size: 20px;
-                    margin-bottom: 5px;
-                }
-
-                div {
-                    font-size: 14px;
-                }
-            }
-
-            a:hover {
-                opacity: 100%;
-                color: $white !important;
-            }
-
-            a.active {
-                opacity: 100%;
-                color: $white !important;
-            }
-
-        }
-    }
-
+.app-header-status-icon{
+    font-size: 20px;
 }
 
+.app-menu-toggle{
+    position: absolute; 
+    z-index: 9999999999999999; 
+    bottom: 15px;
+    right: 15px; 
+    background-color: $brand-primary;
+    cursor: pointer;
 
+    i{
+        font-size: 20px;
+    }
+}
 
 
 @media print {
