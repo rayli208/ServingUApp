@@ -40,12 +40,28 @@
     border-radius: 50%;
     height: 70px;
     width: 70px;
+    border: 3px solid $red;
+}
+
+.employee-dashboard-card-header-profile.green{
+    border: 3px solid $green;
+}
+
+.employee-dashboard-card-header-color{
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-left: 10px;
+    background-color: $white;
+    border: 1px solid $black;
 }
 
 .employee-dashboard-card-header-name{
     font-size: 20px;
     color: $black;
     font-weight: 600;
+    display: flex;
     margin-top: 15px;
     margin-left: 20px;
 }

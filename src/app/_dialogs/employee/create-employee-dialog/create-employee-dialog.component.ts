@@ -32,8 +32,10 @@ export class CreateEmployeeDialogComponent implements OnInit {
       employmentType: [''],
       phone: [''],
       email: [''],
+      color: [''],
       imgUrl: [''],
-      employeed: true
+      employeed: true,
+      clockedIn: false
     })
   }
 
@@ -56,6 +58,7 @@ export class CreateEmployeeDialogComponent implements OnInit {
         fileRef.getDownloadURL().subscribe((url) => {
           this.employeeForm.get('imgUrl').setValue(url);
           this.employeesService.createEmployee(this.employeeForm.value);
+          this.isSubmitted = false;
           this.dialogRef.close();
         })
       })

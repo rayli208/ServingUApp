@@ -8,23 +8,33 @@
                 <ng-container *ngIf="employee.employeed">
                     <mat-expansion-panel class="employee-dashboard-card">
                         <mat-expansion-panel-header class="employee-dashboard-card-header">
-                            <img class="employee-dashboard-card-header-profile" src="{{employee.imgUrl}}">
+                            <img class="employee-dashboard-card-header-profile"
+                                [ngClass]="{ 'green': employee.clockedIn }" src="{{employee.imgUrl}}">
                             <div>
-                                <div class="employee-dashboard-card-header-name">{{employee.name}}</div>
-                                <div class="employee-dashboard-card-header-position">{{employee.position}}</div>
+                                <div class="employee-dashboard-card-header-name">
+                                    <span>{{employee.name | titlecase}}</span>
+                                    <span class="employee-dashboard-card-header-color"
+                                        [style.background-color]="employee.color"></span>
+                                </div>
+                                <div class="employee-dashboard-card-header-position">{{employee.position | titlecase}}
+                                </div>
                             </div>
                             <div class="employee-dashboard-card-buttons">
-                                <button (click)="createSchedule(employee.name, employee.uid, employee.id); $event.stopPropagation()"
-                                    mat-raised-button>
+                                <button
+                                    (click)="createSchedule(employee.name, employee.uid, employee.id); $event.stopPropagation()"
+                                    mat-raised-button matTooltip="Create Schedule">
                                     <i class="fa-solid fa-calendar-plus"></i>
                                 </button>
-                                <button routerLink="/employee-schedule-dashboard/{{employee.id}}" mat-raised-button>
+                                <button routerLink="/employee-schedule-dashboard/{{employee.id}}" mat-raised-button
+                                    matTooltip="Employee Schedule">
                                     <i class="fa-solid fa-calendar-days"></i>
                                 </button>
-                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button
+                                    matTooltip="Edit Employee">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button
+                                    matTooltip="Remove Employee">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -37,20 +47,13 @@
                             </span>
                         </div>
                         <div class="employee-dashboard-row">
-                            <span>User Id: </span>
-                            <span>
-                                {{employee.uid}}
-                                <i (click)="copyText(employee.uid)" class="fa-regular fa-copy primary"></i>
-                            </span>
-                        </div>
-                        <div class="employee-dashboard-row">
                             <span>Employment Type: </span>
                             <span>{{employee.employmentType | titlecase}}</span>
                         </div>
                         <div class="employee-dashboard-row">
                             <span>Phone: </span>
                             <span>
-                                {{employee.phone}}
+                                {{employee.phone | phoneNumber}}
                                 <a href="tel:{{employee.phone}}" class="fa-solid fa-phone-flip primary"></a>
                             </span>
                         </div>
@@ -58,7 +61,8 @@
                             <span>Email: </span>
                             <span>
                                 {{employee.email}}
-                                <a target="_blank" [href]="'mailto:' + employee.email" class="fa-solid fa-envelope primary"></a>
+                                <a target="_blank" [href]="'mailto:' + employee.email"
+                                    class="fa-solid fa-envelope primary"></a>
                             </span>
                         </div>
                     </mat-expansion-panel>
@@ -74,33 +78,42 @@
                         <mat-expansion-panel-header class="employee-dashboard-card-header">
                             <img class="employee-dashboard-card-header-profile" src="{{employee.imgUrl}}">
                             <div>
-                                <div class="employee-dashboard-card-header-name">{{employee.name}}</div>
-                                <div class="employee-dashboard-card-header-position">{{employee.position}}</div>
+                                <div class="employee-dashboard-card-header-name">
+                                    <span>{{employee.name | titlecase}}</span>
+                                    <span class="employee-dashboard-card-header-color"
+                                        [style.background-color]="employee.color"></span>
+                                </div>
+                                <div class="employee-dashboard-card-header-position">{{employee.position | titlecase}}
+                                </div>
                             </div>
                             <div class="employee-dashboard-card-buttons">
-                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                <button (click)="editEmployee(employee); $event.stopPropagation()" mat-raised-button
+                                    matTooltip="Edit Employee">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button>
+                                <button (click)="removeEmployee(employee); $event.stopPropagation()" mat-raised-button
+                                    matTooltip="Delete Employee">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
                         </mat-expansion-panel-header>
                         <div class="employee-dashboard-row">
                             <span>Id: </span>
-                            <span>{{employee.id}}</span>
+                            <span>
+                                {{employee.id}}
+                                <i (click)="copyText(employee.id)" class="fa-regular fa-copy primary"></i>
+                            </span>
                         </div>
                         <div class="employee-dashboard-row">
-                            <span>User Id: </span>
-                            <span>{{employee.uid}}</span>
-                        </div>
-                        <div class="employee-dashboard-row">
-                            <span>Hours: </span>
-                            <span>{{employee.hours}}</span>
+                            <span>Employment Type: </span>
+                            <span>{{employee.employmentType | titlecase}}</span>
                         </div>
                         <div class="employee-dashboard-row">
                             <span>Phone: </span>
-                            <span>{{employee.phone}}</span>
+                            <span>
+                                {{employee.phone | phoneNumber}}
+                                <a href="tel:{{employee.phone}}" class="fa-solid fa-phone-flip primary"></a>
+                            </span>
                         </div>
                         <div class="employee-dashboard-row">
                             <span>Email: </span>

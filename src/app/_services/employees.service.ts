@@ -76,8 +76,10 @@ export class EmployeesService {
         employmentType: employee.employmentType,
         phone: employee.phone,
         email: employee.email,
+        color: employee.color,
         imgUrl: employee.imgUrl,
-        employeed: employee.employeed
+        employeed: employee.employeed,
+        clockedIn: employee.clockedIn
       }).then(() => {
         this._snackBar.open('Employee has been edited!', '', {
           horizontalPosition: this.horizontalPosition,
