@@ -37,7 +37,7 @@ export class ScheduleDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-
+  
         this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
           this.Schedules = res.map(e => {
             return {
@@ -45,7 +45,7 @@ export class ScheduleDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Schedule;
           });
-
+  
           //Once we have all the schedules loaded, populate them into the actual object we display
           this.populateSchedule();
         });
@@ -105,7 +105,7 @@ export class ScheduleDashboardComponent implements OnInit {
 
 
       for (let j = 0; j < this.Schedules.length; j++) {
-        var d: any = this.Schedules[j].date;
+        var d: any = this.Schedules[j]?.date;
 
         if (d == this.daysOfWeek[i]) {
           schedule.push(this.Schedules[j])
