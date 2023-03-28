@@ -1,0 +1,71 @@
+@import './../_styles/variables.scss';
+
+.punch-clock-dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.punch-clock-dashboard-container-half {
+    flex-basis: 50%;
+    flex-grow: 1;
+}
+
+.punch-clock-dashboard-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-start;
+    max-width: 50%;
+    box-shadow: none;
+    background-color: rgba(250, 247, 247, 0.5);
+
+    &:hover {
+        background: transparent !important;
+    }
+}
+
+.punch-clock-dashboard-card-header-profile {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    border: 3px solid $red;
+}
+
+.punch-clock-dashboard-card-header-profile.green {
+    border: 3px solid $green;
+}
+
+.punch-clock-dashboard-card-header-color {
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-left: 10px;
+    background-color: $white;
+    border: 1px solid $black;
+}
+
+.punch-clock-dashboard-card-header-name {
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    display: flex;
+    margin-top: 15px;
+    margin-left: 20px;
+
+    span {
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+}
+
+.punch-clock-dashboard-card-header-position {
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    margin-left: 20px;
+    text-transform: capitalize;
+}
