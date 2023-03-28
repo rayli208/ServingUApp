@@ -2,6 +2,7 @@ import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.co
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ScheduleDashboardComponent } from './schedule-dashboard/schedule-dashboard.component';
+import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NgModule } from '@angular/core';
@@ -24,6 +25,7 @@ const routes: Routes = [
     { path: 'hiring-dashboard', component: HiringDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'schedule-dashboard', component: ScheduleDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'punch-clock-dashboard', component: PunchClockDashboardComponent, canActivate: [AuthGuard] },
     { path: 'tables-dashboard', component: TablesDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },

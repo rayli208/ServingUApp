@@ -81,6 +81,12 @@
                         <div>Schedule</div>
                     </a>
                 </div>
+                <div *ngIf="checkLocalStorage('punchClockActive')">
+                    <a routerLink="/punch-clock-dashboard" routerLinkActive="active">
+                        <i class="fa-solid fa-stopwatch"></i>
+                        <div>Punch Clock</div>
+                    </a>
+                </div>
                 <div *ngIf="checkLocalStorage('tablesActive')">
                     <a routerLink="/tables-dashboard" routerLinkActive="active">
                         <i class="fa-solid fa-tablet-screen-button"></i>

@@ -78,6 +78,7 @@ import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.component';
 import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
+import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
         ProfileDashboardComponent,
         TablesDashboardComponent,
         TablesWaitlistComponent,
-        TablesAllTableViewComponent
+        TablesAllTableViewComponent,
+        PunchClockDashboardComponent
     ],
     imports: [
         BrowserModule,
