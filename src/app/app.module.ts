@@ -13,7 +13,7 @@ import { HiringDashboardComponent } from './hiring-dashboard/hiring-dashboard.co
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
-import { TimesheetDashboardComponent } from './timesheet-dashboard/timesheet-dashboard.component';
+import { ScheduleDashboardComponent } from './schedule-dashboard/schedule-dashboard.component';
 import { CreateEmployeeDialogComponent } from './_dialogs/employee/create-employee-dialog/create-employee-dialog.component';
 
 //Mat Components
@@ -91,7 +91,7 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
         AdminDashboardComponent,
         PageNotFoundComponent,
         EmployeeDashboardComponent,
-        TimesheetDashboardComponent,
+        ScheduleDashboardComponent,
         CreateEmployeeDialogComponent,
         EditEmployeeDialogComponent,
         EditJobDialogComponent,

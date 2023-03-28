@@ -56,7 +56,7 @@
             <!--See all this only if you are logged in-->
             <section class="app-navigation" *ngIf="(afAuth.user | async)">
                 <div
-                    *ngIf="(!checkLocalStorage('jobsActive') && !checkLocalStorage('employeesActive') && !checkLocalStorage('timesheetActive') && !checkLocalStorage('tablesActive'))">
+                    *ngIf="(!checkLocalStorage('jobsActive') && !checkLocalStorage('employeesActive') && !checkLocalStorage('scheduleActive') && !checkLocalStorage('tablesActive'))">
                     <a routerLink="/profile-dashboard" routerLinkActive="active">
                         <i class="fa-solid fa-user"></i>
                         <div>Profile</div>
@@ -75,10 +75,10 @@
                         <div>Employees</div>
                     </a>
                 </div>
-                <div *ngIf="checkLocalStorage('timesheetActive')">
-                    <a routerLink="/timesheet-dashboard" routerLinkActive="active">
+                <div *ngIf="checkLocalStorage('scheduleActive')">
+                    <a routerLink="/schedule-dashboard" routerLinkActive="active">
                         <i class="fa-solid fa-calendar"></i>
-                        <div>Timesheet</div>
+                        <div>Schedule</div>
                     </a>
                 </div>
                 <div *ngIf="checkLocalStorage('tablesActive')">

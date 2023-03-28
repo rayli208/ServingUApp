@@ -8,11 +8,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-timesheet-dashboard',
-  templateUrl: './timesheet-dashboard.component.html',
-  styleUrls: ['./timesheet-dashboard.component.scss']
+  selector: 'app-schedule-dashboard',
+  templateUrl: './schedule-dashboard.component.html',
+  styleUrls: ['./schedule-dashboard.component.scss']
 })
-export class TimesheetDashboardComponent implements OnInit {
+export class ScheduleDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
 

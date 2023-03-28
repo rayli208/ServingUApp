@@ -26,7 +26,7 @@ export class ProfileDashboardComponent implements OnInit {
     pinValue: '';
     jobsActive: boolean;
     employeesActive: boolean;
-    timesheetActive: boolean;
+    scheduleActive: boolean;
     tablesActive: boolean;
 
     ngOnInit(): void {
@@ -58,10 +58,10 @@ export class ProfileDashboardComponent implements OnInit {
         this.employeesActive = localStorage.getItem('employeesActive') === 'true';
 
 
-        if (!localStorage.getItem('timesheetActive')) {
-            localStorage.setItem('timesheetActive', 'false');
+        if (!localStorage.getItem('scheduleActive')) {
+            localStorage.setItem('scheduleActive', 'false');
         }
-        this.timesheetActive = localStorage.getItem('timesheetActive') === 'true';
+        this.scheduleActive = localStorage.getItem('scheduleActive') === 'true';
 
 
         if (!localStorage.getItem('tablesActive')) {
@@ -79,8 +79,8 @@ export class ProfileDashboardComponent implements OnInit {
         localStorage.setItem('employeesActive', this.employeesActive.toString());
     }
 
-    toggleTimesheetActive() {
-        localStorage.setItem('timesheetActive', this.timesheetActive.toString());
+    toggleScheduleActive() {
+        localStorage.setItem('scheduleActive', this.scheduleActive.toString());
     }
 
     toggleTablesActive() {

@@ -1,12 +1,12 @@
 @import './../_styles/variables.scss';
 
 
-.timesheet-label {
+.schedule-label {
     margin-right: 15px;
     font-weight: 700;
 }
 
-.timesheet-range{
+.schedule-range{
     margin-top: 15px;
 }
 
@@ -15,7 +15,7 @@ mat-radio-button {
     margin-right: 15px;
 }
 
-.timesheet-dashboard-date {
+.schedule-dashboard-date {
     font-size: 20px;
     color: $black;
     display: flex;
@@ -24,7 +24,7 @@ mat-radio-button {
     margin-bottom: 15px;
 }
 
-.timesheet-dashboard-date-add {
+.schedule-dashboard-date-add {
     background-color: $white;
     border: 1px solid $brand-primary;
     color: $brand-primary;
@@ -34,7 +34,7 @@ mat-radio-button {
     cursor: pointer;
 }
 
-.timesheet-dashboard-schedule-none {
+.schedule-dashboard-schedule-none {
     font-style: italic;
     margin-bottom: 15px;
     margin-top: -10px;
@@ -42,7 +42,7 @@ mat-radio-button {
     color: $text-muted;
 }
 
-.timesheet-dashboard-schedule-card {
+.schedule-dashboard-schedule-card {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -52,8 +52,8 @@ mat-radio-button {
     justify-content: space-between;
 }
 
-.timesheet-dashboard-name,
-.timesheet-weekly-name {
+.schedule-dashboard-name,
+.schedule-weekly-name {
     font-size: 20px;
     color: $black;
     font-weight: 600;
@@ -68,14 +68,14 @@ mat-radio-button {
     }
 }
 
-.timesheet-dashboard-hours {
+.schedule-dashboard-hours {
     font-size: 12px;
     color: #00000050;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.timesheet-dashboard-icons {
+.schedule-dashboard-icons {
     display: flex;
     font-size: 20px;
     color: $brand-primary;
@@ -88,16 +88,16 @@ mat-radio-button {
     }
 }
 
-.timesheet-weekly-schedule {
+.schedule-weekly-schedule {
     display: flex;
     flex-wrap: wrap;
 }
 
-.timesheet-weekly-schedule-day {
+.schedule-weekly-schedule-day {
     flex: 1 0 13%;
     margin: 15px .5%;
 
-    .timesheet-weekly-schedule-none {
+    .schedule-weekly-schedule-none {
         font-style: italic;
         margin-bottom: 15px;
         font-size: 14px;
@@ -105,7 +105,7 @@ mat-radio-button {
     }
 }
 
-.timesheet-weekly-schedule-name {
+.schedule-weekly-schedule-name {
     font-size: 20px;
     color: $black;
     font-weight: 600;
@@ -120,7 +120,7 @@ mat-radio-button {
     }
 }
 
-.timesheet-weekly-schedule-card {
+.schedule-weekly-schedule-card {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -128,44 +128,44 @@ mat-radio-button {
     margin-bottom: 15px;
 }
 
-.timesheet-weekly-hours {
+.schedule-weekly-hours {
     font-size: 12px;
     color: #00000050;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.timesheet-weekly-hours-container {
+.schedule-weekly-hours-container {
     display: flex;
     justify-content: space-between;
 }
 
 @media print {
 
-    .timesheet-dashboard-icons,
+    .schedule-dashboard-icons,
     mat-card {
         display: none;
     }
 
-    .timesheet-weekly-schedule {
+    .schedule-weekly-schedule {
         display: flex;
         flex-wrap: wrap;
     }
 
-    .timesheet-weekly-schedule-day {
+    .schedule-weekly-schedule-day {
         flex: 1 0 13%;
         margin: 15px .5%;
         overflow: hidden;
     }
 
-    .timesheet-dashboard-name,
-    .timesheet-weekly-name {
+    .schedule-dashboard-name,
+    .schedule-weekly-name {
         i {
             display: none;
         }
     }
 
-    .timesheet-weekly-hours-container{
+    .schedule-weekly-hours-container{
         display: block;
     }
 

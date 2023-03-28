@@ -93,10 +93,10 @@
         </span>
     </div>
     <div class="profile-dashboard-card-row">
-        <span>Timesheet: </span>
+        <span>Schedule: </span>
         <span>
             <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="timesheetActive" (change)="toggleTimesheetActive()"></mat-slide-toggle>
+                [(ngModel)]="scheduleActive" (change)="toggleScheduleActive()"></mat-slide-toggle>
         </span>
     </div>
     <div class="profile-dashboard-card-row">
