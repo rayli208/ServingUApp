@@ -17,6 +17,7 @@ import { ScheduleDashboardComponent } from './schedule-dashboard/schedule-dashbo
 import { CreateEmployeeDialogComponent } from './_dialogs/employee/create-employee-dialog/create-employee-dialog.component';
 
 //Mat Components
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -79,6 +80,7 @@ import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.co
 import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.component';
 import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
 import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
+import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
 
 
 @NgModule({
@@ -109,7 +111,8 @@ import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-cloc
         TablesDashboardComponent,
         TablesWaitlistComponent,
         TablesAllTableViewComponent,
-        PunchClockDashboardComponent
+        PunchClockDashboardComponent,
+        PunchClockBottomSheetComponent
     ],
     imports: [
         BrowserModule,
@@ -120,6 +123,7 @@ import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-cloc
         AngularFirestoreModule,  // imports firebase/firestore, only needed for database features
         AngularFireDatabaseModule,
         //Mat Components
+        MatBottomSheetModule,
         MatAutocompleteModule,
         MatBadgeModule,
         MatButtonModule,

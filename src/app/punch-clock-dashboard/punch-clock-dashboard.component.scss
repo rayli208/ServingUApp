@@ -3,23 +3,36 @@
 .punch-clock-dashboard-container {
     display: flex;
     flex-wrap: wrap;
+    height: calc(100vh - 104px);
 }
 
 .punch-clock-dashboard-container-half {
-    flex-basis: 50%;
+    flex-basis: calc(50% - 16px);
     flex-grow: 1;
+    margin-right: 15px;
+}
+
+.punch-clock-dashboard-container-half:nth-child(1) {
+    border-right: 1px solid #ccc;
+}
+
+.punch-clock-dashboard-container-half-all-employees {
+    display: inline-block;
+    width: calc(49% - 15px);
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
 .punch-clock-dashboard-card {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
-    margin-top: 15px;
     display: flex;
-    justify-content: flex-start;
-    max-width: 50%;
+    align-items: center;
+    justify-content: space-between;
     box-shadow: none;
     background-color: rgba(250, 247, 247, 0.5);
+    position: relative;
 
     &:hover {
         background: transparent !important;
@@ -30,11 +43,11 @@
     border-radius: 50%;
     height: 70px;
     width: 70px;
-    border: 3px solid $red;
+    border: 5px solid $red;
 }
 
 .punch-clock-dashboard-card-header-profile.green {
-    border: 3px solid $green;
+    border: 5px solid $green;
 }
 
 .punch-clock-dashboard-card-header-color {
@@ -44,7 +57,7 @@
     border-radius: 50%;
     margin-left: 10px;
     background-color: $white;
-    border: 1px solid $black;
+    box-shadow: inset 8px 8px 17px 0 rgba(0, 0, 0, 0.05), inset -13px -13px 12px 0 hsla(0, 0%, 100%, 0.65), -11px -11px 40px 3px #fff, 8px 14px 40px -20px rgba(0, 0, 0, 0.19);
 }
 
 .punch-clock-dashboard-card-header-name {
@@ -68,4 +81,27 @@
     font-weight: 600;
     margin-left: 20px;
     text-transform: capitalize;
+}
+
+.punch-clock-dashboard-card-punch-in,
+.punch-clock-dashboard-card-punch-out {
+    background-color: $green;
+    color: $white;
+    border-radius: 50%;
+    font-size: 20px;
+    padding: 20px;
+    cursor: pointer;
+    box-shadow:  20px 20px 60px #bebebe,
+    -20px -20px 60px $white;
+    margin-left: auto;
+}
+
+.punch-clock-dashboard-card-punch-out {
+    background-color: $red;
+}
+
+@media (max-width:1200px) {
+    .punch-clock-dashboard-container-half-all-employees {
+        width: calc(100% - 15px);
+    }
 }

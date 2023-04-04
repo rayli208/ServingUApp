@@ -46,7 +46,7 @@ export class EmployeeDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Employee;
-          })
+          }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
       }
     });

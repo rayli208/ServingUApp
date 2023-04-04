@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
 import { ScheduleService } from '../_services/schedule.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { PunchClockBottomSheetComponent } from '../_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
 
 @Component({
   selector: 'app-punch-clock-dashboard',
@@ -22,7 +24,8 @@ export class PunchClockDashboardComponent implements OnInit {
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
-    public scheduleService: ScheduleService
+    public scheduleService: ScheduleService,
+    private matBottomSheet: MatBottomSheet
   ) {
     this.user = null;
   }
@@ -41,9 +44,19 @@ export class PunchClockDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Employee;
-          })
+          }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
       }
     });
   }
+
+  onTriggerSheetClick(employee: Employee) {
+    console.log(employee);
+    this.matBottomSheet.open(
+      PunchClockBottomSheetComponent,
+      {
+        data: employee
+      });
+  }
 }
+
