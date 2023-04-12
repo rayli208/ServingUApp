@@ -73,6 +73,7 @@ import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-sched
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
 import { PhoneNumberPipe } from './_pipes/phone-number.pipe';
+import { CustomTimeFormatPipe }from './_pipes/custom-time-format.pipe';
 import { PhoneNumberFormatDirective } from './_directives/phone-number.directive';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
@@ -105,6 +106,7 @@ import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/pun
         EditScheduleDialogComponent,
         HoursPipe,
         PhoneNumberPipe,
+        CustomTimeFormatPipe,
         PhoneNumberFormatDirective,
         EmployeeScheduleDashboardComponent,
         ProfileDashboardComponent,

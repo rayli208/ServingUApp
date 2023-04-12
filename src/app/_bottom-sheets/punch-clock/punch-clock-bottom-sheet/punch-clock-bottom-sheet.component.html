@@ -1,1 +1,21 @@
-{{data | json}}
+<div class="punch-clock-bottom-sheet-main-container">
+    <div style="margin-bottom: 15px;">
+        <h1 style="text-align: center;">
+            <span *ngIf="!employee.clockedIn">Clock in: </span>
+            <span *ngIf="employee.clockedIn">Clocked out: </span>
+            <span class="punch-clock-bottom-sheet-current-time">{{ currentTime | customTimeFormat }}</span>
+        </h1>
+        <hr>
+    </div>
+    <div class="punch-clock-bottom-sheet-sub-container">
+        <img class="punch-clock-bottom-sheet-header-profile" [ngClass]="{ 'green': employee.clockedIn }"
+            src="{{employee.imgUrl}}">
+        <div class="punch-clock-bottom-sheet-header-name">
+            <span>{{employee.name | titlecase}}</span>
+        </div>
+        <div class="punch-clock-bottom-sheet-action">
+            <i *ngIf="!employee.clockedIn" class="fa-solid fa-right-to-bracket" (click)="clockIn(employee)"></i>
+            <i *ngIf="employee.clockedIn" class="fa-solid fa-hand-peace fa-fade"></i>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,10 @@
+import { EmployeesService } from './../../../_services/employees.service';
+import { TimeStampService } from './../../../_services/time-stamp.service';
 import { Employee } from './../../../_models/employee.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { formatDate, formatTime } from '../../../_helpers/date-time-formatter'
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-punch-clock-bottom-sheet',
@@ -10,12 +14,42 @@ import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 export class PunchClockBottomSheetComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Employee
+    public timeStampService: TimeStampService,
+    public employeesService: EmployeesService,
+    public formBuilder: UntypedFormBuilder,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public employee: Employee
   ) {
-
+    this.currentTime = new Date();
+    this.timeStampForm = this.formBuilder.group({
+      uid: [employee.uid],
+      employeeId: [employee.id],
+      employeeName: [employee.name],
+      startTime: [''],
+      endTime: [''],
+      date: [''],
+    });
   }
 
+  public timeStampForm: UntypedFormGroup;
+  currentTime: Date;
+  formattedDate: string;
+  formattedTime: string;
+
   ngOnInit(): void {
+    this.formattedDate = formatDate(this.currentTime); // Use the imported function
+    this.formattedTime = formatTime(this.currentTime); // Use the imported function
+  }
+
+  clockIn(employee: Employee) {
+    //Make employee clock in
+    employee.clockedIn = !employee.clockedIn;
+    this.employeesService.updateEmployee(employee, employee.id)
+    this.timeStampForm.patchValue({
+      startTime: this.formattedTime,
+      date: this.formattedDate
+    });
+    //Create time stamp
+    this.timeStampService.createTimeStamp(this.timeStampForm.value)
   }
 
 }

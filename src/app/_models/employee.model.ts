@@ -9,5 +9,5 @@ export class Employee {
     color: string;
     imgUrl: string;
     employeed: boolean;
-    clockedIn: false;
+    clockedIn: boolean;
 }

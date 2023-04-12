@@ -1,0 +1,52 @@
+@import './../../../_styles/variables.scss';
+
+.punch-clock-bottom-sheet-current-time{
+    color: $brand-primary;
+}
+
+.punch-clock-bottom-sheet-main-container{
+    padding-bottom: 15px;
+}
+
+.punch-clock-bottom-sheet-sub-container{
+    display: flex;
+    align-items: center;
+}
+
+.punch-clock-bottom-sheet-header-profile {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    border: 5px solid $red;
+}
+
+.punch-clock-bottom-sheet-header-profile.green {
+    border: 5px solid $green;
+}
+
+.punch-clock-bottom-sheet-header-name {
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 15px;
+
+    span {
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+}
+
+.punch-clock-bottom-sheet-action{
+    margin-left: auto;
+    background-color: #22c795;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 20px;
+    padding: 20px;
+    cursor: pointer;
+    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #fff;
+    margin-left: auto;
+    height: fit-content;
+}

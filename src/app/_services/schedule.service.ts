@@ -18,7 +18,7 @@ export class ScheduleService {
     private _snackBar: MatSnackBar
   ) { }
 
-  //Get a schedule by a dog ID
+  //Get a schedule by a doc ID
   getScheduleDoc(id) {
     return this.afs
       .collection("schedules")

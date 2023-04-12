@@ -40,7 +40,6 @@ export class CreateTableDialogComponent implements OnInit {
   
   //Create job and redirect to dashboard
   onSubmit() {
-    console.log(this.tableForm.value);
     this.tablesService.createTable(this.tableForm.value);
     this.dialogRef.close();
   }

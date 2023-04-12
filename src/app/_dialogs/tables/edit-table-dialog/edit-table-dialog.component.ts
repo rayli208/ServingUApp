@@ -27,7 +27,6 @@ export class EditTableDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
-    console.log(this.editForm.value);
     this.tablesService.updateTable(this.editForm.value, this.table.id);
     this.dialogRef.close();
   }
