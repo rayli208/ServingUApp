@@ -10,19 +10,22 @@
                 *ngIf="employee.employeed && !employee.clockedIn">
                 <!--Outline border based off hire status-->
                 <div class="punch-clock-dashboard-card">
-                    <img class="punch-clock-dashboard-card-header-profile" [ngClass]="{ 'green': employee.clockedIn }"
-                        src="{{employee.imgUrl}}">
-                    <div>
-                        <div class="punch-clock-dashboard-card-header-name">
-                            <span>{{employee.name | titlecase}}</span>
-                            <span class="punch-clock-dashboard-card-header-color"
-                                [style.background-color]="employee.color"></span>
+                    <div class="punch-clock-dashboard-card-body">
+
+                        <img class="punch-clock-dashboard-card-header-profile"
+                            [ngClass]="{ 'green': employee.clockedIn }" src="{{employee.imgUrl}}">
+                        <div>
+                            <div class="punch-clock-dashboard-card-header-name">
+                                <span>{{employee.name | titlecase}}</span>
+                                <span class="punch-clock-dashboard-card-header-color"
+                                    [style.background-color]="employee.color"></span>
+                            </div>
+                            <div class="punch-clock-dashboard-card-header-position">{{employee.position | titlecase}}
+                            </div>
                         </div>
-                        <div class="punch-clock-dashboard-card-header-position">{{employee.position | titlecase}}
+                        <div class="punch-clock-dashboard-card-punch-in" (click)="onTriggerSheetClick(employee)">
+                            <i class="fa-solid fa-fingerprint"></i>
                         </div>
-                    </div>
-                    <div class="punch-clock-dashboard-card-punch-in" (click)="onTriggerSheetClick(employee)">
-                        <i class="fa-solid fa-fingerprint"></i>
                     </div>
                 </div>
             </div>
@@ -37,23 +40,27 @@
             <div class="punch-clock-dashboard-container-half-all-employees"
                 *ngIf="employee.employeed && employee.clockedIn">
                 <div class="punch-clock-dashboard-card">
-                    <img class="punch-clock-dashboard-card-header-profile" [ngClass]="{ 'green': employee.clockedIn }"
-                        src="{{employee.imgUrl}}">
-                    <div>
-                        <div class="punch-clock-dashboard-card-header-name">
-                            <span>{{employee.name | titlecase}}</span>
-                            <span class="punch-clock-dashboard-card-header-color"
-                                [style.background-color]="employee.color"></span>
+                    <div class="punch-clock-dashboard-card-body">
+                        <img class="punch-clock-dashboard-card-header-profile"
+                            [ngClass]="{ 'green': employee.clockedIn }" src="{{employee.imgUrl}}">
+                        <div>
+                            <div class="punch-clock-dashboard-card-header-name">
+                                <span>{{employee.name | titlecase}}</span>
+                                <span class="punch-clock-dashboard-card-header-color"
+                                    [style.background-color]="employee.color"></span>
+                            </div>
+                            <div class="punch-clock-dashboard-card-header-position">{{employee.position | titlecase}}
+                            </div>
                         </div>
-                        <div class="punch-clock-dashboard-card-header-position">{{employee.position | titlecase}}
+                        <div class="punch-clock-dashboard-card-punch-out" (click)="onTriggerSheetClick(employee)">
+                            <i class="fa-solid fa-fingerprint"></i>
                         </div>
                     </div>
-                    <div class="punch-clock-dashboard-card-punch-out" (click)="onTriggerSheetClick(employee)">
-                        <i class="fa-solid fa-fingerprint"></i>
+                    <div *ngIf="employee.clockedIn" class="punch-clock-dashboard-card-clock-in-time">
+                        <h2>
+                            Clocked in at: {{ clockInTimes.get(employee.id) | clockInTime }}
+                        </h2>
                     </div>
-                </div>
-                <div *ngIf="employee.clockedIn" class="punch-clock-dashboard-card-clock-in-time">
-                    Clocked in at: {{ clockInTimes.get(employee.id) | clockInTime }}
                 </div>
             </div>
         </ng-container>

@@ -27,9 +27,6 @@
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     box-shadow: none;
     background-color: rgba(250, 247, 247, 0.5);
     position: relative;
@@ -37,6 +34,14 @@
     &:hover {
         background: transparent !important;
     }
+}
+
+
+.punch-clock-dashboard-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 }
 
 .punch-clock-dashboard-card-header-profile {
@@ -99,6 +104,17 @@
 .punch-clock-dashboard-card-punch-out {
     background-color: $red;
 }
+
+.punch-clock-dashboard-card-clock-in-time{
+    background-color: $brand-primary;
+    font-weight: 700;
+    color: $white;
+    margin-top: auto;
+    margin: 15px -15px -31px;
+    text-align: center;
+}
+
+  
 
 @media (max-width:1200px) {
     .punch-clock-dashboard-container-half-all-employees {
