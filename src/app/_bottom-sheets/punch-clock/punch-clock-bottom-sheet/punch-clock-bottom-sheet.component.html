@@ -14,8 +14,10 @@
             <span>{{employee.name | titlecase}}</span>
         </div>
         <div class="punch-clock-bottom-sheet-action">
-            <i *ngIf="!employee.clockedIn" class="fa-solid fa-right-to-bracket" (click)="clockIn(employee)"></i>
-            <i *ngIf="employee.clockedIn" class="fa-solid fa-hand-peace fa-fade"></i>
+            <div class="punch-clock-dashboard-card-punch-out" (click)="toggleClockInOut(employee)">
+                <i *ngIf="!employee.clockedIn" class="fa-solid fa-right-to-bracket"></i>
+                <i *ngIf="employee.clockedIn" class="fa-solid fa-hand-peace fa-fade"></i> 
+            </div>
         </div>
     </div>
 </div>

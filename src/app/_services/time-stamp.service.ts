@@ -2,22 +2,12 @@ import { TimeStamp } from './../_models/time-stamp.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TimeStampService {
-    horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-    constructor(private afs: AngularFirestore,
-        private _snackBar: MatSnackBar
-    ) { }
+    constructor(private afs: AngularFirestore) { }
 
     //Get a TimeStamp by a doc ID
     getTimeStampDoc(id) {
@@ -33,7 +23,6 @@ export class TimeStampService {
             .collection("timeStamp", ref => ref.where('uid', '==', uid))
             .snapshotChanges();
     }
-
 
     //Get ALL TimeStamps for a Date and EmployeeId
     getTimeStampsByDateAndEmployeeId(date, employeeId) {
@@ -51,7 +40,6 @@ export class TimeStampService {
             }))
           );
       }
-      
 
     //Get TimeStamps for a EMPLOYEE
     getTimeStampsListForEmployee(employeeId) {
@@ -62,19 +50,9 @@ export class TimeStampService {
 
     //Create a TimeStamp
     createTimeStamp(timeStamp: TimeStamp) {
-        return new Promise<any>((resolve, reject) => {
-            this.afs
-                .collection("timeStamp")
-                .add(timeStamp)
-                .then(() => {
-                    this._snackBar.open('Clocked out!', '', {
-                        horizontalPosition: this.horizontalPosition,
-                        verticalPosition: this.verticalPosition,
-                        duration: 2500,
-                        panelClass: ['green-snackbar']
-                    });
-                });
-        });
+        return this.afs
+            .collection("timeStamp")
+            .add(timeStamp);
     }
 
     //Update a TimeStamp
@@ -87,14 +65,6 @@ export class TimeStampService {
                 startTime: timeStamp.startTime,
                 endTime: timeStamp.endTime,
                 date: timeStamp.date,
-            })
-            .then(() => {
-                this._snackBar.open('TimeStamp has been edited!', '', {
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    duration: 2500,
-                    panelClass: ['yellow-snackbar']
-                });
             });
     }
 }

@@ -49,7 +49,7 @@ export class PunchClockDashboardComponent implements OnInit {
         });
       }
     });
-  }  
+  }
 
   getClockInTime(employeeId) {
     this.timeStampService.getTimeStampsByDateAndEmployeeId(this.dateStr, employeeId).subscribe((timeStamps) => {
@@ -61,7 +61,6 @@ export class PunchClockDashboardComponent implements OnInit {
   }
 
   onTriggerSheetClick(employee: Employee) {
-    console.log(employee);
     this.matBottomSheet.open(
       PunchClockBottomSheetComponent,
       {

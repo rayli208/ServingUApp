@@ -82,6 +82,7 @@ import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.compo
 import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
 import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
 import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
+import { ClockInTimePipe } from './_pipes/clock-in-time.pipe';
 
 
 @NgModule({
@@ -114,7 +115,8 @@ import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/pun
         TablesWaitlistComponent,
         TablesAllTableViewComponent,
         PunchClockDashboardComponent,
-        PunchClockBottomSheetComponent
+        PunchClockBottomSheetComponent,
+        ClockInTimePipe
     ],
     imports: [
         BrowserModule,

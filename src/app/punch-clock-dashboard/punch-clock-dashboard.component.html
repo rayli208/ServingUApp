@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div *ngIf="employee.clockedIn" class="punch-clock-dashboard-card-clock-in-time">
-                    Clocked in at: {{ clockInTimes.get(employee.id) }}
+                    Clocked in at: {{ clockInTimes.get(employee.id) | clockInTime }}
                 </div>
             </div>
         </ng-container>
