@@ -10,6 +10,7 @@ import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { Schedule } from '../_models/schedule.model';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -17,12 +18,15 @@ import { Schedule } from '../_models/schedule.model';
   styleUrls: ['./employee-dashboard.component.scss']
 })
 export class EmployeeDashboardComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   Employees: Employee[];
   Schedules: any[];
 
   constructor(
+    private _snackBar: MatSnackBar,
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
@@ -35,7 +39,6 @@ export class EmployeeDashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -50,8 +53,6 @@ export class EmployeeDashboardComponent implements OnInit {
         });
       }
     });
-
-
   }
 
   createEmployee(): void {
@@ -59,7 +60,6 @@ export class EmployeeDashboardComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
   }
-
 
   removeEmployee(employee: Employee) {
     if (confirm("Are you sure you want to delete " + employee.name)) {
@@ -78,8 +78,8 @@ export class EmployeeDashboardComponent implements OnInit {
       this.storage.storage.refFromURL(employee.imgUrl).delete();
       //Delete employee
       this.employeesService.deleteEmployee(employee);
-      //log
-      console.log("Employee has been deleted");
+      //Alert
+      this.showSnackBar("Employee has been deleted!");
     }
   }
 
@@ -117,5 +117,14 @@ export class EmployeeDashboardComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
     console.log("copied text");
+  }
+
+  showSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['red-snackbar']
+    });
   }
 }

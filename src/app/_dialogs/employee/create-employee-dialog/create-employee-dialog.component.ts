@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators'
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-employee-dialog',
@@ -12,12 +13,15 @@ import { finalize } from 'rxjs/operators'
   styleUrls: ['./create-employee-dialog.component.scss']
 })
 export class CreateEmployeeDialogComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   imgSrc: string = '../../../../assets/img/placeholder.png';
   selectedImage: any = null;
   isSubmitted: boolean = false;
   public employeeForm: UntypedFormGroup;
 
   constructor(
+    private _snackBar: MatSnackBar,
     private afAuth: AngularFireAuth,
     private storage: AngularFireStorage,
     public employeesService: EmployeesService,
@@ -59,6 +63,7 @@ export class CreateEmployeeDialogComponent implements OnInit {
           this.employeeForm.get('imgUrl').setValue(url);
           this.employeesService.createEmployee(this.employeeForm.value);
           this.isSubmitted = false;
+          this.showSnackBar("Employee has been created!");
           this.dialogRef.close();
         })
       })
@@ -86,5 +91,14 @@ export class CreateEmployeeDialogComponent implements OnInit {
       this.imgSrc = '../../../../assets/img/placeholder.png';
       this.selectedImage = null;
     }
+  }
+
+  showSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['green-snackbar']
+    });
   }
 }

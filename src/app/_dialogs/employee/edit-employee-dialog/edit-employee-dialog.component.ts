@@ -4,7 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators'
+import { finalize } from 'rxjs/operators';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-employee-dialog',
@@ -12,14 +13,17 @@ import { finalize } from 'rxjs/operators'
   styleUrls: ['./edit-employee-dialog.component.scss']
 })
 export class EditEmployeeDialogComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   imgSrc: string;
   selectedImage: any = null;
   didChange: boolean = false;
-
+  
   public employee: Employee;
   public editForm: UntypedFormGroup;
 
   constructor(
+    private _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: Employee,
     public formBuilder: UntypedFormBuilder,
     public employeesService: EmployeesService,
@@ -51,6 +55,7 @@ export class EditEmployeeDialogComponent implements OnInit {
       ).subscribe();
     } else {
       this.employeesService.updateEmployee(this.editForm.value, this.employee.id);
+      this.showSnackBar("Employee has been edited!");
       this.dialogRef.close();
     }
   }
@@ -63,5 +68,14 @@ export class EditEmployeeDialogComponent implements OnInit {
       reader.readAsDataURL($event.target.files[0]);
       this.selectedImage = $event.target.files[0];
     }
+  }
+
+  showSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['yellow-snackbar']
+    });
   }
 }
