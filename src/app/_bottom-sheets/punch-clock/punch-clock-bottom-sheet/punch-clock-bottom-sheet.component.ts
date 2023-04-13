@@ -3,6 +3,7 @@ import { TimeStampService } from './../../../_services/time-stamp.service';
 import { Employee } from './../../../_models/employee.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { formatDate, formatTime } from '../../../_helpers/date-time-formatter'
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -17,6 +18,7 @@ export class PunchClockBottomSheetComponent implements OnInit {
     public timeStampService: TimeStampService,
     public employeesService: EmployeesService,
     public formBuilder: UntypedFormBuilder,
+    private bottomSheetRef: MatBottomSheetRef<PunchClockBottomSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public employee: Employee
   ) {
     this.currentTime = new Date();
@@ -50,6 +52,11 @@ export class PunchClockBottomSheetComponent implements OnInit {
     });
     //Create time stamp
     this.timeStampService.createTimeStamp(this.timeStampForm.value)
+    //Close bottom sheet
+    this.closeBottomSheet();
   }
 
+  closeBottomSheet(): void {
+    this.bottomSheetRef.dismiss();
+  }
 }

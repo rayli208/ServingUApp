@@ -3,10 +3,12 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
+import { TimeStamp } from '../_models/time-stamp.model';
 import { EmployeesService } from '../_services/employees.service';
 import { ScheduleService } from '../_services/schedule.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { PunchClockBottomSheetComponent } from '../_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
+import { TimeStampService } from '../_services/time-stamp.service';
 
 @Component({
   selector: 'app-punch-clock-dashboard',
@@ -16,8 +18,11 @@ import { PunchClockBottomSheetComponent } from '../_bottom-sheets/punch-clock/pu
 export class PunchClockDashboardComponent implements OnInit {
 
   userId;
-  user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
-  Employees: Employee[];
+  user: Observable<any>;
+  Employees = [];
+  today = new Date();
+  dateStr = this.today.toISOString().slice(0, 10);
+  clockInTimes: Map<string, string> = new Map();
   Schedules: any[];
 
   constructor(
@@ -25,27 +30,32 @@ export class PunchClockDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
     public scheduleService: ScheduleService,
+    private timeStampService: TimeStampService,
     private matBottomSheet: MatBottomSheet
   ) {
     this.user = null;
   }
 
-
-
   ngOnInit(): void {
-
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-
-        this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
-          this.Employees = res.map(e => {
-            return {
-              id: e.payload.doc.id,
-              ...e.payload.doc.data() as {}
-            } as Employee;
+        this.employeesService.getEmployeesListForUser(this.userId).subscribe((employees) => {
+          this.Employees = employees.map((employee) => {
+            const employeeData = employee.payload.doc.data();
+            this.getClockInTime(employee.payload.doc.id);
+            return { id: employee.payload.doc.id, ...(employeeData as object) } as Employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
+      }
+    });
+  }  
+
+  getClockInTime(employeeId) {
+    this.timeStampService.getTimeStampsByDateAndEmployeeId(this.dateStr, employeeId).subscribe((timeStamps) => {
+      if (timeStamps.length > 0) {
+        const startTime = (timeStamps[0].payload.doc.data() as TimeStamp).startTime;
+        this.clockInTimes.set(employeeId, startTime);
       }
     });
   }
@@ -59,4 +69,3 @@ export class PunchClockDashboardComponent implements OnInit {
       });
   }
 }
-

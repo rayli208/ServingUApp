@@ -28,12 +28,12 @@
             </div>
         </ng-container>
     </div>
+    <!-- Second loop -->
     <div class="punch-clock-dashboard-container-half">
         <h2>
             Clocked in:
         </h2>
         <ng-container *ngFor="let employee of Employees; let i = index">
-            <!--Outline border based off hire status-->
             <div class="punch-clock-dashboard-container-half-all-employees"
                 *ngIf="employee.employeed && employee.clockedIn">
                 <div class="punch-clock-dashboard-card">
@@ -51,6 +51,9 @@
                     <div class="punch-clock-dashboard-card-punch-out" (click)="onTriggerSheetClick(employee)">
                         <i class="fa-solid fa-fingerprint"></i>
                     </div>
+                </div>
+                <div *ngIf="employee.clockedIn" class="punch-clock-dashboard-card-clock-in-time">
+                    Clocked in at: {{ clockInTimes.get(employee.id) }}
                 </div>
             </div>
         </ng-container>

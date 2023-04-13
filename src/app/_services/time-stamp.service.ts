@@ -1,6 +1,7 @@
 import { TimeStamp } from './../_models/time-stamp.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs/operators';
 import {
     MatSnackBar,
     MatSnackBarHorizontalPosition,
@@ -26,13 +27,31 @@ export class TimeStampService {
             .valueChanges();
     }
 
-
     //Get ALL TimeStamps for a USER
     getTimeStampsListForUser(uid) {
         return this.afs
             .collection("timeStamp", ref => ref.where('uid', '==', uid))
             .snapshotChanges();
     }
+
+
+    //Get ALL TimeStamps for a Date and EmployeeId
+    getTimeStampsByDateAndEmployeeId(date, employeeId) {
+        return this.afs
+          .collection("timeStamp", ref =>
+            ref
+              .where('date', '==', date)
+              .where('employeeId', '==', employeeId)
+          )
+          .snapshotChanges()
+          .pipe(
+            map(actions => actions.filter(action => {
+              const data = action.payload.doc.data() as TimeStamp;
+              return data.endTime === '';
+            }))
+          );
+      }
+      
 
     //Get TimeStamps for a EMPLOYEE
     getTimeStampsListForEmployee(employeeId) {
