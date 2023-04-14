@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { interval } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -15,7 +20,7 @@ import { TimeStampService } from '../_services/time-stamp.service';
   templateUrl: './punch-clock-dashboard.component.html',
   styleUrls: ['./punch-clock-dashboard.component.scss']
 })
-export class PunchClockDashboardComponent implements OnInit {
+export class PunchClockDashboardComponent implements OnInit, OnDestroy {
 
   userId;
   user: Observable<any>;
@@ -24,8 +29,11 @@ export class PunchClockDashboardComponent implements OnInit {
   dateStr = this.today.toISOString().slice(0, 10);
   clockInTimes: Map<string, string> = new Map();
   Schedules: any[];
+  currentTime: string;
+  private destroy$ = new Subject<void>();
 
   constructor(
+    private datePipe: DatePipe,
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
@@ -49,6 +57,13 @@ export class PunchClockDashboardComponent implements OnInit {
         });
       }
     });
+
+    this.updateCurrentTime();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getClockInTime(employeeId) {
@@ -65,6 +80,17 @@ export class PunchClockDashboardComponent implements OnInit {
       PunchClockBottomSheetComponent,
       {
         data: employee
+      });
+  }
+
+  updateCurrentTime(): void {
+    interval(1000)
+      .pipe(
+        map(() => this.datePipe.transform(new Date(), 'shortTime')),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((time) => {
+        this.currentTime = time;
       });
   }
 }

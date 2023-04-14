@@ -57,6 +57,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -83,6 +84,7 @@ import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-
 import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
 import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
 import { ClockInTimePipe } from './_pipes/clock-in-time.pipe';
+import { HeaderComponent } from './_shared/header/header.component';
 
 
 @NgModule({
@@ -116,7 +118,8 @@ import { ClockInTimePipe } from './_pipes/clock-in-time.pipe';
         TablesAllTableViewComponent,
         PunchClockDashboardComponent,
         PunchClockBottomSheetComponent,
-        ClockInTimePipe
+        ClockInTimePipe,
+        HeaderComponent
     ],
     imports: [
         BrowserModule,
@@ -167,7 +170,7 @@ import { ClockInTimePipe } from './_pipes/clock-in-time.pipe';
         ReactiveFormsModule,
         HttpClientModule,
     ],
-    providers: [],
+    providers: [DatePipe],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -29,13 +29,20 @@ mat-drawer-content {
   border: dotted #ccc 2px;
 }
 
+.table-dashboard-actions-container{
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .table-dashboard-actions{
   i, h1{
     display: inline-block;
   }
 
   h1{
-    margin: 15px 8px 0px;
+    margin: 0px 8px !important;
   }
 
   i{

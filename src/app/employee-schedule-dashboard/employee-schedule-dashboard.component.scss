@@ -1,20 +1,5 @@
 @import './../_styles/variables.scss';
 
-.employee-schedule-dashboard-name {
-    font-size: 20px;
-    color: $black;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    margin-bottom: 15px;
-
-    i{
-        font-size: 20px;
-        color: $brand-primary;
-        cursor: pointer;
-    }
-}
-
 .employee-schedule-dashboard-back{
     background-color: $white;
     border: 1px solid $brand-primary;

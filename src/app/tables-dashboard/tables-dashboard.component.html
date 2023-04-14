@@ -1,39 +1,39 @@
-<h1><i class="fas fa-user"></i>Tables Dashboard</h1>
-<div class="table-dashboard-container">
-    <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
-        <mat-drawer-content>
-            <mat-card>
-                <button mat-raised-button (click)="drawer.toggle()">Waitlist</button>
+<app-header iconClass="fa-solid fa-tablet-screen-button" title="Tables Dashboard">
+    <mat-card class="table-dashboard-actions-container">
+            <div>
+                <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()">Waitlist</button>
                 <button mat-raised-button color="primary" (click)="createTable()">
                     <span>Add Table</span>
                 </button>
-                <div class="table-dashboard-actions">
-                    <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
-                    <h1>Current Floor: {{ currentFloor }}</h1>
-                    <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
-                  </div>
-            </mat-card>
+            </div>
+            <div class="table-dashboard-actions">
+                <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()"
+                    [class.disabled]="currentFloor === 1"></i>
+                <h1>Current Floor: {{ currentFloor }}</h1>
+                <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+            </div>
+    </mat-card>
+</app-header>
+
+<div class="table-dashboard-container">
+    <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
+        <mat-drawer-content>
             <!--Table Controls-->
             <div class="table-all-table-container">
                 <i class="table-all-table-container-no-tables" *ngIf="totalTables?.length == 0">There are no tables,
                     please make some!</i>
-                <app-tables-all-table-view [floorNumber]="currentFloor" [tables]="totalTables"></app-tables-all-table-view>
+                <app-tables-all-table-view [floorNumber]="currentFloor" [tables]="totalTables">
+                </app-tables-all-table-view>
             </div>
 
             <!--Table View-->
             <div #tableView class="table-view">
                 <h1 class="table-view-current-floor">Current Floor: {{currentFloor}}</h1>
                 <ng-container *ngFor="let table of totalTables">
-                    <div 
-                        *ngIf="table.floorPlan === currentFloor" 
-                        (dblclick)="toggleActive(table)"
-                        class="example-box {{table.shape}}" 
-                        cdkDragBoundary=".table-view"
-                        cdkDrag 
-                        (cdkDragEnded)="dragEnd($event, table)"
-                        [style.top]="table.positionY + 'px'" 
-                        [style.left]="table.positionX + 'px'" 
-                    >
+                    <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)"
+                        class="example-box {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag
+                        (cdkDragEnded)="dragEnd($event, table)" [style.top]="table.positionY + 'px'"
+                        [style.left]="table.positionX + 'px'">
                         {{table.tableNumber}}
                     </div>
                 </ng-container>
