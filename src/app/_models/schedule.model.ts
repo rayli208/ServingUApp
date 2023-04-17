@@ -1,6 +1,6 @@
 export class Schedule {
     id: string;
-    userId: string;
+    uid: string;
     employeeId: string;
     employeeName: string;
     startTime: string;

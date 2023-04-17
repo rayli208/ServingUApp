@@ -27,9 +27,9 @@ export class ScheduleService {
   }
 
   //Get all schedules for a user
-  getSchedulesListForUser(userId) {
+  getSchedulesListForUser(uid) {
     return this.afs
-      .collection("schedules", ref => ref.where('userId', '==', userId))
+      .collection("schedules", ref => ref.where('uid', '==', uid))
       .snapshotChanges();
   }
 

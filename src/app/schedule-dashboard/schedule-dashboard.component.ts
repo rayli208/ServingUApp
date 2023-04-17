@@ -38,7 +38,7 @@ export class ScheduleDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-
+  
         this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
           this.Schedules = res.map(e => {
             return {
@@ -46,7 +46,7 @@ export class ScheduleDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Schedule;
           });
-
+  
           //Once we have all the schedules loaded, populate them into the actual object we display
           this.populateSchedule();
         });
@@ -205,15 +205,14 @@ export class ScheduleDashboardComponent implements OnInit {
     return yearString.slice(-2); // Return the last two characters of the year string
   }
 
-  private createSchedule(date: string) {
+  private createSchedule(date: string){
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
         date: date,
       }
     });
-
+    
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
-  }
+    dialogRef.afterClosed().subscribe(result => { });  }
 
 }

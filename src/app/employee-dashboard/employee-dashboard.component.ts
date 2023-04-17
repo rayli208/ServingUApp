@@ -91,12 +91,11 @@ export class EmployeeDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  createSchedule(name: string, userId: string, employeeId: string) {
-    console.log(employeeId);
+  createSchedule(name: string, uid: string, employeeId: string) {
     const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {
       data: {
         name: name,
-        userId: userId,
+        uid: uid,
         employeeId: employeeId
       }
     });
@@ -116,7 +115,6 @@ export class EmployeeDashboardComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    console.log("copied text");
   }
 
   showSnackBar(message: string) {
