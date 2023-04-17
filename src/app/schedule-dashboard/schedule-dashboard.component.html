@@ -14,7 +14,8 @@
           {{option}}
         </mat-radio-button>
       </mat-radio-group>
-      <h3 class="schedule-range">From: <i>{{formatDate(populatedSchedulesWithDates[0]?.date)}}</i> | To: <i>{{formatDate(populatedSchedulesWithDates[13]?.date)}}</i></h3>
+      <h3 class="schedule-range">From: <i>{{formatDate(populatedSchedulesWithDates[0]?.date)}}</i> | To:
+        <i>{{formatDate(populatedSchedulesWithDates[13]?.date)}}</i></h3>
     </mat-card-content>
   </mat-card>
 </app-header>
@@ -23,6 +24,13 @@
   <div *ngFor="let day of populatedSchedulesWithDates; let i = index">
     <div class="schedule-dashboard-date">
       <div>{{formatDate(day?.date)}}</div>
+      <div>
+        <button color="primary" class="schedule-dashboard-date-add-button"
+          (click)="createSchedule(day?.date); $event.stopPropagation()" mat-raised-button
+          matTooltip="Schedule an Employee">
+          <i class="fa-solid fa-calendar-plus"></i>
+        </button>
+      </div>
     </div>
     <div class="schedule-dashboard-schedule-none" *ngIf="day.schedule?.length < 1">
       There are no employees scheduled for this day.
@@ -51,6 +59,13 @@
     <ng-container *ngFor="let day of populatedSchedulesWithDates; let i = index">
       <div class="schedule-weekly-schedule-day">
         <div class="schedule-weekly-schedule-name">{{formatDate(day?.date)}}</div>
+        <div>
+          <button color="primary" class="schedule-dashboard-date-add-button horizontal"
+            (click)="createSchedule(day?.date); $event.stopPropagation()" mat-raised-button
+            matTooltip="Schedule an Employee">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </button>
+        </div>
         <div class="schedule-weekly-schedule-none" *ngIf="day.schedule?.length < 1">
           Empty
         </div>
