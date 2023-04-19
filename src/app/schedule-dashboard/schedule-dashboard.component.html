@@ -4,8 +4,8 @@
       <!-- buttons to increment or decrement the dates by one week -->
       <label class="schedule-label">Adjust the dates:</label>
       <mat-button-toggle-group name="weekAdjuster" aria-label="Adjust the weeks">
-        <mat-button-toggle (click)="incrementWeek()"><i class="fa-solid fa-plus"></i> 1 Week</mat-button-toggle>
         <mat-button-toggle (click)="decrementWeek()"><i class="fa-solid fa-minus"></i> 1 Week</mat-button-toggle>
+        <mat-button-toggle (click)="incrementWeek()"><i class="fa-solid fa-plus"></i> 1 Week</mat-button-toggle>
         <mat-button-toggle (click)="onPrint()"><i class="fa-solid fa-print"></i> Print</mat-button-toggle>
       </mat-button-toggle-group>
       <label class="schedule-label">Select your view:</label>

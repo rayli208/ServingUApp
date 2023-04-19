@@ -100,25 +100,30 @@ export class ScheduleDashboardComponent implements OnInit {
   populateSchedule(): void {
     this.populateDaysOfWeek(this.base);
     this.populatedSchedulesWithDates = [];
-
+  
     for (var i = 0; i < this.daysOfWeek.length; i++) {
       let schedule = [];
-
-
+  
       for (let j = 0; j < this.Schedules.length; j++) {
         var d: any = this.Schedules[j]?.date;
-
+  
         if (d == this.daysOfWeek[i]) {
-          schedule.push(this.Schedules[j])
+          schedule.push(this.Schedules[j]);
         }
       }
-
+  
+      // Sort the schedule array based on startTime in ascending order
+      schedule.sort((a, b) => {
+        return a.startTime < b.startTime ? -1 : (a.startTime > b.startTime ? 1 : 0);
+      });
+  
       this.populatedSchedulesWithDates.push({
         date: this.daysOfWeek[i],
         schedule: schedule
       });
     }
   }
+  
 
 
   //Edit Function

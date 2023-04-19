@@ -74,6 +74,7 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
 
   onTriggerSheetClick(employee: Employee) {
     this.matBottomSheet.open(
