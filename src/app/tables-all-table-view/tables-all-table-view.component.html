@@ -1,17 +1,19 @@
-<ng-container *ngFor="let table of tables">
-    <div *ngIf="table.floorPlan === floorNumber"  class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
-        [ngClass]="table.isActive ? 'active' : 'not-active' ">
-        <div class="tables-all-table-view-card-number">{{table.tableNumber}}</div>
-        <div>Shape: {{table.shape}}</div>
-        <div>Seats: {{table.seats}} people</div>
-        <div>Floor Plan: {{table.floorPlan}} Floor</div>
-        <div>Color: {{table.color}}</div>
-        <div>X: {{table.positionX}}</div>
-        <div>Y: {{table.positionY}}</div>
+<div class="tables-all-table-container">
+    <ng-container *ngFor="let table of tables">
+        <div *ngIf="table.floorPlan === floorNumber" class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
+            [ngClass]="table.isActive ? 'active' : 'not-active' ">
+            <div class="tables-all-table-view-card-number">{{table.tableNumber}}</div>
+            <div>Shape: {{table.shape}}</div>
+            <div>Seats: {{table.seats}} people</div>
+            <div>Floor Plan: {{table.floorPlan}} Floor</div>
+            <div>Color: {{table.color}}</div>
+            <div>X: {{table.positionX}}</div>
+            <div>Y: {{table.positionY}}</div>
 
-        <div class="employee-schedule-dashboard-icons">
-            <div (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i></div>
-            <div (click)="deleteTable(table)"><i class="fa-solid fa-trash-can"></i></div>
+            <div class="employee-schedule-dashboard-icons">
+                <div (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i></div>
+                <div (click)="deleteTable(table)"><i class="fa-solid fa-trash-can"></i></div>
+            </div>
         </div>
-    </div>
-</ng-container>
+    </ng-container>
+</div>

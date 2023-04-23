@@ -1,5 +1,10 @@
 @import './../_styles/variables.scss';
 
+.tables-all-table-container{
+    display: flex;
+    overflow-x: auto;
+}
+
 .tables-all-table-view-card {
     position: relative;
     display: inline-block;
@@ -7,6 +12,7 @@
     padding: 15px;
     padding-top: 30px;
     margin: 15px 10px;
+    min-width: 250px;
     cursor: pointer;
 }
 
