@@ -19,7 +19,7 @@ export class TablesDashboardComponent implements OnInit {
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   totalTables: Table[];
   currentFloor: number = 1;
-
+  gridSize: number = 50; // Define the grid size, adjust this value to your needs
 
   constructor(
     public dialog: MatDialog,
@@ -65,7 +65,7 @@ export class TablesDashboardComponent implements OnInit {
       localStorage.setItem('currentFloor', this.currentFloor.toString());
     }
   }
-  
+
   increaseFloorPlan() {
     this.currentFloor += 1;
     localStorage.setItem('currentFloor', this.currentFloor.toString());
@@ -75,13 +75,23 @@ export class TablesDashboardComponent implements OnInit {
     const droppedTable = event.source.element.nativeElement;
     const tableViewRect = this.tableView.nativeElement.getBoundingClientRect();
     const droppedTableRect = droppedTable.getBoundingClientRect();
-    const newPositionX = (droppedTableRect.left - tableViewRect.left) - 2;
-    const newPositionY = (droppedTableRect.top - tableViewRect.top) - 2;
+
+    let newPositionX = (droppedTableRect.left - tableViewRect.left) - 2;
+    let newPositionY = (droppedTableRect.top - tableViewRect.top) - 2;
+
+    // Adjust the new positions according to the grid size
+    newPositionX = Math.round(newPositionX / this.gridSize) * this.gridSize;
+    newPositionY = Math.round(newPositionY / this.gridSize) * this.gridSize;
+
+    // Manually reset the table's position
+    event.source._dragRef.reset();
+
     table.positionX = newPositionX;
     table.positionY = newPositionY;
 
     this.tablesService.updateTable(table, table.id);
   }
+
 
   toggleActive(table: Table) {
     table.isActive = !table.isActive;
