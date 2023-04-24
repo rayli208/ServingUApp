@@ -1,9 +1,9 @@
 export class Table {
     id: string;
     uid: string;
+    eid: string;
     tableNumber: number;
     shape: number;
-    color: string;
     seats: string;
     floorPlan: number;
     isActive: boolean;

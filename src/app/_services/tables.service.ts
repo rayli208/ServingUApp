@@ -71,9 +71,9 @@ export class TablesService {
       .collection("tables")
       .doc(id)
       .update({
+        eid: table.eid,
         tableNumber: table.tableNumber,
         shape: table.shape,
-        color: table.color,
         seats: table.seats,
         floorPlan: table.floorPlan,
         isActive: table.isActive,

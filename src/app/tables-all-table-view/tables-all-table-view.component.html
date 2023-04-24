@@ -3,16 +3,27 @@
         <div *ngIf="table.floorPlan === floorNumber" class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
             [ngClass]="table.isActive ? 'active' : 'not-active' ">
             <div class="tables-all-table-view-card-number">{{table.tableNumber}}</div>
-            <div>Shape: {{table.shape}}</div>
-            <div>Seats: {{table.seats}} people</div>
-            <div>Floor Plan: {{table.floorPlan}} Floor</div>
-            <div>Color: {{table.color}}</div>
-            <div>X: {{table.positionX}}</div>
-            <div>Y: {{table.positionY}}</div>
 
-            <div class="employee-schedule-dashboard-icons">
-                <div (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i></div>
-                <div (click)="deleteTable(table)"><i class="fa-solid fa-trash-can"></i></div>
+            <div class="tables-all-table-view-content">
+                <span>Shape:</span>
+                <span>{{table.shape}}</span>
+            </div>
+            <div class="tables-all-table-view-content">
+                <span>Seats:</span>
+                <span>{{table.seats}} people</span>
+            </div>
+            <div class="tables-all-table-view-content">
+                <span>Floor Plan:</span>
+                <span>{{table.floorPlan}} Floor</span>
+            </div>
+            <div class="tables-all-table-view-content">
+                <span>Employee:</span>
+                <span
+                    [ngClass]="{'red-text': table.eid === ''}">{{table.eid === '' ? 'Not Assigned' : table.eid}}</span>
+            </div>
+            <div class="tables-all-table-edit" (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <div class="tables-all-table-delete" (click)="deleteTable(table)"><i class="fa-solid fa-trash-can"></i>
             </div>
         </div>
     </ng-container>

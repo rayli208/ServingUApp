@@ -22,9 +22,9 @@ export class CreateTableDialogComponent implements OnInit {
   ) {
     this.tableForm = this.formBuilder.group({
       uid: [''],
+      eid: [''],
       tableNumber: [],
       shape: [''],
-      color: [''],
       seats: [],
       floorPlan: [],
       isActive: false,
