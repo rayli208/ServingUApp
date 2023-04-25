@@ -86,6 +86,7 @@ import { PunchClockBottomSheetComponent } from './_bottom-sheets/punch-clock/pun
 import { ClockInTimePipe } from './_pipes/clock-in-time.pipe';
 import { HeaderComponent } from './_shared/header/header.component';
 import { CreateScheduleFromDateDialogComponent } from './_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component';
+import { TablesEmployeeViewComponent } from './tables-employee-view/tables-employee-view.component';
 
 
 @NgModule({
@@ -121,7 +122,8 @@ import { CreateScheduleFromDateDialogComponent } from './_dialogs/schedules/crea
         PunchClockBottomSheetComponent,
         ClockInTimePipe,
         HeaderComponent,
-        CreateScheduleFromDateDialogComponent
+        CreateScheduleFromDateDialogComponent,
+        TablesEmployeeViewComponent
     ],
     imports: [
         BrowserModule,

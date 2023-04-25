@@ -1,17 +1,17 @@
 <app-header iconClass="fa-solid fa-tablet-screen-button" title="Tables Dashboard">
     <mat-card class="table-dashboard-actions-container">
-            <div>
-                <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()">Waitlist</button>
-                <button mat-raised-button color="primary" (click)="createTable()">
-                    <span>Add Table</span>
-                </button>
-            </div>
-            <div class="table-dashboard-actions">
-                <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()"
-                    [class.disabled]="currentFloor === 1"></i>
-                <h1>Current Floor: {{ currentFloor }}</h1>
-                <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
-            </div>
+        <div>
+            <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()">Waitlist</button>
+            <button mat-raised-button color="primary" (click)="createTable()">
+                <span>Add Table</span>
+            </button>
+        </div>
+        <div class="table-dashboard-actions">
+            <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()"
+                [class.disabled]="currentFloor === 1"></i>
+            <h1>Current Floor: {{ currentFloor }}</h1>
+            <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+        </div>
     </mat-card>
 </app-header>
 
@@ -27,17 +27,23 @@
             </div>
 
             <!--Table View-->
-            <div #tableView class="table-view">
-                <h1 class="table-view-current-floor">Current Floor: {{currentFloor}}</h1>
-                <ng-container *ngFor="let table of totalTables">
-                    <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)"
-                        class="example-box {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag
-                        (cdkDragEnded)="dragEnd($event, table)" [style.top]="table.positionY + 'px'"
-                        [style.left]="table.positionX + 'px'">
-                        {{table.tableNumber}}
-                    </div>
-                </ng-container>
+            <div class="table-dashboard-container-split">
+                <div #tableView class="table-view">
+                    <h1 class="table-view-current-floor">Current Floor: {{currentFloor}}</h1>
+                    <ng-container *ngFor="let table of totalTables">
+                        <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)"
+                            class="example-box {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag
+                            (cdkDragEnded)="dragEnd($event, table)" [style.top]="table.positionY + 'px'"
+                            [style.left]="table.positionX + 'px'">
+                            {{table.tableNumber}}
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="employee-view">
+                    <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables"></app-tables-employee-view>
+                </div>
             </div>
+
         </mat-drawer-content>
         <mat-drawer #drawer mode="over" position="end">
             <app-tables-waitlist></app-tables-waitlist>

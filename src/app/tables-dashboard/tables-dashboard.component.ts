@@ -6,8 +6,8 @@ import { Table } from '../_models/table.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import { TablesService } from '../_services/tables.service';
-
-
+import { EmployeesService } from '../_services/employees.service';
+import { Employee } from '../_models/employee.model';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -21,11 +21,14 @@ export class TablesDashboardComponent implements OnInit {
   currentFloor: number = 1;
   gridSize: number = 50; // Define the grid size, adjust this value to your needs
 
+  //Employee Portion
+  clockedInEmployees: Employee[] = [];
+
   constructor(
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private tablesService: TablesService,
-
+    private employeesService: EmployeesService,
   ) {
     this.user = null;
   }
@@ -45,9 +48,24 @@ export class TablesDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Table;
-          }).sort((a, b) => {
-            return a.tableNumber - b.tableNumber;
-          });
+          })
+            .sort((a, b) => {
+              if (a.isActive === b.isActive) {
+                return a.tableNumber - b.tableNumber;
+              }
+              return b.isActive ? 1 : -1;
+            });
+        });
+
+        this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
+          this.clockedInEmployees = res.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Employee;
+          })
+            .filter(employee => employee.clockedIn === true)
+            .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
       }
     });

@@ -13,7 +13,6 @@ export class TablesAllTableViewComponent implements OnInit {
   @Input() tables: Table[];
   @Input() floorNumber: number;
 
-
   constructor(
     public dialog: MatDialog,
     private tablesService: TablesService,
@@ -23,7 +22,6 @@ export class TablesAllTableViewComponent implements OnInit {
     console.log("Tables: ", this.tables);
   }
 
-
   //Remove Schedule 
   deleteTable(table: Table) {
     if (confirm("Are you sure you want to delete " + table.tableNumber + "?")) {
@@ -31,7 +29,6 @@ export class TablesAllTableViewComponent implements OnInit {
       console.log("Table has been  deleted");
     }
   }
-
 
   editTable(table: Table) {
     const dialogRef = this.dialog.open(EditTableDialogComponent, {
