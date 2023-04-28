@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Table } from '../_models/table.model';
 import { TablesService } from '../_services/tables.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Employee } from '../_models/employee.model';
 
 @Component({
   selector: 'app-tables-all-table-view',
@@ -11,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class TablesAllTableViewComponent implements OnInit {
   @Input() tables: Table[];
+  @Input() employees: Employee[];
   @Input() floorNumber: number;
 
   constructor(

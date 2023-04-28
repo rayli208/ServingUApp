@@ -22,7 +22,7 @@
             <div class="table-all-table-container">
                 <i class="table-all-table-container-no-tables" *ngIf="totalTables?.length == 0">There are no tables,
                     please make some!</i>
-                <app-tables-all-table-view [floorNumber]="currentFloor" [tables]="totalTables">
+                <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor" [tables]="totalTables">
                 </app-tables-all-table-view>
             </div>
 

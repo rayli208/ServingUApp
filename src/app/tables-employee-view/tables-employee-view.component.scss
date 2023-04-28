@@ -1,5 +1,20 @@
 @import './../_styles/variables.scss';
 
+.tables-employee-view-container{
+    max-height: 500px;
+    overflow: scroll;
+}
+
+.tables-employee-view-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.tables-employee-view-container::-webkit-scrollbar-thumb {
+    background-color: $text-muted;
+    border-radius: 6px;
+}
+
 .tables-employee-view-card {
     border: 1px solid $brand-primary;
     border-radius: 20px;

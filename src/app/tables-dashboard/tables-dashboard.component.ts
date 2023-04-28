@@ -64,7 +64,7 @@ export class TablesDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Employee;
           })
-            .filter(employee => employee.clockedIn === true)
+            .filter(employee => employee.clockedIn === true && employee.employeed === true)
             .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
       }
