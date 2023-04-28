@@ -1,11 +1,7 @@
 import { Table } from './../_models/table.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -14,42 +10,49 @@ export class TablesService {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private afs: AngularFirestore,
+  constructor(
+    private afs: AngularFirestore,
     private _snackBar: MatSnackBar
   ) { }
 
-  getTableDoc(id) {
+  getTableDoc(id: string) {
     return this.afs
       .collection("tables")
       .doc(id)
       .valueChanges();
   }
 
-  getTablesListForUser(userId) {
+  getTablesListForUser(userId: string) {
     return this.afs
       .collection("tables", ref => ref.where('uid', '==', userId))
       .snapshotChanges();
   }
 
-  createTable(table: Table) {
-    return new Promise<any>((resolve, reject) => {
-      this.afs
-        .collection("tables")
-        .add(table)
+  createTable(table: Table): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.afs.collection("tables").add(table)
         .then(() => {
-          this._snackBar.open('table has been created!', '', {
+          this._snackBar.open('Table created successfully!', '', {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             duration: 2500,
             panelClass: ['green-snackbar']
-          })
-            , error => {
-              console.log("'Please contact IT for further assistance.', 'There has been an error creating the table.")
-              return reject(error);
-            }
+          });
+          resolve();
+        })
+        .catch(error => {
+          console.error('Error creating table:', error);
+          this._snackBar.open('Error creating table. Please try again later.', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['red-snackbar']
+          });
+          reject(error);
         });
     });
   }
+
 
   deleteTable(table: Table) {
     return this.afs
@@ -57,7 +60,16 @@ export class TablesService {
       .doc(table.id)
       .delete()
       .then(() => {
-        this._snackBar.open('Table has been deleted!', '', {
+        this._snackBar.open('Table deleted successfully!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      })
+      .catch(error => {
+        console.error('Error deleting table:', error);
+        this._snackBar.open('Error deleting table. Please try again later.', '', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
@@ -66,12 +78,12 @@ export class TablesService {
       });
   }
 
-  updateTable(table: Table, id) {
+  updateTable(table: Table, id: string) {
     return this.afs
       .collection("tables")
       .doc(id)
       .update({
-        eid: table.eid,
+        assignedEmployee: table.assignedEmployee,
         tableNumber: table.tableNumber,
         shape: table.shape,
         seats: table.seats,
@@ -79,12 +91,22 @@ export class TablesService {
         isActive: table.isActive,
         positionX: table.positionX,
         positionY: table.positionY
-      }).then(() => {
-        this._snackBar.open('Table has been edited!', '', {
+      })
+      .then(() => {
+        this._snackBar.open('Table updated successfully!', '', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
-          panelClass: ['yellow-snackbar']
+          panelClass: ['green-snackbar']
+        });
+      })
+      .catch(error => {
+        console.error('Error updating table:', error);
+        this._snackBar.open('Error updating table. Please try again later.', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
         });
       });
   }

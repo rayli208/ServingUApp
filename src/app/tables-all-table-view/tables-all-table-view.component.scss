@@ -24,7 +24,7 @@
     border-radius: 4px;
     padding: 15px;
     padding-top: 30px;
-    margin: 25px 10px 8px;
+    margin: 30px 10px 8px;
     min-width: 175px;
     cursor: pointer;
 }
@@ -48,12 +48,14 @@
 }
 
 .tables-all-table-view-card-number {
-    background-color: $white;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
     font-size: 1.2em;
     font-weight: bold;
     border-radius: 50%;
-    width: 3em;
-    height: 3em;
+    width: 3.5em;
+    height: 3.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,6 +64,22 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.table-number {
+    background-color: $red;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .table-number.active {
+    background-color: $green;
+  }
 
 .tables-all-table-view-content {
     display: flex;

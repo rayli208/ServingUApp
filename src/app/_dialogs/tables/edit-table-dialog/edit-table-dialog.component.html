@@ -1,6 +1,16 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
     <div>
         <mat-form-field appearance="outline">
+            <mat-label>Assigned Employee</mat-label>
+            <mat-select formControlName="assignedEmployee">
+                <mat-option *ngFor="let employee of employees" [value]="employee">
+                    {{employee.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
             <mat-label>Table Number</mat-label>
             <input type="number" formControlName="tableNumber" matInput required>
         </mat-form-field>
@@ -31,5 +41,6 @@
         </mat-form-field>
     </div>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid || !editForm.dirty" style="float: right;">Update</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid || !editForm.dirty"
+        style="float: right;">Update</button>
 </form>

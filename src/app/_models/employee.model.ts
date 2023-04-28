@@ -1,13 +1,14 @@
-export class Employee {
+export interface Employee {
     id: string;
     uid: string;
     name: string;
     position: string;
+    imgUrl: string | null;
     employmentType: string;
     phone: string;
     email: string;
-    color: string;
-    imgUrl: string;
-    employeed: boolean;
     clockedIn: boolean;
-}
+    color: string;
+    employeed: boolean;
+  }
+  

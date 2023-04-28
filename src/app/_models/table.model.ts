@@ -1,7 +1,9 @@
+import { Employee } from "./employee.model";
+
 export class Table {
     id: string;
     uid: string;
-    eid: string;
+    assignedEmployee: Employee | {};
     tableNumber: number;
     shape: number;
     seats: string;

@@ -2,8 +2,12 @@
     <ng-container *ngFor="let table of tables">
         <div *ngIf="table.floorPlan === floorNumber" class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
             [ngClass]="table.isActive ? 'active' : 'not-active' ">
-            <div class="tables-all-table-view-card-number">{{table.tableNumber}}</div>
-
+            <div class="tables-all-table-view-card-number"
+                [style.background-image]="'url(' + (table.assignedEmployee?.imgUrl || '') + ')'">
+                <div class="table-number"
+                [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
+                {{ table.tableNumber }}</div>
+            </div>
             <div class="tables-all-table-view-content">
                 <span>Shape:</span>
                 <span>{{table.shape}}</span>
@@ -18,8 +22,9 @@
             </div>
             <div class="tables-all-table-view-content">
                 <span>Employee:</span>
-                <span
-                    [ngClass]="{'red-text': table.eid === ''}">{{table.eid === '' ? 'Not Assigned' : table.eid}}</span>
+                <span [ngClass]="{'red-text': table.assignedEmployee.name === 'Unassigned Table'}">
+                    {{table.assignedEmployee.name === 'Unassigned Table' ? 'Not Assigned' : table.assignedEmployee.name}}
+                </span>
             </div>
             <div class="tables-all-table-edit" (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i>
             </div>

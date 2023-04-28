@@ -12,7 +12,7 @@ import { TablesService } from 'src/app/_services/tables.service';
 })
 export class CreateTableDialogComponent implements OnInit {
   public tableForm: UntypedFormGroup;
-  
+
   constructor(
     public tablesService: TablesService,
     public formBuilder: UntypedFormBuilder,
@@ -22,7 +22,7 @@ export class CreateTableDialogComponent implements OnInit {
   ) {
     this.tableForm = this.formBuilder.group({
       uid: [''],
-      eid: [''],
+      assignedEmployee: [],
       tableNumber: [],
       shape: [''],
       seats: [],
@@ -36,8 +36,11 @@ export class CreateTableDialogComponent implements OnInit {
   //Set ID of owner of job on load
   ngOnInit() {
     this.setUserId();
+    this.tableForm.patchValue({
+      assignedEmployee: { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', color: '', imgUrl: '', employeed: false, clockedIn: false }
+    });
   }
-  
+
   //Create job and redirect to dashboard
   onSubmit() {
     this.tablesService.createTable(this.tableForm.value);
@@ -45,7 +48,7 @@ export class CreateTableDialogComponent implements OnInit {
   }
 
   //Set User ID so jobs have link to their owners
-  setUserId(){
+  setUserId() {
     this.afAuth.authState.subscribe(async user => {
       if (user && user.uid) {
         this.tableForm.patchValue({

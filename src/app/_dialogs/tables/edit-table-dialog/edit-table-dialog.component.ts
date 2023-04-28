@@ -1,7 +1,8 @@
 import { TablesService } from './../../../_services/tables.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Employee } from 'src/app/_models/employee.model';
 import { Table } from 'src/app/_models/table.model';
 
 @Component({
@@ -11,19 +12,30 @@ import { Table } from 'src/app/_models/table.model';
 })
 export class EditTableDialogComponent implements OnInit {
   public table: Table;
-  public editForm: UntypedFormGroup;
+  public employees: Employee[];
+  public editForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Table,
-    public formBuilder: UntypedFormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: {table: Table, employees: Employee[]},
+    public formBuilder: FormBuilder,
     public tablesService:TablesService,
     public dialogRef: MatDialogRef<EditTableDialogComponent>,
-    ) { 
-    this.table = data;
-
-    this.editForm = this.formBuilder.group({...this.table})
+  ) { 
+    this.table = data.table;
+    this.employees = [{ id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', color: '', imgUrl: '', employeed: false, clockedIn: false }, ...data.employees];
+  
+    this.editForm = this.formBuilder.group({
+      assignedEmployee: [this.table.assignedEmployee],
+      tableNumber: [this.table.tableNumber],
+      shape: [this.table.shape],
+      seats: [this.table.seats],
+      floorPlan: [this.table.floorPlan],
+      isActive: [this.table.isActive],
+      positionX: [this.table.positionX],
+      positionY: [this.table.positionY]
+    });
   }
-
+  
   ngOnInit(): void {}
 
   onSubmit(){

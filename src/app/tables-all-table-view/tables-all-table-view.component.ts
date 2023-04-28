@@ -34,13 +34,20 @@ export class TablesAllTableViewComponent implements OnInit {
 
   editTable(table: Table) {
     const dialogRef = this.dialog.open(EditTableDialogComponent, {
-      data: table
+      data: {table: table, employees: this.employees}
     });
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
   }
+  
+  
 
   toggleActive(table: Table){
+    //If the table is not assigned to anyone, it returns and does not toggle the table
+    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
+      return;
+    }    
+    
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
   }

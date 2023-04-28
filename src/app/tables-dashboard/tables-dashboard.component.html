@@ -22,7 +22,8 @@
             <div class="table-all-table-container">
                 <i class="table-all-table-container-no-tables" *ngIf="totalTables?.length == 0">There are no tables,
                     please make some!</i>
-                <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor" [tables]="totalTables">
+                <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor"
+                    [tables]="totalTables">
                 </app-tables-all-table-view>
             </div>
 
@@ -32,15 +33,20 @@
                     <h1 class="table-view-current-floor">Current Floor: {{currentFloor}}</h1>
                     <ng-container *ngFor="let table of totalTables">
                         <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)"
-                            class="example-box {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag
-                            (cdkDragEnded)="dragEnd($event, table)" [style.top]="table.positionY + 'px'"
-                            [style.left]="table.positionX + 'px'">
-                            {{table.tableNumber}}
+                            class="shape {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag
+                            [style.background-image]="'url(' + (table.assignedEmployee?.imgUrl || '') + ')'"
+                            [style.border]="table.isActive ? '2px solid #22C795' : '2px solid #EB5B5B'"
+                            [style.opacity]="table.isActive ? '1' : '0.3'" (cdkDragEnded)="dragEnd($event, table)"
+                            [style.top]="table.positionY + 'px'" [style.left]="table.positionX + 'px'">
+                            <div class="table-number"
+                                [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
+                                {{ table.tableNumber }}</div>
                         </div>
                     </ng-container>
                 </div>
                 <div class="employee-view">
-                    <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables"></app-tables-employee-view>
+                    <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables">
+                    </app-tables-employee-view>
                 </div>
             </div>
 

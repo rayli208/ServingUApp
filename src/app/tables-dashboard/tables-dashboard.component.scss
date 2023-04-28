@@ -122,6 +122,27 @@
   transition: none !important;
 }
 
+.shape {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.table-number {
+  background-color: $red;
+  border-radius: 50%;
+  color: white;
+  font-size: 15px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-number.active {
+  background-color: $green;
+}
 
 //SHAPES
 .square,
@@ -138,8 +159,6 @@
 }
 
 .square {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 50px;
   display: flex;
@@ -148,8 +167,6 @@
 }
 
 .horizontal-rectangle {
-  background-color: green;
-  border: 2px solid red;
   width: 100px;
   height: 50px;
   display: flex;
@@ -158,8 +175,6 @@
 }
 
 .verticle-rectangle {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 100px;
   display: flex;
@@ -168,8 +183,6 @@
 }
 
 .circle {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -179,8 +192,6 @@
 }
 
 .pentagon {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 50px;
   clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
@@ -190,8 +201,6 @@
 }
 
 .hexagon {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 50px;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -201,8 +210,6 @@
 }
 
 .triangle {
-  background-color: green;
-  border: 2px solid red;
   width: 50px;
   height: 50px;
   clip-path: polygon(0% 100%, 50% 0%, 100% 100%);

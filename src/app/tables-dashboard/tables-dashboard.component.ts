@@ -111,7 +111,12 @@ export class TablesDashboardComponent implements OnInit {
   }
 
 
-  toggleActive(table: Table) {
+  toggleActive(table: Table){
+    //If the table is not assigned to anyone, it returns and does not toggle the table
+    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
+      return;
+    }    
+    
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
   }
