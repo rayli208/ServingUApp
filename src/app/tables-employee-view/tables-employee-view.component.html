@@ -1,7 +1,7 @@
 <div class="tables-employee-view-container">
     <i *ngIf="!employees.length">There are no employees clocked in</i>
     <ng-container *ngFor="let employee of employees; let i = index">
-        <div class="tables-employee-view-card" *ngIf="employee.employeed && employee.clockedIn" [style.border-left]="'10px solid ' + employee.color">
+        <div class="tables-employee-view-card" *ngIf="employee.employeed && employee.clockedIn">
             <div class="tables-employee-view-card-body">
                 <div style="display: flex">
                     <img class="tables-employee-view-card-header-profile" [ngClass]="{ 'green': employee.clockedIn }"
