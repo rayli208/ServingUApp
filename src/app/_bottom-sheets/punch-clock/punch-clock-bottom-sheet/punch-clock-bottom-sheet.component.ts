@@ -4,13 +4,13 @@ import { Employee } from './../../../_models/employee.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Timestamp } from 'firebase/firestore';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-
 
 @Component({
   selector: 'app-punch-clock-bottom-sheet',
@@ -25,7 +25,7 @@ export class PunchClockBottomSheetComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public timeStampService: TimeStampService,
     public employeesService: EmployeesService,
-    public formBuilder: UntypedFormBuilder,
+    public formBuilder: FormBuilder,
     private bottomSheetRef: MatBottomSheetRef<PunchClockBottomSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public employee: Employee
   ) {
@@ -38,12 +38,10 @@ export class PunchClockBottomSheetComponent implements OnInit {
       date: [''],
     });
   }
-  public timeStampForm: UntypedFormGroup;
 
+  public timeStampForm: FormGroup;
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   async handleClockInOrOut(): Promise<void> {
     if (!this.employee.clockedIn) {
@@ -56,16 +54,19 @@ export class PunchClockBottomSheetComponent implements OnInit {
     } else {
       // Clock-out case
       const endTime = new Date();
+      const startTime = new Date(this.employee.clockedInTime);
+      const hoursWorked = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60));
+      const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
+      const message = `You have clocked out! You worked ${hoursWorked} hours and ${minutesWorked} minutes.`;
       await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
       this.employee.clockedIn = false;
       this.employee.clockedInTime = null;
       await this.employeesService.updateEmployee(this.employee, this.employee.id);
-      this.showSnackBar('You have clocked out!');
+      this.showSnackBar(message);
       this.closeBottomSheet();
     }
   }
-
-
+  
   closeBottomSheet(): void {
     this.bottomSheetRef.dismiss();
   }

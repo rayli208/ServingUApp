@@ -8,7 +8,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
-import { TimeStamp } from '../_models/time-stamp.model';
 import { EmployeesService } from '../_services/employees.service';
 import { ScheduleService } from '../_services/schedule.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -83,4 +82,9 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
         this.currentTime = time;
       });
   }
+
+  formatClockInTime(seconds: number): string {
+    const date = new Date(seconds * 1000);
+    return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  }  
 }
