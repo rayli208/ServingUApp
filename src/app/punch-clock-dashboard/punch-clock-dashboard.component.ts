@@ -51,7 +51,6 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
         this.employeesService.getEmployeesListForUser(this.userId).subscribe((employees) => {
           this.Employees = employees.map((employee) => {
             const employeeData = employee.payload.doc.data();
-            this.getClockInTime(employee.payload.doc.id);
             return { id: employee.payload.doc.id, ...(employeeData as object) } as Employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         });
@@ -65,16 +64,6 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  getClockInTime(employeeId) {
-    this.timeStampService.getTimeStampsByDateAndEmployeeId(this.dateStr, employeeId).subscribe((timeStamps) => {
-      if (timeStamps.length > 0) {
-        const startTime = (timeStamps[0].payload.doc.data() as TimeStamp).startTime;
-        this.clockInTimes.set(employeeId, startTime);
-      }
-    });
-  }
-  
 
   onTriggerSheetClick(employee: Employee) {
     this.matBottomSheet.open(

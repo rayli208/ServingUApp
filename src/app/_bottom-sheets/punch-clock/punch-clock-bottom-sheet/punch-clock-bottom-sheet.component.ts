@@ -4,9 +4,7 @@ import { Employee } from './../../../_models/employee.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { formatDate, formatTime } from '../../../_helpers/date-time-formatter'
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TimeStamp } from 'src/app/_models/time-stamp.model';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -31,7 +29,6 @@ export class PunchClockBottomSheetComponent implements OnInit {
     private bottomSheetRef: MatBottomSheetRef<PunchClockBottomSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public employee: Employee
   ) {
-    this.currentTime = new Date();
     this.timeStampForm = this.formBuilder.group({
       uid: [employee.uid],
       employeeId: [employee.id],
@@ -41,61 +38,33 @@ export class PunchClockBottomSheetComponent implements OnInit {
       date: [''],
     });
   }
-
   public timeStampForm: UntypedFormGroup;
-  currentTime: Date;
-  formattedDate: string;
-  formattedTime: string;
+
 
   ngOnInit(): void {
-    this.formattedDate = formatDate(this.currentTime); // Use the imported function
-    this.formattedTime = formatTime(this.currentTime); // Use the imported function
+
   }
 
-  toggleClockInOut(employee: Employee) {
-    if (!employee.clockedIn) {
-      this.clockIn(employee);
+  async handleClockInOrOut(): Promise<void> {
+    if (!this.employee.clockedIn) {
+      // Clock-in case
+      this.employee.clockedIn = true;
+      this.employee.clockedInTime = new Date();
+      await this.employeesService.updateEmployee(this.employee, this.employee.id);
+      this.showSnackBar('You have clocked in!');
+      this.closeBottomSheet();
     } else {
-      this.clockOut(employee);
+      // Clock-out case
+      const endTime = new Date();
+      await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
+      this.employee.clockedIn = false;
+      this.employee.clockedInTime = null;
+      await this.employeesService.updateEmployee(this.employee, this.employee.id);
+      this.showSnackBar('You have clocked out!');
+      this.closeBottomSheet();
     }
   }
 
-  clockIn(employee: Employee) {
-    // Make employee clock in
-    employee.clockedIn = !employee.clockedIn;
-    this.employeesService.updateEmployee(employee, employee.id)
-    this.timeStampForm.patchValue({
-      startTime: this.formattedTime,
-      date: this.formattedDate
-    });
-    // Create time stamp
-    this.timeStampService.createTimeStamp(this.timeStampForm.value)
-    // Alert
-    this.showSnackBar("Employee has clocked in!");
-    // Close bottom sheet
-    this.closeBottomSheet();
-  }
-
-  clockOut(employee: Employee) {
-    // Make employee clock out
-    employee.clockedIn = !employee.clockedIn;
-    this.employeesService.updateEmployee(employee, employee.id);
-
-    this.timeStampService.getTimeStampsByDateAndEmployeeId(this.formattedDate, employee.id).subscribe((timeStamps) => {
-      if (timeStamps.length > 0) {
-        const timeStampData = (timeStamps[0].payload.doc.data() as TimeStamp);
-        const timeStampId = timeStamps[0].payload.doc.id;
-        timeStampData.endTime = this.formattedTime;
-        this.timeStampService.updateTimeStamp(timeStampData, timeStampId);
-
-        const workedTime = this.calculateWorkedTime(timeStampData.startTime, timeStampData.endTime);
-        this.showSnackBar(`Employee has clocked out! Worked ${workedTime.hours} hours and ${workedTime.minutes} minutes`);
-      }
-    });
-
-    // Close bottom sheet
-    this.closeBottomSheet();
-  }
 
   closeBottomSheet(): void {
     this.bottomSheetRef.dismiss();
@@ -108,16 +77,5 @@ export class PunchClockBottomSheetComponent implements OnInit {
       duration: 2500,
       panelClass: ['green-snackbar']
     });
-  }
-
-  calculateWorkedTime(startTime: string, endTime: string): { hours: number, minutes: number } {
-    const start = new Date(`1970-01-01T${startTime}:00`);
-    const end = new Date(`1970-01-01T${endTime}:00`);
-    const diff = (end.getTime() - start.getTime()) / 1000;
-
-    const hours = Math.floor(diff / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-
-    return { hours, minutes };
   }
 }

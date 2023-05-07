@@ -37,7 +37,7 @@ export class CreateTableDialogComponent implements OnInit {
   ngOnInit() {
     this.setUserId();
     this.tableForm.patchValue({
-      assignedEmployee: { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', color: '', imgUrl: '', employeed: false, clockedIn: false }
+      assignedEmployee: { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false }
     });
   }
 

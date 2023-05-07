@@ -1,5 +1,6 @@
 <app-header iconClass="fa-solid fa-stopwatch" title="Punch Clock Dashboard">
-    <h2 style="margin-bottom: 0px !important; margin-top: 5px !important; text-align: center;">Current Time: {{currentTime}}</h2>
+    <h2 style="margin-bottom: 0px !important; margin-top: 5px !important; text-align: center;">Current Time:
+        {{currentTime}}</h2>
 </app-header>
 
 <div class="punch-clock-dashboard-container">
@@ -54,10 +55,8 @@
                             <i class="fa-solid fa-fingerprint"></i>
                         </div>
                     </div>
-                    <div *ngIf="employee.clockedIn" class="punch-clock-dashboard-card-clock-in-time">
-                        <h2>
-                            Clocked in at: {{ clockInTimes.get(employee.id) | clockInTime }}
-                        </h2>
+                    <div *ngIf="employee.clockedInTime" class="punch-clock-dashboard-card-clock-in-time">
+                        <h2>Clocked In Time: {{employee.clockedInTime.toDate() | date: 'h:mm a'}}</h2>
                     </div>
                 </div>
             </div>

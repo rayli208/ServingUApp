@@ -52,10 +52,10 @@ export class EmployeesService {
         employmentType: employee.employmentType,
         phone: employee.phone,
         email: employee.email,
-        color: employee.color,
         imgUrl: employee.imgUrl,
         employeed: employee.employeed,
-        clockedIn: employee.clockedIn
+        clockedIn: employee.clockedIn,
+        clockedInTime: employee.clockedInTime
       });
   }
 }

@@ -36,10 +36,10 @@ export class CreateEmployeeDialogComponent implements OnInit {
       employmentType: [''],
       phone: [''],
       email: [''],
-      color: [''],
       imgUrl: [''],
       employeed: true,
-      clockedIn: false
+      clockedIn: false,
+      clockedInTime: null
     })
   }
 

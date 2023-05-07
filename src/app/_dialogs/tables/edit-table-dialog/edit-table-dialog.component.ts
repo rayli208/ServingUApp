@@ -22,7 +22,7 @@ export class EditTableDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditTableDialogComponent>,
   ) { 
     this.table = data.table;
-    this.employees = [{ id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', color: '', imgUrl: '', employeed: false, clockedIn: false }, ...data.employees];
+    this.employees = [{ id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false, clockedInTime: null }, ...data.employees];
   
     this.editForm = this.formBuilder.group({
       assignedEmployee: [this.table.assignedEmployee],

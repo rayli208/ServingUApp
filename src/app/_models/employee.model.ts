@@ -8,7 +8,7 @@ export interface Employee {
     phone: string;
     email: string;
     clockedIn: boolean;
-    color: string;
+    clockedInTime: Date | null;
     employeed: boolean;
   }
   
