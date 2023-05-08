@@ -3,14 +3,11 @@
 
 body {
     margin: 0px;
+    overflow: hidden;
 }
 
 h1 {
     margin: unset !important;
-}
-
-.mat-drawer-content{
-    height: auto !important;
 }
 
 .green-snackbar {

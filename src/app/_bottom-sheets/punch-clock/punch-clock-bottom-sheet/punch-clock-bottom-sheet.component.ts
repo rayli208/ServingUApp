@@ -5,7 +5,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Timestamp } from 'firebase/firestore';
+
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -54,10 +54,10 @@ export class PunchClockBottomSheetComponent implements OnInit {
     } else {
       // Clock-out case
       const endTime = new Date();
-      const startTime = new Date(this.employee.clockedInTime);
+      const startTime = new Date((this.employee.clockedInTime as any).toDate());
       const hoursWorked = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60));
       const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
-      const message = `You have clocked out! You worked ${hoursWorked} hours and ${minutesWorked} minutes.`;
+      const message = `You have clocked out! You worked ${hoursWorked} hour${hoursWorked == 1 ? '' : 's'} and ${minutesWorked} minute${minutesWorked == 1 ? '' : 's'}.`;
       await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
       this.employee.clockedIn = false;
       this.employee.clockedInTime = null;
