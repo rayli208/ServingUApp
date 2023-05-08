@@ -21,8 +21,11 @@ export class TablesDashboardComponent implements OnInit {
   currentFloor: number = 1;
   gridSize: number = 50; // Define the grid size, adjust this value to your needs
 
+
   //Employee Portion
   clockedInEmployees: Employee[] = [];
+  //Employee and table jumbled object
+  employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
 
   constructor(
     public dialog: MatDialog,
@@ -55,6 +58,7 @@ export class TablesDashboardComponent implements OnInit {
               }
               return b.isActive ? 1 : -1;
             });
+            this.updateEmployeesWithTables();
         });
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
@@ -66,6 +70,24 @@ export class TablesDashboardComponent implements OnInit {
           })
             .filter(employee => employee.clockedIn === true && employee.employeed === true)
             .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+          // After fetching the clockedInEmployees and totalTables, create the employeesWithTables object
+          const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
+
+          this.clockedInEmployees.forEach(employee => {
+            const employeeWithTables = { ...employee, assignedTables: [] };
+
+            this.totalTables.forEach(table => {
+              if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
+                // Push the entire table object instead of just the table number and floor
+                employeeWithTables.assignedTables.push(table);
+              }
+            });
+
+            employeesWithTables[employee.id] = employeeWithTables;
+          });
+
+          this.updateEmployeesWithTables();
         });
       }
     });
@@ -76,6 +98,7 @@ export class TablesDashboardComponent implements OnInit {
       this.currentFloor = parseInt(savedFloor, 10);
     }
   }
+
 
   decreaseFloorPlan() {
     if (this.currentFloor > 1) {
@@ -111,19 +134,40 @@ export class TablesDashboardComponent implements OnInit {
   }
 
 
-  toggleActive(table: Table){
+  //Toggles Active Table
+  toggleActive(table: Table) {
     //If the table is not assigned to anyone, it returns and does not toggle the table
     if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
       return;
-    }    
-    
+    }
+
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
   }
 
+  //Creates Table
   createTable(): void {
     const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  //Updates EmployeesWithTables object
+  updateEmployeesWithTables() {
+    const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
+  
+    this.clockedInEmployees.forEach(employee => {
+      const employeeWithTables = { ...employee, assignedTables: [] };
+  
+      this.totalTables.forEach(table => {
+        if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
+          employeeWithTables.assignedTables.push(table);
+        }
+      });
+  
+      employeesWithTables[employee.id] = employeeWithTables;
+    });
+  
+    this.employeesWithTables = employeesWithTables;
   }
 }
