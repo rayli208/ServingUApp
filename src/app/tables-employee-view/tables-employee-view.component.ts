@@ -3,6 +3,7 @@ import { Table } from '../_models/table.model';
 import { Employee } from '../_models/employee.model';
 import { EditTableDialogComponent } from '../_dialogs/tables/edit-table-dialog/edit-table-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TablesService } from '../_services/tables.service';
 
 @Component({
   selector: 'app-tables-employee-view',
@@ -14,7 +15,9 @@ export class TablesEmployeeViewComponent implements OnInit {
   @Input() employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } };
   @Input() employees: Employee[];
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
+    private tablesService: TablesService,
   ) { }
 
   ngOnInit(): void {
@@ -25,13 +28,13 @@ export class TablesEmployeeViewComponent implements OnInit {
     return Object.keys(obj);
   }
 
+  toggleActive(table: Table) {
+    //If the table is not assigned to anyone, it returns and does not toggle the table
+    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
+      return;
+    }
 
-  editTable(table: Table) {
-    const dialogRef = this.dialog.open(EditTableDialogComponent, {
-      data: { table: table, employees: this.employees }
-    });
-    //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
+    table.isActive = !table.isActive;
+    this.tablesService.updateTable(table, table.id);
   }
-
 }

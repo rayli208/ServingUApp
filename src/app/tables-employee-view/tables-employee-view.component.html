@@ -1,31 +1,40 @@
 <div class="tables-employee-view-container">
     <i *ngIf="!getObjectKeys(employeesWithTables).length">There are no employees clocked in</i>
     <ng-container *ngFor="let employeeId of getObjectKeys(employeesWithTables)">
-      <ng-container *ngIf="employeesWithTables[employeeId].employeed && employeesWithTables[employeeId].clockedIn">
-        <div class="tables-employee-view-card">
-          <div class="tables-employee-view-card-body">
-            <div style="display: flex">
-              <img class="tables-employee-view-card-header-profile" [ngClass]="{ 'green': employeesWithTables[employeeId].clockedIn }"
-                src="{{employeesWithTables[employeeId].imgUrl}}">
-              <div class="tables-employee-view-card-header-name">
-                <div>{{employeesWithTables[employeeId].name | titlecase}}</div>
-                <div class="tables-employee-view-card-header-position">
-                  {{employeesWithTables[employeeId].position | titlecase}}
+        <ng-container *ngIf="employeesWithTables[employeeId].employeed && employeesWithTables[employeeId].clockedIn">
+            <div class="tables-employee-view-card">
+                <div class="tables-employee-view-card-body">
+                    <div style="display: flex">
+                        <img class="tables-employee-view-card-header-profile"
+                            [ngClass]="{ 'green': employeesWithTables[employeeId].clockedIn }"
+                            src="{{employeesWithTables[employeeId].imgUrl}}">
+                        <div class="tables-employee-view-card-header-name">
+                            <div>{{employeesWithTables[employeeId].name | titlecase}}</div>
+                            <div class="tables-employee-view-card-header-position">
+                                {{employeesWithTables[employeeId].position | titlecase}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tables-employee-view-card-serving">
+                        <i *ngIf="employeesWithTables[employeeId].assignedTables.length">Currently Serving:</i>
+                        <i *ngIf="!employeesWithTables[employeeId].assignedTables.length">There are no tables assigned
+                            to this employee atm</i>
+                        <div *ngIf="employeesWithTables[employeeId].assignedTables.length">
+                            <div class="table-container">
+                                <div *ngFor="let table of employeesWithTables[employeeId].assignedTables"
+                                    class="table-item"
+                                    [ngClass]="{'active-table': table.isActive, 'inactive-table': !table.isActive}">
+                                    <div (dblclick)="toggleActive(table)">
+                                        <div class="table-item-content"><i>Floor:</i> <b>{{table.floorPlan}}</b></div>
+                                        <hr class="table-item-hr">
+                                        <div class="table-item-content"><i>Table:</i> <b>{{table.tableNumber}}</b></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="tables-employee-view-card-serving">
-              <i *ngIf="employeesWithTables[employeeId].assignedTables.length">Currently Serving:</i>
-              <i *ngIf="!employeesWithTables[employeeId].assignedTables.length">There are no tables assigned to this employee atm</i>
-              <ul *ngIf="employeesWithTables[employeeId].assignedTables.length">
-                <div *ngFor="let table of employeesWithTables[employeeId].assignedTables">
-                    <div (click)="editTable(table)">Table {{table.tableNumber}}, Floor {{table.floorPlan}}</div>
-                </div>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </ng-container>
+        </ng-container>
     </ng-container>
-  </div>
-  
+</div>

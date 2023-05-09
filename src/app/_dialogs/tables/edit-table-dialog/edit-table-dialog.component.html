@@ -4,7 +4,8 @@
             <mat-label>Assigned Employee</mat-label>
             <mat-select formControlName="assignedEmployee">
                 <mat-option *ngFor="let employee of employees" [value]="employee">
-                    {{employee.name}}
+                    <img class="edit-table-dialog-image" src="{{employee.imgUrl}}" />
+                    <span>{{employee.name}}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
