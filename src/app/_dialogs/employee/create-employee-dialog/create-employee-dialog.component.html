@@ -2,11 +2,19 @@
     <h1 mat-dialog-title>Create an Employee</h1>
     <div mat-dialog-content>
         <div style="text-align: center;">
-            <img (click)="fileUploader.click()" [src]="imgSrc" width="100px" height="100px" style="cursor: pointer; border-radius: 50%;">
+            <img (click)="fileUploader.click(); $event.stopPropagation()" [src]="imgSrc" width="100px" height="100px"
+                style="cursor: pointer; border-radius: 50%;">
         </div>
         <div>
-            <label for="Image"></label>
-            <input #fileUploader type="file" (change)="detectNewImage($event)" accept="*.png.jpg.jpeg">
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Profile Picture</mat-label>
+                <button type="button" mat-icon-button matPrefix
+                    (click)="fileUploader.click(); $event.stopPropagation()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input type="text" readonly matInput formControlName="fileName" />
+                <input type="file" hidden #fileUploader (change)="detectNewImage($event)" accept="*.png,*.jpg,*.jpeg" />
+            </mat-form-field>
         </div>
         <div>
             <mat-form-field appearance="outline">
@@ -46,6 +54,7 @@
     </div>
     <div mat-dialog-actions style="justify-content: space-between;">
         <button mat-raised-button mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid || isSubmitted">Create</button>
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="!employeeForm.valid || isSubmitted">Create</button>
     </div>
 </form>

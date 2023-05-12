@@ -1,11 +1,13 @@
 import { EmployeesService } from '../../../_services/employees.service';
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators'
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+
+const DEFAULT_IMG_SRC = '../../../../assets/img/placeholder.png';
 
 @Component({
   selector: 'app-create-employee-dialog',
@@ -15,7 +17,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 export class CreateEmployeeDialogComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  imgSrc: string = '../../../../assets/img/placeholder.png';
+  imgSrc: string = DEFAULT_IMG_SRC;
   selectedImage: any = null;
   isSubmitted: boolean = false;
   public employeeForm: UntypedFormGroup;
@@ -30,49 +32,49 @@ export class CreateEmployeeDialogComponent implements OnInit {
 
   ) {
     this.employeeForm = this.formBuilder.group({
-      uid: [''],
-      name: [''],
-      position: [''],
-      employmentType: [''],
-      phone: [''],
-      email: [''],
-      imgUrl: [''],
-      employeed: true,
-      clockedIn: false,
-      clockedInTime: null
+      uid: new FormControl(''),
+      name: new FormControl(''),
+      position: new FormControl(''),
+      employmentType: new FormControl(''),
+      phone: new FormControl(''),
+      email: new FormControl(''),
+      imgUrl: new FormControl(''),
+      employeed: new FormControl(true),
+      clockedIn: new FormControl(false),
+      clockedInTime: new FormControl(null),
+      fileName: new FormControl(''),
     })
   }
 
-  //Set ID of owner of job on load
   ngOnInit() {
     this.setUserId();
   }
 
-  path: string;
-  pathName: string;
-
-
-  //Create job and redirect to dashboard
-  onSubmit() {
+  async onSubmit() {
     this.isSubmitted = true;
+    if (!this.selectedImage) {
+      // Handle the case where no file is selected.
+      this.showSnackBar("No image selected!", 'red-snackbar');
+      this.isSubmitted = false;
+      return;
+    }
     var filePath = `employeeProfile/${this.selectedImage.name}_${new Date().getTime()}`;
     const fileRef = this.storage.ref(filePath);
     this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
-      finalize(() => {
-        fileRef.getDownloadURL().subscribe((url) => {
-          this.employeeForm.get('imgUrl').setValue(url);
-          this.employeesService.createEmployee(this.employeeForm.value);
-          this.isSubmitted = false;
-          this.showSnackBar("Employee has been created!");
-          this.dialogRef.close();
-        })
+      finalize(async () => {
+        const url = await fileRef.getDownloadURL().toPromise();
+        this.employeeForm.get('imgUrl').setValue(url);
+        this.employeesService.createEmployee(this.employeeForm.value);
+        this.isSubmitted = false;
+        this.showSnackBar("Employee has been created!", 'green-snackbar');
+        this.dialogRef.close();
       })
     ).subscribe();
   }
 
-  //Set User ID so jobs have link to their owners
+
   setUserId() {
-    this.afAuth.authState.subscribe(async user => {
+    this.afAuth.authState.subscribe(user => {
       if (user && user.uid) {
         this.employeeForm.patchValue({
           uid: user.uid,
@@ -87,18 +89,20 @@ export class CreateEmployeeDialogComponent implements OnInit {
       reader.onload = (e: any) => this.imgSrc = e.target.result;
       reader.readAsDataURL($event.target.files[0]);
       this.selectedImage = $event.target.files[0];
+      this.employeeForm.patchValue({ fileName: $event.target.files[0].name });
     } else {
-      this.imgSrc = '../../../../assets/img/placeholder.png';
+      this.imgSrc = DEFAULT_IMG_SRC;
       this.selectedImage = null;
+      this.employeeForm.patchValue({ fileName: '' });
     }
   }
 
-  showSnackBar(message: string) {
+  showSnackBar(message: string, color: string) {
     this._snackBar.open(message, '', {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
       duration: 2500,
-      panelClass: ['green-snackbar']
+      panelClass: [color]
     });
   }
 }
