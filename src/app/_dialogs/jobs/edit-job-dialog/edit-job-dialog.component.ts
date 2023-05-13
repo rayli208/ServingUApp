@@ -27,7 +27,6 @@ export class EditJobDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
-    console.log(this.editForm.value);
     this.jobsService.updateJob(this.editForm.value, this.job.id);
     this.dialogRef.close();
   }

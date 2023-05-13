@@ -89,7 +89,6 @@ export class ProfileDashboardComponent implements OnInit {
 
     togglePunchClockActive() {
         localStorage.setItem('punchClockActive', this.punchClockActive.toString());
-        console.log(this.punchClockActive);
     }
 
     toggleTablesActive() {

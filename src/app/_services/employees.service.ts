@@ -29,7 +29,6 @@ export class EmployeesService {
         .add(employee)
         .then(() => { })
         .catch(error => {
-          console.log("'Please contact IT for further assistance.', 'There has been an error creating the Employee.");
           return reject(error);
         });
     });

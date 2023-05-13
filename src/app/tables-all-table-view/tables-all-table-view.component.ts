@@ -21,7 +21,6 @@ export class TablesAllTableViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("Tables: ", this.tables);
   }
 
   //Remove Schedule 

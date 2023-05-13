@@ -40,7 +40,6 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('OnInit Employees:', this.Employees);
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -52,8 +51,6 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-          console.log('OnInit Employees:', this.Employees);
 
           if (this.Employees.length > 0) {
             this.selectedEmployee = this.Employees[0];

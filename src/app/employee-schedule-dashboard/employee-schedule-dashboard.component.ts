@@ -57,7 +57,6 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
   deleteSchedule(schedule: Schedule) {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
       this.scheduleService.deleteSchedule(schedule);
-      console.log("Schedule has been  deleted");
     }
   }
 

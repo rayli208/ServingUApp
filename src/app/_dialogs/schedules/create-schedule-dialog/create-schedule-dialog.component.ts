@@ -62,8 +62,6 @@ export class CreateScheduleDialogComponent implements OnInit {
         this.daysSelected.splice(i, 1);
       }
     }
-
-    console.log(this.daysSelected);
   }
 
   //Set ID of owner of job on load

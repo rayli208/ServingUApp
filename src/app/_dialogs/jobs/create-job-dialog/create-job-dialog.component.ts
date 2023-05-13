@@ -36,7 +36,6 @@ export class CreateJobDialogComponent implements OnInit {
   
   //Create job and redirect to dashboard
   onSubmit() {
-    console.log(this.jobForm.value);
     this.jobsService.createJob(this.jobForm.value);
     this.dialogRef.close();
   }
