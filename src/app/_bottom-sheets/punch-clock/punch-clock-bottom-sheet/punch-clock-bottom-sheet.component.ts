@@ -11,6 +11,9 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { TablesService } from 'src/app/_services/tables.service';
+import { Table } from 'src/app/_models/table.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-punch-clock-bottom-sheet',
@@ -18,6 +21,7 @@ import {
   styleUrls: ['./punch-clock-bottom-sheet.component.scss']
 })
 export class PunchClockBottomSheetComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
@@ -25,6 +29,7 @@ export class PunchClockBottomSheetComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public timeStampService: TimeStampService,
     public employeesService: EmployeesService,
+    private tablesService: TablesService,
     public formBuilder: FormBuilder,
     private bottomSheetRef: MatBottomSheetRef<PunchClockBottomSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public employee: Employee
@@ -41,9 +46,15 @@ export class PunchClockBottomSheetComponent implements OnInit {
 
   public timeStampForm: FormGroup;
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions when the component is destroyed
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 
   async handleClockInOrOut(): Promise<void> {
+    console.log("HIT")
     if (!this.employee.clockedIn) {
       // Clock-in case
       this.employee.clockedIn = true;
@@ -52,6 +63,7 @@ export class PunchClockBottomSheetComponent implements OnInit {
       this.showSnackBar('You have clocked in!');
       this.closeBottomSheet();
     } else {
+      console.log("HIT AGAIN")
       // Clock-out case
       const endTime = new Date();
       const startTime = new Date((this.employee.clockedInTime as any).toDate());
@@ -59,14 +71,37 @@ export class PunchClockBottomSheetComponent implements OnInit {
       const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
       const message = `You have clocked out! You worked ${hoursWorked} hour${hoursWorked == 1 ? '' : 's'} and ${minutesWorked} minute${minutesWorked == 1 ? '' : 's'}.`;
       await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
+
+      // Fetch all tables assigned to this employee
+      const subscription = this.tablesService.getTablesListForUser(this.employee.uid).subscribe(async tablesSnapshot => {
+        const tables = tablesSnapshot.map(doc => ({ id: doc.payload.doc.id, ...doc.payload.doc.data() as Table }));
+
+        // Filter tables assigned to this employee
+        const assignedTables = tables.filter(table =>
+          table.assignedEmployee &&
+          'id' in table.assignedEmployee &&
+          table.assignedEmployee.id === this.employee.id
+        );
+
+        // Update each assigned table
+        for (let table of assignedTables) {
+          table.isActive = false;
+          table.assignedEmployee = { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false };
+          await this.tablesService.updateTable(table, table.id);
+        }
+      });
+
       this.employee.clockedIn = false;
       this.employee.clockedInTime = null;
       await this.employeesService.updateEmployee(this.employee, this.employee.id);
       this.showSnackBar(message);
       this.closeBottomSheet();
+      subscription.unsubscribe();
+      this.subscriptions.push(subscription);
     }
+
   }
-  
+
   closeBottomSheet(): void {
     this.bottomSheetRef.dismiss();
   }

@@ -92,16 +92,7 @@ export class TablesService {
         positionX: table.positionX,
         positionY: table.positionY
       })
-      .then(() => {
-        this._snackBar.open('Table updated successfully!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['green-snackbar']
-        });
-      })
       .catch(error => {
-        console.error('Error updating table:', error);
         this._snackBar.open('Error updating table. Please try again later.', '', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
