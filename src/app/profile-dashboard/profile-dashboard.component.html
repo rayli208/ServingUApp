@@ -61,12 +61,15 @@
         <span>Active Employees: </span>
         <span>{{Employees?.length}}</span>
     </div>
+    <div class="profile-dashboard-card-row">
+        <span>Texts Sent This Month: </span>
+        <span>????</span>
+    </div>
 </div>
 <div class="profile-dashboard-card" *ngIf="(user | async)">
     <div class="profile-dashboard-card-header">
-        Available Views:
+        Enter Pin To Edit:
     </div>
-
     <div class="profile-dashboard-card-row">
         <span>Enter Pin: </span>
         <span>
@@ -77,6 +80,11 @@
                 </mat-form-field>
             </div>
         </span>
+    </div>
+</div>
+<div class="profile-dashboard-card" *ngIf="(user | async)">
+    <div class="profile-dashboard-card-header">
+        Available Views:
     </div>
     <div class="profile-dashboard-card-row">
         <span>Jobs: </span>
@@ -109,8 +117,36 @@
     <div class="profile-dashboard-card-row">
         <span>Tables: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="tablesActive" (change)="toggleTablesActive()"></mat-slide-toggle>
+            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="tablesActive"
+                (change)="toggleTablesActive()"></mat-slide-toggle>
         </span>
+    </div>
+</div>
+<div class="profile-dashboard-card" *ngIf="(user | async) && (pinValue == (user | async)?.pin)">
+    <div class="profile-dashboard-card-header">
+        Management Portals:
+    </div>
+    <div class="profile-dashboard-card-management">
+        <div class="profile-dashboard-card-management-inner">
+            <div class="icon-container" matTooltip="Photo Uploader">
+                <i class="fa-regular fa-circle background-icon"></i>
+                <i class="fa-solid fa-camera-retro inside-icon"></i>
+            </div>
+            <div class="profile-dashboard-card-management-inner-title">Photo Uploader</div>
+        </div>
+        <div class="profile-dashboard-card-management-inner">
+            <div class="icon-container" matTooltip="Employee Timesheet Portal">
+                <i class="fa-regular fa-circle background-icon"></i>
+                <i class="fa-regular fa-calendar inside-icon"></i>
+            </div>
+            <div class="profile-dashboard-card-management-inner-title">Employee Timesheet Portal</div>
+        </div>
+        <div class="profile-dashboard-card-management-inner">
+            <div class="icon-container" matTooltip="Custom Text Portal">
+                <i class="fa-regular fa-circle background-icon"></i>
+                <i class="fa-solid fa-comment-sms inside-icon"></i>
+            </div>
+            <div class="profile-dashboard-card-management-inner-title">Custom Text Portal</div>
+        </div>
     </div>
 </div>
