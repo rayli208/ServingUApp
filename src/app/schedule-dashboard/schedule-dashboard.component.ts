@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateScheduleFromDateDialogComponent } from '../_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component';
 
 @Component({

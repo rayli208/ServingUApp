@@ -2,7 +2,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ScheduleService } from './../../../_services/schedule.service';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from 'src/app/_models/employee.model';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { Observable } from 'rxjs';

@@ -2,10 +2,10 @@ import { Schedule } from './../_models/schedule.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
-  MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition,
-} from '@angular/material/legacy-snack-bar';
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'

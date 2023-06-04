@@ -6,7 +6,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 import { MatAccordion } from '@angular/material/expansion';
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Table } from '../_models/table.model';
 import { Employee } from '../_models/employee.model';
 import { EditTableDialogComponent } from '../_dialogs/tables/edit-table-dialog/edit-table-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TablesService } from '../_services/tables.service';
 
 @Component({

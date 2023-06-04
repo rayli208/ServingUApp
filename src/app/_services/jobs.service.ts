@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Job } from '../_models/job.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
-  MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition,
-} from '@angular/material/legacy-snack-bar';
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'

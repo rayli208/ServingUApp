@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';

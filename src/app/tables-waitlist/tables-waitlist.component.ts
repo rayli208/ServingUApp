@@ -3,10 +3,10 @@ import { Contact } from '../_models/contact.model';
 import { Message } from '../_models/message.model';
 import { MessagesService } from '../_services/messages.service';
 import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
-  MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition,
-} from '@angular/material/legacy-snack-bar';
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
