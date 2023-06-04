@@ -1,7 +1,7 @@
 import { ScheduleService } from 'src/app/_services/schedule.service';
 import { CreateEmployeeDialogComponent } from '../_dialogs/employee/create-employee-dialog/create-employee-dialog.component';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -10,7 +10,7 @@ import { EditEmployeeDialogComponent } from '../_dialogs/employee/edit-employee-
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { Schedule } from '../_models/schedule.model';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition, MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition } from '@angular/material/legacy-snack-bar';
 
 @Component({
   selector: 'app-employee-dashboard',

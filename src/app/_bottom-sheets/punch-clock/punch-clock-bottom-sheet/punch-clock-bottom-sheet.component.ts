@@ -7,10 +7,10 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+  MatLegacySnackBar as MatSnackBar,
+  MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
+  MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition,
+} from '@angular/material/legacy-snack-bar';
 import { TablesService } from 'src/app/_services/tables.service';
 import { Table } from 'src/app/_models/table.model';
 import { Subscription } from 'rxjs';

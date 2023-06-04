@@ -1,7 +1,7 @@
 import { CreateTableDialogComponent } from '../_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Table } from '../_models/table.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
