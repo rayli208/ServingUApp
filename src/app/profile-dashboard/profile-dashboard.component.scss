@@ -1,19 +1,19 @@
 @import './../_styles/variables.scss';
 
-.green {
+.green{
     color: $green;
 }
 
-.red {
+.red{
     color: $red;
 }
 
-.primary {
+.primary{
     color: $brand-primary;
     text-decoration: none;
 }
 
-.profile-dashboard-card {
+.profile-dashboard-card{
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -23,24 +23,24 @@
     background-color: rgba(250, 247, 247, 0.5);
 }
 
-.profile-dashboard-card-paying {
+.profile-dashboard-card-paying{
     position: absolute;
     top: 15px;
     right: 15px;
 }
 
-.profile-dashboard-card-header {
+.profile-dashboard-card-header{
     font-size: 20px;
     font-weight: 600;
     color: $black;
     margin-bottom: 15px;
 }
 
-.profile-dashboard-card-row {
+.profile-dashboard-card-row{
     margin-bottom: 10px;
 }
 
-.profile-dashboard-card-row span:first-of-type {
+.profile-dashboard-card-row span:first-of-type{
     display: inline-block;
     width: 20%;
     font-size: 14px;
@@ -48,67 +48,23 @@
     text-transform: uppercase;
 }
 
-.profile-dashboard-card-row span:last-of-type {
+.profile-dashboard-card-row span:last-of-type{
     display: inline-block;
     width: 80%;
     font-size: 14px;
 
-    i {
+    i{
         cursor: pointer;
     }
 }
 
-.profile-dashboard-card-management {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.profile-dashboard-card-management-inner {
-    margin-right: 15px;
-    text-align: center;
-}
-
-.profile-dashboard-card-management-inner-title {
-    margin-top: 5px;
-    font-size: .875rem;
-    color: $brand-primary;
-}
-
-.icon-container {
-    position: relative;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: $brand-primary;
-}
-
-.icon-container:hover {
-    opacity: .7;
-}
-
-.background-icon {
-    font-size: 3em;
-    /* Make the background icon 3x bigger */
-}
-
-.inside-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5em;
-    /* Make the inside icon 1.5x bigger */
-}
-
-
 
 @media (max-width:768px) {
-    .profile-dashboard-card-row span:first-of-type {
+    .profile-dashboard-card-row span:first-of-type{
         width: 40%;
     }
-
-    .profile-dashboard-card-row span:last-of-type {
+    
+    .profile-dashboard-card-row span:last-of-type{
         width: 60%;
     }
 }

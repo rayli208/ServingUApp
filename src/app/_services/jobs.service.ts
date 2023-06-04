@@ -78,7 +78,6 @@ export class JobsService {
       .collection("jobs")
       .doc(id)
       .update({
-        icon: job.icon,
         title: job.title,
         description: job.description,
         totalPositions: job.totalPositions,

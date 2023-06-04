@@ -11,8 +11,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+<<<<<<< HEAD
     "resolveJsonModule": true,
     "target": "ES2022",
+=======
+    "target": "es2020",
+>>>>>>> parent of b089fbe (Small update)
     "module": "es2020",
     "lib": [
       "es2018",
