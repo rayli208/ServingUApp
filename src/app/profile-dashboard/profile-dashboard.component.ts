@@ -16,7 +16,7 @@ export class ProfileDashboardComponent implements OnInit {
     Employees: Employee[];
 
     constructor(
-        private afAuth: AngularFireAuth,
+        public afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private employeesService: EmployeesService,
 

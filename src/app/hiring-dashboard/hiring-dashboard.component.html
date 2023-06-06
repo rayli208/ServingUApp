@@ -23,6 +23,11 @@
         <ng-container *ngFor="let job of Jobs; let i = index">
             <div class="dashboard-job-card-container">
                 <div class="dashboard-job-card">
+                    <div class="dashboard-job-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 512 512" version="1.1">
+                            <path [attr.d]="job.icon" stroke="none" fill="#35B9DF" fill-rule="evenodd" />
+                        </svg>
+                    </div>
                     <div class="dashboard-job-card-content">
                         <div class="dashboard-job-card-header">
                             {{job.title}}

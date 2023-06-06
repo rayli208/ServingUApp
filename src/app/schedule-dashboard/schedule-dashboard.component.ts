@@ -210,7 +210,7 @@ export class ScheduleDashboardComponent implements OnInit {
     return yearString.slice(-2); // Return the last two characters of the year string
   }
 
-  private createSchedule(date: string){
+  public createSchedule(date: string){
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
         date: date,

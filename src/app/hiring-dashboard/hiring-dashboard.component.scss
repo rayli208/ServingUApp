@@ -63,7 +63,14 @@
 }
 
 .dashboard-job-card{
+    position: relative;
     display: block;
+}
+
+.dashboard-job-card-icon{
+    position: absolute !important;
+    top: 15px;
+    right: 15px;
 }
 
 .dashboard-job-card-archived-container{

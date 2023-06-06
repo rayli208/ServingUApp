@@ -1,4 +1,5 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
+    <h1 mat-dialog-title>Edit an Employee</h1>
     <div style="text-align: center;">
         <img (click)="fileUploader.click(); $event.stopPropagation()" [src]="imgSrc" width="100px" height="100px"
             style="cursor: pointer; border-radius: 50%;">

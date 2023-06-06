@@ -79,6 +79,7 @@ export class JobsService {
       .doc(id)
       .update({
         title: job.title,
+        icon: job.icon,
         description: job.description,
         totalPositions: job.totalPositions,
         employmentType: job.employmentType,

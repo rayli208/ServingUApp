@@ -30,7 +30,9 @@
               "src/custom-theme.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "sourceMap": false,
+            "vendorChunk": true
           },
           "configurations": {
             "production": {
@@ -110,7 +112,7 @@
             ]
           }
         },
-        "e2e": {
+       "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",

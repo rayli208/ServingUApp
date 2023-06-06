@@ -26,9 +26,9 @@ export class HiringDashboardComponent implements OnInit {
 
     constructor(
         public dialog: MatDialog,
-        private afAuth: AngularFireAuth,
-        private afs: AngularFirestore,
-        private jobsService: JobsService,
+        public afAuth: AngularFireAuth,
+        public afs: AngularFirestore,
+        public jobsService: JobsService,
     ) {
         this.user = null;
     }

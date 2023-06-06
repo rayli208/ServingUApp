@@ -75,7 +75,8 @@
     z-index: 1000;
     display: flex;
     max-width: 100%;
-    max-height: 100%
+    max-height: 100%;
+    overflow-y: auto;
 }
 
 .cdk-overlay-backdrop {
@@ -3847,6 +3848,7 @@ html {
     margin: 0 0 64px
 }
 
+//CUSTOM STYLES
 .mat-mdc-dialog-container {
     .mdc-dialog__surface {
         padding: 24px;
@@ -3854,4 +3856,16 @@ html {
 }
 .mdc-dialog .mdc-dialog__content {
     padding: 0 !important;
+}
+
+.mdc-dialog, .mdc-dialog__scrim{
+    width: min-content !important;
+}
+
+.mdc-dialog__title{
+    text-align: center !important;
+}
+
+.mdc-dialog__title::before{
+    height: 0px !important;
 }
