@@ -29,10 +29,12 @@ export class SignupComponent implements OnInit {
         this.signupForm = new UntypedFormGroup({
             'owner': new UntypedFormControl('', Validators.required),
             'location_name': new UntypedFormControl('', Validators.required),
+            'description': new UntypedFormControl('', Validators.required),
             'email': new UntypedFormControl('', [Validators.required, Validators.email]),
             'phone': new UntypedFormControl('', Validators.required),
             'website': new UntypedFormControl('', Validators.required),
             'address': new UntypedFormControl('', Validators.required),
+            'zip': new UntypedFormControl('', Validators.required),
             'school': new UntypedFormControl('', Validators.required),
             'pin': new UntypedFormControl('', Validators.required),
             'password': new UntypedFormControl('', Validators.required),

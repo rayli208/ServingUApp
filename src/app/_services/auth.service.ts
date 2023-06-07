@@ -48,10 +48,12 @@ export class AuthService {
                         isPaying: true,
                         owner: user.owner,
                         location_name: user.location_name,
+                        description: user.description,
                         email: user.email,
                         phone: user.phone,
                         website: user.website,
                         address: user.address,
+                        zip: user.zip,
                         school: user.school,
                         pin: user.pin,
                         email_lower: emailLower,
@@ -128,4 +130,24 @@ export class AuthService {
             .doc(email)
             .valueChanges();
     }
+
+    updateUser(email: string, user: any): Promise<void> {
+        // ensure email is lower case since that's what we use in our Firestore document paths
+        const emailLower = email.toLowerCase();
+    
+        // merge the new user data with the existing data
+        // this way, only provided fields will be updated
+        return this.afs.doc('/users/' + emailLower).update(user)
+            .then(() => {
+                console.log('Auth Service: updateUser: success');
+            })
+            .catch(error => {
+                console.log('Auth Service: updateUser: error...');
+                console.log('error code', error.code);
+                console.log('error', error);
+                if (error.code)
+                    return error;
+            });
+    }
+    
 }
