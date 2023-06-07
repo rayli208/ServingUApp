@@ -1,5 +1,5 @@
 <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" novalidate>
-    <h3>Schedule Employee: </h3>
+    <h1 mat-dialog-title>Schedule Employee</h1>
     <div style="margin-bottom: 15px;">{{scheduleForm.get("employeeName").value}}</div>
     <div>
         <mat-form-field appearance="outline">
