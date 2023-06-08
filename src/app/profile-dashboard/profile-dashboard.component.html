@@ -1,3 +1,5 @@
+<app-header iconClass="fa-solid fa-user" title="Profile">
+</app-header>
 <div class="profile-dashboard-card" *ngIf="(user | async)">
     <!--Admin or User-->
     <div class="profile-dashboard-card-header">
@@ -21,6 +23,7 @@
             {{ (user | async)?.owner }}
             <i *ngIf="(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-check green"></i>
             <i *ngIf="!(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-xmark red"></i>
+            <mat-error *ngIf="!(afAuth.user | async)?.emailVerified">&nbsp;(Please verify your email, check your email box or go to the resend email page.)</mat-error>
         </span>
     </div>
     <div class="profile-dashboard-card-row">
@@ -58,7 +61,7 @@
         <span>{{Employees?.length}}</span>
     </div>
 </div>
-<div class="profile-dashboard-card" *ngIf="(user | async)">
+<div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" >
     <div class="profile-dashboard-card-header">
         Available Views:
     </div>

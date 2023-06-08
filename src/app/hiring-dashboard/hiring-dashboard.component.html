@@ -7,7 +7,7 @@
                 id="dashboard-job-wrapper_scroller-left" (click)="scrollLeft()"
                 class="btn prev fas fa-chevron-circle-left">
             </div>
-            <button [disabled]="!(afAuth.user | async)?.emailVerified" mat-raised-button color="primary"
+            <button mat-raised-button color="primary"
                 (click)="createJob()">
                 <span>Add</span>
             </button>

@@ -1,5 +1,10 @@
-:host {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.step-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  mat-form-field {
+    margin-top: 5px;
+    margin-right: 15px;
   }
+}
