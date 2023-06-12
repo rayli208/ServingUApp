@@ -16,6 +16,8 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { EstablishmentEditorComponent } from './admin/establishment-editor/establishment-editor.component';
+import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
 
 
 const routes: Routes = [
@@ -28,6 +30,8 @@ const routes: Routes = [
     { path: 'punch-clock-dashboard', component: PunchClockDashboardComponent, canActivate: [AuthGuard] },
     { path: 'tables-dashboard', component: TablesDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'establishment-editor-dashboard', component: EstablishmentEditorComponent, canActivate: [AuthGuard] },
+    { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'login', component: LoginComponent },

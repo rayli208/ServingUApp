@@ -23,6 +23,13 @@
     background-color: rgba(250, 247, 247, 0.5);
 }
 
+.profile-dashboard-card-main-container-half {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top; /* Align content to the top */
+  }
+  
+
 .profile-dashboard-card-paying{
     position: absolute;
     top: 15px;
@@ -42,7 +49,7 @@
 
 .profile-dashboard-card-row span:first-of-type{
     display: inline-block;
-    width: 20%;
+    width: 40%;
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
@@ -50,7 +57,7 @@
 
 .profile-dashboard-card-row span:last-of-type{
     display: inline-block;
-    width: 80%;
+    width: 60%;
     font-size: 14px;
 
     i{
@@ -61,10 +68,10 @@
 
 @media (max-width:768px) {
     .profile-dashboard-card-row span:first-of-type{
-        width: 40%;
+        width: 100%;
     }
     
     .profile-dashboard-card-row span:last-of-type{
-        width: 60%;
+        width: 100%;
     }
 }

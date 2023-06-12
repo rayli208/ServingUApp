@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile-dashboard',
@@ -16,6 +17,7 @@ export class ProfileDashboardComponent implements OnInit {
     Employees: Employee[];
 
     constructor(
+        private router: Router,
         public afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private employeesService: EmployeesService,
@@ -119,4 +121,14 @@ export class ProfileDashboardComponent implements OnInit {
         document.body.removeChild(selBox);
         console.log("Copied text");
     }
+
+    goToEstablishmentEditorDashboard() {
+        this.router.navigate(['/establishment-editor-dashboard']);
+    }
+    
+    goToHoursEditorDashboard() {
+        this.router.navigate(['/hours-dashboard']);
+
+    }
+
 }
