@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,10 @@ export class AuthService {
         });
     }
 
+    getAuthState(): Observable<any> {
+        return this.afAuth.authState;
+    }
+    
     loginUser(email: string, password: string): Promise<any> {
         return this.afAuth.signInWithEmailAndPassword(email, password)
             .then(() => {

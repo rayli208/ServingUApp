@@ -122,10 +122,10 @@ export class ProfileDashboardComponent implements OnInit {
         console.log("Copied text");
     }
 
-    goToEstablishmentEditorDashboard() {
-        this.router.navigate(['/establishment-editor-dashboard']);
+    goToProfileEditorDashboard() {
+        this.router.navigate(['/profile-editor-dashboard']);
     }
-    
+
     goToHoursEditorDashboard() {
         this.router.navigate(['/hours-dashboard']);
 

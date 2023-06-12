@@ -88,7 +88,7 @@ import { HeaderComponent } from './_shared/header/header.component';
 import { CreateScheduleFromDateDialogComponent } from './_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component';
 import { TablesEmployeeViewComponent } from './tables-employee-view/tables-employee-view.component';
 import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
-import { EstablishmentEditorComponent } from './admin/establishment-editor/establishment-editor.component';
+import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.component';
 
 
 @NgModule({
@@ -127,7 +127,7 @@ import { EstablishmentEditorComponent } from './admin/establishment-editor/estab
         CreateScheduleFromDateDialogComponent,
         TablesEmployeeViewComponent,
         HoursDashboardComponent,
-        EstablishmentEditorComponent
+        ProfileEditorComponent
     ],
     imports: [
         BrowserModule,
