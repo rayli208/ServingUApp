@@ -27,6 +27,9 @@ export class ProfileEditorComponent implements OnInit {
   imgSrcs: string[] = [];
   selectedImages: any[] = [];
 
+  //Storage functionality
+  imageCount: number = 0;
+
   constructor(
     public authService: AuthService,
     private afAuth: AngularFireAuth,
@@ -44,6 +47,11 @@ export class ProfileEditorComponent implements OnInit {
         console.log(emailLower);
         this.authService.getCurrentUserInfo(emailLower).subscribe(userInfo => {
           this.user = userInfo;
+        });
+
+        // Fetch the images
+        this.authService.getImages(this.userId).subscribe(images => {
+          this.imageCount = images.length;
         });
       }
     });
@@ -77,26 +85,26 @@ export class ProfileEditorComponent implements OnInit {
   detectNewImage($event: any) {
     if ($event.target.files && $event.target.files.length) {
       let newImages: File[] = Array.from($event.target.files);
-
-      // Cap total images at 5, but allow new images to be added up to this cap
-      if (this.imgSrcs.length + newImages.length > 5) {
-        alert('You can only upload a maximum of 5 images');
-        newImages = newImages.slice(0, 5 - this.imgSrcs.length); // Adjust to only accept as many new images as we have room for
+      let freeSlots = 5 - this.imageCount - this.selectedImages.length;
+  
+      // If the user tries to upload more images than there are free slots, alert the user and only accept as many images as there are free slots.
+      if (newImages.length > freeSlots) {
+        alert(`You can only select a maximum of ${freeSlots} more image(s)`);
+        newImages = newImages.slice(0, freeSlots);
       }
-
+  
       // Append the new files to the selectedImages array
       this.selectedImages.push(...newImages);
-
+  
       for (let i = 0; i < newImages.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => this.imgSrcs.push(e.target.result);
         reader.readAsDataURL(newImages[i]);
       }
+  
+      this.totalImages = this.selectedImages.length;
     }
-
-    this.totalImages = this.selectedImages.length;
-  }
-
+  }  
 
   removeImage(index: number) {
     this.imgSrcs.splice(index, 1);
@@ -118,65 +126,62 @@ export class ProfileEditorComponent implements OnInit {
       return;
     }
   
-    this.authService.getAuthState().subscribe(user => {
-      if (user) {
-        this.userId = user.uid;
-        // Save off the current selected image, then remove it from the array
-        const imageToUpload = this.selectedImages[0];
-        this.selectedImages.shift();
+    // Save off the current selected image, then remove it from the array
+    const imageToUpload = this.selectedImages[0];
+    this.selectedImages.shift();
   
-        // Create a Firebase storage reference
-        const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
+    // Create a Firebase storage reference
+    const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
   
-        // Upload the selected image
-        const uploadTask = storageRef.put(imageToUpload);
+    // Upload the selected image
+    const uploadTask = storageRef.put(imageToUpload);
   
-        // Get notified when the download URL is available
-        uploadTask.snapshotChanges().pipe(
-          finalize(() => {
-            uploadTask.then(snapshot => {
-              snapshot.ref.getDownloadURL().then(downloadURL => {
-                // Call saveImageUrls() here for each individual image
-                this.authService.saveImageUrl(this.userId, downloadURL)
-                  .catch(error => {
-                    console.error('Error saving image URL: ', error);
-                    this._snackBar.open('Failed to save image URL!', '', {
-                      horizontalPosition: this.horizontalPosition,
-                      verticalPosition: this.verticalPosition,
-                      duration: 2500,
-                      panelClass: ['red-snackbar']
-                    });
-                  });
-  
-                // Update progress bar after each image upload
-                this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
-  
-                if (this.selectedImages.length === 0) {
-                  // All images uploaded
-                  this.isUploading = false;
-                  this._snackBar.open('Images upload completed!', '', {
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    duration: 2500,
-                    panelClass: ['green-snackbar']
-                  });
-  
-                  // Reset the selected images array and display array
-                  this.selectedImages = [];
-                  this.imgSrcs = [];
-                  this.totalImages = 0;
-                  this.progressBarValue = 0;
-                  return;
-                }
-  
-                // Call this function recursively to upload the next image
-                this.uploadImages();
+    // Get notified when the download URL is available
+    uploadTask.snapshotChanges().pipe(
+      finalize(() => {
+        uploadTask.then(snapshot => {
+          snapshot.ref.getDownloadURL().then(downloadURL => {
+            // Call saveImageUrls() here for each individual image
+            this.authService.saveImageUrl(this.userId, downloadURL)
+              .catch(error => {
+                console.error('Error saving image URL: ', error);
+                this._snackBar.open('Failed to save image URL!', '', {
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  duration: 2500,
+                  panelClass: ['red-snackbar']
+                });
               });
-            });
-          })
-        ).subscribe();
-      }
-    });
-  }
   
+            // Update progress bar after each image upload
+            this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
+  
+            if (this.selectedImages.length === 0) {
+              // All images uploaded
+              this.isUploading = false;
+              this._snackBar.open('Images upload completed!', '', {
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 2500,
+                panelClass: ['green-snackbar']
+              });
+  
+              // Reset the selected images array and display array
+              this.selectedImages = [];
+              this.imgSrcs = [];
+              this.totalImages = 0;
+              this.progressBarValue = 0;
+  
+              // Update image count
+              this.imageCount = this.imageCount + this.totalImages;
+              return;
+            }
+  
+            // Call this function recursively to upload the next image
+            this.uploadImages();
+          });
+        });
+      })
+    ).subscribe();
+  }
 }

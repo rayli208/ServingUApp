@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -166,4 +167,15 @@ export class AuthService {
                 console.error("Error adding document: ", error);
             });
     }
+
+    getImages(userId: string): Observable<any[]> {
+        return this.afs.collection('userImages', ref => ref.where('uid', '==', userId))
+          .snapshotChanges()
+          .pipe(
+            map(actions => actions.map(a => {
+              const data = a.payload.doc.data() as object; // Ensure the data is treated as an object
+              return { ...data };
+            }))
+          );
+      }      
 }
