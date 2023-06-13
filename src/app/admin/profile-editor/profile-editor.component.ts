@@ -107,7 +107,7 @@ export class ProfileEditorComponent implements OnInit {
   // Upload the images
   uploadImages() {
     this.isUploading = true;
-
+  
     if (!this.selectedImages || this.selectedImages.length === 0) {
       this._snackBar.open('No image selected!', '', {
         horizontalPosition: this.horizontalPosition,
@@ -117,20 +117,20 @@ export class ProfileEditorComponent implements OnInit {
       });
       return;
     }
-
+  
     this.authService.getAuthState().subscribe(user => {
       if (user) {
         this.userId = user.uid;
         // Save off the current selected image, then remove it from the array
         const imageToUpload = this.selectedImages[0];
         this.selectedImages.shift();
-
+  
         // Create a Firebase storage reference
         const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
-
+  
         // Upload the selected image
         const uploadTask = storageRef.put(imageToUpload);
-
+  
         // Get notified when the download URL is available
         uploadTask.snapshotChanges().pipe(
           finalize(() => {
@@ -147,10 +147,10 @@ export class ProfileEditorComponent implements OnInit {
                       panelClass: ['red-snackbar']
                     });
                   });
-
+  
                 // Update progress bar after each image upload
                 this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
-
+  
                 if (this.selectedImages.length === 0) {
                   // All images uploaded
                   this.isUploading = false;
@@ -160,9 +160,15 @@ export class ProfileEditorComponent implements OnInit {
                     duration: 2500,
                     panelClass: ['green-snackbar']
                   });
+  
+                  // Reset the selected images array and display array
+                  this.selectedImages = [];
+                  this.imgSrcs = [];
+                  this.totalImages = 0;
+                  this.progressBarValue = 0;
                   return;
                 }
-
+  
                 // Call this function recursively to upload the next image
                 this.uploadImages();
               });
@@ -172,4 +178,5 @@ export class ProfileEditorComponent implements OnInit {
       }
     });
   }
+  
 }
