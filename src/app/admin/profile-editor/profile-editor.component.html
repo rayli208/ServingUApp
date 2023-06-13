@@ -36,3 +36,25 @@
         </div>
     </div>
 </mat-card>
+
+
+<mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
+    <h1>{{user?.location_name | titlecase}} Pictures</h1>
+    <mat-form-field style="width: 100%;" appearance="outline">
+        <mat-label>Upload Pictures</mat-label>
+        <button type="button" mat-icon-button matPrefix (click)="fileUploader.click(); $event.stopPropagation()">
+            <mat-icon>attach_file</mat-icon>
+        </button>
+        <input type="text" readonly matInput [formControl]="fileName" />
+        <input type="file" multiple hidden #fileUploader (change)="detectNewImage($event)"
+            accept="*.png,*.jpg,*.jpeg" />
+    </mat-form-field>
+    <h3 *ngIf="imgSrcs.length">Images for upload:</h3>
+    <div *ngIf="imgSrcs.length" class="profile-editor-image-container">
+        <div *ngFor="let img of imgSrcs; let i = index" class="profile-editor-image">
+            <img [src]="img" alt="Uploaded image" (click)="removeImage(i)">
+        </div>
+        
+    </div>
+
+</mat-card>

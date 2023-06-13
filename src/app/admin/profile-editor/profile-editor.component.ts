@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/_services/auth.service';
 
@@ -14,9 +15,16 @@ export class ProfileEditorComponent implements OnInit {
   userId: string;
   isEditing = false;
 
+
+  fileName = new FormControl(''); // Initialize form control
+  imgSrcs: string[] = [];
+  selectedImages: any[] = [];
+
+
+
   constructor(
     public authService: AuthService,
-    private _snackBar: MatSnackBar, 
+    private _snackBar: MatSnackBar,
   ) {
     this.user = null;
   }
@@ -57,5 +65,30 @@ export class ProfileEditorComponent implements OnInit {
         panelClass: ['red-snackbar']
       });
     });
+  }
+
+  detectNewImage($event: any) {
+    if (this.imgSrcs.length >= 5) {
+      alert('You can only upload a maximum of 5 images');
+      return;
+    }
+
+    if ($event.target.files && $event.target.files.length) {
+      let remainingSpots = 5 - this.imgSrcs.length;
+      let filesToUpload = Array.from($event.target.files).slice(0, remainingSpots);
+      this.selectedImages = filesToUpload;
+
+      for (let i = 0; i < this.selectedImages.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => this.imgSrcs.push(e.target.result);
+        reader.readAsDataURL(this.selectedImages[i]);
+      }
+    } else {
+      this.selectedImages = [];
+    }
+  }
+
+  removeImage(index: number) {
+    this.imgSrcs.splice(index, 1);
   }
 }
