@@ -54,7 +54,10 @@
         <div *ngFor="let img of imgSrcs; let i = index" class="profile-editor-image">
             <img [src]="img" alt="Uploaded image" (click)="removeImage(i)">
         </div>
-        
     </div>
+    <button mat-raised-button color="primary" [disabled]="isUploading" (click)="uploadImages()"
+        *ngIf="selectedImages.length > 0 && !isUploading" matTooltip="Upload Images">Upload Images <i
+            class="fa-solid fa-upload"></i></button>
 
+    <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading"></mat-progress-bar>
 </mat-card>

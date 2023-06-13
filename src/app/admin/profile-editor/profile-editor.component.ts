@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/_services/auth.service';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-profile-editor',
@@ -13,18 +16,22 @@ export class ProfileEditorComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   user: any;
   userId: string;
-  isEditing = false;
-
+  isEditing: boolean = false;
+  isUploading: boolean = false;
+  totalImages: number = 0;
+  uploadedImages: number = 0;
+  progressBarValue: number = 0;
+  uploadTask: AngularFireUploadTask;
 
   fileName = new FormControl(''); // Initialize form control
   imgSrcs: string[] = [];
   selectedImages: any[] = [];
 
-
-
   constructor(
     public authService: AuthService,
+    private afAuth: AngularFireAuth,
     private _snackBar: MatSnackBar,
+    private storage: AngularFireStorage,
   ) {
     this.user = null;
   }
@@ -68,27 +75,101 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   detectNewImage($event: any) {
-    if (this.imgSrcs.length >= 5) {
-      alert('You can only upload a maximum of 5 images');
-      return;
-    }
-
     if ($event.target.files && $event.target.files.length) {
-      let remainingSpots = 5 - this.imgSrcs.length;
-      let filesToUpload = Array.from($event.target.files).slice(0, remainingSpots);
-      this.selectedImages = filesToUpload;
+      let newImages: File[] = Array.from($event.target.files);
 
-      for (let i = 0; i < this.selectedImages.length; i++) {
+      // Cap total images at 5, but allow new images to be added up to this cap
+      if (this.imgSrcs.length + newImages.length > 5) {
+        alert('You can only upload a maximum of 5 images');
+        newImages = newImages.slice(0, 5 - this.imgSrcs.length); // Adjust to only accept as many new images as we have room for
+      }
+
+      // Append the new files to the selectedImages array
+      this.selectedImages.push(...newImages);
+
+      for (let i = 0; i < newImages.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => this.imgSrcs.push(e.target.result);
-        reader.readAsDataURL(this.selectedImages[i]);
+        reader.readAsDataURL(newImages[i]);
       }
-    } else {
-      this.selectedImages = [];
     }
+
+    this.totalImages = this.selectedImages.length;
   }
+
 
   removeImage(index: number) {
     this.imgSrcs.splice(index, 1);
+    this.selectedImages.splice(index, 1);
+    this.totalImages = this.selectedImages.length;
+  }
+
+  // Upload the images
+  uploadImages() {
+    this.isUploading = true;
+
+    if (!this.selectedImages || this.selectedImages.length === 0) {
+      this._snackBar.open('No image selected!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['red-snackbar']
+      });
+      return;
+    }
+
+    this.authService.getAuthState().subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+        // Save off the current selected image, then remove it from the array
+        const imageToUpload = this.selectedImages[0];
+        this.selectedImages.shift();
+
+        // Create a Firebase storage reference
+        const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
+
+        // Upload the selected image
+        const uploadTask = storageRef.put(imageToUpload);
+
+        // Get notified when the download URL is available
+        uploadTask.snapshotChanges().pipe(
+          finalize(() => {
+            uploadTask.then(snapshot => {
+              snapshot.ref.getDownloadURL().then(downloadURL => {
+                // Call saveImageUrls() here for each individual image
+                this.authService.saveImageUrl(this.userId, downloadURL)
+                  .catch(error => {
+                    console.error('Error saving image URL: ', error);
+                    this._snackBar.open('Failed to save image URL!', '', {
+                      horizontalPosition: this.horizontalPosition,
+                      verticalPosition: this.verticalPosition,
+                      duration: 2500,
+                      panelClass: ['red-snackbar']
+                    });
+                  });
+
+                // Update progress bar after each image upload
+                this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
+
+                if (this.selectedImages.length === 0) {
+                  // All images uploaded
+                  this.isUploading = false;
+                  this._snackBar.open('Images upload completed!', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['green-snackbar']
+                  });
+                  return;
+                }
+
+                // Call this function recursively to upload the next image
+                this.uploadImages();
+              });
+            });
+          })
+        ).subscribe();
+      }
+    });
   }
 }

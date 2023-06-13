@@ -26,7 +26,7 @@ export class AuthService {
     getAuthState(): Observable<any> {
         return this.afAuth.authState;
     }
-    
+
     loginUser(email: string, password: string): Promise<any> {
         return this.afAuth.signInWithEmailAndPassword(email, password)
             .then(() => {
@@ -139,7 +139,7 @@ export class AuthService {
     updateUser(email: string, user: any): Promise<void> {
         // ensure email is lower case since that's what we use in our Firestore document paths
         const emailLower = email.toLowerCase();
-    
+
         // merge the new user data with the existing data
         // this way, only provided fields will be updated
         return this.afs.doc('/users/' + emailLower).update(user)
@@ -154,5 +154,16 @@ export class AuthService {
                     return error;
             });
     }
-    
+
+    //Save establishments images
+    saveImageUrl(userId: string, imageUrl: string): Promise<void> {
+        return this.afs.collection('userImages').add({
+            uid: userId,
+            imageUrl: imageUrl
+        })
+            .then(() => { }) // resolve with void
+            .catch(error => {
+                console.error("Error adding document: ", error);
+            });
+    }
 }
