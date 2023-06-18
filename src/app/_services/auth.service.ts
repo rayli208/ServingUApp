@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class AuthService {
 
     userLoggedIn: boolean;      // other components can check on this variable for the login status of the user
 
-    constructor(private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+    constructor(private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore, private storage: AngularFireStorage,
+    ) {
         this.userLoggedIn = false;
 
         this.afAuth.onAuthStateChanged((user) => {              // set up a subscription to always know the login status of the user
@@ -117,15 +119,6 @@ export class AuthService {
             });
     }
 
-    setUserInfo(payload: object) {
-        console.log('Auth Service: saving user info...');
-        this.afs.collection('users')
-            .add(payload).then(function (res) {
-                console.log("Auth Service: setUserInfo response...")
-                console.log(res);
-            })
-    }
-
     getCurrentUser() {
         return this.afAuth.currentUser;                                 // returns user object for logged-in users, otherwise returns null 
     }
@@ -156,26 +149,15 @@ export class AuthService {
             });
     }
 
-    //Save establishments images
-    saveImageUrl(userId: string, imageUrl: string): Promise<void> {
-        return this.afs.collection('userImages').add({
-            uid: userId,
-            imageUrl: imageUrl
-        })
-            .then(() => { }) // resolve with void
-            .catch(error => {
-                console.error("Error adding document: ", error);
-            });
+    // In AuthService
+    getImageCount(userId: string): Observable<number> {
+        // Query the storage and get the images
+        let images = from(this.storage.ref('profilePictures/' + userId).listAll());
+    
+        return images.pipe(map(imagesResult => {
+            console.log('Images in getImageCount:', imagesResult.items);
+            return imagesResult.items.length;
+        }));
     }
-
-    getImages(userId: string): Observable<any[]> {
-        return this.afs.collection('userImages', ref => ref.where('uid', '==', userId))
-          .snapshotChanges()
-          .pipe(
-            map(actions => actions.map(a => {
-              const data = a.payload.doc.data() as object; // Ensure the data is treated as an object
-              return { ...data };
-            }))
-          );
-      }      
+    
 }

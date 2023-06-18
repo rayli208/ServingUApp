@@ -37,21 +37,20 @@
         </div>
     </div>
 </mat-card>
-
-
 <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
     <h1 class="profile-editor-header">Image Uploader:</h1>
-    <p>Total images: {{ imageCount }}</p>
-    <p>Remaining image upload slots: {{ 5 - imageCount }}</p>
-    <mat-form-field style="width: 100%;" appearance="outline">
+    <p>Total images: {{ imageCount }} / 5</p>
+    <div *ngIf="imageCount >= 5" class="error-message">
+        You have reached the maximum number of uploaded images.
+    </div>
+    <mat-form-field style="width: 100%;" appearance="outline" *ngIf="imageCount < 5">
         <mat-label>Upload Pictures</mat-label>
-        <button type="button" mat-icon-button matPrefix (click)="fileUploader.click(); $event.stopPropagation()"
-                [disabled]="imageCount >= 5">
+        <button type="button" mat-icon-button matPrefix (click)="fileUploader.click(); $event.stopPropagation()">
             <mat-icon>attach_file</mat-icon>
         </button>
-        <input type="text" readonly matInput [formControl]="fileName" [disabled]="imageCount >= 5"/>
+        <input type="text" readonly matInput [formControl]="fileName" />
         <input type="file" multiple hidden #fileUploader (change)="detectNewImage($event)"
-                accept="*.png,*.jpg,*.jpeg" [disabled]="imageCount >= 5"/>
+            accept="*.png,*.jpg,*.jpeg" />
     </mat-form-field>
     <h3 *ngIf="imgSrcs.length">Images for upload:</h3>
     <div *ngIf="imgSrcs.length" class="profile-editor-image-container">
@@ -61,6 +60,6 @@
     </div>
     <button mat-raised-button color="primary" [disabled]="isUploading || imageCount >= 5" (click)="uploadImages()"
         *ngIf="selectedImages.length > 0 && !isUploading" matTooltip="Upload Images">Upload Images <i
-        class="fa-solid fa-upload"></i></button>
+            class="fa-solid fa-upload"></i></button>
     <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading"></mat-progress-bar>
 </mat-card>

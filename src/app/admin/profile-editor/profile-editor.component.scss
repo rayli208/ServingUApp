@@ -1,23 +1,25 @@
-.profile-editor-header{
+.profile-editor-header {
     display: block;
     margin-bottom: 10px !important;
 }
 
-.profile-editor-image-container{
+.profile-editor-image-container {
     display: flex;
     flex-wrap: wrap;
 }
 
-.profile-editor-image{
+.profile-editor-image {
     width: 100px;
     height: 100px;
     border-radius: 5px;
     margin-right: 5px;
-    overflow: hidden; /* To make sure the image does not overflow the 50x50 container */
+    overflow: hidden;
+    /* To make sure the image does not overflow the 50x50 container */
 }
 
 .profile-editor-image img {
-    object-fit: cover; /* To ensure the aspect ratio of the image is maintained */
+    object-fit: cover;
+    /* To ensure the aspect ratio of the image is maintained */
     height: 100%;
     width: 100%;
 }
@@ -40,6 +42,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(235, 91, 91, 0.4); /* Reddish color with opacity */
+    background-color: rgba(235, 91, 91, 0.4);
+    /* Reddish color with opacity */
     pointer-events: none;
 }

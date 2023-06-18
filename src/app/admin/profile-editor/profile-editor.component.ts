@@ -29,6 +29,7 @@ export class ProfileEditorComponent implements OnInit {
 
   //Storage functionality
   imageCount: number = 0;
+  isImageLimitReached: boolean = false;
 
   constructor(
     public authService: AuthService,
@@ -44,14 +45,16 @@ export class ProfileEditorComponent implements OnInit {
       if (user) {
         this.userId = user.uid;
         let emailLower = user.email.toLowerCase();
-        console.log(emailLower);
+
         this.authService.getCurrentUserInfo(emailLower).subscribe(userInfo => {
           this.user = userInfo;
         });
 
-        // Fetch the images
-        this.authService.getImages(this.userId).subscribe(images => {
-          this.imageCount = images.length;
+        this.authService.getImageCount(this.userId).subscribe(count => {
+          this.imageCount = count;
+          // Check if the image limit has been reached
+          this.isImageLimitReached = this.imageCount >= 5;
+          console.log('Image count updated:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
         });
       }
     });
@@ -84,38 +87,48 @@ export class ProfileEditorComponent implements OnInit {
 
   detectNewImage($event: any) {
     if ($event.target.files && $event.target.files.length) {
+      // If image limit has been reached, ignore new selection
+      if (this.isImageLimitReached) {
+        alert('You have reached the limit of 5 images.');
+        return;
+      }
+
       let newImages: File[] = Array.from($event.target.files);
       let freeSlots = 5 - this.imageCount - this.selectedImages.length;
-  
+
       // If the user tries to upload more images than there are free slots, alert the user and only accept as many images as there are free slots.
       if (newImages.length > freeSlots) {
         alert(`You can only select a maximum of ${freeSlots} more image(s)`);
         newImages = newImages.slice(0, freeSlots);
       }
-  
+
       // Append the new files to the selectedImages array
       this.selectedImages.push(...newImages);
-  
+
       for (let i = 0; i < newImages.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => this.imgSrcs.push(e.target.result);
         reader.readAsDataURL(newImages[i]);
       }
-  
+
       this.totalImages = this.selectedImages.length;
+      // Check if the image limit has been reached
+      this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
+      console.log('Image count after selection:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
     }
-  }  
+  }
 
   removeImage(index: number) {
     this.imgSrcs.splice(index, 1);
     this.selectedImages.splice(index, 1);
     this.totalImages = this.selectedImages.length;
-  }
+    this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
+  }  
 
   // Upload the images
   uploadImages() {
     this.isUploading = true;
-  
+
     if (!this.selectedImages || this.selectedImages.length === 0) {
       this._snackBar.open('No image selected!', '', {
         horizontalPosition: this.horizontalPosition,
@@ -125,38 +138,28 @@ export class ProfileEditorComponent implements OnInit {
       });
       return;
     }
-  
+
     // Save off the current selected image, then remove it from the array
-    const imageToUpload = this.selectedImages[0];
-    this.selectedImages.shift();
-  
+    const imageToUpload = this.selectedImages.shift();
+
     // Create a Firebase storage reference
     const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
-  
+
     // Upload the selected image
     const uploadTask = storageRef.put(imageToUpload);
-  
+
     // Get notified when the download URL is available
     uploadTask.snapshotChanges().pipe(
       finalize(() => {
         uploadTask.then(snapshot => {
-          snapshot.ref.getDownloadURL().then(downloadURL => {
-            // Call saveImageUrls() here for each individual image
-            this.authService.saveImageUrl(this.userId, downloadURL)
-              .catch(error => {
-                console.error('Error saving image URL: ', error);
-                this._snackBar.open('Failed to save image URL!', '', {
-                  horizontalPosition: this.horizontalPosition,
-                  verticalPosition: this.verticalPosition,
-                  duration: 2500,
-                  panelClass: ['red-snackbar']
-                });
-              });
-  
+          snapshot.ref.getDownloadURL().then(() => {
             // Update progress bar after each image upload
             this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
-  
-            if (this.selectedImages.length === 0) {
+
+            if (this.selectedImages.length > 0) {
+              // If there are more images left to upload, call this function recursively
+              this.uploadImages();
+            } else {
               // All images uploaded
               this.isUploading = false;
               this._snackBar.open('Images upload completed!', '', {
@@ -164,24 +167,26 @@ export class ProfileEditorComponent implements OnInit {
                 verticalPosition: this.verticalPosition,
                 duration: 2500,
                 panelClass: ['green-snackbar']
+              }).afterDismissed().subscribe(() => {
+                // Reset the selected images array and display array
+                this.selectedImages = [];
+                this.imgSrcs = [];
+                this.totalImages = 0;
+                this.progressBarValue = 0;
               });
-  
-              // Reset the selected images array and display array
-              this.selectedImages = [];
-              this.imgSrcs = [];
-              this.totalImages = 0;
-              this.progressBarValue = 0;
-  
-              // Update image count
-              this.imageCount = this.imageCount + this.totalImages;
-              return;
             }
-  
-            // Call this function recursively to upload the next image
-            this.uploadImages();
+
+            // After each successful image upload, fetch the updated count
+            this.authService.getImageCount(this.userId).subscribe(count => {
+              this.imageCount = count;
+              // Check if the image limit has been reached
+              this.isImageLimitReached = this.imageCount >= 5;
+              console.log('Image count after upload:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
+            });
           });
         });
       })
     ).subscribe();
   }
+
 }
