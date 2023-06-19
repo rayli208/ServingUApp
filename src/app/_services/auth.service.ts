@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -153,11 +153,28 @@ export class AuthService {
     getImageCount(userId: string): Observable<number> {
         // Query the storage and get the images
         let images = from(this.storage.ref('profilePictures/' + userId).listAll());
-    
+
         return images.pipe(map(imagesResult => {
             console.log('Images in getImageCount:', imagesResult.items);
             return imagesResult.items.length;
         }));
     }
-    
+
+    // In AuthService
+    getImageUrls(userId: string): Observable<string[]> {
+        // Query the storage and get the images
+        let images = from(this.storage.ref('profilePictures/' + userId).listAll());
+
+        return images.pipe(switchMap(imagesResult => {
+            console.log('Images in getImageUrls:', imagesResult.items);
+
+            // Now we need to get the download URL for each image
+            let urlObservables = imagesResult.items.map(imageRef => imageRef.getDownloadURL());
+
+            // Combine these Observables into one
+            return combineLatest(urlObservables);
+        }));
+    }
+
+
 }

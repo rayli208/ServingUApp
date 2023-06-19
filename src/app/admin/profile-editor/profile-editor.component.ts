@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/_services/auth.service';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile-editor',
@@ -30,12 +31,13 @@ export class ProfileEditorComponent implements OnInit {
   //Storage functionality
   imageCount: number = 0;
   isImageLimitReached: boolean = false;
+  imageUrls$: Observable<string[]>;
 
   constructor(
     public authService: AuthService,
-    private afAuth: AngularFireAuth,
     private _snackBar: MatSnackBar,
     private storage: AngularFireStorage,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.user = null;
   }
@@ -56,6 +58,8 @@ export class ProfileEditorComponent implements OnInit {
           this.isImageLimitReached = this.imageCount >= 5;
           console.log('Image count updated:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
         });
+
+        this.imageUrls$ = this.authService.getImageUrls(this.userId);
       }
     });
   }
@@ -123,7 +127,7 @@ export class ProfileEditorComponent implements OnInit {
     this.selectedImages.splice(index, 1);
     this.totalImages = this.selectedImages.length;
     this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
-  }  
+  }
 
   // Upload the images
   uploadImages() {
@@ -168,11 +172,12 @@ export class ProfileEditorComponent implements OnInit {
                 duration: 2500,
                 panelClass: ['green-snackbar']
               }).afterDismissed().subscribe(() => {
-                // Reset the selected images array and display array
+                // Reset the selected images array, display array and progress bar
                 this.selectedImages = [];
                 this.imgSrcs = [];
                 this.totalImages = 0;
                 this.progressBarValue = 0;
+                this.changeDetector.detectChanges();
               });
             }
 
@@ -188,5 +193,4 @@ export class ProfileEditorComponent implements OnInit {
       })
     ).subscribe();
   }
-
 }
