@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-profile-editor',
@@ -32,6 +32,7 @@ export class ProfileEditorComponent implements OnInit {
   imageCount: number = 0;
   isImageLimitReached: boolean = false;
   imageUrls$: Observable<string[]>;
+  imageUrls: string[] = [];
 
   constructor(
     public authService: AuthService,
@@ -60,6 +61,9 @@ export class ProfileEditorComponent implements OnInit {
         });
 
         this.imageUrls$ = this.authService.getImageUrls(this.userId);
+        this.imageUrls$.subscribe(urls => {
+          this.imageUrls = urls;
+        });
       }
     });
   }
@@ -156,7 +160,12 @@ export class ProfileEditorComponent implements OnInit {
     uploadTask.snapshotChanges().pipe(
       finalize(() => {
         uploadTask.then(snapshot => {
-          snapshot.ref.getDownloadURL().then(() => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // Add the new image URL to the imageUrls array
+            this.imageUrls.push(downloadURL);
+            // Update the imageUrls$ Observable
+            this.imageUrls$ = of(this.imageUrls);
+
             // Update progress bar after each image upload
             this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
 
@@ -192,5 +201,39 @@ export class ProfileEditorComponent implements OnInit {
         });
       })
     ).subscribe();
+  }
+
+  confirmDelete(imageUrl): void {
+    let confirmation = confirm('Are you sure you want to delete this image?');
+    if (confirmation) {
+      this.storage.storage.refFromURL(imageUrl).delete().then(() => {
+        // Once the image is deleted, update the user's image count and refresh the list of images
+        this.authService.getImageCount(this.userId).subscribe(count => {
+          this.imageCount = count;
+          // Check if the image limit has been reached
+          this.isImageLimitReached = this.imageCount >= 5;
+          console.log('Image count after deletion:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
+        });
+
+        // Find the index of the image in the array
+        const index = this.imageUrls.indexOf(imageUrl);
+        if (index > -1) {
+          // Use splice to remove the image from the array
+          this.imageUrls.splice(index, 1);
+        }
+
+        this.changeDetector.detectChanges();
+
+      }).catch(error => {
+        // Handle any errors that occur during the deletion
+        console.error('Failed to delete image:', error);
+        this._snackBar.open('Failed to delete image!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      });
+    }
   }
 }

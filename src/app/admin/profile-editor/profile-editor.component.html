@@ -64,10 +64,10 @@
     <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading"></mat-progress-bar>
 </mat-card>
 <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
-    <div *ngFor="let imageUrl of imageUrls$ | async; index as i">
+    <div *ngFor="let imageUrl of imageUrls; index as i">
         <img [src]="imageUrl">
-        <button mat-icon-button>
-            <mat-icon>delete</mat-icon>
+        <button mat-icon-button (click)="confirmDelete(imageUrl)">
+          <mat-icon>delete</mat-icon>
         </button>
-    </div>
+      </div>      
 </mat-card>

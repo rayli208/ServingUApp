@@ -175,6 +175,4 @@ export class AuthService {
             return combineLatest(urlObservables);
         }));
     }
-
-
 }
