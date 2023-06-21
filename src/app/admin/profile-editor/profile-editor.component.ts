@@ -175,18 +175,17 @@ export class ProfileEditorComponent implements OnInit {
             } else {
               // All images uploaded
               this.isUploading = false;
+              // Reset the selected images array, display array and progress bar
+              this.selectedImages = [];
+              this.imgSrcs = [];
+              this.totalImages = 0;
+              this.progressBarValue = 0;
+              this.changeDetector.detectChanges();
               this._snackBar.open('Images upload completed!', '', {
                 horizontalPosition: this.horizontalPosition,
                 verticalPosition: this.verticalPosition,
                 duration: 2500,
                 panelClass: ['green-snackbar']
-              }).afterDismissed().subscribe(() => {
-                // Reset the selected images array, display array and progress bar
-                this.selectedImages = [];
-                this.imgSrcs = [];
-                this.totalImages = 0;
-                this.progressBarValue = 0;
-                this.changeDetector.detectChanges();
               });
             }
 
