@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
     selector: 'app-profile-dashboard',
@@ -19,6 +20,7 @@ export class ProfileDashboardComponent implements OnInit {
     constructor(
         private router: Router,
         public afAuth: AngularFireAuth,
+        public authService: AuthService,
         private afs: AngularFirestore,
         private employeesService: EmployeesService,
 
@@ -31,6 +33,9 @@ export class ProfileDashboardComponent implements OnInit {
     scheduleActive: boolean;
     punchClockActive: boolean;
     tablesActive: boolean;
+
+    imageUrls$: Observable<string[]>;
+    imageUrls: string[] = [];
 
     ngOnInit(): void {
         this.afAuth.authState.subscribe(user => {
@@ -45,6 +50,11 @@ export class ProfileDashboardComponent implements OnInit {
                             ...e.payload.doc.data() as {}
                         } as Employee;
                     }).filter(x => x.employeed);
+                });
+
+                this.imageUrls$ = this.authService.getImageUrls(this.userId);
+                this.imageUrls$.subscribe(urls => {
+                  this.imageUrls = urls;
                 });
             }
         });

@@ -65,7 +65,9 @@
         </div>
     </div>
     <div class="profile-dashboard-card-main-container-half">
-        test test
+        <div class="image-container" *ngFor="let imageUrl of imageUrls">
+            <img [src]="imageUrl" class="image">
+        </div>
     </div>
 </div>
 
