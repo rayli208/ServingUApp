@@ -65,10 +65,15 @@
         </div>
     </div>
     <div class="profile-dashboard-card-main-container-half">
-        <div class="image-container" *ngFor="let imageUrl of imageUrls">
-            <img [src]="imageUrl" class="image">
-        </div>
-    </div>
+        <div class="image-container" *ngIf="imageUrls.length; else noImages">
+            <ng-container *ngFor="let imageUrl of imageUrls; index as i">
+                <img [class.slide-in-image]="i === currentIndex" *ngIf="i === currentIndex" [src]="imageUrl" class="image">
+            </ng-container>                     
+        </div>        
+        <ng-template #noImages>
+            <p>This user does not have any images</p>
+        </ng-template>                     
+    </div>    
 </div>
 
 <div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">

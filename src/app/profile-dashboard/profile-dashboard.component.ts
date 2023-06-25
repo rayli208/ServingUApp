@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, interval, timer } from 'rxjs';
+import { take, map } from 'rxjs/operators';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
 import { Router } from '@angular/router';
@@ -10,24 +12,38 @@ import { AuthService } from '../_services/auth.service';
 @Component({
     selector: 'app-profile-dashboard',
     templateUrl: './profile-dashboard.component.html',
-    styleUrls: ['./profile-dashboard.component.scss']
+    styleUrls: ['./profile-dashboard.component.scss'],
+    animations: [
+        trigger('slide', [
+            transition(':increment', [
+                style({ transform: 'translateX(100%)' }),
+                animate('1s ease-out', style({ transform: 'translateX(0)' })),
+            ]),
+            transition(':decrement', [
+                style({ transform: 'translateX(-100%)' }),
+                animate('1s ease-out', style({ transform: 'translateX(0)' })),
+            ]),
+        ]),
+    ],
 })
 export class ProfileDashboardComponent implements OnInit {
-    userId;
-    user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+    userId: string;
+    user: Observable<any>;
     Employees: Employee[];
+    currentImageUrl: string;
+    currentIndex: number = 0;
 
     constructor(
         private router: Router,
         public afAuth: AngularFireAuth,
         public authService: AuthService,
         private afs: AngularFirestore,
-        private employeesService: EmployeesService,
-
+        private employeesService: EmployeesService
     ) {
         this.user = null;
     }
-    pinValue: '';
+
+    pinValue: string;
     jobsActive: boolean;
     employeesActive: boolean;
     scheduleActive: boolean;
@@ -38,24 +54,31 @@ export class ProfileDashboardComponent implements OnInit {
     imageUrls: string[] = [];
 
     ngOnInit(): void {
-        this.afAuth.authState.subscribe(user => {
+        this.afAuth.authState.subscribe((user) => {
             if (user) {
                 this.userId = user.uid;
                 let emailLower = user.email.toLowerCase();
                 this.user = this.afs.collection('users').doc(emailLower).valueChanges();
-                this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
-                    this.Employees = res.map(e => {
+                this.employeesService.getEmployeesListForUser(this.userId).subscribe((res) => {
+                    this.Employees = res.map((e) => {
                         return {
                             id: e.payload.doc.id,
-                            ...e.payload.doc.data() as {}
+                            ...(e.payload.doc.data() as {}),
                         } as Employee;
-                    }).filter(x => x.employeed);
+                    }).filter((x) => x.employeed);
                 });
 
                 this.imageUrls$ = this.authService.getImageUrls(this.userId);
-                this.imageUrls$.subscribe(urls => {
-                  this.imageUrls = urls;
-                });
+                this.imageUrls$
+                    .pipe(
+                        take(1),
+                        map((urls) => {
+                            this.imageUrls = urls;
+                            this.currentImageUrl = urls[this.currentIndex];
+                            this.setInterval();
+                        })
+                    )
+                    .subscribe();
             }
         });
 
@@ -68,7 +91,6 @@ export class ProfileDashboardComponent implements OnInit {
             localStorage.setItem('employeesActive', 'false');
         }
         this.employeesActive = localStorage.getItem('employeesActive') === 'true';
-
 
         if (!localStorage.getItem('scheduleActive')) {
             localStorage.setItem('scheduleActive', 'false');
@@ -84,7 +106,19 @@ export class ProfileDashboardComponent implements OnInit {
             localStorage.setItem('tablesActive', 'false');
         }
         this.tablesActive = localStorage.getItem('tablesActive') === 'true';
+    }
 
+    updateCurrentImageUrl() {
+        this.currentIndex++;
+        // If we've gone past the end of the array, start over from the beginning.
+        if (this.currentIndex >= this.imageUrls.length) {
+            this.currentIndex = 0;
+        }
+        this.currentImageUrl = this.imageUrls[this.currentIndex];
+    }
+
+    setInterval() {
+        timer(0, 5000).subscribe(() => this.updateCurrentImageUrl());
     }
 
     toggleJobsActive() {
@@ -107,7 +141,7 @@ export class ProfileDashboardComponent implements OnInit {
         localStorage.setItem('tablesActive', this.tablesActive.toString());
     }
 
-    //Make sure nothing but numbers are being put into the input value
+    // Make sure only numbers are being entered into the input value
     onInputChange(event: any) {
         const currentValue = event.target.value;
         const nextValue = currentValue.replace(/[^0-9]/g, '');
@@ -129,7 +163,7 @@ export class ProfileDashboardComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
-        console.log("Copied text");
+        console.log('Copied text');
     }
 
     goToProfileEditorDashboard() {
@@ -138,7 +172,5 @@ export class ProfileDashboardComponent implements OnInit {
 
     goToHoursEditorDashboard() {
         this.router.navigate(['/hours-dashboard']);
-
     }
-
 }
