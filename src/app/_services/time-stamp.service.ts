@@ -1,7 +1,7 @@
 import { TimeStamp } from './../_models/time-stamp.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Employee } from '../_models/employee.model';
 
 @Injectable({
@@ -74,7 +74,7 @@ export class TimeStampService {
             uid: employee.uid,
             employeeId: employee.id,
             employeeName: employee.name,
-            startTime: employee.clockedInTime, 
+            startTime: employee.clockedInTime,
             endTime: endTime,
         };
         return this.createTimeStamp(timeStamp);
