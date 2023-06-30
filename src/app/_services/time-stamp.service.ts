@@ -79,4 +79,14 @@ export class TimeStampService {
         };
         return this.createTimeStamp(timeStamp);
     }
+
+    // Get ALL TimeStamps for a USER where startTime is within a range of dates
+    getTimeStampsForUserAndDateRange(uid: string, startDate: Date, endDate: Date) {
+        return this.afs
+            .collection<TimeStamp>("timeStamp", ref =>
+                ref.where('uid', '==', uid)
+                    .where('startTime', '>=', startDate)
+                    .where('startTime', '<=', endDate))
+            .snapshotChanges();
+    }
 }

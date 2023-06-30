@@ -13,18 +13,24 @@
             <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
     </div>
+    <button mat-raised-button color="primary" (click)="loadTimestamps()">Load Timestamps</button>
 </app-header>
+
+<div class="employee-totals">
+    <h2>Total Hours Worked:</h2>
+    <ul>
+        <li *ngFor="let employee of totalHours | keyvalue">
+            {{employee.key}}: {{employee.value}} hours total
+        </li>
+    </ul>
+</div>
 
 <div class="timestamps-list">
     <h2>User's Time Stamps:</h2>
-    <ul>
-        <li *ngFor="let timestamp of timestamps">
-            <div>
-                <h2>{{timestamp.employeeName}}'s TimeStamp</h2>
-                <p>Start Time: {{timestamp.startTime | date:'short'}}</p>
-                <p>End Time: {{timestamp.endTime | date:'short'}}</p>
-              </div>
-              
-        </li>
-    </ul>
+    <div class="card" *ngFor="let timestamp of timestamps">
+        <h3>{{timestamp.employeeName}}'s TimeStamp</h3>
+        <p>Start Time: {{timestamp.startTime | date:'short'}}</p>
+        <p>End Time: {{timestamp.endTime | date:'short'}}</p>
+        <p>Total hours worked that day: {{timestamp.hoursWorked}}</p>
+    </div>
 </div>
