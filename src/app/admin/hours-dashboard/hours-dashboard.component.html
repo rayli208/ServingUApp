@@ -18,20 +18,21 @@
 </app-header>
 
 <div *ngIf="isEmpty"><i class="employee-totals-empty">There are no timestamps during this date range.</i></div>
+<h2 *ngIf="!isEmpty">Total Hours Worked:</h2>
 <div class="employee-totals" *ngIf="!isEmpty">
-    <h2>Total Hours Worked:</h2>
-    <div *ngFor="let employee of totalHours | keyvalue" (click)="selectEmployee(employee.key)">
-        <div class="employee-totals-card"
-            [ngStyle]="{'border-color': selectedEmployee === employee.key ? '#22C795' : '#35B9DF', 'border-radius': '5px', 'border-width': '2px', 'border-style': 'solid'}">
+    <div class="employee-totals-container">
+        <div *ngFor="let employee of totalHours | keyvalue" (click)="selectEmployee(employee.key)"
+            class="employee-totals-card"
+            [ngStyle]="{'border-color': selectedEmployee === employee.key ? '#22C795' : '#35B9DF'}">
             {{employee.key}}: {{employee.value}} hours total
         </div>
     </div>
 </div>
 
 <!-- The rest of your template... -->
+<h2 *ngIf="selectedEmployee">{{selectedEmployee}}'s Time Stamps:</h2>
 <div class="timestamps-list" *ngIf="selectedEmployee">
-    <h2>{{selectedEmployee}}'s Time Stamps:</h2>
-    <div class="card" *ngFor="let timestamp of timestamps">
+    <div class="timestamps-list-card" *ngFor="let timestamp of timestamps">
         <h3>{{timestamp.employeeName}}'s TimeStamp</h3>
         <p>Start Time: {{timestamp.startTime | date:'short'}}</p>
         <p>End Time: {{timestamp.endTime | date:'short'}}</p>

@@ -1,22 +1,67 @@
 @import './../../_styles/variables.scss';
 
-.hours-dashboard-date-range{
+.hours-dashboard-date-range {
     margin-top: 15px;
 }
 
-.employee-totals-card{
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    position: relative;
-    background-color: $white;
-}
-
-.employee-totals-empty{
+.employee-totals-empty {
     display: inline-block;
     font-style: italic;
     margin-top: 15px;
     font-size: 14px;
     color: $text-muted;
+}
+
+.employee-totals-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.employee-totals-card {
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    background-color: $white;
+    border: 2px solid $brand-primary;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.employee-totals-card.selected {
+    border-color: $green;
+}
+
+.timestamps-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-items: center;
+}
+
+.timestamps-list .timestamps-list-card {
+    border-radius: 5px;
+    padding: 15px;
+    margin: 7.5px 15px;
+    position: relative;
+    background-color: $white;
+    border: 1px solid $brand-primary;
+    width: calc(100% - 40px); /* Adjusted width for 3 cards per row with 15px gap and 15px margin */
+}
+
+/* For screens smaller than 1200px but larger than 768px, 2 per row */
+@media (max-width: 1200px) and (min-width: 769px) {
+    .timestamps-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* For screens smaller than 768px, 1 per row */
+@media (max-width: 768px) {
+    .timestamps-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
