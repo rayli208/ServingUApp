@@ -1,3 +1,22 @@
+@import './../../_styles/variables.scss';
+
 .hours-dashboard-date-range{
     margin-top: 15px;
+}
+
+.employee-totals-card{
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    background-color: $white;
+}
+
+.employee-totals-empty{
+    display: inline-block;
+    font-style: italic;
+    margin-top: 15px;
+    font-size: 14px;
+    color: $text-muted;
 }

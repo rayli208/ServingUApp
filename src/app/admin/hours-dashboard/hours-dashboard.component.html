@@ -13,20 +13,24 @@
             <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" (click)="loadTimestamps()">Load Timestamps</button>
+    <button mat-raised-button color="primary" (click)="loadTimestamps()" [disabled]="!isRangeValid()">Load
+        Timestamps</button>
 </app-header>
 
-<div class="employee-totals">
+<div *ngIf="isEmpty"><i class="employee-totals-empty">There are no timestamps during this date range.</i></div>
+<div class="employee-totals" *ngIf="!isEmpty">
     <h2>Total Hours Worked:</h2>
-    <ul>
-        <li *ngFor="let employee of totalHours | keyvalue">
+    <div *ngFor="let employee of totalHours | keyvalue" (click)="selectEmployee(employee.key)">
+        <div class="employee-totals-card"
+            [ngStyle]="{'border-color': selectedEmployee === employee.key ? '#22C795' : '#35B9DF', 'border-radius': '5px', 'border-width': '2px', 'border-style': 'solid'}">
             {{employee.key}}: {{employee.value}} hours total
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>
 
-<div class="timestamps-list">
-    <h2>User's Time Stamps:</h2>
+<!-- The rest of your template... -->
+<div class="timestamps-list" *ngIf="selectedEmployee">
+    <h2>{{selectedEmployee}}'s Time Stamps:</h2>
     <div class="card" *ngFor="let timestamp of timestamps">
         <h3>{{timestamp.employeeName}}'s TimeStamp</h3>
         <p>Start Time: {{timestamp.startTime | date:'short'}}</p>

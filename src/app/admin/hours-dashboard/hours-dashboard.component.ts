@@ -11,14 +11,16 @@ import { TimeStampService } from 'src/app/_services/time-stamp.service';
   styleUrls: ['./hours-dashboard.component.scss']
 })
 export class HoursDashboardComponent implements OnInit {
-
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
 
+  isEmpty: boolean = true;
   timestamps = [];
+  originalTimestamps = [];
   totalHours: { [key: string]: number } = {};
+  selectedEmployee: string | null = null;
 
   userId: string;
 
@@ -29,59 +31,72 @@ export class HoursDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userId = user.uid;
-        // We don't load the time stamps here
       }
     });
   }
 
+  isRangeValid() {
+    return this.range.controls.start.value && this.range.controls.end.value;
+  }  
+
   loadTimestamps() {
-  if (this.range.valid) {
-    let startDate = this.range.controls.start.value;
-    let endDate = this.range.controls.end.value;
-
-    // Check if the startDate is not null
-    if (!startDate) {
-      alert('Start date is not selected.');
-      return;
-    }
-
-    // Check if the endDate is not null and covers the whole day
-    if (endDate) {
-      endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59);
-    } else {
-      alert('End date is not selected.');
-      return;
-    }
-
-    this.timeStampService.getTimeStampsForUserAndDateRange(this.userId, startDate, endDate)
-      .subscribe((res) => {
-          this.timestamps = res.map((e) => {
-              const data = e.payload.doc.data() as any; // Cast to any to avoid TypeScript errors
-              const hoursWorked = (data.endTime.toDate() - data.startTime.toDate()) / (1000 * 60 * 60); // Convert milliseconds to hours
-              return {
-                id: e.payload.doc.id,
-                uid: data.uid,
-                employeeId: data.employeeId,
-                employeeName: data.employeeName,
-                startTime: data.startTime.toDate(),
-                endTime: data.endTime.toDate(),
-                hoursWorked: hoursWorked.toFixed(2)
-              } as TimeStamp;
+    this.selectedEmployee = null;
+    this.timestamps = [];
+  
+    if (this.range.valid) {
+      let startDate = this.range.controls.start.value;
+      let endDate = this.range.controls.end.value;
+  
+      if (!startDate) {
+        alert('Start date is not selected.');
+        return;
+      }
+  
+      if (endDate) {
+        endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59);
+      } else {
+        alert('End date is not selected.');
+        return;
+      }
+  
+      this.timeStampService.getTimeStampsForUserAndDateRange(this.userId, startDate, endDate)
+        .subscribe((res) => {
+          this.originalTimestamps = res.map((e) => {
+            const data = e.payload.doc.data() as any;
+            const hoursWorked = (data.endTime.toDate() - data.startTime.toDate()) / (1000 * 60 * 60);
+            return {
+              id: e.payload.doc.id,
+              uid: data.uid,
+              employeeId: data.employeeId,
+              employeeName: data.employeeName,
+              startTime: data.startTime.toDate(),
+              endTime: data.endTime.toDate(),
+              hoursWorked: hoursWorked.toFixed(2)
+            } as TimeStamp;
           });
 
+          if (this.originalTimestamps.length === 0) {
+            this.isEmpty = true;
+          } else {
+            this.isEmpty = false;
+          }
+  
           this.calculateTotalHours();
-      });
+        });
+    } else {
+      alert('Please select a valid date range.');
+    }
   }
-  else {
-    alert('Please select a valid date range.');
+  
+  selectEmployee(employeeName: string) {
+    this.selectedEmployee = employeeName;
+    this.timestamps = this.originalTimestamps.filter(timestamp => timestamp.employeeName === this.selectedEmployee);
   }
-}
-
 
   calculateTotalHours() {
     this.totalHours = {};
 
-    this.timestamps.forEach(timestamp => {
+    this.originalTimestamps.forEach(timestamp => {
       if (!this.totalHours[timestamp.employeeName]) {
         this.totalHours[timestamp.employeeName] = 0;
       }
@@ -93,7 +108,6 @@ export class HoursDashboardComponent implements OnInit {
     }
   }
 
-  // This function converts a Firebase timestamp to a JavaScript Date object
   convertDate(firebaseTimestamp: any): Date {
     const timestamp = firebaseTimestamp.split(' ');
     const date = timestamp[0];

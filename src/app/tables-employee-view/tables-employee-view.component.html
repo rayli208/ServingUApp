@@ -1,5 +1,5 @@
 <div class="tables-employee-view-container">
-    <i *ngIf="!getObjectKeys(employeesWithTables).length">There are no employees clocked in</i>
+    <i *ngIf="!getObjectKeys(employeesWithTables).length" class="tables-employee-view-empty">There are no employees clocked in</i>
     <ng-container *ngFor="let employeeId of getObjectKeys(employeesWithTables)">
         <ng-container *ngIf="employeesWithTables[employeeId].employeed && employeesWithTables[employeeId].clockedIn">
             <div class="tables-employee-view-card">

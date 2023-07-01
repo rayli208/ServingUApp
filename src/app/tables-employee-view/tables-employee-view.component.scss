@@ -21,12 +21,19 @@
     padding: 10px;
     margin-bottom: 8px;
     box-shadow: none;
-    background-color: rgba(250, 247, 247, 0.5);
+    background-color: $white;
     position: relative;
 
     &:hover {
         background: transparent !important;
     }
+}
+
+.tables-employee-view-empty{
+    font-style: italic;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: $text-muted;
 }
 
 .tables-employee-view-card-body {
