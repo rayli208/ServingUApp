@@ -38,9 +38,10 @@
         <p>Start Time: {{timestamp.startTime | date:'short'}}</p>
         <p>End Time: {{timestamp.endTime | date:'short'}}</p>
         <p>Total hours worked that day: {{timestamp.hoursWorked}}</p>
-        <button mat-icon-button (click)="confirmDelete(timestamp.id)">
-            <i class="fa-solid fa-trash"></i>
-        </button>        
+        <div class="timestamps-list-icons">
+            <div (click)="openEditDialog(timestamp)"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div (click)="confirmDelete(timestamp.id)"><i class="fa-solid fa-trash-can"></i></div>
+          </div>        
     </div>
 
 </div>

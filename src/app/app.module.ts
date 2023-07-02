@@ -89,6 +89,8 @@ import { CreateScheduleFromDateDialogComponent } from './_dialogs/schedules/crea
 import { TablesEmployeeViewComponent } from './tables-employee-view/tables-employee-view.component';
 import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
 import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.component';
+import { CreateTimestampDialogComponent } from './_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
+import { EditTimestampDialogComponent } from './_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 
 
 @NgModule({
@@ -127,7 +129,9 @@ import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.co
         CreateScheduleFromDateDialogComponent,
         TablesEmployeeViewComponent,
         HoursDashboardComponent,
-        ProfileEditorComponent
+        ProfileEditorComponent,
+        CreateTimestampDialogComponent,
+        EditTimestampDialogComponent
     ],
     imports: [
         BrowserModule,

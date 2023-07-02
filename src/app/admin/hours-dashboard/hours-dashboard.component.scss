@@ -52,6 +52,20 @@
     width: calc(100% - 40px); /* Adjusted width for 3 cards per row with 15px gap and 15px margin */
 }
 
+.timestamps-list-icons {
+    display: flex;
+    font-size: 20px;
+    color: $brand-primary;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+
+    div {
+        margin-left: 10px;
+    }
+}
+
+
 /* For screens smaller than 1200px but larger than 768px, 2 per row */
 @media (max-width: 1200px) and (min-width: 769px) {
     .timestamps-list {

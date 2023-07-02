@@ -5,6 +5,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { TimeStamp } from 'src/app/_models/time-stamp.model';
 import { TimeStampService } from 'src/app/_services/time-stamp.service';
 import * as XLSX from 'xlsx';
+import { MatDialog } from '@angular/material/dialog';
+import { EditTimestampDialogComponent } from 'src/app/_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 
 @Component({
   selector: 'app-hours-dashboard',
@@ -25,7 +27,7 @@ export class HoursDashboardComponent implements OnInit {
 
   userId: string;
 
-  constructor(private timeStampService: TimeStampService, private afAuth: AngularFireAuth) {
+  constructor(private timeStampService: TimeStampService, private afAuth: AngularFireAuth, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -175,5 +177,20 @@ export class HoursDashboardComponent implements OnInit {
         console.error("Error deleting timestamp: ", error);
       });
     }
+  }
+
+  openEditDialog(timestamp: TimeStamp) {
+    const dialogRef = this.dialog.open(EditTimestampDialogComponent, {
+      width: '400px',
+      data: { timestamp }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        timestamp.startTime = result.startTime;
+        timestamp.endTime = result.endTime;
+        this.timeStampService.updateTimeStamp(timestamp, timestamp.id);
+      }
+    });
   }
 }

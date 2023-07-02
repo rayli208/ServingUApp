@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^16.0.4",
     "@angular/router": "^16.0.4",
     "firebase": "^9.13.0",
+    "moment": "^2.29.4",
     "rxjs": "~7.5.7",
     "tslib": "^2.4.1",
     "xlsx": "^0.18.5",
