@@ -7,6 +7,7 @@ import { TimeStampService } from 'src/app/_services/time-stamp.service';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTimestampDialogComponent } from 'src/app/_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
+import { CreateTimestampDialogComponent } from 'src/app/_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
 
 @Component({
   selector: 'app-hours-dashboard',
@@ -193,4 +194,19 @@ export class HoursDashboardComponent implements OnInit {
       }
     });
   }
+
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(CreateTimestampDialogComponent, {
+      width: '400px'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Reload timestamps if the selected employee's timestamps are being displayed
+        if (this.selectedEmployee) {
+          this.loadTimestamps();
+        }
+      }
+    });
+  }  
 }

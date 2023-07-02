@@ -16,6 +16,9 @@
             [disabled]="!isRangeValid() || isEmpty" matTooltip="Export to Excel">
             <i class="fa-solid fa-file-excel fa-2xl"></i>
         </button>
+        <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openCreateDialog()" matTooltip="Create Timestamp">
+            <i class="fa-solid fa-clock fa-2xl"></i>
+        </button>        
     </div>
     <button mat-raised-button color="primary" (click)="loadTimestamps()" [disabled]="!isRangeValid()">Load
         Timestamps</button>
@@ -41,7 +44,7 @@
         <div class="timestamps-list-icons">
             <div (click)="openEditDialog(timestamp)"><i class="fa-solid fa-pen-to-square"></i></div>
             <div (click)="confirmDelete(timestamp.id)"><i class="fa-solid fa-trash-can"></i></div>
-          </div>        
+        </div>
     </div>
 
 </div>

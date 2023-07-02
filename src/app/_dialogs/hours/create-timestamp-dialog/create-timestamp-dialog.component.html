@@ -1,1 +1,28 @@
-<p>create-timestamp-dialog works!</p>
+<form (ngSubmit)="onSubmit()" novalidate>
+    <h1 mat-dialog-title style="margin-bottom: 0px;">Create TimeStamp</h1>
+    <hr>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Select an employee</mat-label>
+            <mat-select (selectionChange)="onEmployeeChange($event)">
+                <mat-option *ngFor="let employee of Employees" [value]="employee">
+                    <img class="create-timestamp-employee-image" src="{{employee.imgUrl}}" />
+                    <span>{{employee.name}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Start Time</mat-label>
+            <input matInput [(ngModel)]="startTime" type="datetime-local" (input)="onStartTimeChange()">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>End Time</mat-label>
+            <input matInput [(ngModel)]="endTime" type="datetime-local" (input)="onEndTimeChange()">
+        </mat-form-field>
+    </div>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="isSaveDisabled"
+        style="float: right;">Create</button>
+</form>
