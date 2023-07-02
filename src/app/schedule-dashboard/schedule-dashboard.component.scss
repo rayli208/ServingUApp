@@ -47,7 +47,7 @@ mat-radio-button {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
-    background-color: rgba(250, 247, 247, .5);
+    background-color: $white;
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
@@ -133,7 +133,7 @@ mat-radio-button {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
-    background-color: rgba(250, 247, 247, .5);
+    background-color: $white;
     margin-bottom: 15px;
 }
 

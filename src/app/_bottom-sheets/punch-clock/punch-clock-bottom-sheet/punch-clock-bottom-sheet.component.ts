@@ -54,7 +54,6 @@ export class PunchClockBottomSheetComponent implements OnInit {
   }
 
   async handleClockInOrOut(): Promise<void> {
-    console.log("HIT")
     if (!this.employee.clockedIn) {
       // Clock-in case
       this.employee.clockedIn = true;
@@ -63,7 +62,6 @@ export class PunchClockBottomSheetComponent implements OnInit {
       this.showSnackBar('You have clocked in!');
       this.closeBottomSheet();
     } else {
-      console.log("HIT AGAIN")
       // Clock-out case
       const endTime = new Date();
       const startTime = new Date((this.employee.clockedInTime as any).toDate());

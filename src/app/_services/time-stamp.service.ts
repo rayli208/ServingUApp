@@ -68,6 +68,14 @@ export class TimeStampService {
             });
     }
 
+    //Delete a TimeStamp
+    deleteTimeStamp(id: string) {
+        return this.afs
+            .collection("timeStamp")
+            .doc(id)
+            .delete();
+    }
+
     // Create Time Stamp From Employee
     createTimeStampWithEmployee(employee: Employee, endTime: Date) {
         const timeStamp: TimeStamp = {

@@ -41,25 +41,24 @@ export class HoursDashboardComponent implements OnInit {
   }
 
   loadTimestamps() {
-    this.selectedEmployee = null;
     this.timestamps = [];
-
+  
     if (this.range.valid) {
       let startDate = this.range.controls.start.value;
       let endDate = this.range.controls.end.value;
-
+  
       if (!startDate) {
         alert('Start date is not selected.');
         return;
       }
-
+  
       if (endDate) {
         endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59);
       } else {
         alert('End date is not selected.');
         return;
       }
-
+  
       this.timeStampService.getTimeStampsForUserAndDateRange(this.userId, startDate, endDate)
         .subscribe((res) => {
           this.originalTimestamps = res.map((e) => {
@@ -75,19 +74,24 @@ export class HoursDashboardComponent implements OnInit {
               hoursWorked: hoursWorked.toFixed(2)
             } as TimeStamp;
           });
-
+  
           if (this.originalTimestamps.length === 0) {
             this.isEmpty = true;
           } else {
             this.isEmpty = false;
           }
-
+  
           this.calculateTotalHours();
+  
+          // Check if an employee is selected and filter the timestamps for that employee
+          if (this.selectedEmployee) {
+            this.selectEmployee(this.selectedEmployee);
+          }
         });
     } else {
       alert('Please select a valid date range.');
     }
-  }
+  }  
 
   selectEmployee(employeeName: string) {
     this.selectedEmployee = employeeName;
@@ -114,52 +118,62 @@ export class HoursDashboardComponent implements OnInit {
       alert('Please select a valid date range with available timestamps.');
       return;
     }
-  
+
     let allTimestamps: any[][] = [];
     let totalHours: any[][] = [];
-  
+
     // Header for "All Schedules" sheet
     allTimestamps.push(["Employee Name", "Date", "Start Time", "End Time", "Hours Worked"]);
-  
+
     // Header for "Total Hours" sheet
     totalHours.push(["Employee Name", "Total Hours"]);
-  
+
     // Sort timestamps by employee name and start time
     this.originalTimestamps.sort((a, b) => (a.employeeName > b.employeeName) ? 1 : (a.employeeName === b.employeeName) ? ((a.startTime > b.startTime) ? 1 : -1) : -1);
-  
+
     this.originalTimestamps.forEach((timestamp) => {
       let startDate = new Date(timestamp.startTime);
       let endDate = new Date(timestamp.endTime);
-  
+
       // Format the dates and times
       let date = startDate.toLocaleDateString();
       let startTime = startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       let endTime = endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
+
       allTimestamps.push([timestamp.employeeName, date, startTime, endTime, timestamp.hoursWorked]);
     });
-  
+
     for (let employeeName in this.totalHours) {
       totalHours.push([employeeName, this.totalHours[employeeName]]);
     }
-  
+
     const wb = XLSX.utils.book_new();
     const ws_all = XLSX.utils.aoa_to_sheet(allTimestamps);
     const ws_total = XLSX.utils.aoa_to_sheet(totalHours);
-  
+
     XLSX.utils.book_append_sheet(wb, ws_all, "All Schedules");
     XLSX.utils.book_append_sheet(wb, ws_total, "Total Hours");
-  
+
     // Format the filename with the selected date range
     let filename = `Employee Hours (${this.range.controls.start.value.toLocaleDateString()} - ${this.range.controls.end.value.toLocaleDateString()}).xlsx`;
-    filename = filename.replace(/ /g, "_").replace(/_-\_/g, "-").replace(/\//g, "-");    
-      
+    filename = filename.replace(/ /g, "_").replace(/_-\_/g, "-").replace(/\//g, "-");
+
     XLSX.writeFile(wb, filename);
   }
-  
+
   convertDate(firebaseTimestamp: any): Date {
     const dateObject = new Date(`${firebaseTimestamp.months} ${firebaseTimestamp.days}, ${firebaseTimestamp.years}`);
     return dateObject;
   }
 
+  confirmDelete(timestampId: string) {
+    const confirmDeletion = confirm("Are you sure you want to delete this timestamp?");
+    if (confirmDeletion) {
+      this.timeStampService.deleteTimeStamp(timestampId).then(() => {
+        this.loadTimestamps(); // reload the timestamps after deletion
+      }).catch((error) => {
+        console.error("Error deleting timestamp: ", error);
+      });
+    }
+  }
 }
