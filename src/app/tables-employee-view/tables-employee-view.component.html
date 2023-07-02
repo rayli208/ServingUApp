@@ -16,22 +16,19 @@
                         </div>
                     </div>
                     <div class="tables-employee-view-card-serving">
-                        <i *ngIf="employeesWithTables[employeeId].assignedTables.length">Currently Serving:</i>
-                        <i *ngIf="!employeesWithTables[employeeId].assignedTables.length">There are no tables assigned
-                            to this employee atm</i>
-                        <div *ngIf="employeesWithTables[employeeId].assignedTables.length">
+                        <i *ngIf="!getFloors(employeesWithTables[employeeId].assignedTables).length">There are no tables assigned to this employee atm</i>
+                        <ng-container *ngFor="let floor of getFloors(employeesWithTables[employeeId].assignedTables)">
+                            <h3 class="floor-header">Floor {{ floor }}:</h3>
                             <div class="table-container">
-                                <div *ngFor="let table of employeesWithTables[employeeId].assignedTables"
-                                    class="table-item"
-                                    [ngClass]="{'active-table': table.isActive, 'inactive-table': !table.isActive}">
-                                    <div (dblclick)="toggleActive(table)">
-                                        <div class="table-item-content"><i>Floor:</i> <b>{{table.floorPlan}}</b></div>
-                                        <hr class="table-item-hr">
-                                        <div class="table-item-content"><i>Table:</i> <b>{{table.tableNumber}}</b></div>
-                                    </div>
+                                <div *ngFor="let table of getTablesByFloor(employeesWithTables[employeeId].assignedTables, floor)"
+                                class="table-item"
+                                [ngClass]="{'active-table': table.isActive, 'inactive-table': !table.isActive}">
+                                <div (dblclick)="toggleActive(table)">
+                                    <div class="table-item-content"><b>{{table.tableNumber}}</b></div>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>

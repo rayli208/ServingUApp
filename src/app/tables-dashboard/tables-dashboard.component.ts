@@ -19,7 +19,7 @@ export class TablesDashboardComponent implements OnInit {
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   totalTables: Table[];
   currentFloor: number = 1;
-  gridSize: number = 50; // Define the grid size, adjust this value to your needs
+  gridSize: number = 25; // Define the grid size, adjust this value to your needs
 
 
   //Employee Portion

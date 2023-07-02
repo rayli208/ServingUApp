@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Table } from '../_models/table.model';
 import { Employee } from '../_models/employee.model';
-import { EditTableDialogComponent } from '../_dialogs/tables/edit-table-dialog/edit-table-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TablesService } from '../_services/tables.service';
 
@@ -23,18 +22,27 @@ export class TablesEmployeeViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // Add the getObjectKeys() helper function
   getObjectKeys(obj: object): string[] {
     return Object.keys(obj);
   }
 
   toggleActive(table: Table) {
-    //If the table is not assigned to anyone, it returns and does not toggle the table
     if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
       return;
     }
 
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
+  }
+
+  getFloors(tables: Table[]): number[] {
+    const floors = tables.map(table => table.floorPlan);
+    let uniqueFloors = [...new Set(floors)];
+    return uniqueFloors.sort((a, b) => a - b);
+  }
+
+  getTablesByFloor(tables: Table[], floor: number): Table[] {
+    let tablesOnFloor = tables.filter(table => table.floorPlan === floor);
+    return tablesOnFloor.sort((a, b) => a.tableNumber - b.tableNumber);
   }
 }
