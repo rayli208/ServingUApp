@@ -23,7 +23,14 @@
 <ng-container *ngIf="selectedView == 'Vertical'">
   <div *ngFor="let day of populatedSchedulesWithDates; let i = index">
     <div class="schedule-dashboard-date">
-      <div>{{formatDate(day?.date)}}</div>
+      <div>
+        <span class="schedule-weekly-schedule-name">
+          {{formatDate(day?.date)}}
+        </span>
+        <div class="schedule-employee-count">
+          Employees working: {{getEmployeeCount(day)}}
+        </div>
+      </div>
       <div>
         <button color="primary" class="schedule-dashboard-date-add-button"
           (click)="createSchedule(day?.date); $event.stopPropagation()" mat-raised-button
@@ -59,6 +66,9 @@
     <ng-container *ngFor="let day of populatedSchedulesWithDates; let i = index">
       <div class="schedule-weekly-schedule-day">
         <div class="schedule-weekly-schedule-name">{{formatDate(day?.date)}}</div>
+        <div class="schedule-employee-count">
+          Employees working: {{getEmployeeCount(day)}}
+        </div>
         <div>
           <button color="primary" class="schedule-dashboard-date-add-button horizontal"
             (click)="createSchedule(day?.date); $event.stopPropagation()" mat-raised-button

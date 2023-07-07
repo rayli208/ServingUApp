@@ -38,7 +38,7 @@ export class ScheduleDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-  
+
         this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
           this.Schedules = res.map(e => {
             return {
@@ -46,7 +46,7 @@ export class ScheduleDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Schedule;
           });
-  
+
           //Once we have all the schedules loaded, populate them into the actual object we display
           this.populateSchedule();
         });
@@ -100,30 +100,30 @@ export class ScheduleDashboardComponent implements OnInit {
   populateSchedule(): void {
     this.populateDaysOfWeek(this.base);
     this.populatedSchedulesWithDates = [];
-  
+
     for (var i = 0; i < this.daysOfWeek.length; i++) {
       let schedule = [];
-  
+
       for (let j = 0; j < this.Schedules.length; j++) {
         var d: any = this.Schedules[j]?.date;
-  
+
         if (d == this.daysOfWeek[i]) {
           schedule.push(this.Schedules[j]);
         }
       }
-  
+
       // Sort the schedule array based on startTime in ascending order
       schedule.sort((a, b) => {
         return a.startTime < b.startTime ? -1 : (a.startTime > b.startTime ? 1 : 0);
       });
-  
+
       this.populatedSchedulesWithDates.push({
         date: this.daysOfWeek[i],
         schedule: schedule
       });
     }
   }
-  
+
 
 
   //Edit Function
@@ -210,14 +210,18 @@ export class ScheduleDashboardComponent implements OnInit {
     return yearString.slice(-2); // Return the last two characters of the year string
   }
 
-  public createSchedule(date: string){
+  public createSchedule(date: string) {
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
         date: date,
       }
     });
-    
-    //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });  }
 
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
+  }
+
+  getEmployeeCount(day: any): number {
+    return day.schedule?.length || 0;
+  }
 }
