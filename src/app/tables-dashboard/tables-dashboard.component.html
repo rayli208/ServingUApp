@@ -1,18 +1,21 @@
 <app-header iconClass="fa-solid fa-tablet-screen-button" title="Tables Dashboard">
-    <mat-card appearance="outlined" class="table-dashboard-actions-container">
-        <div>
-            <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()">Waitlist</button>
-            <button mat-raised-button color="primary" (click)="createTable()">
-                <span>Add Table</span>
-            </button>
-        </div>
+    <div class="table-dashboard-actions-container">
         <div class="table-dashboard-actions">
             <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()"
                 [class.disabled]="currentFloor === 1"></i>
             <h1>Current Floor: {{ currentFloor }}</h1>
             <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
         </div>
-    </mat-card>
+        <div>
+            <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()" matTooltip="Waitlist">Waitlist</button>
+            <button mat-raised-button color="primary" (click)="createTable()" matTooltip="Add Table">
+                <span>Add Table</span>
+            </button>
+            <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openMassAssignDialog()" matTooltip="Mass Assign Tables">
+                <i class="fa-solid fa-bolt-lightning fa-2xl"></i>
+            </button> 
+        </div>
+    </div>
 </app-header>
 
 <div class="table-dashboard-container">
@@ -45,7 +48,8 @@
                     </ng-container>
                 </div>
                 <div class="employee-view">
-                    <app-tables-employee-view [employeesWithTables]="employeesWithTables" [employees]="clockedInEmployees">
+                    <app-tables-employee-view [employeesWithTables]="employeesWithTables"
+                        [employees]="clockedInEmployees">
                     </app-tables-employee-view>
                 </div>
             </div>

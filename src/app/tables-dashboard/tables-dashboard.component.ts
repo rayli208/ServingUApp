@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { TablesService } from '../_services/tables.service';
 import { EmployeesService } from '../_services/employees.service';
 import { Employee } from '../_models/employee.model';
+import { MassSelectDialogComponent } from '../_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -58,7 +59,7 @@ export class TablesDashboardComponent implements OnInit {
               }
               return b.isActive ? 1 : -1;
             });
-            this.updateEmployeesWithTables();
+          this.updateEmployeesWithTables();
         });
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
@@ -155,19 +156,25 @@ export class TablesDashboardComponent implements OnInit {
   //Updates EmployeesWithTables object
   updateEmployeesWithTables() {
     const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
-  
+
     this.clockedInEmployees.forEach(employee => {
       const employeeWithTables = { ...employee, assignedTables: [] };
-  
+
       this.totalTables.forEach(table => {
         if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
           employeeWithTables.assignedTables.push(table);
         }
       });
-  
+
       employeesWithTables[employee.id] = employeeWithTables;
     });
-  
+
     this.employeesWithTables = employeesWithTables;
+  }
+
+  openMassAssignDialog() {
+    const dialogRef = this.dialog.open(MassSelectDialogComponent, {});
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => { });
   }
 }
