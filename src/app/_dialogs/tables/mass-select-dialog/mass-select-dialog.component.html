@@ -1,1 +1,22 @@
-<p>mass-select-dialog works!</p>
+<h1 mat-dialog-title style="margin-bottom: 0px;">Mass Select Tables</h1>
+<hr>
+<div>
+    <div *ngFor="let floorPlan of groupedTables | keyvalue">
+        <h3>Floor Plan: {{floorPlan.key}}</h3>
+        <div class="floor-plan">
+            <div *ngFor="let table of floorPlan.value">
+                <mat-checkbox [(ngModel)]="table.checked" (change)="onTableCheckboxChange($event, table)">{{table.tableNumber}}</mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <mat-form-field appearance="outline">
+        <mat-label>Select an employee</mat-label>
+        <mat-select (selectionChange)="onEmployeeChange($event)">
+            <mat-option *ngFor="let employee of filteredEmployees" [value]="employee">
+                <img class="create-schedule-from-date-image" src="{{employee.imgUrl}}" />
+                <span>{{employee.name}}</span>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="!formReady" (click)="onSubmit()">Submit</button>
+</div>
