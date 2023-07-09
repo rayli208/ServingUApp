@@ -73,7 +73,7 @@ export class TablesWaitlistComponent implements OnInit {
         let emailLower = user.email.toLowerCase();
         this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
           this.currentEmployeer = res;
-          this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated. Thank you for choosing our restaurant!`;
+          this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
         });
       }
     });
