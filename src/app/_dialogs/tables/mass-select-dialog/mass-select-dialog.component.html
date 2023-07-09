@@ -2,14 +2,18 @@
 <hr>
 <div>
     <div *ngFor="let floorPlan of groupedTables | keyvalue">
-        <h3>Floor Plan: {{floorPlan.key}}</h3>
+        <h3 style="margin-bottom: 0px;">Floor Plan: {{floorPlan.key}}</h3>
         <div class="floor-plan">
             <div *ngFor="let table of floorPlan.value">
-                <mat-checkbox [(ngModel)]="table.checked" (change)="onTableCheckboxChange($event, table)">{{table.tableNumber}}</mat-checkbox>
+                <mat-checkbox [(ngModel)]="table.checked" 
+                              (change)="onTableCheckboxChange($event, table)"
+                              [disabled]="table.assignedEmployee.name !== 'Unassigned Table'">
+                    {{table.tableNumber}}
+                </mat-checkbox>
             </div>
         </div>
     </div>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" style="margin-top: 5px;">
         <mat-label>Select an employee</mat-label>
         <mat-select (selectionChange)="onEmployeeChange($event)">
             <mat-option *ngFor="let employee of filteredEmployees" [value]="employee">
