@@ -63,6 +63,10 @@
             <span>Active Employees: </span>
             <span>{{Employees?.length}}</span>
         </div>
+        <div class="profile-dashboard-card-row">
+            <span>Total Texts This Month: </span>
+            <span>{{ (user | async)?.textsThisMonth }}</span>
+        </div>
     </div>
     <div class="profile-dashboard-card-main-container-half">
         <div class="image-container" *ngIf="imageUrls.length; else noImages">

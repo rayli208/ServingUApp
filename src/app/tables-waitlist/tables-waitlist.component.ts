@@ -135,12 +135,20 @@ export class TablesWaitlistComponent implements OnInit {
 
     this.messagesService.createMessage(message);
 
-    this._snackBar.open('Text has been sent!', '', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 2500,
-      panelClass: ['green-snackbar']
-    })
+    // Call the updateTextsThisMonth method
+    this.authService.updateTextsThisMonth(this.message)
+      .then(() => {
+        this._snackBar.open('Text has been sent!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      })
+      .catch(error => {
+        // Handle the error if needed
+        console.log('Error updating textsThisMonth:', error);
+      });
   }
 
   formatPhoneNumber() {
@@ -176,16 +184,16 @@ export class TablesWaitlistComponent implements OnInit {
     // Parse the input time string into a JavaScript Date object
     const timeAsDate = new Date(`1970-01-01 ${contact.estimatedTime}`);
     // Add 5 minutes to the time
-    if(operator == "add"){
+    if (operator == "add") {
       timeAsDate.setMinutes(timeAsDate.getMinutes() + 5);
     }
 
-    if(operator == "subtract"){
+    if (operator == "subtract") {
       timeAsDate.setMinutes(timeAsDate.getMinutes() - 5);
     }
 
     // Convert the resulting Date object back into a string in the desired format
-    const result = timeAsDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    const result = timeAsDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     // Set local variable
     contact.estimatedTime = result;
     // Retrieve the array from local storage
@@ -198,5 +206,5 @@ export class TablesWaitlistComponent implements OnInit {
     localStorage.setItem("contacts", JSON.stringify(array));
 
     return result;
-  }    
+  }
 }
