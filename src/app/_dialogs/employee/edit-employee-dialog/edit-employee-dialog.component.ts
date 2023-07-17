@@ -34,6 +34,8 @@ export class EditEmployeeDialogComponent implements OnInit {
     this.employee = data;
     this.imgSrc = this.employee.imgUrl; // set imgSrc to the current employee's imgUrl
     this.editForm = this.formBuilder.group({ ...this.employee });
+    this.editForm.get('name').disable();
+    this.editForm.get('phone').disable();
   }
 
   ngOnInit(): void {
@@ -43,16 +45,18 @@ export class EditEmployeeDialogComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.didChange) {
-      //Delete current photo
+      // Delete current photo
       const imageUrl = this.editForm.controls['imgUrl'].value;
       this.storage.storage.refFromURL(imageUrl).delete().then(() => {
         var filePath = `employeeProfile/${this.selectedImage.name}_${new Date().getTime()}`;
         const fileRef = this.storage.ref(filePath);
-        //Replace photo with new photo
+        // Replace photo with new photo
         this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
           finalize(() => {
             fileRef.getDownloadURL().subscribe((url) => {
               this.editForm.get('imgUrl').setValue(url);
+              this.editForm.get('name').enable();
+              this.editForm.get('phone').enable();
               this.employeesService.updateEmployee(this.editForm.value, this.employee.id);
               this.dialogRef.close();
             })
@@ -62,12 +66,14 @@ export class EditEmployeeDialogComponent implements OnInit {
         console.error('Error deleting image: ', error);
       });
     } else {
+      this.editForm.get('name').enable(); 
+      this.editForm.get('phone').enable();
       this.employeesService.updateEmployee(this.editForm.value, this.employee.id);
       this.showSnackBar("Employee has been edited!");
       this.dialogRef.close();
     }
   }
-
+  
   detectNewImage($event: any) {
     this.didChange = true;
     if ($event.target.files && $event.target.files[0]) {

@@ -1,8 +1,7 @@
 import { ScheduleService } from './../../../_services/schedule.service';
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-create-schedule-dialog',
@@ -21,6 +20,7 @@ export class CreateScheduleDialogComponent implements OnInit {
       uid: [data.uid],
       employeeId: [data.employeeId],
       employeeName: [data.name],
+      employeePhone: [data.employeePhone],
       startTime: ['09:00'],
       endTime: ['17:00'],
       date: [''],

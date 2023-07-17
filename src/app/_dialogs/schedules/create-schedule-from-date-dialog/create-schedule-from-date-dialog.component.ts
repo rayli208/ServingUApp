@@ -32,6 +32,7 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
       uid: [''],
       employeeId: [''],
       employeeName: [''],
+      employeePhone: [''],
       startTime: ['09:00'],
       endTime: ['17:00'],
       date: [data.date],
@@ -74,6 +75,7 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
     this.scheduleForm.controls.uid.setValue(selectedEmployee.uid);
     this.scheduleForm.controls.employeeId.setValue(selectedEmployee.id);
     this.scheduleForm.controls.employeeName.setValue(selectedEmployee.name);
+    this.scheduleForm.controls.employeePhone.setValue(selectedEmployee.phone);
   }
   
   onSubmit() {
