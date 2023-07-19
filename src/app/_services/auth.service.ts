@@ -153,44 +153,42 @@ export class AuthService {
             });
     }
 
-    updateTextsThisMonth(message: string): Promise<void> {
+    updateTextsThisMonth(totalMessagesCount: number): Promise<void> {
         return this.afAuth.currentUser
-            .then((user) => {
-                if (!user || !user.email) {
-                    throw new Error("User is not logged in.");
+          .then((user) => {
+            if (!user || !user.email) {
+              throw new Error("User is not logged in.");
+            }
+      
+            const emailLower = user.email.toLowerCase();
+      
+            return this.afs
+              .doc(`/users/${emailLower}`)
+              .get()
+              .toPromise()
+              .then((doc) => {
+                const userData = doc.data() as { textsThisMonth?: number };
+      
+                if (!userData || userData.textsThisMonth === undefined) {
+                  throw new Error("User data not found.");
                 }
-
-                const emailLower = user.email.toLowerCase();
-                const messagesCount = Math.ceil(message.length / 153);
-
+      
+                const currentTextsThisMonth = userData.textsThisMonth || 0;
+                const newTextsThisMonth = currentTextsThisMonth + totalMessagesCount;
+      
                 return this.afs
-                    .doc(`/users/${emailLower}`)
-                    .get()
-                    .toPromise()
-                    .then((doc) => {
-                        const userData = doc.data() as { textsThisMonth?: number };
-
-                        if (!userData || userData.textsThisMonth === undefined) {
-                            throw new Error("User data not found.");
-                        }
-
-                        const currentTextsThisMonth = userData.textsThisMonth || 0;
-                        const newTextsThisMonth = currentTextsThisMonth + messagesCount;
-
-                        return this.afs
-                            .doc(`/users/${emailLower}`)
-                            .update({ textsThisMonth: newTextsThisMonth });
-                    });
-            })
-            .catch((error) => {
-                console.log("Auth Service: updateTextsThisMonth: error...");
-                console.log("error code", error.code);
-                console.log("error", error);
-                throw error;
-            });
-    }
-
-
+                  .doc(`/users/${emailLower}`)
+                  .update({ textsThisMonth: newTextsThisMonth });
+              });
+          })
+          .catch((error) => {
+            console.log("Auth Service: updateTextsThisMonth: error...");
+            console.log("error code", error.code);
+            console.log("error", error);
+            throw error;
+          });
+      }
+      
     // In AuthService
     getImageCount(userId: string): Observable<number> {
         // Query the storage and get the images

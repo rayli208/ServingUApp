@@ -123,7 +123,7 @@ export class TablesWaitlistComponent implements OnInit {
     localStorage.setItem("contacts", JSON.stringify(array));
     //Fix phone number
     const phoneNumber = '1' + contact.phoneNumber.replace(/-/g, "");
-
+  
     const message: Message = {
       channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
       to: phoneNumber,
@@ -132,11 +132,14 @@ export class TablesWaitlistComponent implements OnInit {
         text: this.message
       }
     };
-
+  
     this.messagesService.createMessage(message);
-
+  
+    // Calculate the total number of messages
+    let totalMessagesCount = Math.ceil(this.message.length / 153);
+  
     // Call the updateTextsThisMonth method
-    this.authService.updateTextsThisMonth(this.message)
+    this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
         this._snackBar.open('Text has been sent!', '', {
           horizontalPosition: this.horizontalPosition,
@@ -150,6 +153,7 @@ export class TablesWaitlistComponent implements OnInit {
         console.log('Error updating textsThisMonth:', error);
       });
   }
+  
 
   formatPhoneNumber() {
     let formattedPhoneNumber = '';

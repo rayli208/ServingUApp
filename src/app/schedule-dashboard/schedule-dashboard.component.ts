@@ -1,12 +1,15 @@
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { ScheduleService } from '../_services/schedule.service';
 import { Schedule } from '../_models/schedule.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatAccordion } from '@angular/material/expansion';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateScheduleFromDateDialogComponent } from '../_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component';
+import { MessagesService } from '../_services/messages.service';
+import { Message } from '../_models/message.model';
+import { AuthService } from '../_services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-schedule-dashboard',
@@ -30,6 +33,9 @@ export class ScheduleDashboardComponent implements OnInit {
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
     private scheduleService: ScheduleService,
+    public messagesService: MessagesService,
+    public authService: AuthService,
+    public _snackBar: MatSnackBar
   ) {
     this.user = null;
   }
@@ -204,12 +210,6 @@ export class ScheduleDashboardComponent implements OnInit {
     return day < 10 ? `0${day}` : `${day}`; // If the day is less than 10, we need to add a leading zero (e.g. "01" for the first day of the month)
   }
 
-  // This function takes a number (e.g. 2023) and returns the last two digits as a string (e.g. "23")
-  private getYear(year: number): string {
-    const yearString = year.toString();
-    return yearString.slice(-2); // Return the last two characters of the year string
-  }
-
   public createSchedule(date: string) {
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
@@ -223,5 +223,117 @@ export class ScheduleDashboardComponent implements OnInit {
 
   getEmployeeCount(day: any): number {
     return day.schedule?.length || 0;
+  }
+
+  sendOutText() {
+    // Create an empty object to store the schedules by employee
+    let schedulesByEmployee = {};
+
+    // Loop through all the dates
+    for (let day of this.populatedSchedulesWithDates) {
+      // Loop through all the schedules for the current date
+      for (let schedule of day.schedule) {
+        // If the employee's schedules have not been added to the object yet, add them
+        if (!schedulesByEmployee[schedule.employeePhone]) {
+          schedulesByEmployee[schedule.employeePhone] = {
+            name: schedule.employeeName,
+            schedules: []
+          };
+        }
+
+        // Add the current schedule to the employee's schedules
+        schedulesByEmployee[schedule.employeePhone].schedules.push(schedule);
+      }
+    }
+
+    // Prepare an array to hold all the messages
+    let messages = [];
+
+    // Get the date range
+    let startDate = this.formatDate(this.populatedSchedulesWithDates[0]?.date);
+    let endDate = this.formatDate(this.populatedSchedulesWithDates[13]?.date);
+
+    // Loop through all the employees and prepare a text message with their schedules
+    for (let phoneNumber in schedulesByEmployee) {
+      let messageText = `${startDate} to  ${endDate}\n${schedulesByEmployee[phoneNumber].name} schedule:\n`;
+      for (let schedule of schedulesByEmployee[phoneNumber].schedules) {
+        // Format the date and time
+        let date = new Date(schedule.date);
+        let formattedDate = `${date.getMonth() + 1 < 10 ? '0' : ''}${date.getMonth() + 1}/${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
+        let formattedStartTime = this.convertTo12HourFormat(schedule.startTime);
+        let formattedEndTime = this.convertTo12HourFormat(schedule.endTime);
+        messageText += `${formattedDate}: ${formattedStartTime}-${formattedEndTime}\n`;
+      }
+
+      // Create the message
+      const message: Message = {
+        channelId: 'a31f78766da04f9e95ce52a85cf13bdd', // Use the appropriate channel ID
+        to: '1' + phoneNumber.replace(/-/g, ""),
+        type: 'text',
+        content: {
+          text: messageText
+        }
+      };
+
+      // Add the message to the array
+      messages.push(message);
+    }
+
+    // Calculate the total number of messages
+    let totalMessagesCount = messages.reduce((count, message) => count + Math.ceil(message.content.text.length / 153), 0);
+
+    console.log(messages);
+
+    // Ask the user for confirmation
+    if (!window.confirm(`Are you sure you want to send ${totalMessagesCount} messages?`)) {
+      return;
+    }
+
+    // Send the messages
+    for (let message of messages) {
+      this.messagesService.createMessage(message);
+    }
+
+    // Update the number of texts sent this month
+    this.authService.updateTextsThisMonth(totalMessagesCount)
+      .then(() => {
+        this._snackBar.open('Text has been sent!', '', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      })
+      .catch(error => {
+        // Handle the error if needed
+        console.log('Error updating textsThisMonth:', error);
+      });
+  }
+
+
+  // This function converts a time in 24-hour format to 12-hour format
+  convertTo12HourFormat(time: string): string {
+    let [hours, minutes] = time.split(':').map(Number);
+    let period = hours < 12 ? 'AM' : 'PM';
+    if (hours == 0) {
+      hours = 12;
+    } else if (hours > 12) {
+      hours -= 12;
+    }
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}${period}`;
+  }
+
+  // This method returns true if there are no schedules during the selected weeks, and false otherwise
+  public noSchedules(): boolean {
+    // Loop through all the dates
+    for (let day of this.populatedSchedulesWithDates) {
+      // If there are any schedules for the current date, return false
+      if (day.schedule.length > 0) {
+        return false;
+      }
+    }
+
+    // If we've looped through all the dates and haven't found any schedules, return true
+    return true;
   }
 }
