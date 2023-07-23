@@ -9,7 +9,7 @@ import { CreateScheduleFromDateDialogComponent } from '../_dialogs/schedules/cre
 import { MessagesService } from '../_services/messages.service';
 import { Message } from '../_models/message.model';
 import { AuthService } from '../_services/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-schedule-dashboard',
@@ -17,6 +17,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./schedule-dashboard.component.scss']
 })
 export class ScheduleDashboardComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   userId;
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
 
@@ -140,6 +142,15 @@ export class ScheduleDashboardComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => {
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1, result);
+
+      if(result){
+        this._snackBar.open('Schedule has been edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+      });
+      }
     });
   }
 
@@ -148,6 +159,12 @@ export class ScheduleDashboardComponent implements OnInit {
     if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
       this.scheduleService.deleteSchedule(schedule);
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
+      this._snackBar.open('Schedule has been deleted!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['red-snackbar']
+    });
     }
   }
 
@@ -218,8 +235,16 @@ export class ScheduleDashboardComponent implements OnInit {
     });
 
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.scheduleCreated) {
+          this._snackBar.open('Schedule has been created!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['green-snackbar']
+          });
+      }
+  });  }
 
   getEmployeeCount(day: any): number {
     return day.schedule?.length || 0;
@@ -298,8 +323,8 @@ export class ScheduleDashboardComponent implements OnInit {
     this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
         this._snackBar.open('Text has been sent!', '', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
           duration: 2500,
           panelClass: ['green-snackbar']
         });

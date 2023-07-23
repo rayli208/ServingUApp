@@ -80,6 +80,6 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
   
   onSubmit() {
     this.scheduleService.createSchedule(this.scheduleForm.value);
-    this.dialogRef.close();
+    this.dialogRef.close({scheduleCreated: true});
   }
 }
