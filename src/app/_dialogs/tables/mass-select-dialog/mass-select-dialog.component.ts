@@ -105,7 +105,7 @@ export class MassSelectDialogComponent {
         return this.tablesService.updateTable(table, table.id);
       });
       Promise.all(updates).then(() => {
-        this.dialogRef.close();
+        this.dialogRef.close({massAssign: true});
       }).catch(error => {
         console.error('Error updating tables:', error);
       });

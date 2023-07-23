@@ -9,6 +9,7 @@ import { TablesService } from '../_services/tables.service';
 import { EmployeesService } from '../_services/employees.service';
 import { Employee } from '../_models/employee.model';
 import { MassSelectDialogComponent } from '../_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -21,7 +22,8 @@ export class TablesDashboardComponent implements OnInit {
   totalTables: Table[];
   currentFloor: number = 1;
   gridSize: number = 25; // Define the grid size, adjust this value to your needs
-
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   //Employee Portion
   clockedInEmployees: Employee[] = [];
@@ -33,6 +35,7 @@ export class TablesDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private tablesService: TablesService,
     private employeesService: EmployeesService,
+    private _snackBar: MatSnackBar
   ) {
     this.user = null;
   }
@@ -150,8 +153,16 @@ export class TablesDashboardComponent implements OnInit {
   createTable(): void {
     const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.tableCreated) {
+          this._snackBar.open('Table has been created!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['green-snackbar']
+          });
+      }
+  });  }
 
   //Updates EmployeesWithTables object
   updateEmployeesWithTables() {
@@ -175,6 +186,14 @@ export class TablesDashboardComponent implements OnInit {
   openMassAssignDialog() {
     const dialogRef = this.dialog.open(MassSelectDialogComponent, {});
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.massAssign) {
+          this._snackBar.open('Successfully mass assigned!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['green-snackbar']
+          });
+      }
+  });  }
 }

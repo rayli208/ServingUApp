@@ -46,6 +46,6 @@ export class EditTableDialogComponent implements OnInit {
     }
     
     this.tablesService.updateTable(this.editForm.value, this.table.id);
-    this.dialogRef.close();
+    this.dialogRef.close({tableEdited: true});
   }
 }

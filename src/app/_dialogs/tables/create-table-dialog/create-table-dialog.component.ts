@@ -44,7 +44,7 @@ export class CreateTableDialogComponent implements OnInit {
   //Create job and redirect to dashboard
   onSubmit() {
     this.tablesService.createTable(this.tableForm.value);
-    this.dialogRef.close();
+    this.dialogRef.close({tableCreated: true});
   }
 
   //Set User ID so jobs have link to their owners

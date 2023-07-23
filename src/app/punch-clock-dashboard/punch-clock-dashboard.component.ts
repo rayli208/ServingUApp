@@ -37,7 +37,6 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private employeesService: EmployeesService,
     public scheduleService: ScheduleService,
-    private timeStampService: TimeStampService,
     private matBottomSheet: MatBottomSheet
   ) {
     this.user = null;
