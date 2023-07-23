@@ -75,7 +75,7 @@
     z-index: 1000;
     display: flex;
     max-width: 100%;
-    max-height: 100%;
+    max-height: 800px;
     overflow-y: hidden;
 }
 
@@ -3856,18 +3856,33 @@ html {
         padding: 24px;
     }
 }
+
 .mdc-dialog .mdc-dialog__content {
     padding: 0 !important;
 }
 
-.mdc-dialog, .mdc-dialog__scrim{
+.mdc-dialog,
+.mdc-dialog__scrim {
     width: min-content !important;
 }
 
-.mdc-dialog__title{
+.mdc-dialog__title {
     text-align: center !important;
 }
 
-.mdc-dialog__title::before{
+.mdc-dialog__title::before {
     height: 0px !important;
+}
+
+//SNACKBAR EDITS
+.mdc-snackbar{
+    border-radius: 5px !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background-color: transparent !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+    color: #000000 !important;
 }

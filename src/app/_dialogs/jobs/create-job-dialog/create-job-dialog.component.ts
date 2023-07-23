@@ -42,7 +42,7 @@ export class CreateJobDialogComponent implements OnInit {
   //Create job and redirect to dashboard
   onSubmit() {
     this.jobsService.createJob(this.jobForm.value);
-    this.dialogRef.close();
+    this.dialogRef.close({jobCreated: true});
   }
 
   //Set User ID so jobs have link to their owners

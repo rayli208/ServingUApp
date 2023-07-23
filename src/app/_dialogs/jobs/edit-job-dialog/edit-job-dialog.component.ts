@@ -35,6 +35,6 @@ export class EditJobDialogComponent implements OnInit {
 
   onSubmit(){
     this.jobsService.updateJob(this.editForm.value, this.job.id);
-    this.dialogRef.close();
+    this.dialogRef.close({jobEdited: true});
   }
 }

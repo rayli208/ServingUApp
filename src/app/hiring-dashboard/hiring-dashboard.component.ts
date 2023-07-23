@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-dashboard',
@@ -22,6 +23,8 @@ export class HiringDashboardComponent implements OnInit {
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
+    horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
     constructor(
@@ -29,6 +32,7 @@ export class HiringDashboardComponent implements OnInit {
         public afAuth: AngularFireAuth,
         public afs: AngularFirestore,
         public jobsService: JobsService,
+        private _snackBar: MatSnackBar
     ) {
         this.user = null;
     }
@@ -71,7 +75,16 @@ export class HiringDashboardComponent implements OnInit {
     createJob(): void {
         const dialogRef = this.dialog.open(CreateJobDialogComponent, {});
         //Run code after closing dialog
-        dialogRef.afterClosed().subscribe(result => { });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result?.jobCreated) {
+                this._snackBar.open('Job has been created!', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['green-snackbar']
+                });
+            }
+        });
     }
 
     editJob(job: Job) {
@@ -79,21 +92,38 @@ export class HiringDashboardComponent implements OnInit {
             data: job
         });
         //Run code after closing dialog
-        dialogRef.afterClosed().subscribe(result => { });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result?.jobEdited) {
+                this._snackBar.open('Job has been edited!', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['yellow-snackbar']
+                });
+            }
+        });
     }
 
-    removeJob(job) {
+    removeJob(job: Job) {
         if (confirm("Are you sure you want to delete " + job.title)) {
-            this.jobsService.deleteJob(job);
+            this.jobsService.deleteJob(job).then(() => {
+                this._snackBar.open('Job has been deleted!', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['red-snackbar']
+                });
+            });
         }
     }
 
     //ALL SCROLLING ACTIONS
-    @HostListener('window:scroll', ['$event']) 
+    @HostListener('window:scroll', ['$event'])
     scrollHandler(event) {
         var scroller = document.getElementById('dashboard-job-wrapper_scroller');
         var maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
-        this.checkArrows(scroller, maxScrollLeft);    }
+        this.checkArrows(scroller, maxScrollLeft);
+    }
 
     scrollLeft() {
         var cardWidth = (document.querySelector(".dashboard-job-card-container") as HTMLElement).offsetWidth;
@@ -111,17 +141,16 @@ export class HiringDashboardComponent implements OnInit {
         this.checkArrows(scroller, maxScrollLeft);
     }
 
-    checkArrows(scroller, maxScrollLeft){
-        if(scroller.scrollLeft == 0)
-        {
+    checkArrows(scroller, maxScrollLeft) {
+        if (scroller.scrollLeft == 0) {
             this.allTheWayLeft = true;
-        }else{
+        } else {
             this.allTheWayLeft = false;
         }
 
-        if(scroller.scrollLeft == maxScrollLeft){
+        if (scroller.scrollLeft == maxScrollLeft) {
             this.allTheWayRight = true;
-        }else{
+        } else {
             this.allTheWayRight = false;
         }
     }

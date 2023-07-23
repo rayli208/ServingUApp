@@ -2,24 +2,15 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { Job } from '../_models/job.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
-  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-  constructor(private afs: AngularFirestore,
+  constructor(
+    private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private _snackBar: MatSnackBar
   ) { }
-
 
   getUserId() {
     this.afAuth.authState.subscribe(async user => {
@@ -47,14 +38,7 @@ export class JobsService {
       this.afs
         .collection("jobs")
         .add(job)
-        .then(() => {
-          this._snackBar.open('Job has been created!', '', {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 2500,
-            panelClass: ['green-snackbar']
-          });
-        });
+        .then(resolve, reject);
     });
   }
 
@@ -62,15 +46,7 @@ export class JobsService {
     return this.afs
       .collection("jobs")
       .doc(job.id)
-      .delete()
-      .then(() => {
-        this._snackBar.open('Job has been deleted!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
-        });
-      });
+      .delete();
   }
 
   updateJob(job: Job, id) {
@@ -83,14 +59,6 @@ export class JobsService {
         description: job.description,
         totalPositions: job.totalPositions,
         employmentType: job.employmentType,
-      })      
-      .then(() => {
-        this._snackBar.open('Job has been edited!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['yellow-snackbar']
-        });
       });
   }
 }
