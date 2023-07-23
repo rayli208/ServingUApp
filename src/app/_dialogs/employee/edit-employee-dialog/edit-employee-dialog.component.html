@@ -50,6 +50,17 @@
         </mat-form-field>
     </div>
     <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Employement Type</mat-label>
+            <select formControlName="employmentType" matNativeControl required>
+                <option value="part-time">Part-time</option>
+                <option value="full-time">Full-time</option>
+                <option value="seasonal">Seasonal</option>
+                <option value="all">All</option>
+            </select>
+        </mat-form-field>
+    </div>
+    <div>
         <mat-checkbox color="primary" formControlName="employeed">Active</mat-checkbox>
     </div>
     <div mat-dialog-actions style="justify-content: space-between;">

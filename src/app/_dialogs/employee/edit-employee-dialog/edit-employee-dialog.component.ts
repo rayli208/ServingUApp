@@ -58,7 +58,6 @@ export class EditEmployeeDialogComponent implements OnInit {
               this.editForm.get('name').enable();
               this.editForm.get('phone').enable();
               this.employeesService.updateEmployee(this.editForm.value, this.employee.id);
-              this.dialogRef.close();
             })
           })
         ).subscribe();
@@ -69,8 +68,7 @@ export class EditEmployeeDialogComponent implements OnInit {
       this.editForm.get('name').enable(); 
       this.editForm.get('phone').enable();
       this.employeesService.updateEmployee(this.editForm.value, this.employee.id);
-      this.showSnackBar("Employee has been edited!");
-      this.dialogRef.close();
+      this.dialogRef.close({employeeEdited: true});
     }
   }
   

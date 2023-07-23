@@ -58,7 +58,16 @@ export class EmployeeDashboardComponent implements OnInit {
   createEmployee(): void {
     const dialogRef = this.dialog.open(CreateEmployeeDialogComponent, {});
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.employeeCreated) {
+        this._snackBar.open('Employee has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 
   removeEmployee(employee: Employee) {
@@ -79,7 +88,12 @@ export class EmployeeDashboardComponent implements OnInit {
       //Delete employee
       this.employeesService.deleteEmployee(employee);
       //Alert
-      this.showSnackBar("Employee has been deleted!");
+      this._snackBar.open('Employee has been deleted!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['red-snackbar']
+      });
     }
   }
 
@@ -88,7 +102,16 @@ export class EmployeeDashboardComponent implements OnInit {
       data: employee
     });
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.employeeEdited) {
+        this._snackBar.open('Employee has been edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+        });
+      }
+    });
   }
 
   createSchedule(name: string, uid: string, employeeId: string, employeePhone: string) {
@@ -101,7 +124,16 @@ export class EmployeeDashboardComponent implements OnInit {
       }
     });
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.scheduleCreated) {
+        this._snackBar.open('Schedule has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 
   copyText(val: string) {
@@ -116,14 +148,5 @@ export class EmployeeDashboardComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-  }
-
-  showSnackBar(message: string) {
-    this._snackBar.open(message, '', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 2500,
-      panelClass: ['red-snackbar']
-    });
   }
 }

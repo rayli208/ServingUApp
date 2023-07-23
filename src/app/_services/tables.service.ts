@@ -1,18 +1,14 @@
 import { Table } from './../_models/table.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TablesService {
-  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
     private afs: AngularFirestore,
-    private _snackBar: MatSnackBar
   ) { }
 
   getTableDoc(id: string) {
@@ -32,22 +28,10 @@ export class TablesService {
     return new Promise<void>((resolve, reject) => {
       this.afs.collection("tables").add(table)
         .then(() => {
-          this._snackBar.open('Table created successfully!', '', {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 2500,
-            panelClass: ['green-snackbar']
-          });
           resolve();
         })
         .catch(error => {
           console.error('Error creating table:', error);
-          this._snackBar.open('Error creating table. Please try again later.', '', {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 2500,
-            panelClass: ['red-snackbar']
-          });
           reject(error);
         });
     });
@@ -60,21 +44,9 @@ export class TablesService {
       .doc(table.id)
       .delete()
       .then(() => {
-        this._snackBar.open('Table deleted successfully!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['green-snackbar']
-        });
       })
       .catch(error => {
         console.error('Error deleting table:', error);
-        this._snackBar.open('Error deleting table. Please try again later.', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
-        });
       });
   }
 
@@ -92,13 +64,5 @@ export class TablesService {
         positionX: table.positionX,
         positionY: table.positionY
       })
-      .catch(error => {
-        this._snackBar.open('Error updating table. Please try again later.', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
-        });
-      });
   }
 }

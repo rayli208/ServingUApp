@@ -72,7 +72,7 @@ export class CreateScheduleDialogComponent implements OnInit {
   //Create job and redirect to dashboard
   onSubmit() {
     this.loopThroughDates(this.daysSelected);
-    this.dialogRef.close();
+    this.dialogRef.close({scheduleCreated: true});
   }
 
   loopThroughDates(dates) {
