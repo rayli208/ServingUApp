@@ -92,6 +92,7 @@ import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.co
 import { CreateTimestampDialogComponent } from './_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
 import { EditTimestampDialogComponent } from './_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { MassSelectDialogComponent } from './_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
+import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.component';
 
 
 @NgModule({
@@ -133,7 +134,8 @@ import { MassSelectDialogComponent } from './_dialogs/tables/mass-select-dialog/
         ProfileEditorComponent,
         CreateTimestampDialogComponent,
         EditTimestampDialogComponent,
-        MassSelectDialogComponent
+        MassSelectDialogComponent,
+        FloorAssignerComponent
     ],
     imports: [
         BrowserModule,

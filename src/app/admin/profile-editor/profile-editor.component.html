@@ -78,4 +78,8 @@
                 class="fa-solid fa-upload"></i></button>
         <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading" style="margin-top: 5px;"></mat-progress-bar>
     </mat-card>
+    <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
+        <h1 class="profile-editor-header">Floor Assigner:</h1>
+        <app-floor-assigner [userId]="userId"></app-floor-assigner>
+    </mat-card>
 </div>

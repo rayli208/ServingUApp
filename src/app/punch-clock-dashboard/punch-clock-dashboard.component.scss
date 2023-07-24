@@ -87,8 +87,8 @@
     font-size: 20px;
     padding: 20px;
     cursor: pointer;
-    box-shadow:  20px 20px 60px #bebebe,
-    -20px -20px 60px $white;
+    box-shadow: 20px 20px 60px #bebebe,
+        -20px -20px 60px $white;
     margin-left: auto;
 }
 
@@ -96,7 +96,7 @@
     background-color: $red;
 }
 
-.punch-clock-dashboard-card-clock-in-time{
+.punch-clock-dashboard-card-clock-in-time {
     background-color: $brand-primary;
     font-weight: 700;
     color: $white;
@@ -107,10 +107,18 @@
     border-bottom-right-radius: 20px;
 }
 
-  
+
 
 @media (max-width:1200px) {
     .punch-clock-dashboard-container-half-all-employees {
         width: calc(100% - 15px);
+    }
+}
+
+
+@media (max-width:622px) {
+    .punch-clock-dashboard-container-half:nth-child(1) {
+        border-right: none;
+        border-bottom: 1px solid #ccc;
     }
 }

@@ -1,0 +1,52 @@
+<form [formGroup]="floorForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Floor Number</mat-label>
+            <mat-select formControlName="floorNumber">
+                <mat-option *ngFor="let number of floorNumbers" [value]="number"
+                    [disabled]="usedFloorNumbers.includes(number)">
+                    {{number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Floor Name</mat-label>
+            <input matInput formControlName="floorName" placeholder="Floor Name">
+        </mat-form-field>
+    </div>
+    <div style="text-align: center;">
+        <button mat-raised-button color="primary" type="submit" [disabled]="floorForm.invalid">Create Floor</button>
+    </div>
+</form>
+<hr>
+<div *ngIf="(floors$ | async)?.length > 0; else noFloors">
+    <div class="floor-card" *ngFor="let floor of floors$ | async">
+        <h2>Floor {{floor.floorNumber}}:</h2>
+        <div *ngIf="!floor.editing">
+            <p>"{{floor.floorName}}"</p>
+            <div style="display: flex; justify-content: space-between;">
+                <button mat-raised-button color="secondary" (click)="editFloor(floor)" matTooltip="Edit Floor">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button mat-raised-button color="warn" (click)="confirmDelete(floor)" matTooltip="Delete Floor">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+
+        </div>
+        <div *ngIf="floor.editing">
+            <mat-form-field>
+                <input matInput [(ngModel)]="floor.floorName">
+            </mat-form-field>
+            <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="saveChanges(floor)"
+                matTooltip="Save Floor">
+                <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<ng-template #noFloors>
+    <i class="no-floors">There are no floor templates created.</i>
+</ng-template>

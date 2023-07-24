@@ -38,7 +38,7 @@ export class ProfileEditorComponent implements OnInit {
     public authService: AuthService,
     private _snackBar: MatSnackBar,
     private storage: AngularFireStorage,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) {
     this.user = null;
   }

@@ -3,17 +3,20 @@
         <div class="table-dashboard-actions">
             <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()"
                 [class.disabled]="currentFloor === 1"></i>
-            <h1>Current Floor: {{ currentFloor }}</h1>
-            <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+                <h1>Current Floor: {{ getFloorName(currentFloor) }}</h1>
+                <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
         </div>
         <div>
-            <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()" matTooltip="Waitlist">Waitlist</button>
+            <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()"
+                matTooltip="Waitlist">Waitlist</button>
             <button mat-raised-button color="primary" (click)="createTable()" matTooltip="Add Table">
                 <span>Add Table</span>
             </button>
-            <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openMassAssignDialog()" matTooltip="Mass Assign Tables">
+            <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openMassAssignDialog()"
+                matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
                 <i class="fa-solid fa-bolt-lightning fa-2xl"></i>
-            </button> 
+            </button>
+
         </div>
     </div>
 </app-header>
@@ -33,7 +36,7 @@
             <!--Table View-->
             <div class="table-dashboard-container-split">
                 <div #tableView class="table-view">
-                    <h1 class="table-view-current-floor">Current Floor: {{currentFloor}}</h1>
+                    <h1 class="table-view-current-floor">Current Floor: {{ getFloorName(currentFloor) }}</h1>
                     <ng-container *ngFor="let table of totalTables">
                         <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)"
                             class="shape {{table.shape}}" cdkDragBoundary=".table-view" cdkDrag

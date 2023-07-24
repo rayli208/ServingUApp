@@ -10,6 +10,8 @@ import { EmployeesService } from '../_services/employees.service';
 import { Employee } from '../_models/employee.model';
 import { MassSelectDialogComponent } from '../_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { FloorsService } from '../_services/floor.service';
+import { Floor } from '../_models/floor.model';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -24,6 +26,7 @@ export class TablesDashboardComponent implements OnInit {
   gridSize: number = 25; // Define the grid size, adjust this value to your needs
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  floors: Floor[] = [];
 
   //Employee Portion
   clockedInEmployees: Employee[] = [];
@@ -35,6 +38,7 @@ export class TablesDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private tablesService: TablesService,
     private employeesService: EmployeesService,
+    private floorsService: FloorsService,
     private _snackBar: MatSnackBar
   ) {
     this.user = null;
@@ -63,6 +67,15 @@ export class TablesDashboardComponent implements OnInit {
               return b.isActive ? 1 : -1;
             });
           this.updateEmployeesWithTables();
+        });
+
+        this.floorsService.getFloorsForUser(this.userId).subscribe(res => {
+          this.floors = res.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Floor;
+          });
         });
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
@@ -95,12 +108,6 @@ export class TablesDashboardComponent implements OnInit {
         });
       }
     });
-
-    // Check if the currentFloor value is in the local storage
-    const savedFloor = localStorage.getItem('currentFloor');
-    if (savedFloor) {
-      this.currentFloor = parseInt(savedFloor, 10);
-    }
   }
 
 
@@ -155,14 +162,15 @@ export class TablesDashboardComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result?.tableCreated) {
-          this._snackBar.open('Table has been created!', '', {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 2500,
-              panelClass: ['green-snackbar']
-          });
+        this._snackBar.open('Table has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
       }
-  });  }
+    });
+  }
 
   //Updates EmployeesWithTables object
   updateEmployeesWithTables() {
@@ -188,12 +196,18 @@ export class TablesDashboardComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result?.massAssign) {
-          this._snackBar.open('Successfully mass assigned!', '', {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 2500,
-              panelClass: ['green-snackbar']
-          });
+        this._snackBar.open('Successfully mass assigned!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
       }
-  });  }
+    });
+  }
+
+  getFloorName(floorNumber: number): string {
+    const floor = this.floors.find(f => f.floorNumber === floorNumber);
+    return floor ? floor.floorName + ` (${floorNumber})` : `Floor ${floorNumber}`;
+  }
 }
