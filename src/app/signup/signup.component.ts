@@ -1,8 +1,8 @@
+import { environment } from './../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { PhoneNumberFormatDirective } from '../_directives/phone-number.directive';
 
 @Component({
     selector: 'app-signup',
@@ -44,7 +44,8 @@ export class SignupComponent implements OnInit {
             stepFour: this._formBuilder.group({
                 pin: ['', Validators.required],
                 password: ['', Validators.required],
-                confirmPassword: ['', Validators.required]
+                confirmPassword: ['', Validators.required],
+                createUserPassword: ['', [Validators.required, this.createUserPasswordValidator]]
             }, { validator: this.checkPasswords })
         });
     }
@@ -55,6 +56,12 @@ export class SignupComponent implements OnInit {
 
         return pass === confirmPass ? null : { notSame: true }
     }
+
+    createUserPasswordValidator(control: FormControl) {
+        const password = control.value;
+        return password === environment.password ? null : { incorrectPassword: true };
+    }
+    
 
     signup() {
         if (this.signupForm.invalid)

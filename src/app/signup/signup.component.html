@@ -94,14 +94,24 @@
                             <mat-label>Confirm Password</mat-label>
                             <input autocomplete="off" formControlName="confirmPassword" type="password" matInput
                                 placeholder="Confirm Password">
-                        </mat-form-field>                        
-                    </div>
-                    <div>
-                        <mat-error *ngIf="signupForm.controls.stepFour.hasError('notSame')">Passwords do not match.</mat-error>
+                            <mat-error *ngIf="signupForm.controls.stepFour.hasError('notSame')">Passwords do not match.
+                            </mat-error>
+
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>ServingU Token</mat-label>
+                            <input autocomplete="off" formControlName="createUserPassword" type="password" matInput
+                                placeholder="Create User Password">
+                            <mat-error
+                                *ngIf="(signupForm.get('stepFour.createUserPassword')).hasError('incorrectPassword')">
+                                ServingU Token</mat-error>
+                        </mat-form-field>
+
                     </div>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
-                        <button mat-raised-button color="primary" (click)="signup()"  [disabled]="signupForm.invalid">Signup</button>
+                        <button mat-raised-button color="primary" (click)="signup()"
+                            [disabled]="signupForm.invalid">Signup</button>
                     </div>
                 </form>
             </mat-step>
