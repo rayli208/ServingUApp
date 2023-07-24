@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Contact } from '../_models/contact.model';
 import { Message } from '../_models/message.model';
 import { MessagesService } from '../_services/messages.service';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
@@ -42,7 +38,6 @@ import { AuthService } from '../_services/auth.service';
     ]),
   ],
 })
-
 export class TablesWaitlistComponent implements OnInit {
   user: Observable<any>;
   currentEmployeer: any;
@@ -93,6 +88,9 @@ export class TablesWaitlistComponent implements OnInit {
 
       this.contacts.push(contact);
       localStorage.setItem('contacts', JSON.stringify(this.contacts));
+
+      this.sendMessageToContact(contact, `You have been added to ${this.currentEmployeer.location_name}'s waitlist. Estimated wait time is ${this.waitTime} minutes.`);
+
       this.name = '';
       this.phoneNumber = '';
       this.waitTime = null;
@@ -121,23 +119,28 @@ export class TablesWaitlistComponent implements OnInit {
     obj.hasRecievedText = true;
     // Save the modified array back to local storage
     localStorage.setItem("contacts", JSON.stringify(array));
+  
+    this.sendMessageToContact(contact, this.message);
+  }
+
+  sendMessageToContact(contact: Contact, messageContent: string) {
     //Fix phone number
     const phoneNumber = '1' + contact.phoneNumber.replace(/-/g, "");
-  
+
     const message: Message = {
       channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
       to: phoneNumber,
       type: 'text',
       content: {
-        text: this.message
+        text: messageContent
       }
     };
-  
+
     this.messagesService.createMessage(message);
-  
+
     // Calculate the total number of messages
-    let totalMessagesCount = Math.ceil(this.message.length / 153);
-  
+    let totalMessagesCount = Math.ceil(messageContent.length / 153);
+
     // Call the updateTextsThisMonth method
     this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
@@ -153,7 +156,6 @@ export class TablesWaitlistComponent implements OnInit {
         console.log('Error updating textsThisMonth:', error);
       });
   }
-  
 
   formatPhoneNumber() {
     let formattedPhoneNumber = '';
@@ -171,23 +173,14 @@ export class TablesWaitlistComponent implements OnInit {
     this.phoneNumber = formattedPhoneNumber;
   }
 
-  // This function takes in a number of minutes and returns the current time plus that number of minutes
-  // as a string in the "HH:MM AM/PM" format
   calculateTime(minutes: number): string {
-    // Get the current time
     const currentTime = new Date();
-    // Add the number of minutes to the current time
     currentTime.setMinutes(currentTime.getMinutes() + minutes);
-    // Return the new time in the "HH:MM AM/PM" format
     return currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   }
 
-  // This function takes a time string in the format "HH:MM AM/PM" and adds 5 minutes to it
-  // It returns the resulting time string in the same format
   addSubtract5Minutes(operator: string, contact: Contact): string {
-    // Parse the input time string into a JavaScript Date object
     const timeAsDate = new Date(`1970-01-01 ${contact.estimatedTime}`);
-    // Add 5 minutes to the time
     if (operator == "add") {
       timeAsDate.setMinutes(timeAsDate.getMinutes() + 5);
     }
@@ -196,17 +189,11 @@ export class TablesWaitlistComponent implements OnInit {
       timeAsDate.setMinutes(timeAsDate.getMinutes() - 5);
     }
 
-    // Convert the resulting Date object back into a string in the desired format
     const result = timeAsDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    // Set local variable
     contact.estimatedTime = result;
-    // Retrieve the array from local storage
     let array = JSON.parse(localStorage.getItem("contacts"));
-    // Find the object with the matching property
     let obj = array.find(o => o.phoneNumber == contact.phoneNumber);
-    // Modify the object
     obj.estimatedTime = result;
-    // Save the modified array back to local storage
     localStorage.setItem("contacts", JSON.stringify(array));
 
     return result;
