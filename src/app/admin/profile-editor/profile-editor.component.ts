@@ -221,8 +221,14 @@ export class ProfileEditorComponent implements OnInit {
           this.imageUrls.splice(index, 1);
         }
 
-        this.changeDetector.detectChanges();
+        this._snackBar.open('Image Deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
 
+        this.changeDetector.detectChanges();
       }).catch(error => {
         // Handle any errors that occur during the deletion
         console.error('Failed to delete image:', error);
