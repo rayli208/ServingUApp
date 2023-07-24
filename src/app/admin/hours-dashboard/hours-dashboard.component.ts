@@ -8,6 +8,7 @@ import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTimestampDialogComponent } from 'src/app/_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { CreateTimestampDialogComponent } from 'src/app/_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-hours-dashboard',
@@ -15,6 +16,8 @@ import { CreateTimestampDialogComponent } from 'src/app/_dialogs/hours/create-ti
   styleUrls: ['./hours-dashboard.component.scss']
 })
 export class HoursDashboardComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -28,7 +31,8 @@ export class HoursDashboardComponent implements OnInit {
 
   userId: string;
 
-  constructor(private timeStampService: TimeStampService, private afAuth: AngularFireAuth, private dialog: MatDialog) {
+  constructor(private timeStampService: TimeStampService, private afAuth: AngularFireAuth, private dialog: MatDialog, private _snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit() {
@@ -45,23 +49,23 @@ export class HoursDashboardComponent implements OnInit {
 
   loadTimestamps() {
     this.timestamps = [];
-  
+
     if (this.range.valid) {
       let startDate = this.range.controls.start.value;
       let endDate = this.range.controls.end.value;
-  
+
       if (!startDate) {
         alert('Start date is not selected.');
         return;
       }
-  
+
       if (endDate) {
         endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59);
       } else {
         alert('End date is not selected.');
         return;
       }
-  
+
       this.timeStampService.getTimeStampsForUserAndDateRange(this.userId, startDate, endDate)
         .subscribe((res) => {
           this.originalTimestamps = res.map((e) => {
@@ -77,24 +81,31 @@ export class HoursDashboardComponent implements OnInit {
               hoursWorked: hoursWorked.toFixed(2)
             } as TimeStamp;
           });
-  
+
           if (this.originalTimestamps.length === 0) {
             this.isEmpty = true;
           } else {
             this.isEmpty = false;
           }
-  
+
           this.calculateTotalHours();
-  
+
           // Check if an employee is selected and filter the timestamps for that employee
           if (this.selectedEmployee) {
             this.selectEmployee(this.selectedEmployee);
           }
         });
+
+      this._snackBar.open('Timestamps Loaded!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['green-snackbar']
+      });
     } else {
       alert('Please select a valid date range.');
     }
-  }  
+  }
 
   selectEmployee(employeeName: string) {
     this.selectedEmployee = employeeName;
@@ -162,6 +173,13 @@ export class HoursDashboardComponent implements OnInit {
     filename = filename.replace(/ /g, "_").replace(/_-\_/g, "-").replace(/\//g, "-");
 
     XLSX.writeFile(wb, filename);
+
+    this._snackBar.open('Generated Excel File!', '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['green-snackbar']
+    });
   }
 
   convertDate(firebaseTimestamp: any): Date {
@@ -174,6 +192,12 @@ export class HoursDashboardComponent implements OnInit {
     if (confirmDeletion) {
       this.timeStampService.deleteTimeStamp(timestampId).then(() => {
         this.loadTimestamps(); // reload the timestamps after deletion
+        this._snackBar.open('Deleted timestamp!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
       }).catch((error) => {
         console.error("Error deleting timestamp: ", error);
       });
@@ -185,12 +209,18 @@ export class HoursDashboardComponent implements OnInit {
       width: '400px',
       data: { timestamp }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         timestamp.startTime = result.startTime;
         timestamp.endTime = result.endTime;
         this.timeStampService.updateTimeStamp(timestamp, timestamp.id);
+        this._snackBar.open('Timestamps edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+        });
       }
     });
   }
@@ -199,14 +229,20 @@ export class HoursDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateTimestampDialogComponent, {
       width: '400px'
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Reload timestamps if the selected employee's timestamps are being displayed
         if (this.selectedEmployee) {
           this.loadTimestamps();
         }
+        this._snackBar.open('Timestamp has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
       }
     });
-  }  
+  }
 }

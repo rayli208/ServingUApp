@@ -71,7 +71,7 @@ export class CreateTimestampDialogComponent implements OnInit {
     };
   
     this.timeStampService.createTimeStamp(timeStamp).then(() => {
-      this.dialogRef.close();
+      this.dialogRef.close({timestapCreated: true});
     });
   }  
 }
