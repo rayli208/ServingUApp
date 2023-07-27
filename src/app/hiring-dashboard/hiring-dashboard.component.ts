@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-dashboard',
@@ -105,17 +106,26 @@ export class HiringDashboardComponent implements OnInit {
     }
 
     removeJob(job: Job) {
-        if (confirm("Are you sure you want to delete " + job.title)) {
-            this.jobsService.deleteJob(job).then(() => {
-                this._snackBar.open('Job has been deleted!', '', {
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    duration: 2500,
-                    panelClass: ['red-snackbar']
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                text: `Are you sure you want to delete ${job.title}?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.jobsService.deleteJob(job).then(() => {
+                    this._snackBar.open('Job has been deleted!', '', {
+                        horizontalPosition: this.horizontalPosition,
+                        verticalPosition: this.verticalPosition,
+                        duration: 2500,
+                        panelClass: ['red-snackbar']
+                    });
                 });
-            });
-        }
+            }
+        });
     }
+
 
     //ALL SCROLLING ACTIONS
     @HostListener('window:scroll', ['$event'])

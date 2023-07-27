@@ -5,6 +5,7 @@ import { TablesService } from '../_services/tables.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from '../_models/employee.model';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-tables-all-table-view',
@@ -29,15 +30,23 @@ export class TablesAllTableViewComponent implements OnInit {
 
   //Remove Schedule 
   deleteTable(table: Table) {
-    if (confirm("Are you sure you want to delete " + table.tableNumber + "?")) {
-      this.tablesService.deleteTable(table);
-      this._snackBar.open('Table has been deleted!', '', {
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        duration: 2500,
-        panelClass: ['red-snackbar']
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete ${table.tableNumber}?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tablesService.deleteTable(table);
+        this._snackBar.open('Table has been deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      }
+    });
   }
 
   editTable(table: Table) {

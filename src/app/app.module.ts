@@ -93,6 +93,7 @@ import { CreateTimestampDialogComponent } from './_dialogs/hours/create-timestam
 import { EditTimestampDialogComponent } from './_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { MassSelectDialogComponent } from './_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
 import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.component';
+import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.co
         EmployeeDashboardComponent,
         ScheduleDashboardComponent,
         CreateEmployeeDialogComponent,
+        ConfirmDialogComponent,
         EditEmployeeDialogComponent,
         EditJobDialogComponent,
         EditTableDialogComponent,

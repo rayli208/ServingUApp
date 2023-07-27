@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditTimestampDialogComponent } from 'src/app/_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { CreateTimestampDialogComponent } from 'src/app/_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from 'src/app/_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-hours-dashboard',
@@ -188,20 +189,27 @@ export class HoursDashboardComponent implements OnInit {
   }
 
   confirmDelete(timestampId: string) {
-    const confirmDeletion = confirm("Are you sure you want to delete this timestamp?");
-    if (confirmDeletion) {
-      this.timeStampService.deleteTimeStamp(timestampId).then(() => {
-        this.loadTimestamps(); // reload the timestamps after deletion
-        this._snackBar.open('Deleted timestamp!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete this timestamp?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.timeStampService.deleteTimeStamp(timestampId).then(() => {
+          this.loadTimestamps(); // reload the timestamps after deletion
+          this._snackBar.open('Deleted timestamp!', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['red-snackbar']
+          });
+        }).catch((error) => {
+          console.error("Error deleting timestamp: ", error);
         });
-      }).catch((error) => {
-        console.error("Error deleting timestamp: ", error);
-      });
-    }
+      }
+    });
   }
 
   openEditDialog(timestamp: TimeStamp) {

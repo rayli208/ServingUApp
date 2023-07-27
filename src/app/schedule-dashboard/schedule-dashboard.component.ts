@@ -10,6 +10,7 @@ import { MessagesService } from '../_services/messages.service';
 import { Message } from '../_models/message.model';
 import { AuthService } from '../_services/auth.service';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-schedule-dashboard',
@@ -143,30 +144,40 @@ export class ScheduleDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1, result);
 
-      if(result){
+      if (result) {
         this._snackBar.open('Schedule has been edited!', '', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
           panelClass: ['yellow-snackbar']
-      });
+        });
       }
     });
   }
 
   //Remove Schedule 
   deleteSchedule(schedule: Schedule, j, i) {
-    if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
-      this.scheduleService.deleteSchedule(schedule);
-      this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
-      this._snackBar.open('Schedule has been deleted!', '', {
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        duration: 2500,
-        panelClass: ['red-snackbar']
+    console.log(schedule);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete ${schedule.employeeName }'s schedule?`
+      }
     });
-    }
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.scheduleService.deleteSchedule(schedule);
+        this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
+        this._snackBar.open('Schedule has been deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      }
+    });
   }
+
 
   //Print Function
   onPrint() {
@@ -237,14 +248,15 @@ export class ScheduleDashboardComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result?.scheduleCreated) {
-          this._snackBar.open('Schedule has been created!', '', {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 2500,
-              panelClass: ['green-snackbar']
-          });
+        this._snackBar.open('Schedule has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
       }
-  });  }
+    });
+  }
 
   getEmployeeCount(day: any): number {
     return day.schedule?.length || 0;
@@ -253,7 +265,7 @@ export class ScheduleDashboardComponent implements OnInit {
   sendOutText() {
     // Create an empty object to store the schedules by employee
     let schedulesByEmployee = {};
-
+  
     // Loop through all the dates
     for (let day of this.populatedSchedulesWithDates) {
       // Loop through all the schedules for the current date
@@ -265,19 +277,19 @@ export class ScheduleDashboardComponent implements OnInit {
             schedules: []
           };
         }
-
+  
         // Add the current schedule to the employee's schedules
         schedulesByEmployee[schedule.employeePhone].schedules.push(schedule);
       }
     }
-
+  
     // Prepare an array to hold all the messages
     let messages = [];
-
+  
     // Get the date range
     let startDate = this.formatDate(this.populatedSchedulesWithDates[0]?.date);
     let endDate = this.formatDate(this.populatedSchedulesWithDates[13]?.date);
-
+  
     // Loop through all the employees and prepare a text message with their schedules
     for (let phoneNumber in schedulesByEmployee) {
       let messageText = `${startDate} to  ${endDate}\n${schedulesByEmployee[phoneNumber].name} schedule:\n`;
@@ -289,7 +301,7 @@ export class ScheduleDashboardComponent implements OnInit {
         let formattedEndTime = this.convertTo12HourFormat(schedule.endTime);
         messageText += `${formattedDate}: ${formattedStartTime}-${formattedEndTime}\n`;
       }
-
+  
       // Create the message
       const message: Message = {
         channelId: 'a31f78766da04f9e95ce52a85cf13bdd', // Use the appropriate channel ID
@@ -299,41 +311,48 @@ export class ScheduleDashboardComponent implements OnInit {
           text: messageText
         }
       };
-
+  
       // Add the message to the array
       messages.push(message);
     }
-
+  
     // Calculate the total number of messages
     let totalMessagesCount = messages.reduce((count, message) => count + Math.ceil(message.content.text.length / 153), 0);
-
+  
     console.log(messages);
-
-    // Ask the user for confirmation
-    if (!window.confirm(`Are you sure you want to send ${totalMessagesCount} messages?`)) {
-      return;
-    }
-
-    // Send the messages
-    for (let message of messages) {
-      this.messagesService.createMessage(message);
-    }
-
-    // Update the number of texts sent this month
-    this.authService.updateTextsThisMonth(totalMessagesCount)
-      .then(() => {
-        this._snackBar.open('Text has been sent!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['green-snackbar']
-        });
-      })
-      .catch(error => {
-        // Handle the error if needed
-        console.log('Error updating textsThisMonth:', error);
-      });
+  
+    // Open the confirmation dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to send ${totalMessagesCount} messages?`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // If the user confirmed, send the messages
+        for (let message of messages) {
+          this.messagesService.createMessage(message);
+        }
+  
+        // Update the number of texts sent this month
+        this.authService.updateTextsThisMonth(totalMessagesCount)
+          .then(() => {
+            this._snackBar.open('Text has been sent!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['green-snackbar']
+            });
+          })
+          .catch(error => {
+            // Handle the error if needed
+            console.log('Error updating textsThisMonth:', error);
+          });
+      }
+    });
   }
+  
 
 
   // This function converts a time in 24-hour format to 12-hour format

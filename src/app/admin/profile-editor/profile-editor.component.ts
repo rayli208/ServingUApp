@@ -6,6 +6,8 @@ import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/
 import { finalize } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, of } from 'rxjs';
+import { ConfirmDialogComponent } from 'src/app/_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile-editor',
@@ -39,6 +41,7 @@ export class ProfileEditorComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private storage: AngularFireStorage,
     private changeDetector: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {
     this.user = null;
   }
@@ -203,42 +206,50 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   confirmDelete(imageUrl): void {
-    let confirmation = confirm('Are you sure you want to delete this image?');
-    if (confirmation) {
-      this.storage.storage.refFromURL(imageUrl).delete().then(() => {
-        // Once the image is deleted, update the user's image count and refresh the list of images
-        this.authService.getImageCount(this.userId).subscribe(count => {
-          this.imageCount = count;
-          // Check if the image limit has been reached
-          this.isImageLimitReached = this.imageCount >= 5;
-          console.log('Image count after deletion:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete this image?`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.storage.storage.refFromURL(imageUrl).delete().then(() => {
+          // Once the image is deleted, update the user's image count and refresh the list of images
+          this.authService.getImageCount(this.userId).subscribe(count => {
+            this.imageCount = count;
+            // Check if the image limit has been reached
+            this.isImageLimitReached = this.imageCount >= 5;
+            console.log('Image count after deletion:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
+          });
+  
+          // Find the index of the image in the array
+          const index = this.imageUrls.indexOf(imageUrl);
+          if (index > -1) {
+            // Use splice to remove the image from the array
+            this.imageUrls.splice(index, 1);
+          }
+  
+          this._snackBar.open('Image Deleted!', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['red-snackbar']
+          });
+  
+          this.changeDetector.detectChanges();
+        }).catch(error => {
+          // Handle any errors that occur during the deletion
+          console.error('Failed to delete image:', error);
+          this._snackBar.open('Failed to delete image!', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['red-snackbar']
+          });
         });
-
-        // Find the index of the image in the array
-        const index = this.imageUrls.indexOf(imageUrl);
-        if (index > -1) {
-          // Use splice to remove the image from the array
-          this.imageUrls.splice(index, 1);
-        }
-
-        this._snackBar.open('Image Deleted!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
-        });
-
-        this.changeDetector.detectChanges();
-      }).catch(error => {
-        // Handle any errors that occur during the deletion
-        console.error('Failed to delete image:', error);
-        this._snackBar.open('Failed to delete image!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
-        });
-      });
-    }
+      }
+    });
   }
+  
 }
