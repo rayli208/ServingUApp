@@ -1,6 +1,6 @@
 {
-  "name": "ServingU App",
-  "short_name": "ServingU App",
+  "name": "ServingU",
+  "short_name": "ServingU",
   "theme_color": "#35B9DF",
   "background_color": "#ffffff",
   "display": "standalone",
