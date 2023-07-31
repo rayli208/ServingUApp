@@ -6,14 +6,38 @@
 
 .tables-waitlist-form {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     div {
+        flex: 1 0 calc(25% - 10px);
+        /* display 4 fields per row for screens larger than 1000px */
         margin-right: 10px;
+        margin-bottom: 10px;
+
+        mat-form-field{
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        div {
+            flex: 1 0 calc(50% - 10px);
+            /* display 2 fields per row for screens smaller than or equal to 1000px */
+        }
+    }
+
+    @media (max-width: 768px) {
+        div {
+            flex: 1 0 100%;
+            /* display 1 field per row for screens smaller than or equal to 768px */
+        }
     }
 }
 
-.message{
+
+
+.message {
     font-size: 12px;
     font-style: italic;
     margin-bottom: 15px;
@@ -43,10 +67,10 @@
     margin-bottom: 5px;
 }
 
-.tables-waitlist-card-content{
+.tables-waitlist-card-content {
     font-size: 14px;
 
-    b{
+    b {
         text-transform: uppercase;
     }
 }
@@ -66,13 +90,13 @@
     display: inline-block;
 }
 
-.tables-waitlist-card-actions{
+.tables-waitlist-card-actions {
     display: flex;
     justify-content: space-between;
 }
 
 
-.tables-waitlist-card-eta{
+.tables-waitlist-card-eta {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -80,8 +104,16 @@
     font-style: italic;
 }
 
-.primary{
+.primary {
     color: $brand-primary;
     text-decoration: none;
     margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+    .tables-waitlist-card-eta {
+        position: relative;
+        text-align: center;
+        margin-bottom: 15px;
+    }
 }

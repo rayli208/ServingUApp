@@ -23,6 +23,11 @@
     background-color: $white;
 }
 
+.profile-dashboard-card-main-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .profile-dashboard-card-main-container-half {
     display: inline-block;
     width: 50%;
@@ -81,6 +86,8 @@
     object-position: center;
 }
 
+
+
 @keyframes slide-in {
     0% {
         transform: translateX(100%);
@@ -102,5 +109,12 @@
 
     .profile-dashboard-card-row span:last-of-type {
         width: 100%;
+    }
+
+    .profile-dashboard-card-main-container {
+        flex-direction: column;
+    }
+    .profile-dashboard-card-main-container-half:not(:first-child) {
+        margin-top: 15px;
     }
 }

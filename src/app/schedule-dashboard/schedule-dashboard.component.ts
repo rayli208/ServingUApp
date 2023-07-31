@@ -1,7 +1,7 @@
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { ScheduleService } from '../_services/schedule.service';
 import { Schedule } from '../_models/schedule.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,8 @@ export class ScheduleDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   userId;
-  user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+  user: Observable<any>;
+  isHorizontalModeDisabled: boolean = false;
 
 
   selectedView: string = 'Horizontal';
@@ -90,8 +91,22 @@ export class ScheduleDashboardComponent implements OnInit {
   //Initialize the component
   ngOnInit(): void {
     this.generateSchedule();
+    this.handleWindowResize(window.innerWidth);
   }
 
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(innerWidth: number) {
+    this.handleWindowResize(innerWidth);
+  }
+
+  handleWindowResize(innerWidth: number) {
+    if (innerWidth <= 992) {
+      this.selectedView = 'Vertical';
+      this.isHorizontalModeDisabled = true;
+    } else {
+      this.isHorizontalModeDisabled = false;
+    }
+  }
 
   // function to increment the dates by one week
   incrementWeek(): void {

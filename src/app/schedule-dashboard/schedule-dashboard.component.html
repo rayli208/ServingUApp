@@ -13,7 +13,7 @@
       </button>      
       <label class="schedule-label">Select your view:</label>
       <mat-radio-group [(ngModel)]="selectedView">
-        <mat-radio-button color="primary" *ngFor="let option of views" [value]="option">
+        <mat-radio-button color="primary" *ngFor="let option of views" [value]="option" [disabled]="option === 'Horizontal' && isHorizontalModeDisabled">
           {{option}}
         </mat-radio-button>
       </mat-radio-group>
