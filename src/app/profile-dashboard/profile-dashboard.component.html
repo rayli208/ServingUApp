@@ -58,6 +58,10 @@
                 </span>
             </div>
             <div class="profile-dashboard-card-row">
+                <span>Description: </span>
+                <span>{{ (user | async)?.description }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
                 <span>Active Employees: </span>
                 <span>{{Employees?.length}}</span>
             </div>

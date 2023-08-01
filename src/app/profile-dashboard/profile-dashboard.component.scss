@@ -50,6 +50,8 @@
 }
 
 .profile-dashboard-card-row {
+    display: flex;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
@@ -114,6 +116,11 @@
     .profile-dashboard-card-main-container {
         flex-direction: column;
     }
+
+    .profile-dashboard-card-row[_ngcontent-ng-c1197354669]{
+        flex-direction: column;
+    }
+
     .profile-dashboard-card-main-container-half:not(:first-child) {
         margin-top: 15px;
     }

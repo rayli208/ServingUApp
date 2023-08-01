@@ -25,9 +25,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
-              "src/manifest.webmanifest"
-            ],
+              "src/manifest.webmanifest"            ],
             "styles": [
               "src/custom-theme.scss",
               "src/styles.scss"
@@ -36,7 +34,7 @@
             "sourceMap": false,
             "vendorChunk": true,
             "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "ngswConfigPath": "src/ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -95,7 +93,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
               "src/manifest.webmanifest"
             ],
             "styles": [
