@@ -15,11 +15,7 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit() {
-    if (this.authService.isUserLoggedIn()) {
-      this.router.navigate(['/profile-dashboard']);
-    } else {
-      this.router.navigate(['/login']);
-    }
+
   }
   
   checkLocalStorage(key: string): boolean {
