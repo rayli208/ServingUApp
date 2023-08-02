@@ -205,8 +205,6 @@ export class AuthService {
         let images = from(this.storage.ref('profilePictures/' + userId).listAll());
 
         return images.pipe(switchMap(imagesResult => {
-            console.log('Images in getImageUrls:', imagesResult.items);
-
             // Now we need to get the download URL for each image
             let urlObservables = imagesResult.items.map(imageRef => imageRef.getDownloadURL());
 

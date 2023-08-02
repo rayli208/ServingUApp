@@ -25,16 +25,15 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"            ],
+              "src/manifest.webmanifest"
+            ],
             "styles": [
               "src/custom-theme.scss",
               "src/styles.scss"
             ],
             "scripts": [],
             "sourceMap": false,
-            "vendorChunk": true,
-            "serviceWorker": true,
-            "ngswConfigPath": "src/ngsw-config.json"
+            "vendorChunk": true
           },
           "configurations": {
             "production": {
@@ -51,6 +50,8 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "ngswConfigPath": "ngsw-config.json",
+              "serviceWorker": true,
               "budgets": [
                 {
                   "type": "initial",

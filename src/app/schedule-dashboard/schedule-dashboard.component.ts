@@ -172,7 +172,6 @@ export class ScheduleDashboardComponent implements OnInit {
 
   //Remove Schedule 
   deleteSchedule(schedule: Schedule, j, i) {
-    console.log(schedule);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: `Are you sure you want to delete ${schedule.employeeName }'s schedule?`
@@ -333,9 +332,7 @@ export class ScheduleDashboardComponent implements OnInit {
   
     // Calculate the total number of messages
     let totalMessagesCount = messages.reduce((count, message) => count + Math.ceil(message.content.text.length / 153), 0);
-  
-    console.log(messages);
-  
+    
     // Open the confirmation dialog
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {

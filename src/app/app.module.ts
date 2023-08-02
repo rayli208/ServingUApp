@@ -96,7 +96,6 @@ import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.co
 import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-
 @NgModule({
     declarations: [
         AppComponent,

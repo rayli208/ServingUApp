@@ -38,7 +38,6 @@ export class FloorAssignerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.userId && changes.userId.currentValue) {
-      console.log(this.userId);
       this.floors$ = this.floorsService.getFloorsForUser(this.userId).pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data() as Floor;

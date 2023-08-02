@@ -60,7 +60,6 @@ export class ProfileEditorComponent implements OnInit {
           this.imageCount = count;
           // Check if the image limit has been reached
           this.isImageLimitReached = this.imageCount >= 5;
-          console.log('Image count updated:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
         });
 
         this.imageUrls$ = this.authService.getImageUrls(this.userId);
@@ -125,7 +124,6 @@ export class ProfileEditorComponent implements OnInit {
       this.totalImages = this.selectedImages.length;
       // Check if the image limit has been reached
       this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
-      console.log('Image count after selection:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
     }
   }
 
@@ -197,7 +195,6 @@ export class ProfileEditorComponent implements OnInit {
               this.imageCount = count;
               // Check if the image limit has been reached
               this.isImageLimitReached = this.imageCount >= 5;
-              console.log('Image count after upload:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
             });
           });
         });
@@ -220,7 +217,6 @@ export class ProfileEditorComponent implements OnInit {
             this.imageCount = count;
             // Check if the image limit has been reached
             this.isImageLimitReached = this.imageCount >= 5;
-            console.log('Image count after deletion:', this.imageCount, 'Is limit reached:', this.isImageLimitReached);
           });
   
           // Find the index of the image in the array
