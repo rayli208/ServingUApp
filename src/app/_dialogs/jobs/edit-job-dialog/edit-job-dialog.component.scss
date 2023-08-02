@@ -1,0 +1,26 @@
+.chip-container {
+    margin-bottom: 15px;
+}
+
+.chip-container mat-chip-option {
+    height: unset;
+}
+
+.chip-container .mat-chip-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chip-container mat-chip-option {
+    flex: 1 0 20%;
+    /* This makes sure that each chip initially takes up 20% of the row. */
+    height: unset;
+    transition: flex-basis 0.3s ease;
+    /* This ensures a smooth animation when the chip grows. */
+}
+
+.chip-container mat-chip-option:active,
+.chip-container mat-chip-option:focus {
+    flex-basis: 25%;
+    /* This makes the chip grow to take up 25% of the row when clicked. */
+}

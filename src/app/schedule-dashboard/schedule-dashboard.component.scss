@@ -1,0 +1,206 @@
+@import './../_styles/variables.scss';
+
+
+.schedule-label {
+    margin-right: 15px;
+    font-weight: 700;
+}
+
+.schedule-range {
+    margin-top: 15px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+mat-button-toggle-group,
+mat-radio-button {
+    margin-right: 15px;
+}
+
+.schedule-dashboard-date {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px .5% 5px;
+}
+
+.schedule-employee-count {
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.schedule-dashboard-date-add {
+    background-color: $white;
+    border: 1px solid $brand-primary;
+    color: $brand-primary;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.schedule-dashboard-schedule-none {
+    font-style: italic;
+    margin-bottom: 15px;
+    margin-top: -10px;
+    font-size: 14px;
+    color: $text-muted;
+}
+
+.schedule-dashboard-schedule-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: $white;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.schedule-dashboard-name,
+.schedule-weekly-name {
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    margin-bottom: 5px;
+
+    i {
+        font-size: 12px;
+        color: $brand-primary;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: top;
+    }
+}
+
+.schedule-dashboard-date-add-button {
+    margin-bottom: 5px;
+}
+
+.schedule-dashboard-date-add-button.horizontal {
+    width: 100%;
+}
+
+.schedule-dashboard-hours {
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.schedule-dashboard-icons {
+    display: flex;
+    font-size: 20px;
+    color: $brand-primary;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+
+    div {
+        margin-left: 10px;
+    }
+}
+
+.schedule-weekly-schedule {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.schedule-weekly-schedule-day {
+    flex: 1 0 13%;
+    margin: 15px .5%;
+
+    .schedule-weekly-schedule-none {
+        font-style: italic;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: $text-muted;
+    }
+}
+
+.schedule-weekly-schedule-name {
+    display: inline-block;
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    margin-bottom: 5px;
+
+    i {
+        font-size: 12px;
+        color: $brand-primary;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: top;
+    }
+}
+
+.schedule-weekly-schedule-card {
+    border: 1px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: $white;
+    margin-bottom: 15px;
+}
+
+.schedule-weekly-hours {
+    font-size: 12px;
+    color: #00000050;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.schedule-weekly-hours-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width:768px) {
+    .schedule-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+    
+    .mass-text{
+        display: block;
+        margin: 15px 0px;
+    }
+}
+
+
+@media print {
+
+    .schedule-dashboard-icons,
+    .schedule-dashboard-date-add-button,
+    mat-card {
+        display: none;
+    }
+
+    .schedule-dashboard-date,
+    .schedule-dashboard-schedule-card {
+        page-break-inside: avoid;
+    }
+
+    .schedule-weekly-schedule {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .schedule-weekly-schedule-day {
+        flex: 1 0 13%;
+        margin: 15px .5%;
+        overflow: hidden;
+    }
+
+    .schedule-dashboard-name,
+    .schedule-weekly-name {
+        i {
+            display: none;
+        }
+    }
+
+    .schedule-weekly-hours-container {
+        display: block;
+    }
+
+}

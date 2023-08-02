@@ -1,0 +1,152 @@
+<app-header iconClass="fa-solid fa-user" title="Profile">
+</app-header>
+<div class="profile-dashboard-card" *ngIf="(user | async)">
+    <div class="profile-dashboard-card-header">
+        <i *ngIf="(user | async)?.accountType == 'endUser'" class="fa-solid fa-user"></i>
+        <i *ngIf="(user | async)?.accountType == 'admin'" class="fa-solid fa-shield-halved"></i>
+        Personal Info: </div>
+    <div class="profile-dashboard-card-main-container">
+        <div class="profile-dashboard-card-main-container-half">
+            <div class="profile-dashboard-card-paying">
+                <span *ngIf="(user | async)?.isPaying" class="fa-stack green" style="vertical-align: top;">
+                    <i class="fa-regular fa-circle fa-stack-2x"></i>
+                    <i class="fa-solid fa-dollar-sign fa-stack-1x"></i>
+                </span>
+                <span *ngIf="!(user | async)?.isPaying" class="fa-stack red" style="vertical-align: top;">
+                    <i class="fa-regular fa-circle fa-stack-2x"></i>
+                    <i class="fa-solid fa-sack-xmark fa-stack-1x"></i>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Owner: </span>
+                <span>
+                    {{ (user | async)?.owner }}
+                    <i *ngIf="(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-check green"></i>
+                    <i *ngIf="!(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-xmark red"></i>
+                    <mat-error *ngIf="!(afAuth.user | async)?.emailVerified">&nbsp;(Please verify your email, check your
+                        email box or go to the resend email page.)</mat-error>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Id: </span>
+                <span>
+                    {{ userId }}
+                    <i (click)="copyText(userId)" class="fa-regular fa-copy primary"></i>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Location Name: </span>
+                <span>{{ (user | async)?.location_name }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>School: </span>
+                <span>{{ (user | async)?.school }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Email: </span>
+                <span>{{ (user | async)?.email_lower }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Phone: </span>
+                <span>{{ (user | async)?.phone }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Website: </span>
+                <span>
+                    {{ (user | async)?.website }}
+                    <a target="_blank" href="{{(user | async)?.website}}" class="fa-solid fa-link primary"></a>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Description: </span>
+                <span>{{ (user | async)?.description }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Active Employees: </span>
+                <span>{{Employees?.length}}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Total Texts This Month: </span>
+                <span>{{ (user | async)?.textsThisMonth }}</span>
+            </div>
+        </div>
+        <div class="profile-dashboard-card-main-container-half">
+            <div class="image-container" *ngIf="imageUrls.length; else noImages">
+                <ng-container *ngFor="let imageUrl of imageUrls; index as i">
+                    <img [class.slide-in-image]="i === currentIndex" *ngIf="i === currentIndex" [src]="imageUrl"
+                        class="image">
+                </ng-container>
+            </div>
+            <ng-template #noImages>
+                <p>This user does not have any images</p>
+            </ng-template>
+        </div>
+    </div>
+
+</div>
+
+<div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
+    <div class="profile-dashboard-card-header">
+        Available Views:
+    </div>
+    <div class="profile-dashboard-card-main-container">
+        <div class="profile-dashboard-card-main-container-half">
+            <div class="profile-dashboard-card-row">
+                <span>Enter Pin: </span>
+                <span>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Pin</mat-label>
+                            <input [(ngModel)]="pinValue" (input)="onInputChange($event)" type="password" matInput>
+                        </mat-form-field>
+                    </div>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Jobs: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="jobsActive" (change)="toggleJobsActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Employee: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="employeesActive" (change)="toggleEmployeesActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Schedule: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="scheduleActive" (change)="toggleScheduleActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Punch Clock: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="punchClockActive" (change)="togglePunchClockActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Tables: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="tablesActive" (change)="toggleTablesActive()"></mat-slide-toggle>
+                </span>
+            </div>
+        </div>
+        <div class="profile-dashboard-card-main-container-half">
+            <button mat-raised-button color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToProfileEditorDashboard()">
+                <i class="fa-regular fa-newspaper fa-2xl"></i>
+            </button>
+            <button mat-raised-button color="primary" matTooltip="Hours Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToHoursEditorDashboard()">
+                <i class="fa-solid fa-clipboard-list fa-2xl"></i>
+            </button>
+        </div>
+    </div>
+</div>

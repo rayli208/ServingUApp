@@ -1,0 +1,126 @@
+<app-header iconClass="fa-solid fa-user-plus" title="Sign Up">
+</app-header>
+<mat-card appearance="outlined" style="margin-top: 15px; padding-top: 24px;">
+    <form [formGroup]="signupForm">
+        <mat-stepper [linear]="true">
+            <mat-step [stepControl]="signupForm.controls.stepOne">
+                <form [formGroup]="signupForm.controls.stepOne">
+                    <ng-template matStepLabel>Step 1: Basic Info</ng-template>
+                    <div class="step-container">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Owner</mat-label>
+                            <input autocomplete="off" formControlName="owner" type="text" matInput placeholder="Owner">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Location Name</mat-label>
+                            <input autocomplete="off" formControlName="location_name" type="text" matInput
+                                placeholder="Location Name">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Description</mat-label>
+                            <textarea rows="4" formControlName="description" type="text" matInput
+                                placeholder="Describe Your Business"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button mat-raised-button color="primary" matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="signupForm.controls.stepTwo">
+                <form [formGroup]="signupForm.controls.stepTwo">
+                    <ng-template matStepLabel>Step 2: Contact Info</ng-template>
+                    <div class="step-container">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input formControlName="email" type="email" matInput placeholder="Email">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Phone</mat-label>
+                            <input formControlName="phone" type="tel" matInput placeholder="Phone" appPhoneNumberFormat>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Website</mat-label>
+                            <input formControlName="website" type="text" matInput placeholder="Website">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="signupForm.controls.stepThree">
+                <form [formGroup]="signupForm.controls.stepThree">
+                    <ng-template matStepLabel>Step 3: Address Info</ng-template>
+                    <div class="step-container">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <textarea rows="4" formControlName="address" type="text" matInput
+                                placeholder="Address"></textarea>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Zip</mat-label>
+                            <input formControlName="zip" type="text" matInput placeholder="Zip Code">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>School</mat-label>
+                            <select formControlName="school" matNativeControl required>
+                                <option value="None">None</option>
+                                <option value="West Chester University">West Chester University</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="signupForm.controls.stepFour">
+                <form [formGroup]="signupForm.controls.stepFour">
+                    <ng-template matStepLabel>Step 4: Security</ng-template>
+                    <div class="step-container">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pin</mat-label>
+                            <input autocomplete="off" formControlName="pin" matInput placeholder="Pin">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input autocomplete="off" formControlName="password" type="password" matInput
+                                placeholder="Password">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Confirm Password</mat-label>
+                            <input autocomplete="off" formControlName="confirmPassword" type="password" matInput
+                                placeholder="Confirm Password">
+                            <mat-error *ngIf="signupForm.controls.stepFour.hasError('notSame')">Passwords do not match.
+                            </mat-error>
+
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>ServingU Token</mat-label>
+                            <input autocomplete="off" formControlName="createUserPassword" type="password" matInput
+                                placeholder="Create User Password">
+                            <mat-error
+                                *ngIf="(signupForm.get('stepFour.createUserPassword')).hasError('incorrectPassword')">
+                                ServingU Token</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" (click)="signup()"
+                            [disabled]="signupForm.invalid">Signup</button>
+                    </div>
+                </form>
+            </mat-step>
+        </mat-stepper>
+        <div *ngIf="firebaseErrorMessage != ''" class="error-style">
+            <span>{{ firebaseErrorMessage }}</span>
+        </div>
+    </form>
+</mat-card>
+<div class="progressIndicator" [style.display]="isProgressVisible ? 'inline' : 'none' ">
+    <mat-progress-spinner class=" example-margin" color="primary" mode="indeterminate"></mat-progress-spinner>
+</div>

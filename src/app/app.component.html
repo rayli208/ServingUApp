@@ -1,0 +1,104 @@
+   <mat-drawer-container class="app-drawer-container" [hasBackdrop]="true">
+        <mat-drawer-content class="app-drawer-container-content">
+            <!--See all this only if you are logged out-->
+            <header class="app-header">
+                <div class="app-header-status">
+                    <i *ngIf="(afAuth.user | async)" class="fa-solid fa-circle"></i>
+                    <i *ngIf="!(afAuth.user | async)" class="fa-solid fa-circle-dot"></i>
+                </div>
+                <img src="../assets/img/Logo.png">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <ng-container *ngIf="!(afAuth.user | async)">
+                        <button mat-menu-item routerLink="/login">
+                            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            </mat-icon>
+                            <span>Login</span>
+                        </button>
+                        <button mat-menu-item routerLink="/signup">
+                            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-user-plus"></i></mat-icon>
+                            <span>Sign up</span>
+                        </button>
+                        <button mat-menu-item routerLink="/forgot-password">
+                            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-question"></i></mat-icon>
+                            <span>Forgot password</span>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="(afAuth.user | async)">
+                        <button mat-menu-item routerLink="/verify-email" *ngIf="!(afAuth.user | async)?.emailVerified">
+                            <mat-icon class="app-header-status-icon"><i class="fa-solid fa-arrows-rotate"></i>
+                            </mat-icon>
+                            <span>Resend email verification</span>
+                        </button>
+                        <button mat-menu-item routerLink="/profile-dashboard">
+                            <mat-icon class="app-header-status-icon"> <i class="fa-solid fa-user"></i></mat-icon>
+                            <span>Profile</span>
+                        </button>
+                        <button mat-menu-item (click)="logout()">
+                            <mat-icon class="app-header-status-icon"><i
+                                    class="fa-solid fa-arrow-right-from-bracket"></i></mat-icon>
+                            <span>Log out</span>
+                        </button>
+                    </ng-container>
+
+                </mat-menu>
+            </header>
+            <!--Router-->
+            <router-outlet></router-outlet>
+            <button class="app-menu-toggle" mat-fab (click)="drawer.toggle()" *ngIf="(afAuth.user | async) && ((afAuth.user | async)?.emailVerified)">
+                <i class="fa-solid fa-bars" *ngIf="!drawer.opened"></i>
+                <i class="fa-solid fa-xmark" *ngIf="drawer.opened"></i>
+            </button>
+        </mat-drawer-content>
+        <mat-drawer #drawer mode="over" position="start">
+            <!--See all this only if you are logged in-->
+            <section class="app-navigation" *ngIf="(afAuth.user | async) && ((afAuth.user | async)?.emailVerified)">
+                <div
+                    *ngIf="(!checkLocalStorage('jobsActive') && !checkLocalStorage('employeesActive') && !checkLocalStorage('scheduleActive') && !checkLocalStorage('tablesActive'))">
+                    <a routerLink="/profile-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-user"></i>
+                        <div>Profile</div>
+                    </a>
+                </div>
+                <div *ngIf="checkLocalStorage('jobsActive')">
+                    <a routerLink="/hiring-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-utensils"></i>
+                        <div>Jobs</div>
+                    </a>
+                </div>
+                <div *ngIf="checkLocalStorage('employeesActive')">
+                    <a routerLink="/employee-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-address-book"></i>
+                        <i class="fa-solid fa-user-chef"></i>
+                        <div>Employees</div>
+                    </a>
+                </div>
+                <div *ngIf="checkLocalStorage('scheduleActive')">
+                    <a routerLink="/schedule-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-calendar"></i>
+                        <div>Schedule</div>
+                    </a>
+                </div>
+                <div *ngIf="checkLocalStorage('punchClockActive')">
+                    <a routerLink="/punch-clock-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-stopwatch"></i>
+                        <div>Punch Clock</div>
+                    </a>
+                </div>
+                <div *ngIf="checkLocalStorage('tablesActive')">
+                    <a routerLink="/tables-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                        <i class="fa-solid fa-tablet-screen-button"></i>
+                        <div>Tables</div>
+                    </a>
+                </div>
+                <!-- <div>
+        <a routerLink="/admin" routerLinkActive="active">
+            <i class="fa-solid fa-lock"></i>
+            <div>Admin</div>
+        </a>
+    </div> -->
+            </section>
+        </mat-drawer>
+    </mat-drawer-container>

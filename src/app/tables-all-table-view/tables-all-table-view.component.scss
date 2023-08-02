@@ -1,0 +1,129 @@
+@import './../_styles/variables.scss';
+
+.tables-all-table-container {
+    display: flex;
+    overflow-x: auto;
+    margin-top: -10px;
+}
+
+/* For WebKit-based browsers (Chrome, Safari, etc.) */
+.tables-all-table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.tables-all-table-container::-webkit-scrollbar-thumb {
+    background-color: $text-muted;
+    border-radius: 6px;
+}
+
+
+.tables-all-table-view-card {
+    position: relative;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 15px;
+    padding-top: 30px;
+    margin: 30px 10px 8px;
+    min-width: 175px;
+    cursor: pointer;
+    background-color: $white;
+}
+
+.tables-all-table-view-card.active {
+    border: 2px solid $green;
+    background-color: $green30;
+
+    .tables-all-table-view-card-number {
+        border: 2px solid $green;
+    }
+}
+
+.tables-all-table-view-card.not-active {
+    border: 2px solid $red;
+    background-color: $red30;
+
+    .tables-all-table-view-card-number {
+        border: 2px solid $red;
+    }
+}
+
+.tables-all-table-view-card-number {
+    /* existing styles */
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 3.5em;
+    height: 3.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $white;
+}
+
+.tables-all-table-view-card-number[style*="background-image: url('')"] {
+    background-color: $white;
+}
+
+
+.table-number {
+    background-color: $red;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .table-number.active {
+    background-color: $green;
+  }
+
+.tables-all-table-view-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tables-all-table-view-content span:nth-child(1) {
+    font-weight: 700;
+}
+
+.tables-all-table-view-content span:nth-child(2) {
+    text-transform: capitalize;
+    font-style: italic;
+    font-weight: 100;
+}
+
+.tables-all-table-edit {
+    cursor: pointer;
+    display: inline-block;
+    color: $green70;
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    font-size: 1.2em;
+}
+
+.tables-all-table-delete {
+    cursor: pointer;
+    display: inline-block;
+    color: $red70;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 1.2em;
+}
+
+.red-text {
+    color: $red ;
+}

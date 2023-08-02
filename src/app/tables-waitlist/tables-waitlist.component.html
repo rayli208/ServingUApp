@@ -1,0 +1,76 @@
+<div class="tables-waitlist-container">
+    <h1>Waitlist: </h1>
+    <form class="tables-waitlist-form" (ngSubmit)="addContact()">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Name:</mat-label>
+                <input type="text" [(ngModel)]="name" name="name" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Phone Number:</mat-label>
+                <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" matInput required
+                    (input)="formatPhoneNumber()">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Total Party:</mat-label>
+                <input type="number" [(ngModel)]="totalParty" name="totalParty" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Estimated Wait (<i>minutes</i>):</mat-label>
+                <input type="number" [(ngModel)]="waitTime" name="waitTime" matInput required>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="!name || !phoneNumber || !waitTime">Add</button>
+    </form>
+    <br>
+    <div class="message">Default Text: "{{message}}"</div>
+    <div *ngFor="let contact of contacts; let i = index" [@myAnimationTrigger]>
+        <div class="tables-waitlist-card" [ngClass]="{'text-sent': contact.hasRecievedText}">
+            <div class="tables-waitlist-card-name">{{ contact.name }}</div>
+            <div class="tables-waitlist-card-content">
+                <b>Phone: </b>
+                <span>{{contact.phoneNumber}}</span>
+                <i class="fa-solid fa-phone-flip primary"></i>
+            </div>
+            <div class="tables-waitlist-card-content">
+                <b>Reservation Made At: </b>
+                <span>{{ contact.reservationMade }}</span>
+                <i class="fa-solid fa-stopwatch primary"></i>
+            </div>
+            <div class="tables-waitlist-card-content">
+                <b>Estimated Wait: </b>
+                <span>{{ contact.waitTime }} minutes</span>
+                <i class="fa-regular fa-hourglass-half primary"></i>
+            </div>
+            <div class="tables-waitlist-card-content">
+                <b>Total Party: </b>
+                <span>{{ contact.totalParty }} {{ contact.totalParty === 1 ? 'person' : 'people' }}</span>
+                <i class="fa-solid fa-people-group primary"></i>
+            </div>
+            <hr>
+            <div class="tables-waitlist-card-actions">
+                <div *ngIf="!contact.hasRecievedText" class="tables-waitlist-card-text" (click)="textTableReady(contact)">
+                    <i class="fa-solid fa-comment-sms"></i>
+                </div>
+                <div class="tables-waitlist-card-delete" (click)="deleteContact(contact)">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+            </div>
+
+            <div class="tables-waitlist-card-eta">
+                <mat-button-toggle-group name="Estimated Time" aria-label="Estimated Time">
+                    <mat-button-toggle (click)="addSubtract5Minutes('subtract', contact)">- 5</mat-button-toggle>
+                    <mat-button-toggle><span style="font-size: 14px;">Estimated time: ~{{contact.estimatedTime}}</span></mat-button-toggle>
+                    <mat-button-toggle (click)="addSubtract5Minutes('add', contact)">+ 5</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </div>
+</div>
