@@ -30,11 +30,15 @@ export class AuthService {
         return this.afAuth.authState;
     }
 
+    isUserLoggedIn(): boolean {
+        return this.userLoggedIn;
+    }    
+
     loginUser(email: string, password: string): Promise<any> {
         return this.afAuth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 console.log('Auth Service: loginUser: success');
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/profile-dashboard'])
             })
             .catch(error => {
                 console.log('Auth Service: login error...');
