@@ -20,7 +20,7 @@ import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confi
 export class HiringDashboardComponent implements OnInit {
     userId;
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
-    Jobs: Job[];
+    Jobs: Job[] = [];
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
