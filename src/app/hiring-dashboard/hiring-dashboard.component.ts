@@ -11,6 +11,7 @@ import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/cre
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import svgsData from '../core/constants/svg';
 
 @Component({
     selector: 'app-dashboard',
@@ -26,6 +27,7 @@ export class HiringDashboardComponent implements OnInit {
     @ViewChild(MatAccordion) accordion: MatAccordion;
     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
+    svgs = svgsData;
 
 
     constructor(
