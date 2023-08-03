@@ -170,7 +170,7 @@ export class HoursDashboardComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws_total, "Total Hours");
 
     // Format the filename with the selected date range
-    let filename = `Employee Hours (${this.range.controls.start.value.toLocaleDateString()} - ${this.range.controls.end.value.toLocaleDateString()}).xlsx`;
+    let filename = `Employees Hours (${this.range.controls.start.value.toLocaleDateString()} - ${this.range.controls.end.value.toLocaleDateString()}).xlsx`;
     filename = filename.replace(/ /g, "_").replace(/_-\_/g, "-").replace(/\//g, "-");
 
     XLSX.writeFile(wb, filename);
