@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Schedule } from '../_models/schedule.model';
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-employee-schedule-dashboard',
@@ -12,10 +14,13 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./employee-schedule-dashboard.component.scss']
 })
 export class EmployeeScheduleDashboardComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   employeeRef: any;
   Schedules: any[];
 
   constructor(
+    private _snackBar: MatSnackBar,
     public act: ActivatedRoute,
     public router: Router,
     public dialog: MatDialog,
@@ -55,10 +60,25 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
 
   //Remove Schedule 
   deleteSchedule(schedule: Schedule) {
-    if (confirm("Are you sure you want to delete " + schedule.employeeName + "'s schedule?")) {
-      this.scheduleService.deleteSchedule(schedule);
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete ${schedule.employeeName}'s schedule?`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.scheduleService.deleteSchedule(schedule);
+        this._snackBar.open('Schedule has been deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      }
+    });
   }
+  
 
   backToSchedule() {
     this.router.navigate(['employee-dashboard']);

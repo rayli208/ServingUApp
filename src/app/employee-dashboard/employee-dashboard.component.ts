@@ -11,6 +11,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { Schedule } from '../_models/schedule.model';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -71,30 +72,38 @@ export class EmployeeDashboardComponent implements OnInit {
   }
 
   removeEmployee(employee: Employee) {
-    if (confirm("Are you sure you want to delete " + employee.name)) {
-      //Get all schedules for that employee
-      this.scheduleService.getSchedulesListForEmployee(employee.id).subscribe(res => {
-        this.Schedules = res.map(e => {
-          return {
-            id: e.payload.doc.id,
-            ...e.payload.doc.data() as {}
-          } as Schedule;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete ${employee.name}?`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        //Get all schedules for that employee
+        this.scheduleService.getSchedulesListForEmployee(employee.id).subscribe(res => {
+          this.Schedules = res.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Schedule;
+          });
+          //Delete all schedules associated to employee
+          this.Schedules.forEach(x => this.scheduleService.deleteSchedule(x));
         });
-        //Delete all schedules associated to employee
-        this.Schedules.forEach(x => this.scheduleService.deleteSchedule(x));
-      });
-      //Delete all images associated to employee
-      this.storage.storage.refFromURL(employee.imgUrl).delete();
-      //Delete employee
-      this.employeesService.deleteEmployee(employee);
-      //Alert
-      this._snackBar.open('Employee has been deleted!', '', {
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        duration: 2500,
-        panelClass: ['red-snackbar']
-      });
-    }
+        //Delete all images associated to employee
+        this.storage.storage.refFromURL(employee.imgUrl).delete();
+        //Delete employee
+        this.employeesService.deleteEmployee(employee);
+        //Alert
+        this._snackBar.open('Employee has been deleted!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      }
+    });
   }
 
   editEmployee(employee: Employee) {

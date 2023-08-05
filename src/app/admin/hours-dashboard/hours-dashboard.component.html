@@ -12,16 +12,20 @@
             <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
             <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
-        <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="exportToExcel()"
-            [disabled]="!isRangeValid() || isEmpty" matTooltip="Export to Excel">
-            <i class="fa-solid fa-file-excel fa-2xl"></i>
-        </button>
-        <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openCreateDialog()" matTooltip="Create Timestamp">
-            <i class="fa-solid fa-clock fa-2xl"></i>
-        </button>        
+        <div class="hours-dashboard-date-range-buttons">
+            <button mat-raised-button color="primary" (click)="loadTimestamps()"
+                [disabled]="!isRangeValid()">Load
+                Timestamps</button>
+            <button mat-raised-button color="primary" (click)="exportToExcel()"
+                [disabled]="!isRangeValid() || isEmpty" matTooltip="Export to Excel">
+                <i class="fa-solid fa-file-excel fa-2xl"></i>
+            </button>
+            <button mat-raised-button color="primary" (click)="openCreateDialog()"
+                matTooltip="Create Timestamp">
+                <i class="fa-solid fa-clock fa-2xl"></i>
+            </button>
+        </div>
     </div>
-    <button mat-raised-button color="primary" (click)="loadTimestamps()" [disabled]="!isRangeValid()">Load
-        Timestamps</button>
 </app-header>
 
 <div *ngIf="isEmpty"><i class="employee-totals-empty">There are no timestamps during this date range.</i></div>

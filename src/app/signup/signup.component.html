@@ -1,6 +1,6 @@
 <app-header iconClass="fa-solid fa-user-plus" title="Sign Up">
 </app-header>
-<mat-card appearance="outlined" style="margin-top: 15px;">
+<mat-card appearance="outlined" style="margin-top: 15px; padding-top: 24px;">
     <form [formGroup]="signupForm">
         <mat-stepper [linear]="true">
             <mat-step [stepControl]="signupForm.controls.stepOne">
@@ -67,6 +67,7 @@
                             <mat-label>School</mat-label>
                             <select formControlName="school" matNativeControl required>
                                 <option value="None">None</option>
+                                <option value="Florida Gulf Coast University">Florida Gulf Coast University</option>
                                 <option value="West Chester University">West Chester University</option>
                             </select>
                         </mat-form-field>

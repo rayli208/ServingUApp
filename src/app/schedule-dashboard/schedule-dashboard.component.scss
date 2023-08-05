@@ -6,7 +6,7 @@
     font-weight: 700;
 }
 
-.schedule-range{
+.schedule-range {
     margin-top: 15px;
 }
 
@@ -22,7 +22,7 @@ mat-radio-button {
     margin: 15px .5% 5px;
 }
 
-.schedule-employee-count{
+.schedule-employee-count {
     font-size: 12px;
     color: #00000050;
     font-weight: 600;
@@ -74,11 +74,11 @@ mat-radio-button {
     }
 }
 
-.schedule-dashboard-date-add-button{
+.schedule-dashboard-date-add-button {
     margin-bottom: 5px;
 }
 
-.schedule-dashboard-date-add-button.horizontal{
+.schedule-dashboard-date-add-button.horizontal {
     width: 100%;
 }
 
@@ -155,6 +155,19 @@ mat-radio-button {
     justify-content: space-between;
 }
 
+@media (max-width:768px) {
+    .schedule-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+    
+    .mass-text{
+        display: block;
+        margin: 15px 0px;
+    }
+}
+
+
 @media print {
 
     .schedule-dashboard-icons,
@@ -163,9 +176,10 @@ mat-radio-button {
         display: none;
     }
 
-    .schedule-dashboard-date, .schedule-dashboard-schedule-card {
+    .schedule-dashboard-date,
+    .schedule-dashboard-schedule-card {
         page-break-inside: avoid;
-      }
+    }
 
     .schedule-weekly-schedule {
         display: flex;
@@ -185,7 +199,7 @@ mat-radio-button {
         }
     }
 
-    .schedule-weekly-hours-container{
+    .schedule-weekly-hours-container {
         display: block;
     }
 

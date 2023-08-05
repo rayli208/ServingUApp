@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-login',
@@ -10,12 +11,13 @@ import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+    horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
     isProgressVisible: boolean;
     loginForm: UntypedFormGroup;
     firebaseErrorMessage: string;
 
-    constructor(private authService: AuthService, private router: Router) {
+    constructor(private authService: AuthService, private router: Router, private _snackBar: MatSnackBar) {
 
         this.isProgressVisible = false;
 
@@ -34,21 +36,45 @@ export class LoginComponent implements OnInit {
     }
 
     loginUser() {
-        this.isProgressVisible = true;                          // show the progress indicator as we start the Firebase login process
+        this.isProgressVisible = true;  // show the progress indicator as we start the Firebase login process
 
-        if (this.loginForm.invalid)
+        if (this.loginForm.invalid) {
+            this.isProgressVisible = false;
+            this._snackBar.open('Please fill in all fields.', '', {
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 2500,
+                panelClass: ['red-snackbar']
+            });
             return;
+        }
 
         this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password).then((result) => {
-            this.isProgressVisible = false;                     // no matter what, when the auth service returns, we hide the progress indicator
-            if (result == null) {                               // null is success, false means there was an error
+            this.isProgressVisible = false;
+            if (result == null) {
                 console.log('logging in...');
-                this.router.navigate(['/profile-dashboard']);                // when the user is logged in, navigate them to dashboard
+                this.router.navigate(['/profile-dashboard']);
             }
             else if (result.isValid == false) {
                 console.log('login error', result);
                 this.firebaseErrorMessage = result.message;
+                this._snackBar.open('Failed to login! Please check your email and password.', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['red-snackbar']
+                });
             }
+        }).catch(error => {
+            console.error('Error during login: ', error);
+            this.isProgressVisible = false;
+            this._snackBar.open('Failed to login! Please check your email and password.', '', {
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 2500,
+                panelClass: ['red-snackbar']
+            });
         });
+
     }
 }

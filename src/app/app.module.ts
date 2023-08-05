@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -93,7 +93,8 @@ import { CreateTimestampDialogComponent } from './_dialogs/hours/create-timestam
 import { EditTimestampDialogComponent } from './_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { MassSelectDialogComponent } from './_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
 import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.component';
-
+import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
     declarations: [
@@ -108,6 +109,7 @@ import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.co
         EmployeeDashboardComponent,
         ScheduleDashboardComponent,
         CreateEmployeeDialogComponent,
+        ConfirmDialogComponent,
         EditEmployeeDialogComponent,
         EditJobDialogComponent,
         EditTableDialogComponent,
@@ -185,6 +187,12 @@ import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.co
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          // Register the ServiceWorker as soon as the application is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        }),
     ],
     providers: [DatePipe],
     bootstrap: [AppComponent]

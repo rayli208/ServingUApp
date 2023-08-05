@@ -9,7 +9,7 @@
     <div class="chip-container">
         <mat-chip-listbox aria-label="SVG selection">
             <div class="mat-chip-container">
-                <mat-chip-option *ngFor="let svg of svgs | keyvalue" (click)="onSvgSelected(svg.value.pathD)">
+                <mat-chip-option *ngFor="let svg of svgs | keyvalue" (click)="onSvgSelected(svg.key)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512 512" version="1.1">
                         <path [attr.d]="svg.value.pathD" stroke="none" fill="#35B9DF" fill-rule="evenodd" />
                     </svg>
