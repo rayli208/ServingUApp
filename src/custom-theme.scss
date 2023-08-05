@@ -1314,11 +1314,12 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mdc-menu-surface {
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
-    background-color: #fff !important;
-    color: var(--mdc-theme-on-surface, #000);
-    border-radius: 5px !important;
-    border: 1px solid #35B9DF;
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)
+}
+
+.mdc-menu-surface {
+    background-color: var(--mdc-theme-surface, #fff);
+    color: var(--mdc-theme-on-surface, #000)
 }
 
 .mdc-list-item__primary-text {
@@ -2977,7 +2978,7 @@ html {
 
 .mat-bottom-sheet-container {
     box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
-    background: #fff !important;
+    background: #fff;
     color: rgba(0, 0, 0, .87)
 }
 
@@ -2986,12 +2987,12 @@ html {
     font-weight: 400;
     line-height: 20px;
     font-family: Roboto, sans-serif;
-    letter-spacing: .0178571429em;
+    letter-spacing: .0178571429em
 }
 
 .mat-button-toggle-standalone:not([class*=mat-elevation-z]),
 .mat-button-toggle-group:not([class*=mat-elevation-z]) {
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-button-toggle-standalone.mat-button-toggle-appearance-standard:not([class*=mat-elevation-z]),
@@ -3059,13 +3060,7 @@ html {
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-    line-height: 48px;
-    padding: 12px !important;
-    border-right: 1px solid #ccc !important;
-}
-
-.mat-button-toggle-appearance-standard:last-of-type .mat-button-toggle-label-content {
-    border-right: none !important;
+    line-height: 48px
 }
 
 .mat-button-toggle {
@@ -3172,7 +3167,7 @@ html {
 
 .mat-datepicker-content {
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    background-color: #fff !important;
+    background-color: #fff;
     color: rgba(0, 0, 0, .87)
 }
 
@@ -3442,12 +3437,12 @@ html {
 }
 
 .mat-drawer {
-    background-color: #fff !important;
+    background-color: #fff;
     color: rgba(0, 0, 0, .87)
 }
 
 .mat-drawer.mat-drawer-push {
-    background-color: #fff !important;
+    background-color: #fff
 }
 
 .mat-drawer:not(.mat-drawer-side) {
@@ -3548,7 +3543,7 @@ html {
 
 .mat-stepper-horizontal,
 .mat-stepper-vertical {
-    background-color: #fff !important;
+    background-color: #fff
 }
 
 .mat-stepper-vertical-line::before {
@@ -3880,7 +3875,7 @@ html {
 }
 
 //SNACKBAR EDITS
-.mdc-snackbar {
+.mdc-snackbar{
     border-radius: 5px !important;
 }
 
@@ -3892,11 +3887,6 @@ html {
     color: #000000 !important;
 }
 
-.mat-mdc-menu-panel.mat-mdc-menu-panel {
+.mat-mdc-menu-panel.mat-mdc-menu-panel{
     border: 1px solid #35B9DF !important;
-    background-color: #ffffff !important;
-}
-
-.mat-horizontal-stepper-header-container{
-    margin-bottom: 15px;
 }

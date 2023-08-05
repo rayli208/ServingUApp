@@ -12,7 +12,7 @@ import { EmployeesService } from '../_services/employees.service';
 import { ScheduleService } from '../_services/schedule.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { PunchClockBottomSheetComponent } from '../_bottom-sheets/punch-clock/punch-clock-bottom-sheet/punch-clock-bottom-sheet.component';
-import { startWith } from 'rxjs/operators';
+import { TimeStampService } from '../_services/time-stamp.service';
 
 @Component({
   selector: 'app-punch-clock-dashboard',
@@ -74,7 +74,6 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
   updateCurrentTime(): void {
     interval(1000)
       .pipe(
-        startWith(0),
         map(() => this.datePipe.transform(new Date(), 'shortTime')),
         takeUntil(this.destroy$)
       )
@@ -82,7 +81,6 @@ export class PunchClockDashboardComponent implements OnInit, OnDestroy {
         this.currentTime = time;
       });
   }
-  
 
   formatClockInTime(seconds: number): string {
     const date = new Date(seconds * 1000);

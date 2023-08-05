@@ -47,14 +47,14 @@
             </header>
             <!--Router-->
             <router-outlet></router-outlet>
-            <button class="app-menu-toggle" mat-fab (click)="drawer.toggle()" *ngIf="(afAuth.user | async) && ((afAuth.user | async)?.emailVerified)">
+            <button class="app-menu-toggle" mat-fab (click)="drawer.toggle()" *ngIf="(afAuth.user | async)">
                 <i class="fa-solid fa-bars" *ngIf="!drawer.opened"></i>
                 <i class="fa-solid fa-xmark" *ngIf="drawer.opened"></i>
             </button>
         </mat-drawer-content>
         <mat-drawer #drawer mode="over" position="start">
             <!--See all this only if you are logged in-->
-            <section class="app-navigation" *ngIf="(afAuth.user | async) && ((afAuth.user | async)?.emailVerified)">
+            <section class="app-navigation" *ngIf="(afAuth.user | async)">
                 <div
                     *ngIf="(!checkLocalStorage('jobsActive') && !checkLocalStorage('employeesActive') && !checkLocalStorage('scheduleActive') && !checkLocalStorage('tablesActive'))">
                     <a routerLink="/profile-dashboard" routerLinkActive="active" (click)="drawer.toggle()">

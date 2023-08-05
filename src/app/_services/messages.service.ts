@@ -16,10 +16,11 @@ export class MessagesService {
                 .collection("messages")
                 .add(message)
                 .then(() => {
-                    error => {
-                        console.log("'Please contact IT for further assistance.', 'There has been an error creating the Employee.")
-                        return reject(error);
-                    }
+                    console.log("Message has been sent!"),
+                        error => {
+                            console.log("'Please contact IT for further assistance.', 'There has been an error creating the Employee.")
+                            return reject(error);
+                        }
                 });
         });
     }

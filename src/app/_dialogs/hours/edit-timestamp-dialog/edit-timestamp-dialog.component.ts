@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TimeStamp } from 'src/app/_models/time-stamp.model';
-import { DateTime, Settings } from 'luxon';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-timestamp-dialog',
@@ -16,10 +16,8 @@ export class EditTimestampDialogComponent {
     public dialogRef: MatDialogRef<EditTimestampDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { timestamp: TimeStamp }
   ) {
-    // Set the Luxon settings to work in local time by default
-    Settings.defaultLocale = 'utc';
-    this.startTime = DateTime.fromJSDate(data.timestamp.startTime).toISO();
-    this.endTime = DateTime.fromJSDate(data.timestamp.endTime).toISO();
+    this.startTime = moment(data.timestamp.startTime).local().format('YYYY-MM-DDTHH:mm');
+    this.endTime = moment(data.timestamp.endTime).local().format('YYYY-MM-DDTHH:mm');
   }
 
   formatDate(date: Date): string {
@@ -29,8 +27,8 @@ export class EditTimestampDialogComponent {
   }
 
   save() {
-    let startTime = DateTime.fromISO(this.startTime).toJSDate();
-    let endTime = DateTime.fromISO(this.endTime).toJSDate();
+    let startTime = moment(this.startTime, 'YYYY-MM-DDTHH:mm').utc().toDate();
+    let endTime = moment(this.endTime, 'YYYY-MM-DDTHH:mm').utc().toDate();
 
     this.dialogRef.close({ startTime, endTime });
   }

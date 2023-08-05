@@ -91,22 +91,18 @@ export class TablesDashboardComponent implements OnInit {
           // After fetching the clockedInEmployees and totalTables, create the employeesWithTables object
           const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
 
-          if(this.clockedInEmployees) {
-            this.clockedInEmployees.forEach(employee => {
-              const employeeWithTables = { ...employee, assignedTables: [] };
+          this.clockedInEmployees.forEach(employee => {
+            const employeeWithTables = { ...employee, assignedTables: [] };
 
-              if(this.totalTables) {
-                this.totalTables.forEach(table => {
-                  if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
-                    // Push the entire table object instead of just the table number and floor
-                    employeeWithTables.assignedTables.push(table);
-                  }
-                });
+            this.totalTables.forEach(table => {
+              if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
+                // Push the entire table object instead of just the table number and floor
+                employeeWithTables.assignedTables.push(table);
               }
-
-              employeesWithTables[employee.id] = employeeWithTables;
             });
-          }
+
+            employeesWithTables[employee.id] = employeeWithTables;
+          });
 
           this.updateEmployeesWithTables();
         });
@@ -180,21 +176,17 @@ export class TablesDashboardComponent implements OnInit {
   updateEmployeesWithTables() {
     const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
 
-    if(this.clockedInEmployees) {
-      this.clockedInEmployees.forEach(employee => {
-        const employeeWithTables = { ...employee, assignedTables: [] };
+    this.clockedInEmployees.forEach(employee => {
+      const employeeWithTables = { ...employee, assignedTables: [] };
 
-        if(this.totalTables) {
-          this.totalTables.forEach(table => {
-            if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
-              employeeWithTables.assignedTables.push(table);
-            }
-          });
+      this.totalTables.forEach(table => {
+        if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
+          employeeWithTables.assignedTables.push(table);
         }
-
-        employeesWithTables[employee.id] = employeeWithTables;
       });
-    }
+
+      employeesWithTables[employee.id] = employeeWithTables;
+    });
 
     this.employeesWithTables = employeesWithTables;
   }

@@ -3,7 +3,6 @@ import { Table } from '../_models/table.model';
 import { Employee } from '../_models/employee.model';
 import { MatDialog } from '@angular/material/dialog';
 import { TablesService } from '../_services/tables.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-tables-employee-view',
@@ -18,7 +17,6 @@ export class TablesEmployeeViewComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private tablesService: TablesService,
-    public afAuth: AngularFireAuth,
   ) { }
 
   ngOnInit(): void {

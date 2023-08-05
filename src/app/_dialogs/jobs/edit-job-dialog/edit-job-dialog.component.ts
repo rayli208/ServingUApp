@@ -13,7 +13,7 @@ import svgsData from '../../../core/constants/svg';
 export class EditJobDialogComponent implements OnInit {
   public job: Job;
   public editForm: UntypedFormGroup;
-  public svgs = svgsData;
+  public svgs = svgsData;  // Add this line
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Job,
@@ -28,10 +28,10 @@ export class EditJobDialogComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSvgSelected(name: string) {
-    this.editForm.get('icon').setValue(name);
-    this.editForm.markAsDirty(); 
-  }
+  onSvgSelected(pathD: string) {
+    this.editForm.get('icon').setValue(pathD);
+    this.editForm.markAsDirty();
+}
 
   onSubmit(){
     this.jobsService.updateJob(this.editForm.value, this.job.id);

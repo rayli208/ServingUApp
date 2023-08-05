@@ -56,7 +56,7 @@ export class CreateJobDialogComponent implements OnInit {
     });
   }
 
-  onSvgSelected(name: string) {
-    this.jobForm.get('icon').setValue(name); 
+  onSvgSelected(svg: any) {
+    this.jobForm.get('icon').setValue(svg);
   }
 }

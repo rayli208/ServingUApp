@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { AuthService } from './_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +9,14 @@ import { AuthService } from './_services/auth.service';
 })
 
 export class AppComponent implements OnInit{
-  constructor(public afAuth: AngularFireAuth, private router: Router, private authService: AuthService) {
+  constructor(public afAuth: AngularFireAuth, private router: Router) {
 
   }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
+    
   }
-  
+
   checkLocalStorage(key: string): boolean {
     const value = localStorage.getItem(key);
     return value === 'true';

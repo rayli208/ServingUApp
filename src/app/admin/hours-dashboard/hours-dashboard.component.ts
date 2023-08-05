@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditTimestampDialogComponent } from 'src/app/_dialogs/hours/edit-timestamp-dialog/edit-timestamp-dialog.component';
 import { CreateTimestampDialogComponent } from 'src/app/_dialogs/hours/create-timestamp-dialog/create-timestamp-dialog.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ConfirmDialogComponent } from 'src/app/_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-hours-dashboard',
@@ -170,7 +169,7 @@ export class HoursDashboardComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws_total, "Total Hours");
 
     // Format the filename with the selected date range
-    let filename = `Employees Hours (${this.range.controls.start.value.toLocaleDateString()} - ${this.range.controls.end.value.toLocaleDateString()}).xlsx`;
+    let filename = `Employee Hours (${this.range.controls.start.value.toLocaleDateString()} - ${this.range.controls.end.value.toLocaleDateString()}).xlsx`;
     filename = filename.replace(/ /g, "_").replace(/_-\_/g, "-").replace(/\//g, "-");
 
     XLSX.writeFile(wb, filename);
@@ -189,27 +188,20 @@ export class HoursDashboardComponent implements OnInit {
   }
 
   confirmDelete(timestampId: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        text: `Are you sure you want to delete this timestamp?`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.timeStampService.deleteTimeStamp(timestampId).then(() => {
-          this.loadTimestamps(); // reload the timestamps after deletion
-          this._snackBar.open('Deleted timestamp!', '', {
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 2500,
-            panelClass: ['red-snackbar']
-          });
-        }).catch((error) => {
-          console.error("Error deleting timestamp: ", error);
+    const confirmDeletion = confirm("Are you sure you want to delete this timestamp?");
+    if (confirmDeletion) {
+      this.timeStampService.deleteTimeStamp(timestampId).then(() => {
+        this.loadTimestamps(); // reload the timestamps after deletion
+        this._snackBar.open('Deleted timestamp!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
         });
-      }
-    });
+      }).catch((error) => {
+        console.error("Error deleting timestamp: ", error);
+      });
+    }
   }
 
   openEditDialog(timestamp: TimeStamp) {

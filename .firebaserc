@@ -2,13 +2,10 @@
   "targets": {
     "skeleton-a81ca": {
       "hosting": {
-        "serving-u-app": [
+        "angular-firebase-dashboard": [
           "skeleton-a81ca"
         ]
       }
     }
-  },
-  "projects": {
-    "default": "serving-u-app-5d02d"
   }
 }

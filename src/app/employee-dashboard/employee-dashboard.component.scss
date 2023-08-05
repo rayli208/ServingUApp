@@ -17,19 +17,14 @@
 }
 
 .employee-dashboard-card-header{
+    height: 65px;
     position: relative;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.employee-dashboard-card-mini-header{
-    display: flex;
 }
 
 .employee-dashboard-card-buttons{
-    margin-right: 25px;
+    position: absolute;
+    top: 15px;
+    right: 65px;
 
     button{
         margin-left: 10px;
@@ -100,15 +95,5 @@
     
     .employee-dashboard-row span:last-of-type{
         width: 60%;
-    }
-    
-    .employee-dashboard-card-header{
-        flex-direction: column;
-        padding-bottom: 5px;
-    }
-
-    .employee-dashboard-card-buttons{
-        margin-right: 0px;
-        margin-top: 15px;
     }
 }

@@ -4,15 +4,6 @@
     margin-top: 15px;
 }
 
-.hours-dashboard-date-range-buttons{
-    display: inline-block;
-    margin-left: 15px;
-
-    button{
-        margin-right: 15px;
-    }
-}
-
 .employee-totals-empty {
     display: inline-block;
     font-style: italic;
@@ -86,15 +77,5 @@
 @media (max-width: 768px) {
     .timestamps-list {
         grid-template-columns: repeat(1, 1fr);
-    }
-
-    .hours-dashboard-date-range-buttons{
-        display: block;
-        margin-left: 0px;
-
-        button:first-child{
-            display: block;
-            margin-bottom: 15px;
-        }
     }
 }

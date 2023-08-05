@@ -8,12 +8,12 @@
         <mat-button-toggle (click)="incrementWeek()"><i class="fa-solid fa-plus"></i> 1 Week</mat-button-toggle>
         <mat-button-toggle (click)="onPrint()"><i class="fa-solid fa-print"></i> Print</mat-button-toggle>
       </mat-button-toggle-group>
-      <button mat-raised-button class="mass-text" color="primary" matTooltip="Mass Text" (click)="sendOutText()" style="margin-right: 15px;" [disabled]="noSchedules()">
+      <button mat-raised-button color="primary" matTooltip="Mass Text" (click)="sendOutText()" style="margin-right: 15px;" [disabled]="noSchedules()">
         <i class="fa-solid fa-comment fa-2xl"></i>
       </button>      
       <label class="schedule-label">Select your view:</label>
       <mat-radio-group [(ngModel)]="selectedView">
-        <mat-radio-button color="primary" *ngFor="let option of views" [value]="option" [disabled]="option === 'Horizontal' && isHorizontalModeDisabled">
+        <mat-radio-button color="primary" *ngFor="let option of views" [value]="option">
           {{option}}
         </mat-radio-button>
       </mat-radio-group>

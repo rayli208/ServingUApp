@@ -163,6 +163,7 @@ export class ProfileDashboardComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
+        console.log('Copied text');
     }
 
     goToProfileEditorDashboard() {

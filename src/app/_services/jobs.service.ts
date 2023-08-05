@@ -12,6 +12,14 @@ export class JobsService {
     private afAuth: AngularFireAuth,
   ) { }
 
+  getUserId() {
+    this.afAuth.authState.subscribe(async user => {
+      if (user.uid) {
+        console.log(user.uid);
+      }
+    });
+  }
+
   getJobDoc(id) {
     return this.afs
       .collection("jobs")

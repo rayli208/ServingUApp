@@ -18,7 +18,6 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.component';
 import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
-import { LoginGuard } from './_guards/login.guard';
 
 
 const routes: Routes = [
@@ -34,10 +33,10 @@ const routes: Routes = [
     { path: 'profile-editor-dashboard', component: ProfileEditorComponent, canActivate: [AuthGuard] },
     { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
-    { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AuthGuard] },
-    { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [LoginGuard] },
-    { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-    { path: 'signup', component: SignupComponent, canActivate: [LoginGuard] },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent },
+    { path: 'verify-email', component: VerifyEmailComponent },
     //Random
     { path: '**', component: PageNotFoundComponent },                       // catch-all in case no other path matched
 ];

@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Firebase environment files
-
+/src/environments/**
 
 # compiled output
 /dist
@@ -22,7 +22,6 @@ speed-measure-plugin*.json
 /.idea
 .project
 .classpath
-.firebase
 .c9/
 *.launch
 .settings/

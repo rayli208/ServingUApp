@@ -10,8 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateJobDialogComponent } from '../_dialogs/jobs/create-job-dialog/create-job-dialog.component';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
-import svgsData from '../core/constants/svg';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,13 +19,12 @@ import svgsData from '../core/constants/svg';
 export class HiringDashboardComponent implements OnInit {
     userId;
     user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
-    Jobs: Job[] = [];
+    Jobs: Job[];
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
     @ViewChild(MatAccordion) accordion: MatAccordion;
     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
-    svgs = svgsData;
 
 
     constructor(
@@ -108,26 +105,17 @@ export class HiringDashboardComponent implements OnInit {
     }
 
     removeJob(job: Job) {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: {
-                text: `Are you sure you want to delete ${job.title}?`
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.jobsService.deleteJob(job).then(() => {
-                    this._snackBar.open('Job has been deleted!', '', {
-                        horizontalPosition: this.horizontalPosition,
-                        verticalPosition: this.verticalPosition,
-                        duration: 2500,
-                        panelClass: ['red-snackbar']
-                    });
+        if (confirm("Are you sure you want to delete " + job.title)) {
+            this.jobsService.deleteJob(job).then(() => {
+                this._snackBar.open('Job has been deleted!', '', {
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    duration: 2500,
+                    panelClass: ['red-snackbar']
                 });
-            }
-        });
+            });
+        }
     }
-
 
     //ALL SCROLLING ACTIONS
     @HostListener('window:scroll', ['$event'])

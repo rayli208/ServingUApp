@@ -23,11 +23,6 @@
     background-color: $white;
 }
 
-.profile-dashboard-card-main-container {
-    display: flex;
-    flex-direction: row;
-}
-
 .profile-dashboard-card-main-container-half {
     display: inline-block;
     width: 50%;
@@ -50,8 +45,6 @@
 }
 
 .profile-dashboard-card-row {
-    display: flex;
-    align-items: flex-start;
     margin-bottom: 10px;
 }
 
@@ -88,8 +81,6 @@
     object-position: center;
 }
 
-
-
 @keyframes slide-in {
     0% {
         transform: translateX(100%);
@@ -111,17 +102,5 @@
 
     .profile-dashboard-card-row span:last-of-type {
         width: 100%;
-    }
-
-    .profile-dashboard-card-main-container {
-        flex-direction: column;
-    }
-
-    .profile-dashboard-card-row[_ngcontent-ng-c1197354669]{
-        flex-direction: column;
-    }
-
-    .profile-dashboard-card-main-container-half:not(:first-child) {
-        margin-top: 15px;
     }
 }
