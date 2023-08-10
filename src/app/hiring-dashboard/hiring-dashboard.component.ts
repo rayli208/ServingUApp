@@ -29,7 +29,6 @@ export class HiringDashboardComponent implements OnInit {
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     svgs = svgsData;
 
-
     constructor(
         public dialog: MatDialog,
         public afAuth: AngularFireAuth,
