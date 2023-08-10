@@ -52,7 +52,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -74,7 +74,7 @@ import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-sched
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
 import { PhoneNumberPipe } from './_pipes/phone-number.pipe';
-import { CustomTimeFormatPipe }from './_pipes/custom-time-format.pipe';
+import { CustomTimeFormatPipe } from './_pipes/custom-time-format.pipe';
 import { PhoneNumberFormatDirective } from './_directives/phone-number.directive';
 import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
@@ -188,10 +188,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         ReactiveFormsModule,
         HttpClientModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: !isDevMode(),
-          // Register the ServiceWorker as soon as the application is stable
-          // or after 30 seconds (whichever comes first).
-          registrationStrategy: 'registerWhenStable:30000'
+            enabled: !isDevMode(),
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
         }),
     ],
     providers: [DatePipe],
