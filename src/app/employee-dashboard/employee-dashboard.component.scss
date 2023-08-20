@@ -111,4 +111,17 @@
         margin-right: 0px;
         margin-top: 15px;
     }
+
+    .employee-dashboard-row{
+        margin-left: 0px;
+    }
+
+    .employee-dashboard-row{
+        display: flex;
+        flex-direction: column;
+    }
+
+    button{
+        margin-bottom: 15px;
+    }
 }

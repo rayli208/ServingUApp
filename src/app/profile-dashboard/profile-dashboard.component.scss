@@ -105,6 +105,7 @@
 }
 
 @media (max-width:768px) {
+    
     .profile-dashboard-card-row span:first-of-type {
         width: 100%;
     }
@@ -117,11 +118,15 @@
         flex-direction: column;
     }
 
-    .profile-dashboard-card-row[_ngcontent-ng-c1197354669]{
+    .profile-dashboard-card-row{
         flex-direction: column;
     }
 
     .profile-dashboard-card-main-container-half:not(:first-child) {
         margin-top: 15px;
+    }
+
+    button{
+        margin-bottom: 15px;
     }
 }
