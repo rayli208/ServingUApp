@@ -4,7 +4,6 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { AuthService } from 'src/app/_services/auth.service';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, of } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';

@@ -19,6 +19,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.component';
 import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
 import { LoginGuard } from './_guards/login.guard';
+import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
     { path: 'tables-dashboard', component: TablesDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
     { path: 'profile-editor-dashboard', component: ProfileEditorComponent, canActivate: [AuthGuard] },
+    { path: 'resume-dashboard', component: ResumeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
     { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AuthGuard] },

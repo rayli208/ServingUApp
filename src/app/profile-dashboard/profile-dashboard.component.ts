@@ -172,4 +172,8 @@ export class ProfileDashboardComponent implements OnInit {
     goToHoursEditorDashboard() {
         this.router.navigate(['/hours-dashboard']);
     }
+    
+    goToResumeDashboard() {
+        this.router.navigate(['/resume-dashboard']);
+    }
 }

@@ -1,0 +1,55 @@
+<app-header iconClass="fa-regular fa-newspaper" title="Resume Reviewer">
+    <mat-radio-group [(ngModel)]="filterArchived" (change)="fetchResumes()">
+        <mat-radio-button value="no" checked style="margin-right: 15px;">Not Archived</mat-radio-button>
+        <mat-radio-button value="yes">Archived</mat-radio-button>
+    </mat-radio-group>
+</app-header>
+
+<div *ngIf="resumes.length > 0; else noResumes">
+    <ng-container *ngFor="let resume of filteredResumes()">
+        <mat-card class="resume-card">
+            <div class="resume-dashboard-card-header-name">{{resume.name}}</div>
+            <div class="resume-dashboard-card-header-resume">{{resume.email}}</div>
+            <hr>
+            <div>
+                <div class="resume-card-row">
+                    <span>Job: </span>
+                    <span>
+                        {{resume.job}}
+                    </span>
+                </div>
+                <div class="resume-card-row">
+                    <span>File Name: </span>
+                    <span>
+                        {{resume.fileName}}
+                    </span>
+                </div>
+                <div class="resume-card-row">
+                    <span>Applied: </span>
+                    <span>
+                        {{formatTimestamp(resume.timestamp)}}
+                    </span>
+                </div>
+            </div>
+            <mat-card-actions style="justify-content: end;">
+                <button mat-button color="primary" (click)="toggleArchiveStatus(resume)"
+                    matTooltip="Toggle Archive Status">
+                    <i *ngIf="resume.archived; else notArchivedIcon" class="fa-solid fa-folder-open fa-2xl"></i>
+                    <ng-template #notArchivedIcon><i class="fa-solid fa-folder fa-2xl"></i></ng-template>
+                </button>
+                <a [href]="resume.resumeURL" target="_blank" download>
+                    <button mat-button color="primary" matTooltip="Download Resume">
+                        <i class="fa-solid fa-file-arrow-down fa-2xl"></i>
+                    </button>
+                </a>
+                <button mat-button color="warn" (click)="deleteResume(resume)" matTooltip="Delete Resume">
+                    <i class="fa-solid fa-trash-alt fa-2xl"></i>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </ng-container>
+</div>
+
+<ng-template #noResumes>
+    <div class="resume-dashboard-no-resume">No resumes available.</div>
+</ng-template>

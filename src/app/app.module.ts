@@ -95,6 +95,7 @@ import { MassSelectDialogComponent } from './_dialogs/tables/mass-select-dialog/
 import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.component';
 import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -137,7 +138,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         CreateTimestampDialogComponent,
         EditTimestampDialogComponent,
         MassSelectDialogComponent,
-        FloorAssignerComponent
+        FloorAssignerComponent,
+        ResumeDashboardComponent
     ],
     imports: [
         BrowserModule,
