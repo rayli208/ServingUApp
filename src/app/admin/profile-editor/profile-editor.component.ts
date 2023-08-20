@@ -25,11 +25,10 @@ export class ProfileEditorComponent implements OnInit {
   progressBarValue: number = 0;
   uploadTask: AngularFireUploadTask;
 
-  fileName = new FormControl(''); // Initialize form control
+  fileName = new FormControl('');
   imgSrcs: string[] = [];
   selectedImages: any[] = [];
 
-  //Storage functionality
   imageCount: number = 0;
   isImageLimitReached: boolean = false;
   imageUrls$: Observable<string[]>;
@@ -57,7 +56,6 @@ export class ProfileEditorComponent implements OnInit {
 
         this.authService.getImageCount(this.userId).subscribe(count => {
           this.imageCount = count;
-          // Check if the image limit has been reached
           this.isImageLimitReached = this.imageCount >= 5;
         });
 
@@ -96,7 +94,6 @@ export class ProfileEditorComponent implements OnInit {
 
   detectNewImage($event: any) {
     if ($event.target.files && $event.target.files.length) {
-      // If image limit has been reached, ignore new selection
       if (this.isImageLimitReached) {
         alert('You have reached the limit of 5 images.');
         return;
@@ -105,13 +102,11 @@ export class ProfileEditorComponent implements OnInit {
       let newImages: File[] = Array.from($event.target.files);
       let freeSlots = 5 - this.imageCount - this.selectedImages.length;
 
-      // If the user tries to upload more images than there are free slots, alert the user and only accept as many images as there are free slots.
       if (newImages.length > freeSlots) {
         alert(`You can only select a maximum of ${freeSlots} more image(s)`);
         newImages = newImages.slice(0, freeSlots);
       }
 
-      // Append the new files to the selectedImages array
       this.selectedImages.push(...newImages);
 
       for (let i = 0; i < newImages.length; i++) {
@@ -121,7 +116,6 @@ export class ProfileEditorComponent implements OnInit {
       }
 
       this.totalImages = this.selectedImages.length;
-      // Check if the image limit has been reached
       this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
     }
   }
@@ -133,7 +127,6 @@ export class ProfileEditorComponent implements OnInit {
     this.isImageLimitReached = this.imageCount + this.totalImages >= 5;
   }
 
-  // Upload the images
   uploadImages() {
     this.isUploading = true;
 
@@ -147,35 +140,29 @@ export class ProfileEditorComponent implements OnInit {
       return;
     }
 
-    // Save off the current selected image, then remove it from the array
     const imageToUpload = this.selectedImages.shift();
-
-    // Create a Firebase storage reference
     const storageRef = this.storage.ref(`profilePictures/${this.userId}/${imageToUpload.name}`);
-
-    // Upload the selected image
     const uploadTask = storageRef.put(imageToUpload);
 
-    // Get notified when the download URL is available
     uploadTask.snapshotChanges().pipe(
       finalize(() => {
         uploadTask.then(snapshot => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
-            // Add the new image URL to the imageUrls array
             this.imageUrls.push(downloadURL);
-            // Update the imageUrls$ Observable
             this.imageUrls$ = of(this.imageUrls);
+            
+            this.authService.addImageRecord(this.userId, downloadURL).then(() => {
+              console.log("Image record added to Firestore");
+            }).catch(error => {
+              console.error("Failed to add image record:", error);
+            });
 
-            // Update progress bar after each image upload
             this.progressBarValue = ((this.totalImages - this.selectedImages.length) / this.totalImages) * 100;
 
             if (this.selectedImages.length > 0) {
-              // If there are more images left to upload, call this function recursively
               this.uploadImages();
             } else {
-              // All images uploaded
               this.isUploading = false;
-              // Reset the selected images array, display array and progress bar
               this.selectedImages = [];
               this.imgSrcs = [];
               this.totalImages = 0;
@@ -189,10 +176,8 @@ export class ProfileEditorComponent implements OnInit {
               });
             }
 
-            // After each successful image upload, fetch the updated count
             this.authService.getImageCount(this.userId).subscribe(count => {
               this.imageCount = count;
-              // Check if the image limit has been reached
               this.isImageLimitReached = this.imageCount >= 5;
             });
           });
@@ -211,17 +196,19 @@ export class ProfileEditorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.storage.storage.refFromURL(imageUrl).delete().then(() => {
-          // Once the image is deleted, update the user's image count and refresh the list of images
+          this.authService.deleteImageRecord(this.userId, imageUrl).then(() => {
+            console.log("Image record deleted from Firestore");
+          }).catch(error => {
+            console.error("Failed to delete image record:", error);
+          });
+
           this.authService.getImageCount(this.userId).subscribe(count => {
             this.imageCount = count;
-            // Check if the image limit has been reached
             this.isImageLimitReached = this.imageCount >= 5;
           });
   
-          // Find the index of the image in the array
           const index = this.imageUrls.indexOf(imageUrl);
           if (index > -1) {
-            // Use splice to remove the image from the array
             this.imageUrls.splice(index, 1);
           }
   
@@ -234,7 +221,6 @@ export class ProfileEditorComponent implements OnInit {
   
           this.changeDetector.detectChanges();
         }).catch(error => {
-          // Handle any errors that occur during the deletion
           console.error('Failed to delete image:', error);
           this._snackBar.open('Failed to delete image!', '', {
             horizontalPosition: this.horizontalPosition,
@@ -246,5 +232,4 @@ export class ProfileEditorComponent implements OnInit {
       }
     });
   }
-  
 }

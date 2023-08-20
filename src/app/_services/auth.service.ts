@@ -5,6 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { Observable, combineLatest, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { ProfilePic } from '../_models/profilePic.model';
 
 @Injectable({
     providedIn: 'root'
@@ -203,17 +204,26 @@ export class AuthService {
         }));
     }
 
-    // In AuthService
+    addImageRecord(userId: string, imageUrl: string) {
+        return this.afs.collection('profilePics').add({
+            uid: userId,
+            imageUrl: imageUrl
+        });
+    }
+
+    deleteImageRecord(userId: string, imageUrl: string) {
+        return this.afs.collection('profilePics', ref => ref.where('uid', '==', userId).where('imageUrl', '==', imageUrl))
+            .get().toPromise()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    doc.ref.delete();
+                });
+            });
+    }
+
     getImageUrls(userId: string): Observable<string[]> {
-        // Query the storage and get the images
-        let images = from(this.storage.ref('profilePictures/' + userId).listAll());
-
-        return images.pipe(switchMap(imagesResult => {
-            // Now we need to get the download URL for each image
-            let urlObservables = imagesResult.items.map(imageRef => imageRef.getDownloadURL());
-
-            // Combine these Observables into one
-            return combineLatest(urlObservables);
-        }));
+        return this.afs.collection<ProfilePic>('profilePics', ref => ref.where('uid', '==', userId))
+            .valueChanges()
+            .pipe(map(docs => docs.map(doc => doc.imageUrl)));
     }
 }

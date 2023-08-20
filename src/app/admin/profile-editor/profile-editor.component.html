@@ -1,5 +1,6 @@
 <app-header iconClass="fa-solid fa-user" title="Profile Editor">
 </app-header>
+
 <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px;" *ngIf="imageUrls.length > 0">
     <h1 class="profile-editor-header">Profile Images:</h1>
     <div class="parent-container">
@@ -13,6 +14,7 @@
         </div>
     </div>
 </mat-card>
+
 <div class="editor-and-uploader-container">
     <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
         <h1 class="profile-editor-header">Profile Editor:</h1>
@@ -52,6 +54,7 @@
             </div>
         </div>
     </mat-card>
+
     <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
         <h1 class="profile-editor-header">Image Uploader:</h1>
         <p>Total images: {{ imageCount }} / 5</p>
@@ -78,6 +81,7 @@
                 class="fa-solid fa-upload"></i></button>
         <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading" style="margin-top: 5px;"></mat-progress-bar>
     </mat-card>
+
     <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
         <h1 class="profile-editor-header">Floor Assigner:</h1>
         <app-floor-assigner [userId]="userId"></app-floor-assigner>
