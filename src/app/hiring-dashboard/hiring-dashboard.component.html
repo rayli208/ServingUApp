@@ -22,10 +22,13 @@
             <div class="dashboard-job-card-container">
                 <div class="dashboard-job-card">
                     <div class="dashboard-job-card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 512 512"
-                            version="1.1">
-                            <path [attr.d]="svgs[job.icon].pathD" stroke="none" fill="#35B9DF" fill-rule="evenodd" />
-                        </svg>
+                        <ng-container *ngIf="job.icon && svgs[job.icon]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 512 512"
+                                version="1.1">
+                                <path [attr.d]="svgs[job.icon].pathD" stroke="none" fill="#35B9DF"
+                                    fill-rule="evenodd" />
+                            </svg>
+                        </ng-container>
                     </div>
                     <div class="dashboard-job-card-content">
                         <div class="dashboard-job-card-header">
