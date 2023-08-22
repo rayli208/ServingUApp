@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QuillModule } from 'ngx-quill';
 
 //App Components
 import { SignupComponent } from './signup/signup.component';
@@ -189,6 +190,7 @@ import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashbo
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        QuillModule.forRoot(),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: !isDevMode(),
             // Register the ServiceWorker as soon as the application is stable

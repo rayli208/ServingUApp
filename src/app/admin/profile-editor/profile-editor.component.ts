@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile-editor',
@@ -39,7 +40,8 @@ export class ProfileEditorComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private storage: AngularFireStorage,
     private changeDetector: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer,
   ) {
     this.user = null;
   }
@@ -65,6 +67,10 @@ export class ProfileEditorComponent implements OnInit {
         });
       }
     });
+  }
+
+  get safeDescription() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.user.description);
   }
 
   enableEditing(): void {

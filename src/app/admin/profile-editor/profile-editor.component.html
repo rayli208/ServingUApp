@@ -32,12 +32,9 @@
                         placeholder="Location Name">
                 </mat-form-field>
             </div>
-            <div>
-                <mat-form-field appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <textarea rows="4" [readonly]="!isEditing" [(ngModel)]="user.description" type="text" matInput
-                        placeholder="Description"></textarea>
-                </mat-form-field>
+            <div style="margin-bottom: 15px;">
+                <quill-editor theme="snow" [(ngModel)]="user.description" *ngIf="isEditing"></quill-editor>
+                <div *ngIf="!isEditing" [innerHTML]="safeDescription"></div>                
             </div>
             <div>
                 <mat-form-field appearance="outline">
