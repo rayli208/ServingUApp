@@ -58,16 +58,23 @@
                 </span>
             </div>
             <div class="profile-dashboard-card-row">
-                <span>Description: </span>
-                <span>{{ (user | async)?.description }}</span>
-            </div>
-            <div class="profile-dashboard-card-row">
                 <span>Active Employees: </span>
                 <span>{{Employees?.length}}</span>
             </div>
             <div class="profile-dashboard-card-row">
                 <span>Total Texts This Month: </span>
                 <span>{{ (user | async)?.textsThisMonth }}</span>
+            </div>
+            <div class="profile-dashboard-card-row description-section">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <span>Description: </span>
+                    </mat-expansion-panel-header>
+                  
+                    <ng-template matExpansionPanelContent>
+                        <div class="description" [innerHTML]="getSanitizedHtml((user | async)?.description )"></div>
+                    </ng-template>
+                  </mat-expansion-panel>
             </div>
         </div>
         <div class="profile-dashboard-card-main-container-half">

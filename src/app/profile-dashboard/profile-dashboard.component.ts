@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, interval, timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { take, map } from 'rxjs/operators';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
@@ -38,7 +39,8 @@ export class ProfileDashboardComponent implements OnInit {
         public afAuth: AngularFireAuth,
         public authService: AuthService,
         private afs: AngularFirestore,
-        private employeesService: EmployeesService
+        private employeesService: EmployeesService,
+        private sanitizer: DomSanitizer
     ) {
         this.user = null;
     }
@@ -176,4 +178,8 @@ export class ProfileDashboardComponent implements OnInit {
     goToResumeDashboard() {
         this.router.navigate(['/resume-dashboard']);
     }
+
+    getSanitizedHtml(html: string): SafeHtml {
+        return this.sanitizer.bypassSecurityTrustHtml(html);
+      }  
 }
