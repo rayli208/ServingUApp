@@ -2,16 +2,16 @@ import { CreateTableDialogComponent } from '../_dialogs/tables/create-table-dial
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Table } from '../_models/table.model';
+import { Employee } from '../_models/employee.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import { TablesService } from '../_services/tables.service';
 import { EmployeesService } from '../_services/employees.service';
-import { Employee } from '../_models/employee.model';
-import { MassSelectDialogComponent } from '../_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { FloorsService } from '../_services/floor.service';
 import { Floor } from '../_models/floor.model';
+import { MassSelectDialogComponent } from '../_dialogs/tables/mass-select-dialog/mass-select-dialog.component';
 
 @Component({
   selector: 'app-tables-dashboard',
@@ -20,18 +20,14 @@ import { Floor } from '../_models/floor.model';
 })
 export class TablesDashboardComponent implements OnInit {
   userId;
-  user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
-  totalTables: Table[];
+  user: Observable<any>;
+  totalTables: Table[] = [];
+  clockedInEmployees: Employee[] = [];
   currentFloor: number = 1;
-  gridSize: number = 25; // Define the grid size, adjust this value to your needs
+  gridSize: number = 25;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   floors: Floor[] = [];
-
-  //Employee Portion
-  clockedInEmployees: Employee[] = [];
-  //Employee and table jumbled object
-  employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
 
   constructor(
     public dialog: MatDialog,
@@ -46,9 +42,7 @@ export class TablesDashboardComponent implements OnInit {
 
   @ViewChild('tableView', { read: ElementRef }) tableView: ElementRef;
 
-
   ngOnInit(): void {
-
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -59,14 +53,7 @@ export class TablesDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Table;
-          })
-            .sort((a, b) => {
-              if (a.isActive === b.isActive) {
-                return a.tableNumber - b.tableNumber;
-              }
-              return b.isActive ? 1 : -1;
-            });
-          this.updateEmployeesWithTables();
+          }).sort((a, b) => (a.isActive === b.isActive) ? a.tableNumber - b.tableNumber : b.isActive ? 1 : -1);
         });
 
         this.floorsService.getFloorsForUser(this.userId).subscribe(res => {
@@ -84,36 +71,31 @@ export class TablesDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Employee;
-          })
-            .filter(employee => employee.clockedIn === true && employee.employeed === true)
-            .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-          // After fetching the clockedInEmployees and totalTables, create the employeesWithTables object
-          const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
-
-          if(this.clockedInEmployees) {
-            this.clockedInEmployees.forEach(employee => {
-              const employeeWithTables = { ...employee, assignedTables: [] };
-
-              if(this.totalTables) {
-                this.totalTables.forEach(table => {
-                  if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
-                    // Push the entire table object instead of just the table number and floor
-                    employeeWithTables.assignedTables.push(table);
-                  }
-                });
-              }
-
-              employeesWithTables[employee.id] = employeeWithTables;
-            });
-          }
-
-          this.updateEmployeesWithTables();
+          }).filter(employee => employee.clockedIn === true);
         });
       }
     });
   }
 
+  getEmployeeImgById(id: string): string | null {
+    const employee = this.clockedInEmployees.find(e => e.id === id);
+    return employee ? employee.imgUrl : null;
+  }
+
+  getFloorName(floorNumber: number): string {
+    const floor = this.floors.find(f => f.floorNumber === floorNumber);
+    return floor ? floor.floorName + ` (${floorNumber})` : `Floor ${floorNumber}`;
+  }
+
+  toggleActive(table: Table) {
+    //If the table is not assigned to anyone, it returns and does not toggle the table
+    if (table.assignedEmployeeId == null) {
+      return;
+    }
+
+    table.isActive = !table.isActive;
+    this.tablesService.updateTable(table, table.id);
+  }
 
   decreaseFloorPlan() {
     if (this.currentFloor > 1) {
@@ -125,6 +107,21 @@ export class TablesDashboardComponent implements OnInit {
   increaseFloorPlan() {
     this.currentFloor += 1;
     localStorage.setItem('currentFloor', this.currentFloor.toString());
+  }
+
+  createTable(): void {
+    const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
+    //Run code after closing dialog
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.tableCreated) {
+        this._snackBar.open('Table has been created!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 
   dragEnd(event: CdkDragEnd, table: any) {
@@ -148,57 +145,6 @@ export class TablesDashboardComponent implements OnInit {
     this.tablesService.updateTable(table, table.id);
   }
 
-
-  //Toggles Active Table
-  toggleActive(table: Table) {
-    //If the table is not assigned to anyone, it returns and does not toggle the table
-    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
-      return;
-    }
-
-    table.isActive = !table.isActive;
-    this.tablesService.updateTable(table, table.id);
-  }
-
-  //Creates Table
-  createTable(): void {
-    const dialogRef = this.dialog.open(CreateTableDialogComponent, {});
-    //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => {
-      if (result?.tableCreated) {
-        this._snackBar.open('Table has been created!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['green-snackbar']
-        });
-      }
-    });
-  }
-
-  //Updates EmployeesWithTables object
-  updateEmployeesWithTables() {
-    const employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } } = {};
-
-    if(this.clockedInEmployees) {
-      this.clockedInEmployees.forEach(employee => {
-        const employeeWithTables = { ...employee, assignedTables: [] };
-
-        if(this.totalTables) {
-          this.totalTables.forEach(table => {
-            if (table.assignedEmployee && ('id' in table.assignedEmployee) && (table.assignedEmployee.id === employee.id)) {
-              employeeWithTables.assignedTables.push(table);
-            }
-          });
-        }
-
-        employeesWithTables[employee.id] = employeeWithTables;
-      });
-    }
-
-    this.employeesWithTables = employeesWithTables;
-  }
-
   openMassAssignDialog() {
     const dialogRef = this.dialog.open(MassSelectDialogComponent, {});
     //Run code after closing dialog
@@ -212,10 +158,5 @@ export class TablesDashboardComponent implements OnInit {
         });
       }
     });
-  }
-
-  getFloorName(floorNumber: number): string {
-    const floor = this.floors.find(f => f.floorNumber === floorNumber);
-    return floor ? floor.floorName + ` (${floorNumber})` : `Floor ${floorNumber}`;
   }
 }

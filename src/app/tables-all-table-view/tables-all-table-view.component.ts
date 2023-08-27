@@ -56,22 +56,34 @@ export class TablesAllTableViewComponent implements OnInit {
     //Run code after closing dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result?.tableEdited) {
-          this._snackBar.open('Table has been edited!', '', {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 2500,
-              panelClass: ['yellow-snackbar']
-          });
+        this._snackBar.open('Table has been edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+        });
       }
-  });  }
+    });
+  }
 
   toggleActive(table: Table) {
     //If the table is not assigned to anyone, it returns and does not toggle the table
-    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
+    if (table.assignedEmployeeId == null) {
       return;
     }
 
     table.isActive = !table.isActive;
     this.tablesService.updateTable(table, table.id);
+  }
+
+  getEmployeeNameById(id: string): string {
+    const employee = this.employees.find(e => e.id === id);
+    return employee ? employee.name : 'Not Assigned';
+  }
+
+  // Add this method to your TablesAllTableViewComponent class
+  getEmployeeImgUrlById(id: string): string {
+    const employee = this.employees.find(e => e.id === id);
+    return employee ? employee.imgUrl : '';
   }
 }

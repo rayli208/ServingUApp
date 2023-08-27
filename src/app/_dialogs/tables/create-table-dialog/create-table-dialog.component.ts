@@ -22,7 +22,7 @@ export class CreateTableDialogComponent implements OnInit {
   ) {
     this.tableForm = this.formBuilder.group({
       uid: [''],
-      assignedEmployee: [],
+      assignedEmployeeId: null,
       tableNumber: [],
       shape: [''],
       seats: [],
@@ -36,9 +36,6 @@ export class CreateTableDialogComponent implements OnInit {
   //Set ID of owner of job on load
   ngOnInit() {
     this.setUserId();
-    this.tableForm.patchValue({
-      assignedEmployee: { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false }
-    });
   }
 
   //Create job and redirect to dashboard

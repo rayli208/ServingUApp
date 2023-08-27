@@ -7,7 +7,7 @@
             <div *ngFor="let table of floorPlan.value">
                 <mat-checkbox [(ngModel)]="table.checked" 
                               (change)="onTableCheckboxChange($event, table)"
-                              [disabled]="table.assignedEmployee.name !== 'Unassigned Table'">
+                              [disabled]="table.assignedEmployeeId !== null">
                     {{table.tableNumber}}
                 </mat-checkbox>
             </div>

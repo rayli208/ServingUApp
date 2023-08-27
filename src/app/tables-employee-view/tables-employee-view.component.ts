@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Table } from '../_models/table.model';
 import { Employee } from '../_models/employee.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,25 +11,40 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrls: ['./tables-employee-view.component.scss']
 })
 
-export class TablesEmployeeViewComponent implements OnInit {
-  @Input() employeesWithTables: { [id: string]: Employee & { assignedTables: Table[] } };
+export class TablesEmployeeViewComponent implements OnInit, OnChanges {
   @Input() employees: Employee[];
+  @Input() tables: Table[];
+
+  groupedTablesByEmployee: { [id: string]: Table[] } = {};
 
   constructor(
     public dialog: MatDialog,
     private tablesService: TablesService,
     public afAuth: AngularFireAuth,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.groupTablesByEmployee();
   }
 
-  getObjectKeys(obj: object): string[] {
-    return Object.keys(obj);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.tables && changes.tables.currentValue !== changes.tables.previousValue) {
+      this.groupTablesByEmployee();
+    }
+  }
+
+  groupTablesByEmployee() {
+    this.groupedTablesByEmployee = this.tables.reduce((acc, table) => {
+      const id = table.assignedEmployeeId;
+      if (id) {
+        acc[id] = acc[id] ? [...acc[id], table] : [table];
+      }
+      return acc;
+    }, {});
   }
 
   toggleActive(table: Table) {
-    if (table.assignedEmployee && ('name' in table.assignedEmployee) && (table.assignedEmployee.name === "Unassigned Table")) {
+    if (table.assignedEmployeeId == null) {
       return;
     }
 
@@ -39,12 +54,11 @@ export class TablesEmployeeViewComponent implements OnInit {
 
   getFloors(tables: Table[]): number[] {
     const floors = tables.map(table => table.floorPlan);
-    let uniqueFloors = [...new Set(floors)];
-    return uniqueFloors.sort((a, b) => a - b);
+    return [...new Set(floors)].sort((a, b) => a - b);
   }
 
   getTablesByFloor(tables: Table[], floor: number): Table[] {
-    let tablesOnFloor = tables.filter(table => table.floorPlan === floor);
-    return tablesOnFloor.sort((a, b) => a.tableNumber - b.tableNumber);
+    const tablesOnFloor = tables.filter(table => table.floorPlan === floor);
+    return tablesOnFloor;
   }
 }

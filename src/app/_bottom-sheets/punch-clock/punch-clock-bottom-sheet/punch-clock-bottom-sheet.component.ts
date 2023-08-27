@@ -69,26 +69,22 @@ export class PunchClockBottomSheetComponent implements OnInit {
       const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
       const message = `You have clocked out! You worked ${hoursWorked} hour${hoursWorked == 1 ? '' : 's'} and ${minutesWorked} minute${minutesWorked == 1 ? '' : 's'}.`;
       await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
-
+  
       // Fetch all tables assigned to this employee
       const subscription = this.tablesService.getTablesListForUser(this.employee.uid).subscribe(async tablesSnapshot => {
         const tables = tablesSnapshot.map(doc => ({ id: doc.payload.doc.id, ...doc.payload.doc.data() as Table }));
-
+  
         // Filter tables assigned to this employee
-        const assignedTables = tables.filter(table =>
-          table.assignedEmployee &&
-          'id' in table.assignedEmployee &&
-          table.assignedEmployee.id === this.employee.id
-        );
-
+        const assignedTables = tables.filter(table => table.assignedEmployeeId === this.employee.id);
+  
         // Update each assigned table
         for (let table of assignedTables) {
           table.isActive = false;
-          table.assignedEmployee = { id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false };
+          table.assignedEmployeeId = null;  // Set assignedEmployeeId to null
           await this.tablesService.updateTable(table, table.id);
         }
       });
-
+  
       this.employee.clockedIn = false;
       this.employee.clockedInTime = null;
       await this.employeesService.updateEmployee(this.employee, this.employee.id);
@@ -97,9 +93,8 @@ export class PunchClockBottomSheetComponent implements OnInit {
       subscription.unsubscribe();
       this.subscriptions.push(subscription);
     }
-
   }
-
+  
   closeBottomSheet(): void {
     this.bottomSheetRef.dismiss();
   }

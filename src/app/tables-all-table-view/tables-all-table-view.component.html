@@ -3,10 +3,10 @@
         <div *ngIf="table.floorPlan === floorNumber" class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
             [ngClass]="table.isActive ? 'active' : 'not-active' ">
             <div class="tables-all-table-view-card-number"
-                [style.background-image]="'url(' + (table.assignedEmployee?.imgUrl || '') + ')'">
-                <div class="table-number"
-                [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
-                {{ table.tableNumber }}</div>
+                [style.background-image]="'url(' + getEmployeeImgUrlById(table.assignedEmployeeId) + ')'">
+                <div class="table-number" [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
+                    {{ table.tableNumber }}
+                </div>
             </div>
             <div class="tables-all-table-view-content">
                 <span>Shape:</span>
@@ -22,8 +22,8 @@
             </div>
             <div class="tables-all-table-view-content">
                 <span>Employee:</span>
-                <span [ngClass]="{'red-text': table.assignedEmployee.name === 'Unassigned Table'}">
-                    {{table.assignedEmployee.name === 'Unassigned Table' ? 'Not Assigned' : table.assignedEmployee.name}}
+                <span [ngClass]="{'red-text': table.assignedEmployeeId == null}">
+                    {{getEmployeeNameById(table.assignedEmployeeId)}}
                 </span>
             </div>
             <div class="tables-all-table-edit" (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i>

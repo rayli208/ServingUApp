@@ -18,14 +18,15 @@ export class EditTableDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {table: Table, employees: Employee[]},
     public formBuilder: FormBuilder,
-    public tablesService:TablesService,
+    public tablesService: TablesService,
     public dialogRef: MatDialogRef<EditTableDialogComponent>,
   ) { 
     this.table = data.table;
-    this.employees = [{ id: '', uid: '', name: 'Unassigned Table', position: '', employmentType: '', phone: '', email: '', imgUrl: '', employeed: false, clockedIn: false, clockedInTime: null }, ...data.employees];
-  
+    this.employees = data.employees;
+
+    // Note the change here to 'assignedEmployeeId'
     this.editForm = this.formBuilder.group({
-      assignedEmployee: [this.table.assignedEmployee],
+      assignedEmployeeId: [this.table.assignedEmployeeId],  
       tableNumber: [this.table.tableNumber],
       shape: [this.table.shape],
       seats: [this.table.seats],
@@ -39,12 +40,10 @@ export class EditTableDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
-
-    if(this.editForm.value.assignedEmployee.name == "Unassigned Table")
-    {
+    if (this.editForm.value.assignedEmployeeId === null || this.editForm.value.assignedEmployeeId === '') {  // check for unassigned table
       this.editForm.value.isActive = false;
     }
-    
+
     this.tablesService.updateTable(this.editForm.value, this.table.id);
     this.dialogRef.close({tableEdited: true});
   }

@@ -37,7 +37,6 @@ export class TablesService {
     });
   }
 
-
   deleteTable(table: Table) {
     return this.afs
       .collection("tables")
@@ -55,7 +54,7 @@ export class TablesService {
       .collection("tables")
       .doc(id)
       .update({
-        assignedEmployee: table.assignedEmployee,
+        assignedEmployeeId: table.assignedEmployeeId,
         tableNumber: table.tableNumber,
         shape: table.shape,
         seats: table.seats,

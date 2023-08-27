@@ -3,8 +3,9 @@
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Assigned Employee</mat-label>
-            <mat-select formControlName="assignedEmployee">
-                <mat-option *ngFor="let employee of employees" [value]="employee">
+            <mat-select formControlName="assignedEmployeeId">
+                <mat-option [value]="null">None</mat-option>
+                <mat-option *ngFor="let employee of employees" [value]="employee.id">
                     <img class="edit-table-dialog-image" src="{{employee.imgUrl}}" />
                     <span>{{employee.name}}</span>
                 </mat-option>

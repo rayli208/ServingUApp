@@ -14,7 +14,7 @@ import { Table } from 'src/app/_models/table.model';
   styleUrls: ['./mass-select-dialog.component.scss']
 })
 export class MassSelectDialogComponent {
-  public selectedEmployee: Employee;
+  public selectedEmployee: Employee | null = null;
   public userId: string;
   public user: Observable<any>;
   public Employees: Employee[];
@@ -39,7 +39,6 @@ export class MassSelectDialogComponent {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
           this.Employees = res.map(e => {
             return {
@@ -47,13 +46,8 @@ export class MassSelectDialogComponent {
               ...e.payload.doc.data() as {}
             } as Employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-          // Filter employees based on 'clockedIn' property
           this.filteredEmployees = this.Employees.filter(employee => employee.clockedIn === true);
-
-          if (this.filteredEmployees.length > 0) {
-            this.selectedEmployee = this.filteredEmployees[0];
-          }
+          this.checkFormReady();
         });
 
         this.tablesService.getTablesListForUser(this.userId).subscribe(res => {
@@ -63,18 +57,15 @@ export class MassSelectDialogComponent {
               ...e.payload.doc.data() as {}
             } as Table;
           });
-          
-          // Group the tables by floorPlan.
           this.groupedTables = tables.reduce((grouped, table) => {
             const key = table.floorPlan;
             if (!grouped[key]) {
               grouped[key] = [];
             }
             grouped[key].push(table);
-            grouped[key].sort((a, b) => a.tableNumber - b.tableNumber); // Sort tables by table number.
+            grouped[key].sort((a, b) => a.tableNumber - b.tableNumber);
             return grouped;
           }, {});
-          
         });
       }
     });
@@ -95,13 +86,13 @@ export class MassSelectDialogComponent {
   }
 
   checkFormReady() {
-    this.formReady = this.selectedEmployee && this.selectedTables.length > 0;
+    this.formReady = this.selectedEmployee !== null && this.selectedTables.length > 0;
   }
 
   onSubmit() {
     if (this.formReady) {
       const updates = this.selectedTables.map(table => {
-        table.assignedEmployee = this.selectedEmployee;
+        table.assignedEmployeeId = this.selectedEmployee!.id;
         return this.tablesService.updateTable(table, table.id);
       });
       Promise.all(updates).then(() => {
