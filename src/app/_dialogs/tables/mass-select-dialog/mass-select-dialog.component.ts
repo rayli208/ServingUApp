@@ -92,7 +92,7 @@ export class MassSelectDialogComponent {
   onSubmit() {
     if (this.formReady) {
       const updates = this.selectedTables.map(table => {
-        table.assignedEmployeeId = this.selectedEmployee!.id;
+        table.employeeId = this.selectedEmployee!.id;
         return this.tablesService.updateTable(table, table.id);
       });
       Promise.all(updates).then(() => {

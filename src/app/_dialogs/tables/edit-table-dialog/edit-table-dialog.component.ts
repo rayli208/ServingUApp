@@ -24,9 +24,9 @@ export class EditTableDialogComponent implements OnInit {
     this.table = data.table;
     this.employees = data.employees;
 
-    // Note the change here to 'assignedEmployeeId'
+    // Note the change here to 'employeeId'
     this.editForm = this.formBuilder.group({
-      assignedEmployeeId: [this.table.assignedEmployeeId],  
+      employeeId: [this.table.employeeId],  
       tableNumber: [this.table.tableNumber],
       shape: [this.table.shape],
       seats: [this.table.seats],
@@ -40,7 +40,7 @@ export class EditTableDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
-    if (this.editForm.value.assignedEmployeeId === null || this.editForm.value.assignedEmployeeId === '') {  // check for unassigned table
+    if (this.editForm.value.employeeId === null || this.editForm.value.employeeId === '') {  // check for unassigned table
       this.editForm.value.isActive = false;
     }
 

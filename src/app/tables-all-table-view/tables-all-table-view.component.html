@@ -3,7 +3,7 @@
         <div *ngIf="table.floorPlan === floorNumber" class="tables-all-table-view-card" (dblclick)="toggleActive(table)"
             [ngClass]="table.isActive ? 'active' : 'not-active' ">
             <div class="tables-all-table-view-card-number"
-                [style.background-image]="'url(' + getEmployeeImgUrlById(table.assignedEmployeeId) + ')'">
+                [style.background-image]="'url(' + getEmployeeImgUrlById(table.employeeId) + ')'">
                 <div class="table-number" [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
                     {{ table.tableNumber }}
                 </div>
@@ -22,8 +22,8 @@
             </div>
             <div class="tables-all-table-view-content">
                 <span>Employee:</span>
-                <span [ngClass]="{'red-text': table.assignedEmployeeId == null}">
-                    {{getEmployeeNameById(table.assignedEmployeeId)}}
+                <span [ngClass]="{'red-text': table.employeeId == null}">
+                    {{getEmployeeNameById(table.employeeId)}}
                 </span>
             </div>
             <div class="tables-all-table-edit" (click)="editTable(table)"><i class="fa-solid fa-pen-to-square"></i>

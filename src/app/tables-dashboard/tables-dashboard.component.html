@@ -35,7 +35,7 @@
           <ng-container *ngFor="let table of totalTables">
             <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)" class="shape {{table.shape}}"
               cdkDragBoundary=".table-view" cdkDrag
-              [style.background-image]="'url(' + getEmployeeImgById(table.assignedEmployeeId) + ')'"
+              [style.background-image]="'url(' + getEmployeeImgById(table.employeeId) + ')'"
               [style.border]="table.isActive ? '2px solid #22C795' : '2px solid #EB5B5B'"
               [style.opacity]="table.isActive ? '1' : '0.3'" (cdkDragEnded)="dragEnd($event, table)"
               [style.top]="table.positionY + 'px'" [style.left]="table.positionX + 'px'">

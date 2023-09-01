@@ -54,7 +54,7 @@ export class TablesService {
       .collection("tables")
       .doc(id)
       .update({
-        assignedEmployeeId: table.assignedEmployeeId,
+        employeeId: table.employeeId,
         tableNumber: table.tableNumber,
         shape: table.shape,
         seats: table.seats,

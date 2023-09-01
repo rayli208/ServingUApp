@@ -75,12 +75,12 @@ export class PunchClockBottomSheetComponent implements OnInit {
         const tables = tablesSnapshot.map(doc => ({ id: doc.payload.doc.id, ...doc.payload.doc.data() as Table }));
   
         // Filter tables assigned to this employee
-        const assignedTables = tables.filter(table => table.assignedEmployeeId === this.employee.id);
+        const assignedTables = tables.filter(table => table.employeeId === this.employee.id);
   
         // Update each assigned table
         for (let table of assignedTables) {
           table.isActive = false;
-          table.assignedEmployeeId = null;  // Set assignedEmployeeId to null
+          table.employeeId = null;  // Set employeeId to null
           await this.tablesService.updateTable(table, table.id);
         }
       });

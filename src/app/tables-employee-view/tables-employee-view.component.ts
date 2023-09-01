@@ -35,7 +35,7 @@ export class TablesEmployeeViewComponent implements OnInit, OnChanges {
 
   groupTablesByEmployee() {
     this.groupedTablesByEmployee = this.tables.reduce((acc, table) => {
-      const id = table.assignedEmployeeId;
+      const id = table.employeeId;
       if (id) {
         acc[id] = acc[id] ? [...acc[id], table] : [table];
       }
@@ -44,7 +44,7 @@ export class TablesEmployeeViewComponent implements OnInit, OnChanges {
   }
 
   toggleActive(table: Table) {
-    if (table.assignedEmployeeId == null) {
+    if (table.employeeId == null) {
       return;
     }
 

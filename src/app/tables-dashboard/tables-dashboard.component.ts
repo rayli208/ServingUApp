@@ -89,7 +89,7 @@ export class TablesDashboardComponent implements OnInit {
 
   toggleActive(table: Table) {
     //If the table is not assigned to anyone, it returns and does not toggle the table
-    if (table.assignedEmployeeId == null) {
+    if (table.employeeId == null) {
       return;
     }
 
