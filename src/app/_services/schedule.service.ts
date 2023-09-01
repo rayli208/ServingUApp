@@ -55,7 +55,6 @@ export class ScheduleService {
       .collection("schedules")
       .doc(employeeId)
       .update({
-        employeeName: schedule.employeeName,
         startTime: schedule.startTime,
         endTime: schedule.endTime,
         date: schedule.date,

@@ -123,13 +123,12 @@ export class EmployeeDashboardComponent implements OnInit {
     });
   }
 
-  createSchedule(name: string, uid: string, employeeId: string, employeePhone: string) {
+  createSchedule(name: string, uid: string, employeeId: string) {
     const dialogRef = this.dialog.open(CreateScheduleDialogComponent, {
       data: {
         name: name,
         uid: uid,
         employeeId: employeeId,
-        employeePhone: employeePhone
       }
     });
     //Run code after closing dialog

@@ -49,7 +49,7 @@
       <div class="schedule-dashboard-schedule-card" *ngIf="schedule">
         <div>
           <div class="schedule-dashboard-name">
-            <span>{{schedule.employeeName}}</span>
+            <span>{{getEmployeeName(schedule.employeeId)}}</span>
             <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
               class="fa-solid fa-circle-info"></i>
           </div>
@@ -86,7 +86,7 @@
           <div class="schedule-weekly-schedule-card" *ngIf="schedule">
             <div>
               <div class="schedule-weekly-name">
-                <span>{{schedule.employeeName}}</span>
+                <span>{{getEmployeeName(schedule.employeeId)}}</span>
                 <i *ngIf="schedule.note" matTooltip="{{schedule.note}}" matTooltipPosition="above"
                   class="fa-solid fa-circle-info"></i>
               </div>

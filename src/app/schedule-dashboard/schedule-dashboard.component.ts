@@ -11,6 +11,8 @@ import { Message } from '../_models/message.model';
 import { AuthService } from '../_services/auth.service';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { Employee } from '../_models/employee.model';
+import { EmployeesService } from '../_services/employees.service';
 
 @Component({
   selector: 'app-schedule-dashboard',
@@ -23,7 +25,8 @@ export class ScheduleDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;
   isHorizontalModeDisabled: boolean = false;
-
+  Employees: Employee[];
+  employeeMap: { [id: string]: Employee } = {};
 
   selectedView: string = 'Horizontal';
   views: string[] = ['Vertical', 'Horizontal'];
@@ -39,15 +42,41 @@ export class ScheduleDashboardComponent implements OnInit {
     private scheduleService: ScheduleService,
     public messagesService: MessagesService,
     public authService: AuthService,
-    public _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar,
+    private employeesService: EmployeesService,
   ) {
     this.user = null;
+  }
+
+  //Initialize the component
+  ngOnInit(): void {
+    this.generateSchedule();
+    this.handleWindowResize(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(innerWidth: number) {
+    this.handleWindowResize(innerWidth);
   }
 
   generateSchedule() {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
+
+        this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
+          this.Employees = res.map(e => {
+            const employee = {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Employee;
+
+            // Update the mapping
+            this.employeeMap[employee.id] = employee;
+
+            return employee;
+          }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        });
 
         this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
           this.Schedules = res.map(e => {
@@ -88,17 +117,6 @@ export class ScheduleDashboardComponent implements OnInit {
     }
   }
 
-  //Initialize the component
-  ngOnInit(): void {
-    this.generateSchedule();
-    this.handleWindowResize(window.innerWidth);
-  }
-
-  @HostListener('window:resize', ['$event.target.innerWidth'])
-  onResize(innerWidth: number) {
-    this.handleWindowResize(innerWidth);
-  }
-
   handleWindowResize(innerWidth: number) {
     if (innerWidth <= 992) {
       this.selectedView = 'Vertical';
@@ -120,6 +138,11 @@ export class ScheduleDashboardComponent implements OnInit {
     this.populateSchedule();
   }
 
+  getEmployeeName(employeeId: string): string {
+    const employee = this.Employees.find(emp => emp.id === employeeId);
+    return employee ? employee.name : 'Unknown';
+  }
+
   //Populates grand object with all the dates an employee works
   populateSchedule(): void {
     this.populateDaysOfWeek(this.base);
@@ -129,10 +152,13 @@ export class ScheduleDashboardComponent implements OnInit {
       let schedule = [];
 
       for (let j = 0; j < this.Schedules.length; j++) {
-        var d: any = this.Schedules[j]?.date;
+        if (this.Schedules[j]?.date) {
+          const [year, month, day] = this.Schedules[j].date.split("-").map(Number);
+          const d: any = new Date(Date.UTC(year, month - 1, day)).toISOString().slice(0, 10);
 
-        if (d == this.daysOfWeek[i]) {
-          schedule.push(this.Schedules[j]);
+          if (d == this.daysOfWeek[i]) {
+            schedule.push(this.Schedules[j]);
+          }
         }
       }
 
@@ -147,7 +173,6 @@ export class ScheduleDashboardComponent implements OnInit {
       });
     }
   }
-
 
 
   //Edit Function
@@ -172,9 +197,10 @@ export class ScheduleDashboardComponent implements OnInit {
 
   //Remove Schedule 
   deleteSchedule(schedule: Schedule, j, i) {
+    const employeeName = this.employeeMap[schedule.employeeId]?.name || 'Unknown Employee';
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        text: `Are you sure you want to delete ${schedule.employeeName }'s schedule?`
+        text: `Are you sure you want to delete ${employeeName}'s schedule?`
       }
     });
 
@@ -192,7 +218,6 @@ export class ScheduleDashboardComponent implements OnInit {
     });
   }
 
-
   //Print Function
   onPrint() {
     window.print();
@@ -200,23 +225,24 @@ export class ScheduleDashboardComponent implements OnInit {
 
   // This function takes a string in the format "YYYY-MM-DD" and returns a string in the format "Day of the week MM/DD/YY"
   public formatDate(date: string): string {
-    // Create a new date object from the input string
-    const dateObject = new Date(date);
+    if (!date) {
+      return 'Unknown Date';
+    }
+
+    const [year, month, day] = date.split("-").map(Number);
+    const dateObject = new Date(Date.UTC(year, month - 1, day));
 
     // Get the day of the week as a string (e.g. "Sunday")
-    const dayOfWeek = this.getDayOfWeek(dateObject.getDay());
+    const dayOfWeek = this.getDayOfWeek(dateObject.getUTCDay());
 
     // Get the month as a string (e.g. "01")
-    const month = this.getMonth(dateObject.getMonth());
+    const monthStr = this.getMonth(dateObject.getUTCMonth());
 
     // Get the day as a string (e.g. "15")
-    const day = this.getDay(dateObject.getDate());
-
-    // Get the year as a string (e.g. "23")
-    // const year = this.getYear(dateObject.getFullYear());
+    const dayStr = this.getDay(dateObject.getUTCDate());
 
     // Return the formatted string
-    return `${dayOfWeek} - ${month}/${day}`;
+    return `${dayOfWeek} - ${monthStr}/${dayStr}`;
   }
 
   // This function takes a number (0-6) and returns the corresponding day of the week as a string
@@ -277,77 +303,69 @@ export class ScheduleDashboardComponent implements OnInit {
   }
 
   sendOutText() {
-    // Create an empty object to store the schedules by employee
     let schedulesByEmployee = {};
-  
-    // Loop through all the dates
+
     for (let day of this.populatedSchedulesWithDates) {
-      // Loop through all the schedules for the current date
       for (let schedule of day.schedule) {
-        // If the employee's schedules have not been added to the object yet, add them
-        if (!schedulesByEmployee[schedule.employeePhone]) {
-          schedulesByEmployee[schedule.employeePhone] = {
-            name: schedule.employeeName,
-            schedules: []
-          };
+        let employeeId = schedule.employeeId;
+        let employee = this.employeeMap[employeeId];
+
+        if (employee) {
+          let employeePhone = employee.phone;
+          let employeeName = employee.name;
+
+          if (!schedulesByEmployee[employeePhone]) {
+            schedulesByEmployee[employeePhone] = {
+              name: employeeName,
+              schedules: []
+            };
+          }
+
+          schedulesByEmployee[employeePhone].schedules.push(schedule);
         }
-  
-        // Add the current schedule to the employee's schedules
-        schedulesByEmployee[schedule.employeePhone].schedules.push(schedule);
       }
     }
-  
-    // Prepare an array to hold all the messages
+
     let messages = [];
-  
-    // Get the date range
     let startDate = this.formatDate(this.populatedSchedulesWithDates[0]?.date);
     let endDate = this.formatDate(this.populatedSchedulesWithDates[13]?.date);
-  
-    // Loop through all the employees and prepare a text message with their schedules
+
     for (let phoneNumber in schedulesByEmployee) {
       let messageText = `${startDate} to  ${endDate}\n${schedulesByEmployee[phoneNumber].name} schedule:\n`;
       for (let schedule of schedulesByEmployee[phoneNumber].schedules) {
-        // Format the date and time
-        let date = new Date(schedule.date);
-        let formattedDate = `${date.getMonth() + 1 < 10 ? '0' : ''}${date.getMonth() + 1}/${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
+        let dateParts = schedule.date.split('-');
+        let formattedDate = `${dateParts[1]}/${dateParts[2]}`;
         let formattedStartTime = this.convertTo12HourFormat(schedule.startTime);
         let formattedEndTime = this.convertTo12HourFormat(schedule.endTime);
         messageText += `${formattedDate}: ${formattedStartTime}-${formattedEndTime}\n`;
       }
-  
-      // Create the message
+
       const message: Message = {
-        channelId: 'a31f78766da04f9e95ce52a85cf13bdd', // Use the appropriate channel ID
+        channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
         to: '1' + phoneNumber.replace(/-/g, ""),
         type: 'text',
         content: {
           text: messageText
         }
       };
-  
-      // Add the message to the array
+
       messages.push(message);
     }
-  
-    // Calculate the total number of messages
+
     let totalMessagesCount = messages.reduce((count, message) => count + Math.ceil(message.content.text.length / 153), 0);
-    
-    // Open the confirmation dialog
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: `Are you sure you want to send ${totalMessagesCount} messages?`
       }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // If the user confirmed, send the messages
         for (let message of messages) {
           this.messagesService.createMessage(message);
         }
-  
-        // Update the number of texts sent this month
+
         this.authService.updateTextsThisMonth(totalMessagesCount)
           .then(() => {
             this._snackBar.open('Text has been sent!', '', {
@@ -359,13 +377,10 @@ export class ScheduleDashboardComponent implements OnInit {
           })
           .catch(error => {
             // Handle the error if needed
-            console.log('Error updating textsThisMonth:', error);
           });
       }
     });
   }
-  
-
 
   // This function converts a time in 24-hour format to 12-hour format
   convertTo12HourFormat(time: string): string {

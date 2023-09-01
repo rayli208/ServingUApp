@@ -1,8 +1,33 @@
 <app-header iconClass="fa-solid fa-address-book" title="{{employeeRef?.name}} Schedule Dashboard">
-        <button style="margin-top: 5px;"  class="employee-schedule-dashboard-back"><i (click)="backToSchedule()" class="fa-solid fa-angles-left"></i></button>
+    <div style="margin-top: 15px;">
+        <button style="margin-top: 5px; margin-right: 15px;" class="employee-schedule-dashboard-back"><i
+                (click)="backToSchedule()" class="fa-solid fa-angles-left"></i></button>
+        <mat-form-field appearance="outline" style="margin-right: 15px;">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Start date">
+                <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+
+            <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+            <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="seeSchedules()" matTooltip="Get Schedules">
+            <i class="fa-solid fa-clock fa-2xl"></i>
+        </button>
+    </div>
 </app-header>
 
-<div class="employee-schedule-dashboard-none" *ngIf="!Schedules?.length">{{employeeRef?.name}} is currently not scheduled. Please go back to employee dashboard to set his schedule.</div>
+<div class="employee-schedule-dashboard-none" *ngIf="!Schedules.length && !range.value.start && !range.value.end">
+    No dates have been selected.
+</div>
+
+<div class="employee-schedule-dashboard-none" *ngIf="!Schedules.length && (range.value.start || range.value.end)">
+    {{employeeRef?.name}} is currently not scheduled in the selected date range. Please select a different range.
+</div>
+
 <div *ngFor="let schedule of Schedules; let i = index">
     <div class="employee-schedule-dashboard-schedule-card">
         <div>
@@ -20,6 +45,3 @@
         </div>
     </div>
 </div>
-
-
-

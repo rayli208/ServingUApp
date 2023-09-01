@@ -16,18 +16,17 @@ export class CreateScheduleDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateScheduleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
+    this.employeeName = data.name; // <--- Here
     this.scheduleForm = this.formBuilder.group({
       uid: [data.uid],
       employeeId: [data.employeeId],
-      employeeName: [data.name],
-      employeePhone: [data.employeePhone],
       startTime: ['09:00'],
       endTime: ['17:00'],
       date: [''],
       note: [''],
     });
   }
-
+  public employeeName: string;
   public scheduleForm: UntypedFormGroup;
   daysSelected: any[] = [];
   event: any;

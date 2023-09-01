@@ -34,8 +34,6 @@ export class EditEmployeeDialogComponent implements OnInit {
     this.employee = data;
     this.imgSrc = this.employee.imgUrl; // set imgSrc to the current employee's imgUrl
     this.editForm = this.formBuilder.group({ ...this.employee });
-    this.editForm.get('name').disable();
-    this.editForm.get('phone').disable();
   }
 
   ngOnInit(): void {
