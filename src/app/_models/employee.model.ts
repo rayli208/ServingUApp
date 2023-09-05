@@ -10,5 +10,6 @@ export interface Employee {
     clockedIn: boolean;
     clockedInTime: Date | null;
     employeed: boolean;
+    floorEmployee: boolean;
   }
   

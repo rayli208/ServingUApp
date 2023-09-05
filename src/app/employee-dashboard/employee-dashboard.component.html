@@ -71,6 +71,10 @@
                                     class="fa-solid fa-envelope primary"></a>
                             </span>
                         </div>
+                        <div class="employee-dashboard-row">
+                            <span>Can Serve Tables: </span>
+                            <span>{{ employee.floorEmployee ? 'Yes' : 'No' }}</span>
+                        </div>
                     </mat-expansion-panel>
                 </ng-container>
             </div>
@@ -128,6 +132,10 @@
                         <div class="employee-dashboard-row">
                             <span>Email: </span>
                             <span>{{employee.email}}</span>
+                        </div>
+                        <div class="employee-dashboard-row">
+                            <span>Can Serve Tables: </span>
+                            <span>{{ employee.floorEmployee ? 'Yes' : 'No' }}</span>
                         </div>
                     </mat-expansion-panel>
                 </ng-container>

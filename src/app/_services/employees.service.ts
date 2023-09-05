@@ -54,7 +54,8 @@ export class EmployeesService {
         imgUrl: employee.imgUrl,
         employeed: employee.employeed,
         clockedIn: employee.clockedIn,
-        clockedInTime: employee.clockedInTime
+        clockedInTime: employee.clockedInTime,
+        floorEmployee: employee.floorEmployee
       });
   }
 }

@@ -43,6 +43,7 @@ export class CreateEmployeeDialogComponent implements OnInit {
       clockedIn: new FormControl(false),
       clockedInTime: new FormControl(null),
       fileName: new FormControl(''),
+      floorEmployee: new FormControl(false),
     })
   }
 

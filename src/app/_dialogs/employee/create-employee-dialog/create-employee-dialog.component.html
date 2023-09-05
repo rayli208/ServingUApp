@@ -41,7 +41,7 @@
     <div>
       <mat-form-field appearance="outline" class="hinted-field">
         <mat-label>Phone</mat-label>
-        <input type="text" formControlName="phone" matInput required appPhoneNumberFormat>
+        <input type="tel" formControlName="phone" matInput required appPhoneNumberFormat>
       </mat-form-field>
     </div>
     <div>
@@ -51,9 +51,12 @@
       </mat-form-field>
     </div>
   </div>
+  <div>
+    <mat-checkbox color="primary" formControlName="floorEmployee">Floor Employee</mat-checkbox>
+</div>
   <div mat-dialog-actions style="justify-content: space-between;">
     <button mat-raised-button mat-dialog-close>Cancel</button>
     <button mat-raised-button color="primary" type="submit"
-      [disabled]="!employeeForm.valid || isSubmitted">Create</button>
+      [disabled]="!employeeForm.valid || isSubmitted || !selectedImage">Create</button>
   </div>
 </form>

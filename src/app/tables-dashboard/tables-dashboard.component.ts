@@ -71,7 +71,7 @@ export class TablesDashboardComponent implements OnInit {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Employee;
-          }).filter(employee => employee.clockedIn === true);
+          }).filter(employee => employee.clockedIn === true && employee.floorEmployee === true && employee.employeed === true);
         });
       }
     });
