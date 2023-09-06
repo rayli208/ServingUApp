@@ -9,17 +9,13 @@
                     <div class="step-container">
                         <mat-form-field appearance="outline">
                             <mat-label>Owner</mat-label>
-                            <input autocomplete="off" formControlName="owner" type="text" matInput placeholder="Owner">
+                            <input autocomplete="off" formControlName="owner" type="text" matInput placeholder="Owner"
+                                required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Location Name</mat-label>
                             <input autocomplete="off" formControlName="location_name" type="text" matInput
-                                placeholder="Location Name">
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Description</mat-label>
-                            <textarea rows="4" formControlName="description" type="text" matInput
-                                placeholder="Describe Your Business"></textarea>
+                                placeholder="Location Name" required>
                         </mat-form-field>
                     </div>
                     <div>
@@ -33,11 +29,12 @@
                     <div class="step-container">
                         <mat-form-field appearance="outline">
                             <mat-label>Email</mat-label>
-                            <input formControlName="email" type="email" matInput placeholder="Email">
+                            <input formControlName="email" type="email" matInput placeholder="Email" required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Phone</mat-label>
-                            <input formControlName="phone" type="tel" matInput placeholder="Phone" appPhoneNumberFormat>
+                            <input formControlName="phone" type="tel" matInput placeholder="Phone" appPhoneNumberFormat
+                                required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Website</mat-label>
@@ -56,12 +53,12 @@
                     <div class="step-container">
                         <mat-form-field appearance="outline">
                             <mat-label>Address</mat-label>
-                            <textarea rows="4" formControlName="address" type="text" matInput
-                                placeholder="Address"></textarea>
+                            <textarea rows="4" formControlName="address" type="text" matInput placeholder="Address"
+                                required></textarea>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Zip</mat-label>
-                            <input formControlName="zip" type="text" matInput placeholder="Zip Code">
+                            <input formControlName="zip" type="text" matInput placeholder="Zip Code" required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>School</mat-label>
@@ -84,17 +81,17 @@
                     <div class="step-container">
                         <mat-form-field appearance="outline">
                             <mat-label>Pin</mat-label>
-                            <input autocomplete="off" formControlName="pin" matInput placeholder="Pin">
+                            <input autocomplete="off" formControlName="pin" matInput placeholder="Pin" required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Password</mat-label>
                             <input autocomplete="off" formControlName="password" type="password" matInput
-                                placeholder="Password">
+                                placeholder="Password" required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Confirm Password</mat-label>
                             <input autocomplete="off" formControlName="confirmPassword" type="password" matInput
-                                placeholder="Confirm Password">
+                                placeholder="Confirm Password" required>
                             <mat-error *ngIf="signupForm.controls.stepFour.hasError('notSame')">Passwords do not match.
                             </mat-error>
 
@@ -102,7 +99,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>ServingU Token</mat-label>
                             <input autocomplete="off" formControlName="createUserPassword" type="password" matInput
-                                placeholder="Create User Password">
+                                placeholder="Create User Password" required>
                             <mat-error
                                 *ngIf="(signupForm.get('stepFour.createUserPassword')).hasError('incorrectPassword')">
                                 ServingU Token</mat-error>

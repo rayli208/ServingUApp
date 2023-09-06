@@ -54,8 +54,12 @@
                 <span>Website: </span>
                 <span>
                     {{ (user | async)?.website }}
-                    <a target="_blank" href="{{(user | async)?.website}}" class="fa-solid fa-link primary"></a>
-                </span>
+                    <a *ngIf="(user | async)?.website" target="_blank" href="{{(user | async)?.website}}"
+                        class="fa-solid fa-link primary"></a>
+                    <ng-container *ngIf="!(user | async)?.website">
+                        <span class="profile-missing">There is no website at the moment, please set it in profile editor.</span>
+                    </ng-container>
+                </span>                
             </div>
             <div class="profile-dashboard-card-row">
                 <span>Active Employees: </span>
@@ -70,12 +74,17 @@
                     <mat-expansion-panel-header>
                         <span>Description: </span>
                     </mat-expansion-panel-header>
-                  
                     <ng-template matExpansionPanelContent>
-                        <div class="description" [innerHTML]="getSanitizedHtml((user | async)?.description )"></div>
+                        <div *ngIf="(user | async)?.description; else noDescription" class="description"
+                            [innerHTML]="getSanitizedHtml((user | async)?.description )">
+                        </div>
+                        <ng-template #noDescription>
+                            <span class="profile-missing">There is no description at the moment, please set it in profile editor</span>
+                        </ng-template>
                     </ng-template>
-                  </mat-expansion-panel>
+                </mat-expansion-panel>
             </div>
+
         </div>
         <div class="profile-dashboard-card-main-container-half">
             <div class="image-container" *ngIf="imageUrls.length; else noImages">
@@ -85,7 +94,7 @@
                 </ng-container>
             </div>
             <ng-template #noImages>
-                <p>This user does not have any images</p>
+                <span class="profile-missing">This user does not have any images</span>
             </ng-template>
         </div>
     </div>

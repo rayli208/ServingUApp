@@ -29,12 +29,11 @@ export class SignupComponent implements OnInit {
             stepOne: this._formBuilder.group({
                 owner: ['', Validators.required],
                 location_name: ['', Validators.required],
-                description: ['', Validators.required]
             }),
             stepTwo: this._formBuilder.group({
                 email: ['', [Validators.required, Validators.email]],
                 phone: ['', Validators.required],
-                website: ['', Validators.required]
+                website: ['']
             }),
             stepThree: this._formBuilder.group({
                 address: ['', Validators.required],
@@ -66,22 +65,28 @@ export class SignupComponent implements OnInit {
     signup() {
         if (this.signupForm.invalid)
             return;
-
+    
         this.isProgressVisible = true;
-        this.authService.signupUser({
+    
+        const userData = {
             ...this.signupForm.controls.stepOne.value,
             ...this.signupForm.controls.stepTwo.value,
             ...this.signupForm.controls.stepThree.value,
-            ...this.signupForm.controls.stepFour.value
-        }).then((result) => {
+            ...this.signupForm.controls.stepFour.value,
+            description: '',
+            website: this.signupForm.controls.stepTwo.value.website || ''
+        };
+    
+        this.authService.signupUser(userData).then((result) => {
             if (result == null)
                 this.router.navigate(['/profile-dashboard']);
             else if (result.isValid == false)
                 this.firebaseErrorMessage = result.message;
-
+    
             this.isProgressVisible = false;
         }).catch(() => {
             this.isProgressVisible = false;
         });
     }
+    
 }

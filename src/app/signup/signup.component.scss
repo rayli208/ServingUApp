@@ -8,3 +8,9 @@
     margin-right: 15px;
   }
 }
+
+@media (max-width: 768px) {
+  :host ::ng-deep .mat-stepper-horizontal .mat-step-label {
+    display: none !important;
+  }
+}
