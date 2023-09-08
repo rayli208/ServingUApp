@@ -1,131 +1,122 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from '../_models/contact.model';
+import { Reservation } from '../_models/reservation.model';
 import { Message } from '../_models/message.model';
 import { MessagesService } from '../_services/messages.service';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { trigger, style, animate, transition, group, query, animateChild } from '@angular/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
+import { ReservationsService } from '../_services/reservation.service';
 
 @Component({
   selector: 'app-tables-waitlist',
   templateUrl: './tables-waitlist.component.html',
-  styleUrls: ['./tables-waitlist.component.scss'],
-  animations: [
-    trigger('myAnimationTrigger', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('500ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('500ms', style({ opacity: 0 })),
-      ]),
-      transition('* => *', [
-        group([
-          query(':enter', [
-            style({ transform: 'translateY(-100%)' }),
-            animateChild()
-          ]),
-          query(':leave', [
-            animateChild()
-          ])
-        ]),
-        query(':enter', [
-          animate('500ms ease-out', style({ transform: 'translateY(0)' }))
-        ])
-      ])
-    ]),
-  ],
+  styleUrls: ['./tables-waitlist.component.scss']
 })
 export class TablesWaitlistComponent implements OnInit {
   user: Observable<any>;
+  userId: string;
   currentEmployeer: any;
-  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
   name: string;
   phoneNumber: string;
-  waitTime: number;
+  estimatedWait: number;
   totalParty: number;
-  reservationMade: string;
-  estimatedTime: string;
-  hasRecievedText: boolean = false;
-  contacts: Contact[] = [];
+  reservations: Reservation[] = [];
   message: string;
 
-  constructor(public messagesService: MessagesService, private _snackBar: MatSnackBar, private afAuth: AngularFireAuth, private authService: AuthService) {
+  constructor(
+    public messagesService: MessagesService,
+    private _snackBar: MatSnackBar,
+    private afAuth: AngularFireAuth,
+    private authService: AuthService,
+    private reservationsService: ReservationsService
+  ) {
     this.user = null;
   }
 
   ngOnInit() {
-    const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-      this.contacts = JSON.parse(storedContacts);
-    }
-
     this.afAuth.authState.subscribe(user => {
       if (user) {
+        this.userId = user.uid;
         let emailLower = user.email.toLowerCase();
         this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
           this.currentEmployeer = res;
           this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
         });
+
+        // Fetch reservations for today
+        const todayDate = new Date().toISOString().split('T')[0];
+        this.reservationsService.getReservationsListForUser(this.userId).subscribe(reservations => {
+          this.reservations = reservations.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...(e.payload.doc.data() as Omit<Reservation, 'id'>) // Asserting the type here
+            } as Reservation;
+          }).filter(reservation => reservation.date === todayDate).sort((a, b) => {
+            return new Date(`1970-01-01 ${a.time}`).getTime() - new Date(`1970-01-01 ${b.time}`).getTime();
+          });
+        });
       }
     });
   }
 
-  addContact() {
-    if (this.name && this.phoneNumber && this.waitTime) {
-      const contact = {
+  addReservation() {
+    if (this.name && this.phoneNumber && this.estimatedWait) {
+      const todayDate = new Date().toISOString().split('T')[0];
+      const reservationTime = this.calculateTime(this.estimatedWait).toString();
+
+      const reservation: Omit<Reservation, 'id'> = {
+        uid: this.userId,
         name: this.name,
         phoneNumber: this.phoneNumber,
-        waitTime: this.waitTime,
         totalParty: this.totalParty,
-        reservationMade: this.calculateTime(0).toString(),
-        estimatedTime: this.calculateTime(this.waitTime).toString(),
-        hasRecievedText: this.hasRecievedText
+        time: reservationTime,
+        date: todayDate
       };
 
-      this.contacts.push(contact);
-      localStorage.setItem('contacts', JSON.stringify(this.contacts));
+      // Add the reservation to Firestore
+      this.reservationsService.createReservation(reservation).then(id => {
+        // Once the reservation is successfully created, get the auto-generated ID and update the local array
+        const fullReservation: Reservation = { ...reservation, id };
 
-      this.sendMessageToContact(contact, `You have been added to ${this.currentEmployeer.location_name}'s waitlist. Estimated wait time is ${this.waitTime} minutes.`);
+        // Update reservations array and sort
+        this.reservations.push(fullReservation);
+        this.reservations.sort((a, b) => {
+          return new Date(`1970-01-01 ${a.time}`).getTime() - new Date(`1970-01-01 ${b.time}`).getTime();
+        });
 
-      this.name = '';
-      this.phoneNumber = '';
-      this.waitTime = null;
-      this.totalParty = null;
-      this.reservationMade = '';
-      this.estimatedTime = '';
+        this.name = '';
+        this.phoneNumber = '';
+        this.estimatedWait = null;
+        this.totalParty = null;
+      }).catch(error => {
+        console.error("Error creating reservation:", error);
+      });
     }
   }
 
-  deleteContact(contact: Contact) {
-    // Find the index of the contact in the array
-    const index = this.contacts.indexOf(contact);
-    // Remove the contact from the array
-    this.contacts.splice(index, 1);
-    // Update local storage
-    localStorage.setItem('contacts', JSON.stringify(this.contacts));
+  deleteReservation(reservation: Reservation) {
+    this.reservationsService.deleteReservation(reservation).then(() => {
+      const index = this.reservations.indexOf(reservation);
+      if (index !== -1) {
+        this.reservations.splice(index, 1);
+      }
+      // Sort reservations after deletion to ensure order
+      this.reservations.sort((a, b) => {
+        return new Date(`1970-01-01 ${a.time}`).getTime() - new Date(`1970-01-01 ${b.time}`).getTime();
+      });
+    }).catch(error => {
+      console.error("Error deleting reservation:", error);
+    });
   }
 
-  textTableReady(contact: Contact) {
-    contact.hasRecievedText = true;
-    // Retrieve the array from local storage
-    let array = JSON.parse(localStorage.getItem("contacts"));
-    // Find the object with the matching property
-    let obj = array.find(o => o.phoneNumber == contact.phoneNumber);
-    // Modify the object
-    obj.hasRecievedText = true;
-    // Save the modified array back to local storage
-    localStorage.setItem("contacts", JSON.stringify(array));
-  
-    this.sendMessageToContact(contact, this.message);
+  textTableReady(reservation: Reservation) {
+    reservation.hasRecievedText = true;
+    this.sendMessageToReservation(reservation, this.message);
   }
 
-  sendMessageToContact(contact: Contact, messageContent: string) {
-    //Fix phone number
-    const phoneNumber = '1' + contact.phoneNumber.replace(/-/g, "");
+  sendMessageToReservation(reservation: Reservation, messageContent: string) {
+    const phoneNumber = '1' + reservation.phoneNumber.replace(/-/g, "");
 
     const message: Message = {
       channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
@@ -137,22 +128,15 @@ export class TablesWaitlistComponent implements OnInit {
     };
 
     this.messagesService.createMessage(message);
-
-    // Calculate the total number of messages
     let totalMessagesCount = Math.ceil(messageContent.length / 153);
-
-    // Call the updateTextsThisMonth method
     this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
         this._snackBar.open('Text has been sent!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
           duration: 2500,
           panelClass: ['green-snackbar']
         });
       })
       .catch(error => {
-        // Handle the error if needed
         console.log('Error updating textsThisMonth:', error);
       });
   }
@@ -177,25 +161,5 @@ export class TablesWaitlistComponent implements OnInit {
     const currentTime = new Date();
     currentTime.setMinutes(currentTime.getMinutes() + minutes);
     return currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  }
-
-  addSubtract5Minutes(operator: string, contact: Contact): string {
-    const timeAsDate = new Date(`1970-01-01 ${contact.estimatedTime}`);
-    if (operator == "add") {
-      timeAsDate.setMinutes(timeAsDate.getMinutes() + 5);
-    }
-
-    if (operator == "subtract") {
-      timeAsDate.setMinutes(timeAsDate.getMinutes() - 5);
-    }
-
-    const result = timeAsDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    contact.estimatedTime = result;
-    let array = JSON.parse(localStorage.getItem("contacts"));
-    let obj = array.find(o => o.phoneNumber == contact.phoneNumber);
-    obj.estimatedTime = result;
-    localStorage.setItem("contacts", JSON.stringify(array));
-
-    return result;
   }
 }

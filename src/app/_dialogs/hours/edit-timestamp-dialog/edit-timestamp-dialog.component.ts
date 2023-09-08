@@ -16,10 +16,8 @@ export class EditTimestampDialogComponent {
     public dialogRef: MatDialogRef<EditTimestampDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { timestamp: TimeStamp }
   ) {
-    // Set the Luxon settings to work in local time by default
-    Settings.defaultLocale = 'utc';
-    this.startTime = DateTime.fromJSDate(data.timestamp.startTime).toISO();
-    this.endTime = DateTime.fromJSDate(data.timestamp.endTime).toISO();
+    this.startTime = this.formatDate(data.timestamp.startTime);
+    this.endTime = this.formatDate(data.timestamp.endTime);
   }
 
   formatDate(date: Date): string {
