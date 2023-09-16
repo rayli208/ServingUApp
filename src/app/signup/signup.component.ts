@@ -74,6 +74,7 @@ export class SignupComponent implements OnInit {
             ...this.signupForm.controls.stepThree.value,
             ...this.signupForm.controls.stepFour.value,
             description: '',
+            maxOverLappingReservations: 3,
             website: this.signupForm.controls.stepTwo.value.website || ''
         };
     

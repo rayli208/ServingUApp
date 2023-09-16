@@ -43,6 +43,13 @@
                         placeholder="Website">
                 </mat-form-field>
             </div>
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Max Overlapping Reservations</mat-label>
+                    <input [readonly]="!isEditing" [(ngModel)]="user.maxOverLappingReservations" type="number" matInput
+                        placeholder="Max Overlapping Reservations">
+                </mat-form-field>
+            </div>
             <div style="text-align: center;">
                 <button mat-raised-button color="secondary" (click)="enableEditing()" *ngIf="!isEditing"
                     matTooltip="Edit Profile">Edit <i class="fa-solid fa-pen-to-square"></i></button>
