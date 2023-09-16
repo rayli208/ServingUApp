@@ -24,6 +24,13 @@ export class ReservationsService {
       .snapshotChanges();
   }
 
+  // Get a list of reservations for a specific user on a specific date
+  getReservationsForUserOnDate(userId: string, date: string) {
+    return this.afs
+      .collection("reservations", ref => ref.where('uid', '==', userId).where('date', '==', date))
+      .snapshotChanges();
+  }
+
   // Create a new reservation
   createReservation(reservation: Omit<Reservation, 'id'>): Promise<string> {
     return new Promise<string>((resolve, reject) => {

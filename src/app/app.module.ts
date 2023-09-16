@@ -73,6 +73,8 @@ import { CreateJobDialogComponent } from './_dialogs/jobs/create-job-dialog/crea
 import { CreateTableDialogComponent } from './_dialogs/tables/create-table-dialog/create-table-dialog.component';
 import { CreateScheduleDialogComponent } from './_dialogs/schedules/create-schedule-dialog/create-schedule-dialog.component';
 import { EditScheduleDialogComponent } from './_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
+import { CreateReservationsDialogComponent } from './_dialogs/reservations/create-reservations-dialog/create-reservations-dialog.component';
+import { EditReservationsDialogComponent } from './_dialogs/reservations/edit-reservations-dialog/edit-reservations-dialog.component';
 import { HoursPipe } from './_pipes/hours.pipe';
 import { PhoneNumberPipe } from './_pipes/phone-number.pipe';
 import { CustomTimeFormatPipe } from './_pipes/custom-time-format.pipe';
@@ -97,6 +99,7 @@ import { FloorAssignerComponent } from './admin/floor-assigner/floor-assigner.co
 import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
+import { ReservationsDashboardComponent } from './reservations-dashboard/reservations-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -119,6 +122,8 @@ import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashbo
         CreateTableDialogComponent,
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
+        CreateReservationsDialogComponent,
+        EditReservationsDialogComponent,
         HoursPipe,
         PhoneNumberPipe,
         CustomTimeFormatPipe,
@@ -140,7 +145,8 @@ import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashbo
         EditTimestampDialogComponent,
         MassSelectDialogComponent,
         FloorAssignerComponent,
-        ResumeDashboardComponent
+        ResumeDashboardComponent,
+        ReservationsDashboardComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,38 @@
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
+  <h1 mat-dialog-title>Edit Reservation</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Name:</mat-label>
+      <input type="text" formControlName="name" matInput required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone Number:</mat-label>
+      <input type="text" formControlName="phoneNumber" matInput required (input)="formatPhoneNumber()">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Total Party:</mat-label>
+      <input type="number" formControlName="totalParty" matInput required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date:</mat-label>
+      <input type="date" formControlName="date" matInput required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Time:</mat-label>
+      <mat-select formControlName="time">
+        <mat-option *ngFor="let time of timeOptions" [value]="time">
+          {{ time }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions style="justify-content: space-between;">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.valid">Update</button>
+  </div>
+</form>

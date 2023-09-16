@@ -153,6 +153,13 @@
                         [(ngModel)]="tablesActive" (change)="toggleTablesActive()"></mat-slide-toggle>
                 </span>
             </div>
+            <div class="profile-dashboard-card-row">
+                <span>Reservations: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="reservationsActive" (change)="toggleReservationsActiveActive()"></mat-slide-toggle>
+                </span>
+            </div>
         </div>
         <div class="profile-dashboard-card-main-container-half">
             <button mat-raised-button color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"

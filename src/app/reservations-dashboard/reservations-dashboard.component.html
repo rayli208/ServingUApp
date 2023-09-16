@@ -1,0 +1,40 @@
+<app-header iconClass="fa-solid fa-bookmark" title="Reservations Dashboard">
+    <div class="reservations-dashboard-header">
+        <div>
+            <div>Selected Date: </div>
+            <mat-form-field appearance="outline">
+                <input matInput [matDatepicker]="picker" [ngModel]="selectedDate || 'Select a date'"
+                    (ngModelChange)="selectedDate = $event; fetchAllReservations()" placeholder="Select a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-raised-button color="primary" (click)="openCreateReservationDialog()">
+                Create Reservation
+            </button>
+        </div>
+    </div>
+</app-header>
+
+<div class="reservation-dashboard-row">
+    <div class="reservation-dashboard-card" *ngFor="let reservation of reservationsForSelectedDate">
+        <div class="reservation-card-content">
+            <div class="reservation-dashboard-name">
+                <span>{{ reservation.name }}</span>
+            </div>
+            <hr>
+            <p><b>Phone:</b> {{reservation.phoneNumber}}</p>
+            <p><b>Table Size:</b> {{reservation.totalParty}}</p>
+            <p><b>Time:</b> {{reservation.time}}</p>
+        </div>
+        <div class="reservation-dashboard-icons">
+            <div (click)="openEditReservationDialog(reservation)"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div (click)="removeReservation(reservation)"><i class="fa-solid fa-trash-can"></i></div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="reservationsForSelectedDate.length === 0">
+    <i class="reservation-dashboard-empty">There are no reservations for this day.</i>
+</div>

@@ -51,6 +51,7 @@ export class ProfileDashboardComponent implements OnInit {
     scheduleActive: boolean;
     punchClockActive: boolean;
     tablesActive: boolean;
+    reservationsActive: boolean;
 
     imageUrls$: Observable<string[]>;
     imageUrls: string[] = [];
@@ -108,6 +109,11 @@ export class ProfileDashboardComponent implements OnInit {
             localStorage.setItem('tablesActive', 'false');
         }
         this.tablesActive = localStorage.getItem('tablesActive') === 'true';
+
+        if (!localStorage.getItem('reservationsActive')) {
+            localStorage.setItem('reservationsActive', 'false');
+        }
+        this.reservationsActive = localStorage.getItem('reservationsActive') === 'true';
     }
 
     updateCurrentImageUrl() {
@@ -141,6 +147,10 @@ export class ProfileDashboardComponent implements OnInit {
 
     toggleTablesActive() {
         localStorage.setItem('tablesActive', this.tablesActive.toString());
+    }
+
+    toggleReservationsActiveActive() {
+        localStorage.setItem('reservationsActive', this.reservationsActive.toString());
     }
 
     // Make sure only numbers are being entered into the input value
