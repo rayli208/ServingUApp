@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Reservation } from '../_models/reservation.model';
 import { Message } from '../_models/message.model';
 import { MessagesService } from '../_services/messages.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
@@ -15,12 +15,15 @@ import { ReservationsService } from '../_services/reservation.service';
   styleUrls: ['./tables-waitlist.component.scss']
 })
 export class TablesWaitlistComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   user: Observable<any>;
   userId: string;
   currentEmployeer: any;
   reservations: Reservation[] = [];
   message: string;
-
+  maxOverLappingReservations: number;
+  reservationCounts: { [key: string]: number } = {};
   public reservationForm: FormGroup;
   timeOptions: string[] = this.generateTimeOptions();
 
@@ -52,6 +55,7 @@ export class TablesWaitlistComponent implements OnInit {
         let emailLower = user.email.toLowerCase();
         this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
           this.currentEmployeer = res;
+          this.maxOverLappingReservations = this.currentEmployeer.maxOverLappingReservations;
           this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
         });
 
@@ -73,10 +77,16 @@ export class TablesWaitlistComponent implements OnInit {
       this.reservations = reservations.map(e => {
         return {
           id: e.payload.doc.id,
-          ...(e.payload.doc.data() as Omit<Reservation, 'id'>) // Asserting the type here
+          ...(e.payload.doc.data() as Omit<Reservation, 'id'>)
         } as Reservation;
       }).filter(reservation => reservation.date === todayDate).sort((a, b) => {
         return new Date(`1970-01-01 ${a.time}`).getTime() - new Date(`1970-01-01 ${b.time}`).getTime();
+      });
+
+      this.reservationCounts = {};
+      this.reservations.forEach(reservation => {
+        const time = reservation.time;
+        this.reservationCounts[time] = (this.reservationCounts[time] || 0) + 1;
       });
     });
   }
@@ -102,6 +112,7 @@ export class TablesWaitlistComponent implements OnInit {
   deleteReservation(reservation: Reservation) {
     this.reservationsService.deleteReservation(reservation)
       .then(() => {
+        this.showSnackBar("Reservation deleted!", "red-snackbar");
         this.fetchReservations();
       })
       .catch(error => {
@@ -127,10 +138,7 @@ export class TablesWaitlistComponent implements OnInit {
     let totalMessagesCount = Math.ceil(messageContent.length / 153);
     this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
-        this._snackBar.open('Text has been sent!', '', {
-          duration: 2500,
-          panelClass: ['green-snackbar']
-        });
+        this.showSnackBar("Text has been sent!", "green-snackbar");
       })
       .catch(error => {
         console.log('Error updating textsThisMonth:', error);
@@ -181,6 +189,8 @@ export class TablesWaitlistComponent implements OnInit {
 
   showSnackBar(message: string, color: string) {
     this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
       duration: 2500,
       panelClass: [color]
     });
@@ -215,5 +225,28 @@ export class TablesWaitlistComponent implements OnInit {
     }
 
     return `${formattedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
+  }
+
+  getBackgroundColorClass(time: string): string {
+    const time24Hour = this.convertTo24HourFormat(time);
+    const reservationsForTime = this.reservationCounts[time24Hour] || 0;
+
+    if (reservationsForTime === 0) {
+      return 'bg-green';
+    } else if (reservationsForTime < this.maxOverLappingReservations) {
+      return 'bg-yellow';
+    } else {
+      return 'bg-red';
+    }
+  }
+
+  isTimeSlotFull(time: string): boolean {
+    const time24Hour = this.convertTo24HourFormat(time);
+    return (this.reservationCounts[time24Hour] || 0) >= this.maxOverLappingReservations;
+  }
+
+  getReservationCountForTime(time: string): number {
+    const time24Hour = this.convertTo24HourFormat(time);
+    return this.reservationCounts[time24Hour] || 0;
   }
 }

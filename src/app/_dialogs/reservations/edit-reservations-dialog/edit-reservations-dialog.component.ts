@@ -164,4 +164,8 @@ export class EditReservationsDialogComponent implements OnInit {
 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
+
+  getReservationCountForTime(time: string): number {
+    return this.reservationCounts[time] || 0;
+  }
 }

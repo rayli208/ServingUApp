@@ -1,6 +1,7 @@
 <div class="tables-waitlist-container">
-    <h1 class="tables-waitlist-header">Waitlist: <i class="fa-solid fa-circle-info" matTooltip='Default Text: "{{message}}"'></i></h1>
-    
+    <h1 class="tables-waitlist-header">Waitlist: <i class="fa-solid fa-circle-info"
+            matTooltip='Default Text: "{{message}}"'></i></h1>
+
     <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" novalidate class="tables-waitlist-form">
         <div>
             <mat-form-field appearance="outline">
@@ -24,13 +25,24 @@
             <mat-form-field appearance="outline">
                 <mat-label>Time:</mat-label>
                 <mat-select formControlName="time">
-                    <mat-option *ngFor="let time of timeOptions" [value]="time">{{ time }}</mat-option>
+                  <mat-option *ngFor="let time of timeOptions" [value]="time"
+                    [class.bg-green]="getBackgroundColorClass(time) === 'bg-green'"
+                    [class.bg-yellow]="getBackgroundColorClass(time) === 'bg-yellow'"
+                    [class.bg-red]="getBackgroundColorClass(time) === 'bg-red'" [disabled]="isTimeSlotFull(time)">
+                    <div class="reservation-option">
+                      <span>
+                        {{ time }}
+                      </span>
+                      <span>
+                        ({{ getReservationCountForTime(time) }}/{{ maxOverLappingReservations }})
+                      </span>
+                    </div>
+                  </mat-option>
                 </mat-select>
-            </mat-form-field>
+              </mat-form-field>
         </div>
         <button mat-raised-button color="primary" type="submit" [disabled]="!reservationForm.valid">Add</button>
     </form>
-    
     <br>
     <span *ngIf="reservations.length === 0" class="no-reservations-message">
         There are no reservations at the moment.
@@ -55,7 +67,8 @@
             </div>
             <hr>
             <div class="tables-waitlist-card-actions">
-                <div *ngIf="!reservation.hasRecievedText" class="tables-waitlist-card-text" (click)="textTableReady(reservation)">
+                <div *ngIf="!reservation.hasRecievedText" class="tables-waitlist-card-text"
+                    (click)="textTableReady(reservation)">
                     <i class="fa-solid fa-comment-sms"></i>
                 </div>
                 <div class="tables-waitlist-card-delete" (click)="deleteReservation(reservation)">

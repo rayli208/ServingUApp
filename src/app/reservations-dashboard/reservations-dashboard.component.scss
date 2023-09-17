@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    align-items: center;
 }
 
 .reservation-dashboard-row {
@@ -63,6 +64,23 @@
     color: $text-muted;
 }
 
+.reservation-dashboard-row-inner{
+    margin-bottom: 5px;
+}
+
+.reservation-dashboard-row-inner span:first-of-type {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 5px;
+}
+
+.reservation-dashboard-row-inner span:last-of-type {
+    display: inline-block;
+    font-size: 14px;
+}
+
 @media (max-width:1200px) {
     .reservation-dashboard-card {
         width: calc(50% - 16px);
@@ -70,7 +88,7 @@
 }
 
 @media (max-width:768px) {
-    .reservations-dashboard-header[_ngcontent-ng-c3760198563] {
+    .reservations-dashboard-header {
         flex-direction: column;
     }
 

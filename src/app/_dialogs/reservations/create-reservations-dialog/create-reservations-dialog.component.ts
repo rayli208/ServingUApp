@@ -31,7 +31,7 @@ export class CreateReservationsDialogComponent implements OnInit {
   ) {
     const now = new Date();
     const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-    
+
     this.reservationForm = this.formBuilder.group({
       name: ['', Validators.required],
       phoneNumber: ['', Validators.required],
@@ -174,5 +174,9 @@ export class CreateReservationsDialogComponent implements OnInit {
     }
 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  getReservationCountForTime(time: string): number {
+    return this.reservationCounts[time] || 0;
   }
 }

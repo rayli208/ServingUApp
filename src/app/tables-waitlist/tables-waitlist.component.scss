@@ -1,5 +1,17 @@
 @import './../_styles/variables.scss';
 
+.bg-green {
+    background-color: $green30;
+}
+
+.bg-yellow {
+    background-color: $yellow30;
+}
+
+.bg-red {
+    background-color: $red30;
+}
+
 .tables-waitlist-container {
     margin: 15px;
 }
@@ -125,6 +137,31 @@
     font-style: italic;
     font-size: 14px;
     color: $text-muted;
+}
+
+.reservation-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 160px;
+}
+
+.reservation-option span {
+    flex: 1;
+
+    &:first-of-type {
+        text-align: left;
+    }
+
+    &:last-of-type {
+        text-align: right;
+    }
+}
+
+.reservation-option span:last-of-type {
+    font-style: italic;
+    font-size: 14px;
+    color: $black;
 }
 
 @media (max-width: 768px) {

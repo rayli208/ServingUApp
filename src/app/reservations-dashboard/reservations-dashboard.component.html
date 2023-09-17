@@ -24,9 +24,9 @@
                 <span>{{ reservation.name }}</span>
             </div>
             <hr>
-            <p><b>Phone:</b> {{reservation.phoneNumber}}</p>
-            <p><b>Table Size:</b> {{reservation.totalParty}}</p>
-            <p><b>Time:</b> {{reservation.time}}</p>
+            <div class="reservation-dashboard-row-inner"><span>Phone:</span> <span>{{reservation.phoneNumber}}</span></div>
+            <div class="reservation-dashboard-row-inner"><span>Table Size:</span> <span>{{reservation.totalParty}}</span></div>
+            <div class="reservation-dashboard-row-inner"><span>Time:</span> <span>{{reservation.time}}</span></div>
         </div>
         <div class="reservation-dashboard-icons">
             <div (click)="openEditReservationDialog(reservation)"><i class="fa-solid fa-pen-to-square"></i></div>

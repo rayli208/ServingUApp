@@ -29,7 +29,14 @@
           [class.bg-green]="getBackgroundColorClass(time) === 'bg-green'"
           [class.bg-yellow]="getBackgroundColorClass(time) === 'bg-yellow'"
           [class.bg-red]="getBackgroundColorClass(time) === 'bg-red'" [disabled]="isTimeSlotFull(time)">
-          {{ time }}
+          <div class="reservation-option">
+            <span>
+              {{ time }}
+            </span>
+            <span>
+              ({{ getReservationCountForTime(time) }}/{{ maxOverLappingReservations }})
+            </span>
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>
