@@ -54,9 +54,6 @@ export class ReservationsDashboardComponent implements OnInit {
         } as Reservation;
       });
 
-      // Log the fetched reservations for debugging
-      console.log("All fetched reservations:", this.allReservations);
-
       this.filterReservationsForSelectedDate();
     });
   }
@@ -108,13 +105,17 @@ export class ReservationsDashboardComponent implements OnInit {
   openEditReservationDialog(reservation: Reservation): void {
     const dialogRef = this.dialog.open(EditReservationsDialogComponent, {
       width: '500px',
-      data: { reservation: reservation }
+      data: { 
+        reservation: reservation,
+        allReservations: this.allReservations,  // Passing all reservations as data
+      }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       this.fetchAllReservations();
     });
   }
+  
 
   removeReservation(reservation: Reservation) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

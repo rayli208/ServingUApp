@@ -1,7 +1,7 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
   <h1 mat-dialog-title>Edit Reservation</h1>
   <div mat-dialog-content>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" style="margin-top: 5px;">
       <mat-label>Name:</mat-label>
       <input type="text" formControlName="name" matInput required>
     </mat-form-field>
@@ -18,13 +18,16 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Date:</mat-label>
-      <input type="date" formControlName="date" matInput required>
+      <input type="date" formControlName="date" matInput required (change)="onDateChange()">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Time:</mat-label>
       <mat-select formControlName="time">
-        <mat-option *ngFor="let time of timeOptions" [value]="time">
+        <mat-option *ngFor="let time of timeOptions" [value]="time"
+          [class.bg-green]="getBackgroundColorClass(time) === 'bg-green'"
+          [class.bg-yellow]="getBackgroundColorClass(time) === 'bg-yellow'"
+          [class.bg-red]="getBackgroundColorClass(time) === 'bg-red'" [disabled]="isTimeSlotFull(time)">
           {{ time }}
         </mat-option>
       </mat-select>

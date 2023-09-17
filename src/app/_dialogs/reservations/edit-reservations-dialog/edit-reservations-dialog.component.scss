@@ -1,3 +1,18 @@
+
+@import '../../../_styles/variables.scss';
+
 mat-form-field {
     width: 100%;
+}
+
+.bg-green {
+    background-color: $green30;
+}
+
+.bg-yellow {
+    background-color: $yellow30;
+}
+
+.bg-red {
+    background-color: $red30;
 }
