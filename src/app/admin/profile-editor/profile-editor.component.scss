@@ -1,6 +1,6 @@
 .profile-editor-header {
     display: block;
-    margin-bottom: 10px !important;
+    margin-bottom: 15px !important;
 }
 
 .profile-editor-image-container {
@@ -118,6 +118,51 @@
     margin: 5px 0px;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.two-fifths {
+    flex: 2 1 calc(40% - 10px);
+    margin-right: 15px;
+
+    /* 10px for some spacing */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+.one-fifth {
+    flex: 1 1 calc(20% - 10px);
+
+    /* 10px for some spacing */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+.one-third {
+    flex: 1 1 calc(33.33% - 10px);
+    margin-right: 15px;
+
+    /* 10px for some spacing */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+.two-thirds {
+    flex: 2 1 calc(66.67% - 10px);
+
+    /* 10px for some spacing */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
     .parent-container {
         flex-wrap: wrap;
@@ -128,6 +173,22 @@
         flex: 0 0 calc(33.33% - 30px);
         /* width of each item (100% divided by 3) minus total gap */
         max-width: calc(33.33% - 30px);
+    }
+}
+
+/* Responsive Breakpoint */
+@media only screen and (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .two-fifths,
+    .one-fifth,
+    .one-third,
+    .two-thirds {
+        width: 100%;
+        margin-right: 0px;
+        flex: 1 1 100%;
     }
 }
 

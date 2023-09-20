@@ -6,6 +6,5 @@ export interface Reservation {
     totalParty: number;
     time: string;
     date: string;
-    hasRecievedText?: boolean;
   }
   

@@ -2,7 +2,7 @@
   <div class="table-dashboard-actions-container">
     <div class="table-dashboard-actions">
       <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
-      <h1>Current Floor: {{ getFloorName(currentFloor) }}</h1>
+      <h1><span class="current-floor-label">Current Floor: </span>{{ getFloorName(currentFloor) }}</h1>
       <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
     </div>
     <div>

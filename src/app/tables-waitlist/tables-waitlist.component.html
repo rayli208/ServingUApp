@@ -25,21 +25,21 @@
             <mat-form-field appearance="outline">
                 <mat-label>Time:</mat-label>
                 <mat-select formControlName="time">
-                  <mat-option *ngFor="let time of timeOptions" [value]="time"
-                    [class.bg-green]="getBackgroundColorClass(time) === 'bg-green'"
-                    [class.bg-yellow]="getBackgroundColorClass(time) === 'bg-yellow'"
-                    [class.bg-red]="getBackgroundColorClass(time) === 'bg-red'" [disabled]="isTimeSlotFull(time)">
-                    <div class="reservation-option">
-                      <span>
-                        {{ time }}
-                      </span>
-                      <span>
-                        ({{ getReservationCountForTime(time) }}/{{ maxOverLappingReservations }})
-                      </span>
-                    </div>
-                  </mat-option>
+                    <mat-option *ngFor="let time of timeOptions" [value]="time"
+                        [class.bg-green]="getBackgroundColorClass(time) === 'bg-green'"
+                        [class.bg-yellow]="getBackgroundColorClass(time) === 'bg-yellow'"
+                        [class.bg-red]="getBackgroundColorClass(time) === 'bg-red'" [disabled]="isTimeSlotFull(time)">
+                        <div class="reservation-option">
+                            <span>
+                                {{ time }}
+                            </span>
+                            <span>
+                                ({{ getReservationCountForTime(time) }}/{{ maxOverLappingReservations }})
+                            </span>
+                        </div>
+                    </mat-option>
                 </mat-select>
-              </mat-form-field>
+            </mat-form-field>
         </div>
         <button mat-raised-button color="primary" type="submit" [disabled]="!reservationForm.valid">Add</button>
     </form>
@@ -48,7 +48,7 @@
         There are no reservations at the moment.
     </span>
     <div *ngFor="let reservation of reservations">
-        <div class="tables-waitlist-card" [ngClass]="{'text-sent': reservation.hasRecievedText}">
+        <div class="tables-waitlist-card">
             <div class="tables-waitlist-card-name">{{ reservation.name }}</div>
             <div class="tables-waitlist-card-content">
                 <b>Phone: </b>
@@ -67,10 +67,11 @@
             </div>
             <hr>
             <div class="tables-waitlist-card-actions">
-                <div *ngIf="!reservation.hasRecievedText" class="tables-waitlist-card-text"
-                    (click)="textTableReady(reservation)">
+                <div class="tables-waitlist-card-text" [class.disabled]="textInProgress[reservation.id]"
+                    (click)="!textInProgress[reservation.id] && textTableReady(reservation)">
                     <i class="fa-solid fa-comment-sms"></i>
                 </div>
+
                 <div class="tables-waitlist-card-delete" (click)="deleteReservation(reservation)">
                     <i class="fa-solid fa-trash-can"></i>
                 </div>

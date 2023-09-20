@@ -73,6 +73,10 @@
                 <span>Max Overlapping Reservations: </span>
                 <span>{{ (user | async)?.maxOverLappingReservations }}</span>
             </div>
+            <div *ngIf="(user | async)?.defaultText" class="profile-dashboard-card-row">
+                <span>Default Text Message: </span>
+                <span>"{{ (user | async)?.defaultText }}"</span>
+            </div>
             <div class="profile-dashboard-card-row description-section">
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>

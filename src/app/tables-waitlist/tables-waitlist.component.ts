@@ -8,6 +8,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 import { ReservationsService } from '../_services/reservation.service';
+import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tables-waitlist',
@@ -24,8 +26,9 @@ export class TablesWaitlistComponent implements OnInit {
   message: string;
   maxOverLappingReservations: number;
   reservationCounts: { [key: string]: number } = {};
-  public reservationForm: FormGroup;
+  textInProgress: { [reservationId: string]: boolean } = {};
   timeOptions: string[] = this.generateTimeOptions();
+  public reservationForm: FormGroup;
 
   constructor(
     public messagesService: MessagesService,
@@ -33,6 +36,7 @@ export class TablesWaitlistComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private authService: AuthService,
     private formBuilder: FormBuilder,
+    private dialog: MatDialog,
     private reservationsService: ReservationsService
   ) {
     this.user = null;
@@ -55,8 +59,13 @@ export class TablesWaitlistComponent implements OnInit {
         let emailLower = user.email.toLowerCase();
         this.authService.getCurrentUserInfo(emailLower).subscribe(res => {
           this.currentEmployeer = res;
+          if (this.currentEmployeer.defaultText && this.currentEmployeer.defaultText.trim() !== '') {
+            this.message = this.currentEmployeer.defaultText;
+          } else {
+            this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
+          }
+
           this.maxOverLappingReservations = this.currentEmployeer.maxOverLappingReservations;
-          this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
         });
 
         this.setUserId();
@@ -64,6 +73,7 @@ export class TablesWaitlistComponent implements OnInit {
       }
     });
   }
+
 
   setUserId() {
     this.reservationForm.patchValue({
@@ -110,18 +120,28 @@ export class TablesWaitlistComponent implements OnInit {
   }
 
   deleteReservation(reservation: Reservation) {
-    this.reservationsService.deleteReservation(reservation)
-      .then(() => {
-        this.showSnackBar("Reservation deleted!", "red-snackbar");
-        this.fetchReservations();
-      })
-      .catch(error => {
-        console.error("Error deleting reservation:", error);
-      });
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete the reservation for ${reservation.name}?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.reservationsService.deleteReservation(reservation).then(() => {
+          this.showSnackBar("Reservation deleted!", "red-snackbar");
+          // Refresh the reservations after deletion
+          this.fetchReservations();
+        }).catch(error => {
+          console.error("Error deleting reservation:", error);
+        });
+      }
+    });
   }
 
   textTableReady(reservation: Reservation) {
-    reservation.hasRecievedText = true;
+    this.textInProgress[reservation.id] = true;
     this.sendMessageToReservation(reservation, this.message);
   }
 
@@ -134,8 +154,10 @@ export class TablesWaitlistComponent implements OnInit {
       content: { text: messageContent }
     };
 
-    this.messagesService.createMessage(message);
-    let totalMessagesCount = Math.ceil(messageContent.length / 153);
+    this.messagesService.createMessage(message)
+      .finally(() => {
+        this.textInProgress[reservation.id] = false;
+      }); let totalMessagesCount = Math.ceil(messageContent.length / 153);
     this.authService.updateTextsThisMonth(totalMessagesCount)
       .then(() => {
         this.showSnackBar("Text has been sent!", "green-snackbar");

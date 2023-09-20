@@ -1,7 +1,6 @@
 <app-header iconClass="fa-solid fa-bookmark" title="Reservations Dashboard">
     <div class="reservations-dashboard-header">
         <div>
-            <div>Selected Date: </div>
             <mat-form-field appearance="outline">
                 <input matInput [matDatepicker]="picker" [ngModel]="selectedDate || 'Select a date'"
                     (ngModelChange)="selectedDate = $event; fetchAllReservations()" placeholder="Select a date">
@@ -30,7 +29,7 @@
         </div>
         <div class="reservation-dashboard-icons">
             <div (click)="openEditReservationDialog(reservation)"><i class="fa-solid fa-pen-to-square"></i></div>
-            <div (click)="removeReservation(reservation)"><i class="fa-solid fa-trash-can"></i></div>
+            <div (click)="deleteReservation(reservation)"><i class="fa-solid fa-trash-can"></i></div>
         </div>
     </div>
 </div>

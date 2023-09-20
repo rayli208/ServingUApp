@@ -93,7 +93,6 @@ export class ReservationsDashboardComponent implements OnInit {
 
   openCreateReservationDialog(): void {
     const dialogRef = this.dialog.open(CreateReservationsDialogComponent, {
-      width: '500px',
       data: { allReservations: this.allReservations }  // Passing all reservations as data
     });
 
@@ -104,7 +103,6 @@ export class ReservationsDashboardComponent implements OnInit {
 
   openEditReservationDialog(reservation: Reservation): void {
     const dialogRef = this.dialog.open(EditReservationsDialogComponent, {
-      width: '500px',
       data: { 
         reservation: reservation,
         allReservations: this.allReservations,  // Passing all reservations as data
@@ -117,7 +115,7 @@ export class ReservationsDashboardComponent implements OnInit {
   }
   
 
-  removeReservation(reservation: Reservation) {
+  deleteReservation(reservation: Reservation) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: `Are you sure you want to delete the reservation for ${reservation.name}?`

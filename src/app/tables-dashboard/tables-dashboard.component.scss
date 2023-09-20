@@ -239,7 +239,7 @@
 
 /* These rules will hide the table view and show the message when the screen width is 800px or less */
 @media (max-width: 800px) {
-  .table-view {
+  .table-view, .current-floor-label {
     display: none;
   }
 

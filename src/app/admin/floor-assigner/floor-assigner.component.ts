@@ -37,20 +37,22 @@ export class FloorAssignerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.userId && changes.userId.currentValue) {
+    if (changes.userId && changes.userId.currentValue) {
       this.floors$ = this.floorsService.getFloorsForUser(this.userId).pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data() as Floor;
           const id = a.payload.doc.id;
           return { id, ...data };
-        }))
+        })),
+        map(floors => {
+          // Sort the floors by floor number
+          return floors.sort((a, b) => a.floorNumber - b.floorNumber);
+        })
       );
 
       // Subscribe to the floors and update the used floor numbers whenever they change
       this.floors$.subscribe(floors => {
         this.usedFloorNumbers = floors.map(floor => floor.floorNumber);
-        // Sort the floors by floor number
-        floors.sort((a, b) => a.floorNumber - b.floorNumber);
       });
     }
   }
