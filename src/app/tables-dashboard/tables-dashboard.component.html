@@ -34,11 +34,13 @@
           <h1 class="table-view-current-floor">Current Floor: {{ getFloorName(currentFloor) }}</h1>
           <ng-container *ngFor="let table of totalTables">
             <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)" class="shape {{table.shape}}"
-              cdkDragBoundary=".table-view" cdkDrag
-              [style.background-image]="'url(' + getEmployeeImgById(table.employeeId) + ')'"
-              [style.border]="table.isActive ? '2px solid #22C795' : '2px solid #EB5B5B'"
-              [style.opacity]="table.isActive ? '1' : '0.3'" (cdkDragEnded)="dragEnd($event, table)"
-              [style.top]="table.positionY + 'px'" [style.left]="table.positionX + 'px'">
+              cdkDragBoundary=".table-view" cdkDrag [ngStyle]="{
+              'background-image': getEmployeeImgById(table.employeeId) ? 'url(' + getEmployeeImgById(table.employeeId) + ')' : '',
+              'border': table.isActive ? '2px solid #22C795' : '2px solid #EB5B5B',
+              'opacity': table.isActive ? '1' : '0.3',
+              'top': table.positionY + 'px',
+              'left': table.positionX + 'px'
+            }" (cdkDragEnded)="dragEnd($event, table)">
               <div class="table-number" [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
                 {{ table.tableNumber }}
               </div>
@@ -47,7 +49,7 @@
         </div>
         <div class="employee-view">
           <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables">
-            </app-tables-employee-view>
+          </app-tables-employee-view>
         </div>
       </div>
     </mat-drawer-content>

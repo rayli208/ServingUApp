@@ -33,7 +33,8 @@
             ],
             "scripts": [],
             "sourceMap": false,
-            "vendorChunk": true
+            "vendorChunk": true,
+            "allowedCommonJsDependencies": ["quill"]
           },
           "configurations": {
             "production": {

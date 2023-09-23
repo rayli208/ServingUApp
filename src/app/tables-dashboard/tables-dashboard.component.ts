@@ -77,9 +77,9 @@ export class TablesDashboardComponent implements OnInit {
     });
   }
 
-  getEmployeeImgById(id: string): string | null {
+  getEmployeeImgById(id: string): string {
     const employee = this.clockedInEmployees.find(e => e.id === id);
-    return employee ? employee.imgUrl : null;
+    return employee && employee.imgUrl ? employee.imgUrl : '';
   }
 
   getFloorName(floorNumber: number): string {
