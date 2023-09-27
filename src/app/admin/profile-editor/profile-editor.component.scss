@@ -114,6 +114,15 @@
     gap: 15px;
 }
 
+/* New styles for mat-card distribution */
+.editor-and-uploader-container mat-card:first-child {
+    flex: 2 1 calc(50% - 10px);
+}
+
+.editor-and-uploader-container mat-card:not(:first-child) {
+    flex: 1 1 calc(25% - 10px);
+}
+
 .profile-editor-image-upload-button {
     margin: 5px 0px;
 }
@@ -177,7 +186,7 @@
 }
 
 /* Responsive Breakpoint */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1200px) {
     .row {
         flex-direction: column;
     }
@@ -192,7 +201,7 @@
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
     .parent-container {
         flex-direction: column;
     }

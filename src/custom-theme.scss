@@ -1301,7 +1301,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
     line-height: 24px
 }
 
-div.mat-mdc-select-panel{
+div.mat-mdc-select-panel {
     padding: 0px !important;
 }
 
@@ -1835,7 +1835,7 @@ div.mat-mdc-select-panel{
     line-height: 24px
 }
 
-.mat-mdc-menu-content{
+.mat-mdc-menu-content {
     padding: 0px !important;
 }
 
@@ -2623,6 +2623,11 @@ html {
     --mdc-fab-container-color: rgba(0, 0, 0, 0.12);
     --mdc-fab-icon-color: rgba(0, 0, 0, 0.38);
     --mat-mdc-fab-color: rgba(0, 0, 0, 0.38)
+}
+
+.mdc-fab {
+    width: 50px !important;
+    height: 50px !important;
 }
 
 .mdc-fab--extended {
@@ -3906,6 +3911,6 @@ html {
     background-color: #ffffff !important;
 }
 
-.mat-horizontal-stepper-header-container{
+.mat-horizontal-stepper-header-container {
     margin-bottom: 15px;
 }

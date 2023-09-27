@@ -106,13 +106,13 @@
 .app-menu-toggle{
     position: fixed; 
     z-index: 9999999999999999; 
-    bottom: 15px;
-    right: 15px; 
+    bottom: 25px;
+    right: 25px; 
     background-color: $brand-primary;
     cursor: pointer;
 
     i{
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 

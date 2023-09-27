@@ -40,15 +40,15 @@ export class TablesWaitlistComponent implements OnInit {
     private reservationsService: ReservationsService
   ) {
     this.user = null;
-    const today = new Date().toISOString().split('T')[0];
-
+    const now = new Date();
+    const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
     this.reservationForm = this.formBuilder.group({
       name: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       totalParty: ['', Validators.required],
       date: [today],
       time: ['', Validators.required],
-      uid: ['']  // Will be auto-populated
+      uid: ['']
     });
   }
 
@@ -64,16 +64,13 @@ export class TablesWaitlistComponent implements OnInit {
           } else {
             this.message = `Your table is now ready at ${this.currentEmployeer.location_name}.\n\nPlease come to the host stand to be seated!`;
           }
-
           this.maxOverLappingReservations = this.currentEmployeer.maxOverLappingReservations;
         });
-
         this.setUserId();
         this.fetchReservations();
       }
     });
   }
-
 
   setUserId() {
     this.reservationForm.patchValue({
@@ -82,7 +79,8 @@ export class TablesWaitlistComponent implements OnInit {
   }
 
   fetchReservations() {
-    const todayDate = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const todayDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
     this.reservationsService.getReservationsListForUser(this.userId).subscribe(reservations => {
       this.reservations = reservations.map(e => {
         return {
@@ -92,7 +90,6 @@ export class TablesWaitlistComponent implements OnInit {
       }).filter(reservation => reservation.date === todayDate).sort((a, b) => {
         return new Date(`1970-01-01 ${a.time}`).getTime() - new Date(`1970-01-01 ${b.time}`).getTime();
       });
-
       this.reservationCounts = {};
       this.reservations.forEach(reservation => {
         const time = reservation.time;
@@ -106,7 +103,6 @@ export class TablesWaitlistComponent implements OnInit {
       const selectedTime = this.reservationForm.get('time').value;
       const formattedTime24Hour = this.convertTo24HourFormat(selectedTime);
       this.reservationForm.patchValue({ time: formattedTime24Hour });
-
       this.reservationsService.createReservation(this.reservationForm.value)
         .then(id => {
           this.showSnackBar("Reservation added successfully!", "green-snackbar");
@@ -120,7 +116,6 @@ export class TablesWaitlistComponent implements OnInit {
   }
 
   deleteReservation(reservation: Reservation) {
-
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: `Are you sure you want to delete the reservation for ${reservation.name}?`
@@ -131,7 +126,6 @@ export class TablesWaitlistComponent implements OnInit {
       if (result) {
         this.reservationsService.deleteReservation(reservation).then(() => {
           this.showSnackBar("Reservation deleted!", "red-snackbar");
-          // Refresh the reservations after deletion
           this.fetchReservations();
         }).catch(error => {
           console.error("Error deleting reservation:", error);
