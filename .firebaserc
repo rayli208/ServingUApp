@@ -1,4 +1,9 @@
 {
+  "projects": {
+    "default": "servinguapp-test",
+    "prod": "servinguapp-5d02d",
+    "test": "servinguapp-test"
+  },
   "targets": {
     "skeleton-a81ca": {
       "hosting": {
@@ -8,7 +13,5 @@
       }
     }
   },
-  "projects": {
-    "default": "serving-u-app-5d02d"
-  }
+  "etags": {}
 }
