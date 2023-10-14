@@ -1,9 +1,11 @@
 <app-header iconClass="fa-solid fa-address-book" title="Employee Dashboard">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <button style="margin-top: 5px;" mat-raised-button color="primary" (click)="createEmployee()">Create
-            Employee</button>
+            Employee
+        </button>
         <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
-            style="margin-left: 15px;">
+            style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
+            [matBadgeHidden]="!employeeNameFilter && !positionFilter && (floorEmployeeFilter === 'all')">
             <i class="fa-solid fa-filter"></i>
         </button>
     </div>
@@ -13,7 +15,7 @@
                 <div>Employee Filter:</div>
                 <div>
                     <button mat-mini-fab color="primary" aria-label="Reset Form" (click)="resetFilter()"
-                        [disabled]="!employeeNameFilter && !positionFilter">
+                        [disabled]="!employeeNameFilter && !positionFilter && (floorEmployeeFilter === 'all')">
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                 </div>

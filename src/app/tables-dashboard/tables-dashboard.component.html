@@ -16,7 +16,8 @@
         <i class="fa-solid fa-bolt-lightning"></i>
       </button>
       <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
-        style="margin-left: 15px;">
+        style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
+        [matBadgeHidden]="isActiveFilter === 'all' && !seatsFilter">
         <i class="fa-solid fa-filter"></i>
       </button>
       <mat-menu #menu="matMenu">

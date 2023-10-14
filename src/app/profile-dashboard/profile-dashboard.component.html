@@ -170,15 +170,15 @@
             </div>
         </div>
         <div class="profile-dashboard-card-main-container-half">
-            <button mat-raised-button color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
+            <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
                 [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToProfileEditorDashboard()">
                 <i class="fa-solid fa-user fa-2xl"></i>
             </button>
-            <button mat-raised-button color="primary" style="margin-right: 15px;" matTooltip="Hours Editor"
+            <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hours Editor"
                 [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToHoursEditorDashboard()">
                 <i class="fa-solid fa-clipboard-list fa-2xl"></i>
             </button>
-            <button mat-raised-button color="primary" matTooltip="Resume Reviewer"
+            <button mat-fab color="primary" matTooltip="Resume Reviewer"
                 [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToResumeDashboard()">
                 <i class="fa-regular fa-newspaper fa-2xl"></i>
             </button>

@@ -13,7 +13,8 @@
             <div *ngIf="isMobile === true || Jobs?.length > 3" [ngClass]="{'grey' : allTheWayRight || Jobs?.length < 2}"
                 id="dashboard-job-wrapper_scroller-right" (click)="scrollRight()"
                 class="btn next fas fa-chevron-circle-right"></div>
-            <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu" style="margin-left: 15px;">
+            <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
+                style="margin-left: 15px;" matBadge="!" matBadgeColor="accent" [matBadgeHidden]="!jobNameFilter">
                 <i class="fa-solid fa-filter"></i>
             </button>
             <mat-menu #menu="matMenu">
@@ -21,15 +22,17 @@
                     <div class="filter-menu">
                         <div>Jobs Filter:</div>
                         <div>
-                            <button mat-mini-fab color="primary" aria-label="Reset Form" (click)="resetFilter()" [disabled]="!jobNameFilter">
+                            <button mat-mini-fab color="primary" aria-label="Reset Form" (click)="resetFilter()"
+                                [disabled]="!jobNameFilter">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
                     </div>
                     <mat-form-field>
                         <mat-label>Job Name</mat-label>
-                        <span matPrefix><i class="fa-solid fa-magnifying-glass" style="color: #35B9DF; margin-left: 5px;"></i> &nbsp;</span>
-                        <input type="text" matInput [(ngModel)]="jobNameFilter"> 
+                        <span matPrefix><i class="fa-solid fa-magnifying-glass"
+                                style="color: #35B9DF; margin-left: 5px;"></i> &nbsp;</span>
+                        <input type="text" matInput [(ngModel)]="jobNameFilter">
                     </mat-form-field>
                 </div>
             </mat-menu>
@@ -39,7 +42,8 @@
 <div class="dashboard-job-wrapper">
     <div (scroll)="scrollHandler($event)" id="dashboard-job-wrapper_scroller">
         <ng-container *ngFor="let job of Jobs; let i = index">
-            <div class="dashboard-job-card-container" *ngIf="!jobNameFilter || job.title.toLowerCase().includes(jobNameFilter.toLowerCase())">
+            <div class="dashboard-job-card-container"
+                *ngIf="!jobNameFilter || job.title.toLowerCase().includes(jobNameFilter.toLowerCase())">
                 <div class="dashboard-job-card">
                     <div class="dashboard-job-card-icon">
                         <ng-container *ngIf="job.icon && svgs[job.icon]">

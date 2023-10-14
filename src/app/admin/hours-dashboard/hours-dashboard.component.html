@@ -16,13 +16,13 @@
             <button mat-raised-button color="primary" (click)="loadTimestamps()"
                 [disabled]="!isRangeValid()">Load
                 Timestamps</button>
-            <button mat-raised-button color="primary" (click)="exportToExcel()"
+            <button mat-mini-fab color="primary" (click)="exportToExcel()"
                 [disabled]="!isRangeValid() || isEmpty" matTooltip="Export to Excel">
-                <i class="fa-solid fa-file-excel fa-2xl"></i>
+                <i class="fa-solid fa-file-excel"></i>
             </button>
-            <button mat-raised-button color="primary" (click)="openCreateDialog()"
+            <button mat-mini-fab color="primary" (click)="openCreateDialog()"
                 matTooltip="Create Timestamp">
-                <i class="fa-solid fa-clock fa-2xl"></i>
+                <i class="fa-solid fa-clock"></i>
             </button>
         </div>
     </div>
