@@ -20,7 +20,7 @@ import svgsData from '../core/constants/svg';
 })
 export class HiringDashboardComponent implements OnInit {
     userId;
-    user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+    user: Observable<any>;
     Jobs: Job[] = [];
     allTheWayLeft: boolean = true;
     allTheWayRight: boolean = false;
@@ -28,6 +28,7 @@ export class HiringDashboardComponent implements OnInit {
     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     svgs = svgsData;
+    jobNameFilter: string = '';  
 
     constructor(
         public dialog: MatDialog,
@@ -164,5 +165,13 @@ export class HiringDashboardComponent implements OnInit {
         } else {
             this.allTheWayRight = false;
         }
+    }
+
+    get filteredJobs() {
+        return this.Jobs?.filter(job => !this.jobNameFilter || job.title.toLowerCase().includes(this.jobNameFilter.toLowerCase())) || [];
+    }
+
+    resetFilter() {
+        this.jobNameFilter = '';
     }
 }

@@ -11,10 +11,41 @@
       <button mat-raised-button color="primary" (click)="createTable()" matTooltip="Add Table">
         <span>Add Table</span>
       </button>
-      <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="openMassAssignDialog()"
+      <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="openMassAssignDialog()"
         matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
-        <i class="fa-solid fa-bolt-lightning fa-2xl"></i>
+        <i class="fa-solid fa-bolt-lightning"></i>
       </button>
+      <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
+        style="margin-left: 15px;">
+        <i class="fa-solid fa-filter"></i>
+      </button>
+      <mat-menu #menu="matMenu">
+        <div (click)="$event.stopPropagation()" style="padding: 15px;">
+          <div class="filter-menu">
+            <div>Tables Filter:</div>
+            <div>
+              <button mat-mini-fab color="primary" aria-label="Reset Filters" (click)="resetFilter()"
+                [disabled]="!isActiveFilter && !seatsFilter">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Filter by Seats -->
+          <mat-form-field>
+            <mat-label>Seats</mat-label>
+            <input type="number" matInput [(ngModel)]="seatsFilter" (input)="applyFilters()">
+          </mat-form-field>
+          <!-- Filter by Active State -->
+          <div>
+            <mat-radio-group [(ngModel)]="isActiveFilter" aria-label="Active State" (change)="applyFilters()">
+              <mat-radio-button value="all">All</mat-radio-button>
+              <mat-radio-button value="true">Active</mat-radio-button>
+              <mat-radio-button value="false">Not Active</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-menu>
+
     </div>
   </div>
   <div class="table-view-small-screen-message">We cannot view the table manager because the screen is too small.</div>
@@ -24,15 +55,15 @@
   <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
     <mat-drawer-content>
       <div class="table-all-table-container">
-        <i class="table-all-table-container-no-tables" *ngIf="totalTables?.length == 0">There are no tables, please make
-          some!</i>
-        <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor" [tables]="totalTables">
-        </app-tables-all-table-view>
+        <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
+        <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor"
+          [tables]="filteredTables"></app-tables-all-table-view>
+
       </div>
       <div class="table-dashboard-container-split">
         <div #tableView class="table-view">
           <h1 class="table-view-current-floor">Current Floor: {{ getFloorName(currentFloor) }}</h1>
-          <ng-container *ngFor="let table of totalTables">
+          <ng-container *ngFor="let table of filteredTables">
             <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)" class="shape {{table.shape}}"
               cdkDragBoundary=".table-view" cdkDrag [ngStyle]="{
               'background-image': getEmployeeImgById(table.employeeId) ? 'url(' + getEmployeeImgById(table.employeeId) + ')' : '',

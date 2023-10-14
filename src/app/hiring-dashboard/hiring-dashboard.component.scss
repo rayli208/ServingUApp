@@ -159,6 +159,13 @@
     cursor: not-allowed;
 }
 
+.dashboard-job-empty{
+    font-style: italic;
+    font-size: 14px;
+    color: $text-muted;
+    margin-top: 15px;
+}
+
 @media (max-width:1200px) {
     #dashboard-job-wrapper_scroller div.dashboard-job-card-container {
         min-height: 99px;

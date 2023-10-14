@@ -37,3 +37,13 @@ h1 {
     background: $red70;
     border: 1px solid $red;
 }
+
+.filter-menu{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}

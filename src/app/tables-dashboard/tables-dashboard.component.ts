@@ -22,12 +22,15 @@ export class TablesDashboardComponent implements OnInit {
   userId;
   user: Observable<any>;
   totalTables: Table[] = [];
+  filteredTables: Table[] = [];
   clockedInEmployees: Employee[] = [];
   currentFloor: number = 1;
   gridSize: number = 25;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   floors: Floor[] = [];
+  isActiveFilter: string = 'all'; 
+  seatsFilter: number;
 
   constructor(
     public dialog: MatDialog,
@@ -46,7 +49,9 @@ export class TablesDashboardComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
-
+        this.isActiveFilter = 'all';
+        this.seatsFilter = null; // Initialize to null
+        
         this.tablesService.getTablesListForUser(this.userId).subscribe(res => {
           this.totalTables = res.map(e => {
             return {
@@ -54,6 +59,9 @@ export class TablesDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Table;
           }).sort((a, b) => (a.isActive === b.isActive) ? a.tableNumber - b.tableNumber : b.isActive ? 1 : -1);
+          
+          console.log("Total Tables: ", this.totalTables);  // Debug log
+          this.applyFilters();
         });
 
         this.floorsService.getFloorsForUser(this.userId).subscribe(res => {
@@ -158,5 +166,24 @@ export class TablesDashboardComponent implements OnInit {
         });
       }
     });
+  }
+
+  applyFilters() {
+    this.filteredTables = this.totalTables.filter(table => {
+      let isActiveCondition = true;
+      
+      if (this.isActiveFilter !== 'all') {
+        isActiveCondition = (table.isActive.toString() === this.isActiveFilter);
+      }
+  
+      return isActiveCondition && (this.seatsFilter === null || table.seats >= this.seatsFilter);
+    });
+  }
+  
+
+  resetFilter() {
+    this.isActiveFilter = 'all';
+    this.seatsFilter = null;
+    this.applyFilters();
   }
 }

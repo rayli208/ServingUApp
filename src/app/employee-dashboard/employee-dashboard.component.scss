@@ -92,6 +92,13 @@
     }
 }
 
+.employee-dashboard-empty{
+    font-style: italic;
+    font-size: 14px;
+    color: $text-muted;
+    margin-top: 15px;
+}
+
 
 @media (max-width:768px) {
     .employee-dashboard-row span:first-of-type{

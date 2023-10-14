@@ -25,6 +25,9 @@ export class EmployeeDashboardComponent implements OnInit {
   user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
   Employees: Employee[];
   Schedules: any[];
+  employeeNameFilter: string = '';
+  positionFilter: string = '';
+  floorEmployeeFilter: string = 'all';
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -157,4 +160,20 @@ export class EmployeeDashboardComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
+  resetFilter() {
+    this.employeeNameFilter = '';
+    this.positionFilter = '';
+    this.floorEmployeeFilter = 'all';
+}
+
+
+  get filteredEmployees() {
+    return this.Employees?.filter(employee => 
+        (!this.employeeNameFilter || employee.name.toLowerCase().includes(this.employeeNameFilter.toLowerCase())) &&
+        (!this.positionFilter || employee.position.toLowerCase().includes(this.positionFilter.toLowerCase())) &&
+        (this.floorEmployeeFilter === 'all' || (this.floorEmployeeFilter === 'true' && employee.floorEmployee) || (this.floorEmployeeFilter === 'false' && !employee.floorEmployee))
+    ) || [];
+}
+
 }

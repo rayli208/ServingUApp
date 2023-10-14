@@ -4,7 +4,7 @@ export class Table {
     employeeId: string | null;
     tableNumber: number;
     shape: number;
-    seats: string;
+    seats: number;
     floorPlan: number;
     isActive: boolean;
     positionX: number;
