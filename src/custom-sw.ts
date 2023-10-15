@@ -16,7 +16,7 @@ const CACHE_FILES = [
 ];
 
 // Install event: cache files
-self.addEventListener('install', (event: ExtendableEvent) => {
+self.addEventListener('install', (event: any) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then((cache) => {
@@ -24,10 +24,11 @@ self.addEventListener('install', (event: ExtendableEvent) => {
         return cache.addAll(CACHE_FILES);
       })
   );
+  (self as any).skipWaiting();  // Activate the service worker immediately once it's installed
 });
 
 // Activate event: remove old caches
-self.addEventListener('activate', (event: ExtendableEvent) => {
+self.addEventListener('activate', (event: any) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -40,6 +41,7 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
       );
     })
   );
+  (self as any).clients.claim();  // Take control of the currently open pages
 });
 
 // Fetch event: serve from cache or make a network request

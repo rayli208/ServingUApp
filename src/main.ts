@@ -11,21 +11,18 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .then(() => {
     if ('serviceWorker' in navigator && environment.production) {
-      navigator.serviceWorker.register('/custom-sw.js')
+      navigator.serviceWorker.register('/service-worker.js')
         .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
+          // A new service worker is available
+          const newWorker = registration.installing;
 
-          // When an update is found, refresh the page
-          registration.addEventListener('updatefound', () => {
-            const installingWorker = registration.installing;
-            installingWorker.onstatechange = () => {
-              if (installingWorker.state === 'installed') {
-                if (navigator.serviceWorker.controller) {
-                  // New update available, refresh the page to use the new version immediately
-                  window.location.reload();
-                }
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed') {
+              if (navigator.serviceWorker.controller) {
+                // New content is available; please refresh.
+                window.location.reload();
               }
-            };
+            }
           });
         })
         .catch((err) => {
@@ -34,11 +31,3 @@ platformBrowserDynamic().bootstrapModule(AppModule)
     }
   })
   .catch(err => console.error(err));
-
-// When the service worker changes, refresh the page
-let refreshing: boolean;
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-  if (refreshing) return;
-  refreshing = true;
-  window.location.reload();
-});
