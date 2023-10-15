@@ -197,12 +197,11 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
         ReactiveFormsModule,
         HttpClientModule,
         QuillModule.forRoot(),
-        ServiceWorkerModule.register('ngsw-worker.js', {
+        ServiceWorkerModule.register('custom-sw.js', {
             enabled: environment.production,
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000'
         }),
+        
     ],
     providers: [DatePipe],
     bootstrap: [AppComponent]

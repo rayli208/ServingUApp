@@ -25,7 +25,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/custom-sw.ts"
             ],
             "styles": [
               "src/custom-theme.scss",
@@ -51,8 +52,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "ngswConfigPath": "ngsw-config.json",
-              "serviceWorker": true,
+              "serviceWorker": false,
               "budgets": [
                 {
                   "type": "initial",
