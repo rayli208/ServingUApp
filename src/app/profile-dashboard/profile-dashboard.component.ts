@@ -9,6 +9,7 @@ import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-profile-dashboard',
@@ -28,6 +29,7 @@ import { AuthService } from '../_services/auth.service';
     ],
 })
 export class ProfileDashboardComponent implements OnInit {
+    version = environment.version;
     userId: string;
     user: Observable<any>;
     Employees: Employee[];

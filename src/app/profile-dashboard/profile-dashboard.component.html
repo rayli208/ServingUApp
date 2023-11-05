@@ -57,9 +57,10 @@
                     <a *ngIf="(user | async)?.website" target="_blank" href="{{(user | async)?.website}}"
                         class="fa-solid fa-link primary"></a>
                     <ng-container *ngIf="!(user | async)?.website">
-                        <span class="profile-missing">There is no website at the moment, please set it in profile editor.</span>
+                        <span class="profile-missing">There is no website at the moment, please set it in profile
+                            editor.</span>
                     </ng-container>
-                </span>                
+                </span>
             </div>
             <div class="profile-dashboard-card-row">
                 <span>Active Employees: </span>
@@ -87,12 +88,16 @@
                             [innerHTML]="getSanitizedHtml((user | async)?.description )">
                         </div>
                         <ng-template #noDescription>
-                            <span class="profile-missing">There is no description at the moment, please set it in profile editor</span>
+                            <span class="profile-missing">There is no description at the moment, please set it in
+                                profile editor</span>
                         </ng-template>
                     </ng-template>
                 </mat-expansion-panel>
             </div>
-
+            <div *ngIf="(user | async)?.defaultText" class="profile-dashboard-card-row">
+                <span>App Version: </span>
+                <span>{{ version }}</span>
+            </div>
         </div>
         <div class="profile-dashboard-card-main-container-half">
             <div class="image-container" *ngIf="imageUrls.length; else noImages">
@@ -178,8 +183,8 @@
                 [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToHoursEditorDashboard()">
                 <i class="fa-solid fa-clipboard-list fa-2xl"></i>
             </button>
-            <button mat-fab color="primary" matTooltip="Resume Reviewer"
-                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToResumeDashboard()">
+            <button mat-fab color="primary" matTooltip="Resume Reviewer" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToResumeDashboard()">
                 <i class="fa-regular fa-newspaper fa-2xl"></i>
             </button>
         </div>
