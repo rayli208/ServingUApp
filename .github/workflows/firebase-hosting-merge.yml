@@ -10,7 +10,8 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -21,11 +22,14 @@ jobs:
 
       - run: npm ci
 
+      - name: Fetch the latest tags
+        run: git fetch --tags
+
+      - name: Get the latest tag
+        run: echo "LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+
       - name: Update environment files with new version
-        run: |
-          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "New version is $VERSION"
-          node ./scripts/version-replacer.js $VERSION
+        run: node ./scripts/version-replacer.js ${{ env.LATEST_TAG }}
 
       - run: npm run build
 
