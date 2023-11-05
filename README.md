@@ -1,48 +1,45 @@
-# Building a Secure Dashboard with Angular 11 and Firebase for ServingU
+Automated Semantic Versioning with semantic-release
+This project implements an automated versioning and release workflow using semantic-release. This enables us to automate the versioning process and to publish releases based on conventional commit messages.
 
-# Overview
-We will walk you through the process of creating a secure and efficient dashboard for ServingU, an expert agency in restaurant management and staffing led by the dynamic duo, Rayli Raykov and Josh Hageman. Rayli, the developer, focuses on ensuring the digital infrastructure's smooth functioning, while Josh, the sales and consulting maestro, handles client relationship and business development.
+Commit Message Format
+To fully benefit from semantic-release, we follow the Conventional Commits specification. Each commit message should be structured as follows:
 
-This guide will cover the following steps:
+arduino
+Copy code
+<type>[optional scope]: <description>
 
-1. Setting up a Firebase App
-2. Crafting an Angular app with minimal elements
-3. Integrating Firebase authentication into the Angular app
-4. Tweaking the security of Cloud Firestore database 
-5. Building the application for production 
+[optional body]
 
-Let's get started!
+[optional footer(s)]
+Where type is one of the following:
 
-# Creating Your Firebase App
-Head over to Firebase website and follow the instructions below. The precise steps might differ slightly due to frequent updates to Firebase.
+feat: A new feature
+fix: A bug fix
+docs: Documentation only changes
+style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+refactor: A code change that neither fixes a bug nor adds a feature
+perf: A code change that improves performance
+test: Adding missing tests or correcting existing tests
+build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+chore: Other changes that don't modify src or test files
+revert: Reverts a previous commit
 
-Start with initializing a Firebase Authentication for user logins and build a Cloud Firestore NoSQL database for user data storage. 
+Release Workflow
+When commits are merged into the main branch, the semantic-release GitHub Action is triggered. Here's what it does:
 
-The database for this project will include a `users` collection. Documents inside this collection will contain `{accountType<string>, displayName<string>, displayName_lower<string>, email<string>, email_lower<string>}` fields.
+Analyze Commits: Determines the type of version bump (major, minor, patch) based on the commit messages since the last release.
+Generate Release Notes: Compiles the release notes from the commit messages.
+Create Git Tag: Tags the current commit with the new version number.
+Create GitHub Release: Generates a new release on GitHub with the compiled release notes.
+Publish: If configured, pushes the new version to the configured package registry (e.g., npm).
+How to Trigger a Release
+To trigger a new release, follow these steps:
 
-# Constructing Your Angular App
-Ensure that you're using at least Angular 11 and npm version 7.
+Merge your feature, fix, or chore branch into the main branch.
+Ensure your commit messages follow the Conventional Commits format.
+The semantic-release workflow will run automatically on the main branch.
+Once the workflow completes successfully, check the "Releases" section on GitHub for the new release.
+Troubleshooting
+If a release does not happen as expected, check the semantic-release workflow logs for errors. Common issues include misformatted commit messages or issues with the GitHub Actions configuration.
 
-Next, create your Angular project, 'serving-u-app', and add Firebase and Angular Material libraries to it. The Angular Material library will enhance the visual appeal and user experience of your application. Angular's built-in tools will remove any unused libraries during the production build process.
-
-After setting up the basic architecture, proceed to create the necessary components, services, Firebase auth, and Angular page guards. 
-
-# Integrating Firebase Authentication with the Angular App
-
-Next, we will incorporate Firebase authentication into the Angular app using the Firebase App credentials. Remember to hide these credentials if you're using Git for version control.
-
-The basic navigation for each component is set up in the `app.module.ts` file. Firebase Authentication's user log-in status is used to restrict access to certain pages, navigated using the code in `services/auth.guard.ts`.
-
-The `services/auth.service.ts` code allows interaction with Firebase Authentication and Cloud Firestore. Notice how the `signupUser` function not only signs up a new user but also creates a new NoSQL document in the `users` collection to store user information!
-
-# Modifying Cloud Firestore Database Security
-
-Initially, anyone with a database link can read/write into the Firestore database. It's crucial to adjust these settings to ensure data security. By modifying the rules in the Firebase > Build > Cloud Firestore > Rules section, you can customize read and write access as needed.
-
-# Building for Production 
-
-Finally, build your application for production using the `ng build --prod` command. Angular's production build process will automatically remove all unused libraries.
-
-You can then upload the contents of your `serving-u-app/dist/serving-u-app` folder to the `html` folder of your website.
-
-This efficient and secure Angular application, powered by Firebase, will act as the digital backbone of ServingU, enabling Rayli and Josh to excel in their roles and deliver unparalleled service to their clientele.
