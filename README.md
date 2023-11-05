@@ -43,3 +43,4 @@ Once the workflow completes successfully, check the "Releases" section on GitHub
 Troubleshooting
 If a release does not happen as expected, check the semantic-release workflow logs for errors. Common issues include misformatted commit messages or issues with the GitHub Actions configuration.
 
+Manually Update version in package.json, and envrironemnts.ts
