@@ -197,7 +197,7 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
         ReactiveFormsModule,
         HttpClientModule,
         QuillModule.forRoot(),
-        ServiceWorkerModule.register('custom-sw.js', {
+        ServiceWorkerModule.register('custom-sw.ts', {
             enabled: environment.production,
             registrationStrategy: 'registerWhenStable:30000'
         }),
