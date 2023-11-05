@@ -3,7 +3,7 @@ name: Semantic Release
 on:
   push:
     branches:
-      - main  # Set this to your default branch
+      - main
 
 jobs:
   release:
@@ -12,18 +12,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # It's important to fetch all history for all branches and tags
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Set this to your Node.js version
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm ci  # It's recommended to use npm ci in CI/CD environments
+        run: npm ci
 
       - name: Run semantic-release
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Uncomment if you're publishing to npm
+
+      - name: Update environment files with new version
+        run: |
+          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "New version is $VERSION"
+          node ./scripts/version-replacer.js $VERSION
