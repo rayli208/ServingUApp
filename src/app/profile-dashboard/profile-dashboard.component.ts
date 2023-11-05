@@ -29,7 +29,7 @@ import { environment } from 'src/environments/environment';
     ],
 })
 export class ProfileDashboardComponent implements OnInit {
-    version = environment.version;
+    version = environment.appVersion;
     userId: string;
     user: Observable<any>;
     Employees: Employee[];

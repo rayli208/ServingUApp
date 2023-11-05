@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  version: '1.0.1',
+  appVersion: 'VERSION_PLACEHOLDER', // This will be replaced by the actual version
   password: 'YRNJR6969',
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
