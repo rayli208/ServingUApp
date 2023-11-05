@@ -20,9 +20,10 @@ jobs:
         id: next_version
         run: |
           OUTPUT=$(npx semantic-release --dry-run)
+          echo "Semantic Release output: $OUTPUT"
           VERSION=$(echo "$OUTPUT" | grep "The next release version is" | cut -d " " -f 6)
           echo "Next version: $VERSION"
-          if [ -n "$VERSION" ]; then
+          if [[ -n "$VERSION" ]]; then
             echo "::set-output name=version::$VERSION"
           else
             echo "No next release version detected."

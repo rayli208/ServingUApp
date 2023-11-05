@@ -22,23 +22,18 @@ jobs:
 
       - run: npm ci
 
-      - name: Semantic Release
+      - name: Semantic Release and Tag
         id: semantic
         run: |
           OUTPUT=$(npx semantic-release)
-          echo "Release output: $OUTPUT"
-          VERSION=$(echo "$OUTPUT" | grep "The next release version is" | cut -d " " -f 6)
-          if [ -n "$VERSION" ]; then
-            echo "::set-output name=version::$VERSION"
-          else
-            echo "No new release version detected."
-          fi
+          echo "$OUTPUT"
+          TAG=$(git describe --tags --abbrev=0)
+          echo "::set-output name=tag::$TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update environment files with new version
-        if: steps.semantic.outputs.version
-        run: node ./scripts/version-replacer.js ${{ steps.semantic.outputs.version }}
+        run: node ./scripts/version-replacer.js ${{ steps.semantic.outputs.tag }}
 
       - run: npm run build
 
