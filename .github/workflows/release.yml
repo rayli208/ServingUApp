@@ -1,3 +1,4 @@
+# release.yml
 name: Semantic Release
 
 on:
@@ -26,9 +27,3 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update environment files with new version
-        run: |
-          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "New version is $VERSION"
-          node ./scripts/version-replacer.js $VERSION
