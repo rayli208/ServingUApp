@@ -1,14 +1,13 @@
 // version-replacer.js
 const fs = require('fs');
-const path = require('path');
 
 // The version number should be passed as the first argument
 const version = process.argv[2];
 
-// Specify the path to the environment files
+// Specify the path to the environment files, relative to the project root
 const filesToUpdate = [
-  path.join(__dirname, 'src/environments/environment.prod.ts'),
-  path.join(__dirname, 'src/environments/environment.ts')
+  './src/environments/environment.prod.ts',
+  './src/environments/environment.ts'
 ];
 
 filesToUpdate.forEach(filePath => {
