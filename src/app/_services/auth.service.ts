@@ -58,7 +58,7 @@ export class AuthService {
 
                 this.afs.doc('/users/' + emailLower) // Use the email as the document ID
                     .set({
-                        accountType: 'endUser',
+                        accountType: 'bronze',
                         isPaying: true,
                         owner: user.owner,
                         location_name: user.location_name,
