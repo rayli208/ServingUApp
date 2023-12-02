@@ -37,30 +37,22 @@
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 100% 0;
 }
 
-.table-dashboard-container-split {
+.table-dashboard-container-table-view {
   display: flex;
+  justify-content: center;
 }
 
 .table-view {
   position: relative;
   margin: 15px 10px;
-  width: 750px;
   min-width: 750px;
-  max-width: 750px;
-  height: 500px;
+  min-height: 500px;
   border: solid $brand-primary 2px;
   border-radius: 5px;
   overflow: hidden;
   background-size: 25px 25px;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-}
-
-.employee-view {
-  display: inline-block;
-  flex-grow: 1;
-  height: 500px;
-  margin: 15px 10px;
 }
 
 .table-dashboard-actions-container {
@@ -218,39 +210,9 @@
   align-items: center;
 }
 
-.table-view-small-screen-message {
-  display: none;
-  /* Add your own styling here */
-}
-
 @media (max-width: 1150px) {
-  .table-dashboard-container-split {
-    flex-direction: column;
-  }
-
   .table-view {
     margin: 10px auto;
-  }
-
-  .employee-view {
-    width: 100%;
-    margin: 10px;
-  }
-}
-
-/* These rules will hide the table view and show the message when the screen width is 800px or less */
-@media (max-width: 800px) {
-  .table-view, .current-floor-label {
-    display: none;
-  }
-
-  .table-view-small-screen-message {
-    display: block;
-    font-style: italic;
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 14px;
-    color: $text-muted;
   }
 }
 

@@ -29,8 +29,10 @@ export class TablesDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   floors: Floor[] = [];
-  isActiveFilter: string = 'all'; 
+  isActiveFilter: string = 'all';
   seatsFilter: number;
+  tableViewWidth: number;
+  tableViewHeight: number;
 
   constructor(
     public dialog: MatDialog,
@@ -51,7 +53,7 @@ export class TablesDashboardComponent implements OnInit {
         this.userId = user.uid;
         this.isActiveFilter = 'all';
         this.seatsFilter = null; // Initialize to null
-        
+
         this.tablesService.getTablesListForUser(this.userId).subscribe(res => {
           this.totalTables = res.map(e => {
             return {
@@ -59,7 +61,7 @@ export class TablesDashboardComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Table;
           }).sort((a, b) => (a.isActive === b.isActive) ? a.tableNumber - b.tableNumber : b.isActive ? 1 : -1);
-          
+
           console.log("Total Tables: ", this.totalTables);  // Debug log
           this.applyFilters();
         });
@@ -83,6 +85,11 @@ export class TablesDashboardComponent implements OnInit {
         });
       }
     });
+
+    // Load or set default values
+    this.tableViewWidth = parseInt(localStorage.getItem('tableViewWidth'), 10) || 750;
+    this.tableViewHeight = parseInt(localStorage.getItem('tableViewHeight'), 10) || 500;
+
   }
 
   getEmployeeImgById(id: string): string {
@@ -171,15 +178,19 @@ export class TablesDashboardComponent implements OnInit {
   applyFilters() {
     this.filteredTables = this.totalTables.filter(table => {
       let isActiveCondition = true;
-      
+
       if (this.isActiveFilter !== 'all') {
         isActiveCondition = (table.isActive.toString() === this.isActiveFilter);
       }
-  
+
       return isActiveCondition && (this.seatsFilter === null || table.seats >= this.seatsFilter);
     });
   }
-  
+
+  updateViewDimensions() {
+    localStorage.setItem('tableViewWidth', this.tableViewWidth.toString());
+    localStorage.setItem('tableViewHeight', this.tableViewHeight.toString());
+  }
 
   resetFilter() {
     this.isActiveFilter = 'all';

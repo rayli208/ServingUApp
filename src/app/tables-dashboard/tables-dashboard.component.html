@@ -6,10 +6,13 @@
       <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
     </div>
     <div>
-      <button style="margin-right: 15px;" mat-raised-button (click)="drawer.toggle()"
+      <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
         matTooltip="Waitlist">Waitlist</button>
-      <button mat-raised-button color="primary" (click)="createTable()" matTooltip="Add Table">
-        <span>Add Table</span>
+      <button style="margin-left: 15px;" mat-raised-button (click)="employeeClocked.toggle()"
+        matTooltip="Clocked In Employees"><i class="fa-solid fa-stopwatch"></i> Employee</button>
+      <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="createTable()"
+        matTooltip="Add Table">
+        <span><i class="fa-solid fa-plus"></i> Table</span>
       </button>
       <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="openMassAssignDialog()"
         matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
@@ -31,6 +34,15 @@
               </button>
             </div>
           </div>
+          <!--Edit Tables Screen Size-->
+          <mat-form-field>
+            <mat-label>View Width</mat-label>
+            <input type="number" matInput [(ngModel)]="tableViewWidth" (change)="updateViewDimensions()">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>View Height</mat-label>
+            <input type="number" matInput [(ngModel)]="tableViewHeight" (change)="updateViewDimensions()">
+          </mat-form-field>
           <!-- Filter by Seats -->
           <mat-form-field>
             <mat-label>Seats</mat-label>
@@ -46,10 +58,8 @@
           </div>
         </div>
       </mat-menu>
-
     </div>
   </div>
-  <div class="table-view-small-screen-message">We cannot view the table manager because the screen is too small.</div>
 </app-header>
 
 <div class="table-dashboard-container">
@@ -61,8 +71,9 @@
           [tables]="filteredTables"></app-tables-all-table-view>
 
       </div>
-      <div class="table-dashboard-container-split">
-        <div #tableView class="table-view">
+      <div class="table-dashboard-container-table-view">
+        <div #tableView class="table-view"
+          [ngStyle]="{'min-width.px': tableViewWidth, 'min-height.px': tableViewHeight}">
           <h1 class="table-view-current-floor">Current Floor: {{ getFloorName(currentFloor) }}</h1>
           <ng-container *ngFor="let table of filteredTables">
             <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)" class="shape {{table.shape}}"
@@ -79,14 +90,14 @@
             </div>
           </ng-container>
         </div>
-        <div class="employee-view">
-          <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables">
-          </app-tables-employee-view>
-        </div>
       </div>
     </mat-drawer-content>
     <mat-drawer #drawer mode="over" position="end">
       <app-tables-waitlist></app-tables-waitlist>
+    </mat-drawer>
+    <mat-drawer #employeeClocked mode="over" position="end">
+      <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables">
+      </app-tables-employee-view>
     </mat-drawer>
   </mat-drawer-container>
 </div>

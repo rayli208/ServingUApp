@@ -1,7 +1,7 @@
 @import './../_styles/variables.scss';
 
 .tables-employee-view-container {
-    max-height: 500px;
+    padding: 15px;
     overflow: scroll;
 }
 
@@ -29,7 +29,7 @@
     }
 }
 
-.tables-employee-view-empty{
+.tables-employee-view-empty {
     font-style: italic;
     margin-bottom: 15px;
     font-size: 14px;
@@ -113,7 +113,8 @@
 
 .table-item {
     cursor: pointer;
-    flex-basis: calc(33.3333% - 10px); /* Takes up third of the container width minus the margin */
+    flex-basis: calc(33.3333% - 10px);
+    /* Takes up third of the container width minus the margin */
     box-sizing: border-box;
     margin: 5px;
     border-radius: 20px;
@@ -153,4 +154,4 @@
 .floor-header {
     text-decoration: underline;
     margin-bottom: 0px;
-  }
+}
