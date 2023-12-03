@@ -1,28 +1,35 @@
 <app-header iconClass="fa-solid fa-tablet-screen-button" title="Tables Dashboard">
   <div class="table-dashboard-actions-container">
     <div class="table-dashboard-actions">
-      <i class="fa-regular fa-circle-left" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
       <h1><span class="current-floor-label">Current Floor: </span>{{ getFloorName(currentFloor) }}</h1>
-      <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+      <div class="arrow-buttons">
+        <i class="fa-regular fa-circle-left" style="margin:0px 15px;" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
+        <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+      </div>
     </div>
+    
     <div>
-      <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
-        matTooltip="Waitlist">Waitlist</button>
-      <button style="margin-left: 15px;" mat-raised-button (click)="employeeClocked.toggle()"
-        matTooltip="Clocked In Employees"><i class="fa-solid fa-stopwatch"></i> Employee</button>
-      <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="createTable()"
-        matTooltip="Add Table">
-        <span><i class="fa-solid fa-plus"></i> Table</span>
-      </button>
-      <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="openMassAssignDialog()"
-        matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
-        <i class="fa-solid fa-bolt-lightning"></i>
-      </button>
-      <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
-        style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
-        [matBadgeHidden]="isActiveFilter === 'all' && !seatsFilter">
-        <i class="fa-solid fa-filter"></i>
-      </button>
+      <div style="margin-bottom: 15px;">
+        <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
+          matTooltip="Waitlist">Waitlist</button>
+        <button style="margin-left: 15px;" mat-raised-button (click)="employeeClocked.toggle()"
+          matTooltip="Clocked In Employees"><i class="fa-solid fa-stopwatch"></i> Employee</button>
+      </div>
+      <div>
+        <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="createTable()"
+          matTooltip="Add Table">
+          <span><i class="fa-solid fa-plus"></i> Table</span>
+        </button>
+        <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="openMassAssignDialog()"
+          matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
+          <i class="fa-solid fa-bolt-lightning"></i>
+        </button>
+        <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
+          style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
+          [matBadgeHidden]="isActiveFilter === 'all' && !seatsFilter">
+          <i class="fa-solid fa-filter"></i>
+        </button>
+      </div>
       <mat-menu #menu="matMenu">
         <div (click)="$event.stopPropagation()" style="padding: 15px;">
           <div class="filter-menu">

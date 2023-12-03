@@ -63,20 +63,19 @@
 }
 
 .table-dashboard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  i,
+  // On larger screens
   h1 {
-    display: inline-block;
-  }
-
-  h1 {
-    margin: 0px 8px !important;
+    margin: 0 15px; // Adjust as needed for spacing
   }
 
   i {
     font-size: 20px;
     cursor: pointer;
-    color: $brand-primary
+    color: $brand-primary;
   }
 
   i.disabled {
@@ -216,12 +215,32 @@
   }
 }
 
-@media (max-width:768px) {
-  .table-dashboard-actions-container{
+@media (max-width: 768px) {
+  .table-dashboard-actions-container {
     flex-direction: column;
+    align-items: center; // Center align the items in the container
+  }
 
-    .table-dashboard-actions{
-      margin-bottom: 15px;
+  .table-dashboard-actions {
+    flex-direction: column; // Stack items vertically
+    align-items: stretch; // Stretch items to take full width
+
+    h1 {
+      text-align: center; // Center the label text
+      margin-bottom: 10px; // Space between label and arrows
+    }
+
+    .arrow-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; // Make sure the container takes full width
+      margin: 10px 0px;
     }
   }
 }
+
+
+  
+
+  
+
