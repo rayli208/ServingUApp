@@ -184,12 +184,8 @@
 
 
 @media (max-width:768px) {
-    .dashboard-job-card-row span:first-of-type{
-        width: 40%;
-    }
-    
-    .dashboard-job-card-row span:last-of-type{
-        width: 60%;
+    .dashboard-job-card-row span{
+        display: block !important;
     }
 
     .dashboard-job-card-archived{
