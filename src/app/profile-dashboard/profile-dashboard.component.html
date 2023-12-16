@@ -182,8 +182,13 @@
         [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
         <i class="fa-solid fa-clipboard-list fa-2xl"></i>
     </button>
-    <button mat-fab color="primary" matTooltip="Resume Reviewer" [disabled]="!(pinValue == (user | async)?.pin)"
-        (click)="goToDashboard('resume-dashboard')">
+    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Resume Reviewer"
+        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
         <i class="fa-regular fa-newspaper fa-2xl"></i>
+    </button>
+    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Menu Builder"
+        *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" [disabled]="!(pinValue == (user | async)?.pin)"
+        (click)="goToDashboard('menu-builder-dashboard')">
+        <i class="fa-solid fa-utensils fa-2xl"></i>
     </button>
 </div>

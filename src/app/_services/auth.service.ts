@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, from } from 'rxjs';
+import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ProfilePic } from '../_models/profilePic.model';
 
@@ -84,6 +84,15 @@ export class AuthService {
             });
     }
 
+    getCurrentUserAccountType(): Observable<string | null> {
+        return from(this.afAuth.currentUser).pipe(
+            switchMap(user => {
+                if (!user || !user.email) return of(null);
+                return this.afs.doc(`users/${user.email.toLowerCase()}`).valueChanges();
+            }),
+            map((userData: any) => userData?.accountType)
+        );
+    }
 
     resetPassword(email: string): Promise<any> {
         return this.afAuth.sendPasswordResetEmail(email)

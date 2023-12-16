@@ -100,6 +100,7 @@ import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confir
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
 import { ReservationsDashboardComponent } from './reservations-dashboard/reservations-dashboard.component';
+import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-builder-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -146,7 +147,8 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
         MassSelectDialogComponent,
         FloorAssignerComponent,
         ResumeDashboardComponent,
-        ReservationsDashboardComponent
+        ReservationsDashboardComponent,
+        MenuBuilderDashboardComponent
     ],
     imports: [
         BrowserModule,
