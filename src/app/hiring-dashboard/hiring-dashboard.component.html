@@ -7,8 +7,8 @@
                 id="dashboard-job-wrapper_scroller-left" (click)="scrollLeft()"
                 class="btn prev fas fa-chevron-circle-left">
             </div>
-            <button mat-raised-button color="primary" (click)="createJob()">
-                <span>Add</span>
+            <button mat-raised-button color="primary" (click)="createJob()" matTooltip="Create Job">
+                <i class="fa-solid fa-plus"></i> Job
             </button>
             <div *ngIf="isMobile === true || Jobs?.length > 3" [ngClass]="{'grey' : allTheWayRight || Jobs?.length < 2}"
                 id="dashboard-job-wrapper_scroller-right" (click)="scrollRight()"
@@ -84,8 +84,8 @@
                             </span>
                         </div>
                         <div class="dashboard-job-card-row-footer">
-                            <button (click)="removeJob(job)" mat-raised-button>
-                                DELETE
+                            <button mat-mini-fab color="warn" (click)="removeJob(job)" matTooltip="Delete Job">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     </div>

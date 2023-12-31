@@ -85,14 +85,18 @@ export class AuthService {
     }
 
     getCurrentUserAccountType(): Observable<string | null> {
-        return from(this.afAuth.currentUser).pipe(
+        return this.afAuth.authState.pipe(
             switchMap(user => {
-                if (!user || !user.email) return of(null);
-                return this.afs.doc(`users/${user.email.toLowerCase()}`).valueChanges();
+                if (!user || !user.email) {
+                    console.log("Auth Service: No user or email found");
+                    return of(null);
+                }
+                const userEmail = user.email.toLowerCase();
+                return this.afs.doc(`users/${userEmail}`).valueChanges();
             }),
             map((userData: any) => userData?.accountType)
         );
-    }
+    }    
 
     resetPassword(email: string): Promise<any> {
         return this.afAuth.sendPasswordResetEmail(email)
