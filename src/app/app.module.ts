@@ -101,6 +101,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
 import { ReservationsDashboardComponent } from './reservations-dashboard/reservations-dashboard.component';
 import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-builder-dashboard.component';
+import { CreateMenuItemDialogComponent } from './_dialogs/menu-items/create-menu-item-dialog/create-menu-item-dialog.component';
+import { EditMenuItemDialogComponent } from './_dialogs/menu-items/edit-menu-item-dialog/edit-menu-item-dialog.component';
 
 @NgModule({
     declarations: [
@@ -120,9 +122,11 @@ import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-bui
         EditJobDialogComponent,
         EditTableDialogComponent,
         CreateJobDialogComponent,
+        CreateMenuItemDialogComponent,
         CreateTableDialogComponent,
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
+        EditMenuItemDialogComponent,
         CreateReservationsDialogComponent,
         EditReservationsDialogComponent,
         HoursPipe,

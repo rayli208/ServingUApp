@@ -1,0 +1,52 @@
+<form [formGroup]="menuItemForm" (ngSubmit)="onSubmit()" novalidate>
+    <h1 mat-dialog-title>Create Menu Item</h1>
+    <div mat-dialog-content>
+      <!-- Image Upload Section -->
+      <div style="text-align: center;">
+        <img (click)="fileUploader.click(); $event.stopPropagation()" 
+             [src]="imgSrc" 
+             width="100px" 
+             height="100px"
+             style="cursor: pointer; border-radius: 50%;">
+      </div>
+      <div>
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>Menu Item Image</mat-label>
+          <button type="button" mat-icon-button matPrefix (click)="fileUploader.click(); $event.stopPropagation()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+          <input type="text" readonly matInput formControlName="fileName" />
+          <input type="file" hidden #fileUploader (change)="detectNewImage($event)" accept="image/*" />
+        </mat-form-field>
+      </div>
+  
+      <!-- Menu Item Fields -->
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" formControlName="price" required>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <!-- Dialog Actions -->
+    <div mat-dialog-actions style="justify-content: space-between;">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" 
+              type="submit" 
+              [disabled]="!menuItemForm.valid || isSubmitted || !selectedImage">Create</button>
+    </div>
+  </form>
+  
