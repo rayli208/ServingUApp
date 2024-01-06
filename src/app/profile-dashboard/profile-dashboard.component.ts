@@ -48,6 +48,7 @@ export class ProfileDashboardComponent implements OnInit {
     }
 
     pinValue: string;
+    jobsActive: boolean;
     employeesActive: boolean;
     scheduleActive: boolean;
     punchClockActive: boolean;
@@ -86,11 +87,35 @@ export class ProfileDashboardComponent implements OnInit {
             }
         });
 
-        const features = ['employeesActive', 'scheduleActive', 'punchClockActive', 'tablesActive', 'reservationsActive'];
-        features.forEach(feature => {
-            const storedValue = localStorage.getItem(feature);
-            this[feature] = storedValue !== null ? storedValue === 'true' : false;
-        });
+        if (!localStorage.getItem('jobsActive')) {
+            localStorage.setItem('jobsActive', 'false');
+        }
+        this.jobsActive = localStorage.getItem('jobsActive') === 'true';
+
+        if (!localStorage.getItem('employeesActive')) {
+            localStorage.setItem('employeesActive', 'false');
+        }
+        this.employeesActive = localStorage.getItem('employeesActive') === 'true';
+
+        if (!localStorage.getItem('scheduleActive')) {
+            localStorage.setItem('scheduleActive', 'false');
+        }
+        this.scheduleActive = localStorage.getItem('scheduleActive') === 'true';
+
+        if (!localStorage.getItem('punchClockActive')) {
+            localStorage.setItem('punchClockActive', 'false');
+        }
+        this.punchClockActive = localStorage.getItem('punchClockActive') === 'true';
+
+        if (!localStorage.getItem('tablesActive')) {
+            localStorage.setItem('tablesActive', 'false');
+        }
+        this.tablesActive = localStorage.getItem('tablesActive') === 'true';
+
+        if (!localStorage.getItem('reservationsActive')) {
+            localStorage.setItem('reservationsActive', 'false');
+        }
+        this.reservationsActive = localStorage.getItem('reservationsActive') === 'true';
     }
 
     updateCurrentImageUrl() {
@@ -106,8 +131,28 @@ export class ProfileDashboardComponent implements OnInit {
         timer(0, 5000).subscribe(() => this.updateCurrentImageUrl());
     }
 
-    toggleFeatureActive(featureName: string, isActive: boolean) {
-        localStorage.setItem(featureName, isActive.toString());
+    toggleJobsActive() {
+        localStorage.setItem('jobsActive', this.jobsActive.toString());
+    }
+
+    toggleEmployeesActive() {
+        localStorage.setItem('employeesActive', this.employeesActive.toString());
+    }
+
+    toggleScheduleActive() {
+        localStorage.setItem('scheduleActive', this.scheduleActive.toString());
+    }
+
+    togglePunchClockActive() {
+        localStorage.setItem('punchClockActive', this.punchClockActive.toString());
+    }
+
+    toggleTablesActive() {
+        localStorage.setItem('tablesActive', this.tablesActive.toString());
+    }
+
+    toggleReservationsActiveActive() {
+        localStorage.setItem('reservationsActive', this.reservationsActive.toString());
     }
 
     // Make sure only numbers are being entered into the input value
@@ -134,11 +179,19 @@ export class ProfileDashboardComponent implements OnInit {
         document.body.removeChild(selBox);
     }
 
-    goToDashboard(dashboardRoute: string) {
-        this.router.navigate([`/${dashboardRoute}`]);
+    goToProfileEditorDashboard() {
+        this.router.navigate(['/profile-editor-dashboard']);
+    }
+
+    goToHoursEditorDashboard() {
+        this.router.navigate(['/hours-dashboard']);
+    }
+    
+    goToResumeDashboard() {
+        this.router.navigate(['/resume-dashboard']);
     }
 
     getSanitizedHtml(html: string): SafeHtml {
         return this.sanitizer.bypassSecurityTrustHtml(html);
-    }
+      }  
 }

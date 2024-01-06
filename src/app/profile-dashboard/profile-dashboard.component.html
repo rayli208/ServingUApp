@@ -20,14 +20,10 @@
                 <span>Account Type</span>
                 <span>
                     {{ (user | async)?.accountType | titlecase}}
-                    <i *ngIf="(user | async)?.accountType === 'bronze'" class="fa-solid fa-coins"
-                        style="color: #cd7f32;"></i>
-                    <i *ngIf="(user | async)?.accountType === 'silver'" class="fa-solid fa-coins"
-                        style="color: silver;"></i>
-                    <i *ngIf="(user | async)?.accountType === 'gold'" class="fa-solid fa-coins"
-                        style="color: gold;"></i>
-                    <i *ngIf="(user | async)?.accountType === 'platinum'" class="fa-solid fa-coins"
-                        style="color: #e5e4e2;"></i>
+                    <i *ngIf="(user | async)?.accountType === 'bronze'" class="fa-solid fa-coins" style="color: #cd7f32;"></i>
+                    <i *ngIf="(user | async)?.accountType === 'silver'" class="fa-solid fa-coins" style="color: silver;"></i>
+                    <i *ngIf="(user | async)?.accountType === 'gold'" class="fa-solid fa-coins" style="color: gold;"></i>
+                    <i *ngIf="(user | async)?.accountType === 'platinum'" class="fa-solid fa-coins" style="color: #e5e4e2;"></i>
                 </span>
             </div>
             <div class="profile-dashboard-card-row">
@@ -91,7 +87,23 @@
                 <span>Default Table Alert Text: </span>
                 <span>"{{ (user | async)?.defaultText }}"</span>
             </div>
-            <div *ngIf="version" class="profile-dashboard-card-row">
+            <div class="profile-dashboard-card-row description-section">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <span>Description: </span>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <div *ngIf="(user | async)?.description; else noDescription" class="description"
+                            [innerHTML]="getSanitizedHtml((user | async)?.description )">
+                        </div>
+                        <ng-template #noDescription>
+                            <span class="profile-missing">There is no description at the moment, please set it in
+                                profile editor</span>
+                        </ng-template>
+                    </ng-template>
+                </mat-expansion-panel>
+            </div>
+            <div *ngIf="(user | async)?.defaultText" class="profile-dashboard-card-row">
                 <span>App Version: </span>
                 <span>{{ version }}</span>
             </div>
@@ -108,87 +120,82 @@
             </ng-template>
         </div>
     </div>
+
 </div>
+
 <div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
     <div class="profile-dashboard-card-header">
         Available Views:
     </div>
-    <div class="profile-dashboard-card-row">
-        <span>Pin: </span>
-        <span>
-            <div>
-                <mat-form-field>
-                    <mat-label>Pin</mat-label>
-                    <input [(ngModel)]="pinValue" (input)="onInputChange($event)" type="password" matInput>
-                </mat-form-field>
+    <div class="profile-dashboard-card-main-container">
+        <div class="profile-dashboard-card-main-container-half">
+            <div class="profile-dashboard-card-row">
+                <span>Pin: </span>
+                <span>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Pin</mat-label>
+                            <input [(ngModel)]="pinValue" (input)="onInputChange($event)" type="password" matInput>
+                        </mat-form-field>
+                    </div>
+                </span>
             </div>
-        </span>
+            <div class="profile-dashboard-card-row">
+                <span>Jobs: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="jobsActive" (change)="toggleJobsActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Employee: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="employeesActive" (change)="toggleEmployeesActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Schedule: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="scheduleActive" (change)="toggleScheduleActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Punch Clock: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="punchClockActive" (change)="togglePunchClockActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Tables: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="tablesActive" (change)="toggleTablesActive()"></mat-slide-toggle>
+                </span>
+            </div>
+            <div class="profile-dashboard-card-row">
+                <span>Reservations: </span>
+                <span>
+                    <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
+                        [(ngModel)]="reservationsActive" (change)="toggleReservationsActiveActive()"></mat-slide-toggle>
+                </span>
+            </div>
+        </div>
+        <div class="profile-dashboard-card-main-container-half">
+            <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToProfileEditorDashboard()">
+                <i class="fa-solid fa-user fa-2xl"></i>
+            </button>
+            <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hours Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToHoursEditorDashboard()">
+                <i class="fa-solid fa-clipboard-list fa-2xl"></i>
+            </button>
+            <button mat-fab color="primary" matTooltip="Resume Reviewer" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToResumeDashboard()">
+                <i class="fa-regular fa-newspaper fa-2xl"></i>
+            </button>
+        </div>
     </div>
-    <div class="profile-dashboard-card-row">
-        <span>Employee: </span>
-        <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="employeesActive" (change)="toggleFeatureActive('employeesActive', employeesActive)">
-            </mat-slide-toggle>
-        </span>
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Schedule: </span>
-        <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="scheduleActive" (change)="toggleFeatureActive('scheduleActive', scheduleActive)">
-            </mat-slide-toggle>
-        </span>
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Punch Clock: </span>
-        <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="punchClockActive" (change)="toggleFeatureActive('punchClockActive', punchClockActive)">
-            </mat-slide-toggle>
-        </span>
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Tables: </span>
-        <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="tablesActive"
-                (change)="toggleFeatureActive('tablesActive', tablesActive)">
-            </mat-slide-toggle>
-        </span>
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Reservations: </span>
-        <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="reservationsActive"
-                (change)="toggleFeatureActive('reservationsActive', reservationsActive)">
-            </mat-slide-toggle>
-        </span>
-    </div>
-</div>
-<div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
-    <div class="profile-dashboard-card-header">
-        Manager Views:
-    </div>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('profile-editor-dashboard')">
-        <i class="fa-solid fa-user fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hiring Dashboard"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hiring-dashboard')">
-        <i class="fa-solid fa-user-plus fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hours Editor"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
-        <i class="fa-solid fa-clipboard-list fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Resume Reviewer"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
-        <i class="fa-regular fa-newspaper fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Menu Builder"
-        *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" [disabled]="!(pinValue == (user | async)?.pin)"
-        (click)="goToDashboard('menu-builder-dashboard')">
-        <i class="fa-solid fa-utensils fa-2xl"></i>
-    </button>
 </div>

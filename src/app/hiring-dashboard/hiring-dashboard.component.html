@@ -1,4 +1,4 @@
-<app-header iconClass="fa-solid fa-user-plus" title="Hiring Dashboard">
+<app-header iconClass="fa-solid fa-utensils" title="Hiring Dashboard">
     <div class="dashboard-container-actions" *ngIf="(user | async)">
         <div class="dashboard-container-actions-header" matBadge="{{Jobs.length}}" matBadgeOverlap="false">Your Jobs
         </div>
@@ -7,8 +7,8 @@
                 id="dashboard-job-wrapper_scroller-left" (click)="scrollLeft()"
                 class="btn prev fas fa-chevron-circle-left">
             </div>
-            <button mat-raised-button color="primary" (click)="createJob()" matTooltip="Create Job">
-                <i class="fa-solid fa-plus"></i> Job
+            <button mat-raised-button color="primary" (click)="createJob()">
+                <span>Add</span>
             </button>
             <div *ngIf="isMobile === true || Jobs?.length > 3" [ngClass]="{'grey' : allTheWayRight || Jobs?.length < 2}"
                 id="dashboard-job-wrapper_scroller-right" (click)="scrollRight()"
@@ -84,8 +84,8 @@
                             </span>
                         </div>
                         <div class="dashboard-job-card-row-footer">
-                            <button mat-mini-fab color="warn" (click)="removeJob(job)" matTooltip="Delete Job">
-                                <i class="fa-solid fa-trash"></i>
+                            <button (click)="removeJob(job)" mat-raised-button>
+                                DELETE
                             </button>
                         </div>
                     </div>

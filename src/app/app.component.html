@@ -56,7 +56,8 @@
        <mat-drawer #drawer mode="over" position="start">
            <!--See all this only if you are logged in-->
            <section class="app-navigation" *ngIf="(afAuth.user | async) && ((afAuth.user | async)?.emailVerified)">
-               <div *ngIf="(!checkLocalStorage('employeesActive') 
+               <div *ngIf="(!checkLocalStorage('jobsActive') 
+                   && !checkLocalStorage('employeesActive') 
                    && !checkLocalStorage('scheduleActive') 
                    && !checkLocalStorage('tablesActive'))  
                    && !checkLocalStorage('punchClockActive')  
@@ -65,6 +66,12 @@
                    <a routerLink="/profile-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
                        <i class="fa-solid fa-user"></i>
                        <div>Profile</div>
+                   </a>
+               </div>
+               <div *ngIf="checkLocalStorage('jobsActive')">
+                   <a routerLink="/hiring-dashboard" routerLinkActive="active" (click)="drawer.toggle()">
+                       <i class="fa-solid fa-utensils"></i>
+                       <div>Jobs</div>
                    </a>
                </div>
                <div *ngIf="checkLocalStorage('employeesActive')">
