@@ -1,0 +1,110 @@
+<app-header iconClass="fa-solid fa-tablet-screen-button" title="Tables Dashboard">
+  <div class="table-dashboard-actions-container">
+    <div class="table-dashboard-actions">
+      <h1><span class="current-floor-label">Current Floor: </span>{{ getFloorName(currentFloor) }}</h1>
+      <div class="arrow-buttons">
+        <i class="fa-regular fa-circle-left" style="margin:0px 15px;" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
+        <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
+      </div>
+    </div>
+    
+    <div>
+      <div style="margin-bottom: 15px;">
+        <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
+          matTooltip="Waitlist">Waitlist</button>
+        <button style="margin-left: 15px;" mat-raised-button (click)="employeeClocked.toggle()"
+          matTooltip="Clocked In Employees"><i class="fa-solid fa-stopwatch"></i> Employee</button>
+      </div>
+      <div>
+        <button style="margin-left: 15px;" mat-raised-button color="primary" (click)="createTable()"
+          matTooltip="Add Table">
+          <span><i class="fa-solid fa-plus"></i> Table</span>
+        </button>
+        <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="openMassAssignDialog()"
+          matTooltip="Mass Assign Tables" [disabled]="!clockedInEmployees?.length">
+          <i class="fa-solid fa-bolt-lightning"></i>
+        </button>
+        <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
+          style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
+          [matBadgeHidden]="isActiveFilter === 'all' && !seatsFilter">
+          <i class="fa-solid fa-filter"></i>
+        </button>
+      </div>
+      <mat-menu #menu="matMenu">
+        <div (click)="$event.stopPropagation()" style="padding: 15px;">
+          <div class="filter-menu">
+            <div>Tables Filter:</div>
+            <div>
+              <button mat-mini-fab color="primary" aria-label="Reset Filters" (click)="resetFilter()"
+                [disabled]="!isActiveFilter && !seatsFilter">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+          <!--Edit Tables Screen Size-->
+          <mat-form-field>
+            <mat-label>View Width</mat-label>
+            <input type="number" matInput [(ngModel)]="tableViewWidth" (change)="updateViewDimensions()">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>View Height</mat-label>
+            <input type="number" matInput [(ngModel)]="tableViewHeight" (change)="updateViewDimensions()">
+          </mat-form-field>
+          <!-- Filter by Seats -->
+          <mat-form-field>
+            <mat-label>Seats</mat-label>
+            <input type="number" matInput [(ngModel)]="seatsFilter" (input)="applyFilters()">
+          </mat-form-field>
+          <!-- Filter by Active State -->
+          <div>
+            <mat-radio-group [(ngModel)]="isActiveFilter" aria-label="Active State" (change)="applyFilters()">
+              <mat-radio-button value="all">All</mat-radio-button>
+              <mat-radio-button value="true">Active</mat-radio-button>
+              <mat-radio-button value="false">Not Active</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</app-header>
+
+<div class="table-dashboard-container">
+  <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
+    <mat-drawer-content>
+      <div class="table-all-table-container">
+        <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
+        <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor"
+          [tables]="filteredTables"></app-tables-all-table-view>
+
+      </div>
+      <div class="table-dashboard-container-table-view">
+        <div #tableView class="table-view"
+          [ngStyle]="{'min-width.px': tableViewWidth, 'min-height.px': tableViewHeight}">
+          <h1 class="table-view-current-floor">Current Floor: {{ getFloorName(currentFloor) }}</h1>
+          <ng-container *ngFor="let table of filteredTables">
+            <div *ngIf="table.floorPlan === currentFloor" (dblclick)="toggleActive(table)" class="shape {{table.shape}}"
+              cdkDragBoundary=".table-view" cdkDrag [ngStyle]="{
+              'background-image': getEmployeeImgById(table.employeeId) ? 'url(' + getEmployeeImgById(table.employeeId) + ')' : '',
+              'border': table.isActive ? '2px solid #22C795' : '2px solid #EB5B5B',
+              'opacity': table.isActive ? '1' : '0.3',
+              'top': table.positionY + 'px',
+              'left': table.positionX + 'px'
+            }" (cdkDragEnded)="dragEnd($event, table)">
+              <div class="table-number" [ngStyle]="{ 'background-color': table.isActive ? '#22C795' : '#EB5B5B' }">
+                {{ table.tableNumber }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-drawer-content>
+    <mat-drawer #drawer mode="over" position="end">
+      <app-tables-waitlist></app-tables-waitlist>
+    </mat-drawer>
+    <mat-drawer #employeeClocked mode="over" position="end">
+      <app-tables-employee-view [employees]="clockedInEmployees" [tables]="totalTables">
+      </app-tables-employee-view>
+    </mat-drawer>
+  </mat-drawer-container>
+</div>

@@ -1,0 +1,42 @@
+<form [formGroup]="editMenuItemForm" (ngSubmit)="onSubmit()" novalidate>
+    <h1 mat-dialog-title>Edit Menu Item</h1>
+    <div mat-dialog-content>
+        <div style="text-align: center;">
+            <img (click)="fileUploader.click(); $event.stopPropagation()" [src]="imgSrc" 
+                 width="100px" height="100px" style="cursor: pointer; border-radius: 50%;">
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Image</mat-label>
+                <input type="file" hidden #fileUploader (change)="detectNewImage($event)" 
+                       accept="image/*" />
+                <input type="text" readonly matInput formControlName="fileName" />
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input type="text" formControlName="name" matInput required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Price</mat-label>
+                <input type="number" formControlName="price" matInput required>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" type="submit" 
+                [disabled]="!editMenuItemForm.valid || !editMenuItemForm.dirty">
+            Update
+        </button>
+    </div>
+</form>

@@ -1,0 +1,44 @@
+# firebase-hosting-pull-request.yml
+name: Deploy to Firebase Hosting on PR
+
+'on': pull_request
+
+jobs:
+  build_and_preview:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+
+      # Run semantic-release in dry-run mode to determine the next version
+      - name: Determine next version
+        id: next_version
+        run: |
+          OUTPUT=$(npx semantic-release --dry-run)
+          echo "Semantic Release output: $OUTPUT"
+          VERSION=$(echo "$OUTPUT" | grep "The next release version is" | cut -d " " -f 6)
+          echo "Next version: $VERSION"
+          if [[ -n "$VERSION" ]]; then
+            echo "::set-output name=version::$VERSION"
+          else
+            echo "No next release version detected."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Update version in environment files
+      - name: Update version in environment files
+        if: steps.next_version.outputs.version
+        run: node ./scripts/version-replacer.js ${{ steps.next_version.outputs.version }}
+
+      - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SERVING_U_APP_5D02D }}
+          projectId: servinguapp-5d02d

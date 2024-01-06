@@ -1,0 +1,173 @@
+@import './../_styles/variables.scss';
+
+.bg-green {
+    background-color: $green30;
+}
+
+.bg-yellow {
+    background-color: $yellow30;
+}
+
+.bg-red {
+    background-color: $red30;
+}
+
+.tables-waitlist-container {
+    margin: 15px;
+}
+
+.tables-waitlist-header{
+    margin-bottom: 15px !important;
+    display: flex;
+
+    i{
+        margin-left: 5px;
+        font-size: 12px;
+        color: $brand-primary;
+    }
+}
+
+.tables-waitlist-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    div {
+        flex: 1 0 calc(25% - 10px);
+        /* display 4 fields per row for screens larger than 1000px */
+        margin-right: 10px;
+        margin-bottom: 10px;
+
+        mat-form-field{
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        div {
+            flex: 1 0 calc(50% - 10px);
+            /* display 2 fields per row for screens smaller than or equal to 1000px */
+        }
+    }
+
+    @media (max-width: 768px) {
+        div {
+            flex: 1 0 100%;
+            /* display 1 field per row for screens smaller than or equal to 768px */
+        }
+    }
+}
+
+
+
+.message {
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.tables-waitlist-card {
+    position: relative;
+    border: 2px solid $brand-primary;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: $white;
+    margin-bottom: 15px;
+}
+
+
+.tables-waitlist-card-name {
+    font-size: 20px;
+    color: $black;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.tables-waitlist-card-content {
+    font-size: 14px;
+
+    b {
+        text-transform: uppercase;
+    }
+}
+
+.tables-waitlist-card-delete {
+    font-size: 20px;
+    color: $red;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
+.tables-waitlist-card-text {
+    font-size: 20px;
+    color: $green;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.tables-waitlist-card-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.tables-waitlist-card-eta {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.primary {
+    color: $brand-primary;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.no-reservations-message{
+    font-style: italic;
+    font-size: 14px;
+    color: $text-muted;
+}
+
+.reservation-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 160px;
+}
+
+.reservation-option span {
+    flex: 1;
+
+    &:first-of-type {
+        text-align: left;
+    }
+
+    &:last-of-type {
+        text-align: right;
+    }
+}
+
+.reservation-option span:last-of-type {
+    font-style: italic;
+    font-size: 14px;
+    color: $black;
+}
+
+.tables-waitlist-card-text.disabled {
+    cursor: not-allowed;
+    color: $grey; 
+    pointer-events: none;
+}
+
+
+@media (max-width: 768px) {
+    .tables-waitlist-card-eta {
+        position: relative;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}

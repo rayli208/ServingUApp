@@ -1,0 +1,57 @@
+import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
+import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
+import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
+import { ScheduleDashboardComponent } from './schedule-dashboard/schedule-dashboard.component';
+import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
+import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+//User components
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { HiringDashboardComponent } from './hiring-dashboard/hiring-dashboard.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { ProfileEditorComponent } from './admin/profile-editor/profile-editor.component';
+import { HoursDashboardComponent } from './admin/hours-dashboard/hours-dashboard.component';
+import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
+import { ReservationsDashboardComponent } from './reservations-dashboard/reservations-dashboard.component';
+import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-builder-dashboard.component';
+
+//Guards
+import { LoginGuard } from './_guards/login.guard';
+import { MenuGuard } from './_guards/menu.guard';
+import { AuthGuard } from './_guards/auth.guard';
+
+const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    //User components
+    { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'hiring-dashboard', component: HiringDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'schedule-dashboard', component: ScheduleDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'punch-clock-dashboard', component: PunchClockDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'tables-dashboard', component: TablesDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'profile-dashboard', component: ProfileDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'profile-editor-dashboard', component: ProfileEditorComponent, canActivate: [AuthGuard] },
+    { path: 'resume-dashboard', component: ResumeDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'menu-builder-dashboard', component: MenuBuilderDashboardComponent, canActivate: [AuthGuard, MenuGuard] },
+    { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'reservations-dashboard', component: ReservationsDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AuthGuard] },
+    { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [LoginGuard] },
+    { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+    { path: 'signup', component: SignupComponent, canActivate: [LoginGuard] },
+    //Random
+    { path: '**', component: PageNotFoundComponent },                       // catch-all in case no other path matched
+];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
+})
+export class AppRoutingModule { }

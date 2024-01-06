@@ -1,0 +1,246 @@
+@import './../_styles/variables.scss';
+
+.table-dashboard-container {
+  position: relative;
+  margin: 0px -15px;
+  height: calc(100vh - 55px);
+}
+
+.table-drawer-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.table-view::before,
+.table-view::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.table-view::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0 100%;
+}
+
+.mat-drawer-content .table-view::after {
+  top: 0;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 100% 0;
+}
+
+.table-dashboard-container-table-view {
+  display: flex;
+  justify-content: center;
+}
+
+.table-view {
+  position: relative;
+  margin: 15px 10px;
+  min-width: 750px;
+  min-height: 500px;
+  border: solid $brand-primary 2px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-size: 25px 25px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+}
+
+.table-dashboard-actions-container {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-dashboard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // On larger screens
+  h1 {
+    margin: 0 15px; // Adjust as needed for spacing
+  }
+
+  i {
+    font-size: 20px;
+    cursor: pointer;
+    color: $brand-primary;
+  }
+
+  i.disabled {
+    color: $grey;
+    cursor: not-allowed;
+  }
+}
+
+.table-view-current-floor {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: 1px solid $black;
+  background-color: $white;
+  z-index: 9999999;
+}
+
+.table-all-table-container {
+  margin-top: 15px;
+}
+
+.table-all-table-container-no-tables {
+  font-style: italic;
+  display: inline-block;
+  margin-left: 15px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: $text-muted;
+}
+
+/* Add this CSS rule to your SCSS file */
+.cdk-drag-dragging {
+  transition: none !important;
+}
+
+.shape {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.table-number {
+  background-color: $red;
+  border-radius: 50%;
+  color: white;
+  font-size: 15px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-number.active {
+  background-color: $green;
+}
+
+//SHAPES
+.square,
+.horizontal-rectangle,
+.verticle-rectangle,
+.circle,
+.triangle,
+.pentagon,
+.hexagon {
+  position: absolute;
+  cursor: move;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.horizontal-rectangle {
+  width: 100px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verticle-rectangle {
+  width: 50px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pentagon {
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hexagon {
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.triangle {
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1150px) {
+  .table-view {
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-dashboard-actions-container {
+    flex-direction: column;
+    align-items: center; // Center align the items in the container
+  }
+
+  .table-dashboard-actions {
+    flex-direction: column; // Stack items vertically
+    align-items: stretch; // Stretch items to take full width
+
+    h1 {
+      text-align: center; // Center the label text
+      margin-bottom: 10px; // Space between label and arrows
+    }
+
+    .arrow-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; // Make sure the container takes full width
+      margin: 10px 0px;
+    }
+  }
+}
+
+
+  
+
+  
+

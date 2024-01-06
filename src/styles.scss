@@ -1,0 +1,60 @@
+@import "~quill/dist/quill.snow.css";
+@import './app/_styles/variables.scss';
+@import './custom-theme.scss';
+
+html {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    margin: 0px;
+    overflow: hidden;
+}
+
+h1 {
+    margin: unset !important;
+}
+
+.ql-image,
+.ql-video {
+    display: none !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */
+.mat-option-text {
+    display: contents !important;
+}
+
+.green-snackbar {
+    color: $white;
+    background: $green70;
+    border: 1px solid $green;
+}
+
+.yellow-snackbar {
+    color: $white;
+    background: $yellow70;
+    border: 1px solid $yellow;
+}
+
+.red-snackbar {
+    color: $white;
+    background: $red70;
+    border: 1px solid $red;
+}
+
+.filter-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}

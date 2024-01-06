@@ -1,0 +1,105 @@
+<app-header iconClass="fa-solid fa-user" title="Profile Editor">
+</app-header>
+
+<mat-card appearance="outlined" style="margin-top: 15px; padding: 15px;" *ngIf="imageUrls.length > 0">
+    <h1 class="profile-editor-header">Profile Images:</h1>
+    <div class="parent-container">
+        <div class="image-container" *ngFor="let imageUrl of imageUrls; index as i">
+            <img [src]="imageUrl" class="image">
+            <div class="overlay" (click)="confirmDelete(imageUrl)">
+                <button mat-icon-button class="delete-icon">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</mat-card>
+
+<div class="editor-and-uploader-container">
+    <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content; position: relative;">
+        <h1 class="profile-editor-header">Profile Editor:</h1>
+        <div *ngIf="user">
+            <div style="text-align: center; position: absolute; top: 15px; right: 15px;">
+                <button mat-raised-button color="secondary" (click)="enableEditing()" *ngIf="!isEditing"
+                    matTooltip="Edit Profile">Edit <i class="fa-solid fa-pen-to-square"></i></button>
+                <button mat-raised-button color="primary" (click)="saveChanges()" *ngIf="isEditing"
+                    matTooltip="Save Profile">Save <i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+            <div class="row">
+                <div class="two-fifths">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Owner</mat-label>
+                        <input [readonly]="!isEditing" [(ngModel)]="user.owner" type="text" matInput placeholder="Owner">
+                    </mat-form-field>
+                </div>
+                <div class="two-fifths">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Location Name</mat-label>
+                        <input [readonly]="!isEditing" [(ngModel)]="user.location_name" type="text" matInput
+                            placeholder="Location Name">
+                    </mat-form-field>
+                </div>
+                <div class="one-fifth">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Max Overlapping Reservations</mat-label>
+                        <input [readonly]="!isEditing" [(ngModel)]="user.maxOverLappingReservations" type="number" matInput
+                            placeholder="Max Overlapping Reservations">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="one-third">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Website</mat-label>
+                        <input [readonly]="!isEditing" [(ngModel)]="user.website" type="text" matInput
+                            placeholder="Website">
+                    </mat-form-field>
+                </div>
+                <div class="two-thirds">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Default Table Alert Text:</mat-label>
+                        <input [readonly]="!isEditing" [(ngModel)]="user.defaultText" type="text" matInput
+                            placeholder="Default Table Alert Text:">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <quill-editor theme="snow" [(ngModel)]="user.description" *ngIf="isEditing"></quill-editor>
+                <div *ngIf="!isEditing" [innerHTML]="safeDescription"></div>                
+            </div>
+        </div>
+        
+    </mat-card>
+
+    <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
+        <h1 class="profile-editor-header">Image Uploader:</h1>
+        <p>Total images: {{ imageCount }} / 5</p>
+        <div *ngIf="imageCount >= 5" class="error-message">
+            You have reached the maximum number of uploaded images.
+        </div>
+        <mat-form-field style="width: 100%;" appearance="outline" *ngIf="imageCount < 5">
+            <mat-label>Upload Pictures</mat-label>
+            <button type="button" mat-icon-button matPrefix (click)="fileUploader.click(); $event.stopPropagation()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+            <input type="text" readonly matInput [formControl]="fileName" />
+            <input type="file" multiple hidden #fileUploader (change)="detectNewImage($event)"
+                accept="*.png,*.jpg,*.jpeg" />
+        </mat-form-field>
+        <h3 *ngIf="imgSrcs.length">Images for upload:</h3>
+        <div *ngIf="imgSrcs.length" class="profile-editor-image-container">
+            <div *ngFor="let img of imgSrcs; let i = index" class="profile-editor-image">
+                <img [src]="img" alt="Uploaded image" (click)="removeImage(i)">
+            </div>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="isUploading || imageCount >= 5" (click)="uploadImages()"
+            *ngIf="selectedImages.length > 0 && !isUploading" matTooltip="Upload Images" class="profile-editor-image-upload-button">Upload Images <i
+                class="fa-solid fa-upload"></i></button>
+        <mat-progress-bar mode="determinate" [value]="progressBarValue" *ngIf="isUploading" style="margin-top: 5px;"></mat-progress-bar>
+    </mat-card>
+
+    <mat-card appearance="outlined" style="margin-top: 15px; padding: 15px; width: fit-content;">
+        <h1 class="profile-editor-header">Floor Assigner:</h1>
+        <app-floor-assigner [userId]="userId"></app-floor-assigner>
+    </mat-card>
+</div>

@@ -1,0 +1,17 @@
+{
+  "name": "ServingU",
+  "short_name": "ServingU",
+  "theme_color": "#35B9DF",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/assets/img/Logo-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+    ]
+}

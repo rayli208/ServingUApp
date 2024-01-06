@@ -1,0 +1,10 @@
+<h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+<div *ngIf="(user | async)?.accountType == 'admin'; else notAdmin">
+    hello admin!
+    <br>
+    this is a simple test for admin status. a more rigorous test is to edit the auth.guard.ts file :)
+</div>
+
+<ng-template #notAdmin>
+    Not admin
+</ng-template>

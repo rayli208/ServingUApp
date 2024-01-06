@@ -1,0 +1,10 @@
+<div>
+  <h1 mat-dialog-title style="margin-bottom: 10px !important;">
+    <i class="fa-solid fa-circle-exclamation fa-2xl fa-fade" style="color: #EB5B5B;"></i>
+  </h1>
+  <p class="confirm-text">{{data.text}}</p>
+  <div mat-dialog-actions style="justify-content: space-between; min-width: 250px;">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Confirm</button>
+  </div>
+</div>
