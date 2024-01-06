@@ -13,15 +13,15 @@
             <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
         <div class="hours-dashboard-date-range-buttons">
-            <button mat-raised-button color="primary" (click)="loadTimestamps()"
-                [disabled]="!isRangeValid()">Load
-                Timestamps</button>
-            <button mat-mini-fab color="primary" (click)="exportToExcel()"
-                [disabled]="!isRangeValid() || isEmpty" matTooltip="Export to Excel">
+            <button mat-raised-button color="primary" (click)="loadTimestamps()" [disabled]="!isRangeValid()"
+                matTooltip="Load Timestamps">
+                Load Timestamps
+            </button>
+            <button mat-mini-fab color="primary" (click)="exportToExcel()" [disabled]="!isRangeValid() || isEmpty"
+                matTooltip="Export to Excel">
                 <i class="fa-solid fa-file-excel"></i>
             </button>
-            <button mat-mini-fab color="primary" (click)="openCreateDialog()"
-                matTooltip="Create Timestamp">
+            <button mat-mini-fab color="primary" (click)="openCreateDialog()" matTooltip="Create Timestamp">
                 <i class="fa-solid fa-clock"></i>
             </button>
         </div>

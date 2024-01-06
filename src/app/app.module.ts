@@ -28,7 +28,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -100,6 +100,9 @@ import { ConfirmDialogComponent } from './_dialogs/confirm/confirm-dialog/confir
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ResumeDashboardComponent } from './admin/resume-dashboard/resume-dashboard.component';
 import { ReservationsDashboardComponent } from './reservations-dashboard/reservations-dashboard.component';
+import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-builder-dashboard.component';
+import { CreateMenuItemDialogComponent } from './_dialogs/menu-items/create-menu-item-dialog/create-menu-item-dialog.component';
+import { EditMenuItemDialogComponent } from './_dialogs/menu-items/edit-menu-item-dialog/edit-menu-item-dialog.component';
 
 @NgModule({
     declarations: [
@@ -119,9 +122,11 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
         EditJobDialogComponent,
         EditTableDialogComponent,
         CreateJobDialogComponent,
+        CreateMenuItemDialogComponent,
         CreateTableDialogComponent,
         CreateScheduleDialogComponent,
         EditScheduleDialogComponent,
+        EditMenuItemDialogComponent,
         CreateReservationsDialogComponent,
         EditReservationsDialogComponent,
         HoursPipe,
@@ -146,7 +151,8 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
         MassSelectDialogComponent,
         FloorAssignerComponent,
         ResumeDashboardComponent,
-        ReservationsDashboardComponent
+        ReservationsDashboardComponent,
+        MenuBuilderDashboardComponent
     ],
     imports: [
         BrowserModule,

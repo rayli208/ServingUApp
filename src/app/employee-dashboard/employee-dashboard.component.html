@@ -1,7 +1,7 @@
 <app-header iconClass="fa-solid fa-address-book" title="Employee Dashboard">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button style="margin-top: 5px;" mat-raised-button color="primary" (click)="createEmployee()">Create
-            Employee
+        <button style="margin-top: 5px;" mat-raised-button color="primary" (click)="createEmployee()" matTooltip="Add Employee">
+            <i class="fa-solid fa-plus"></i> Employee
         </button>
         <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
             style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"

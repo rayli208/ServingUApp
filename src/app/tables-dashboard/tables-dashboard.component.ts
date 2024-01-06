@@ -62,7 +62,6 @@ export class TablesDashboardComponent implements OnInit {
             } as Table;
           }).sort((a, b) => (a.isActive === b.isActive) ? a.tableNumber - b.tableNumber : b.isActive ? 1 : -1);
 
-          console.log("Total Tables: ", this.totalTables);  // Debug log
           this.applyFilters();
         });
 

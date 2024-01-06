@@ -32,7 +32,6 @@
     display: inline-block;
     width: 50%;
     vertical-align: top;
-    /* Align content to the top */
 }
 
 
@@ -52,28 +51,9 @@
 .profile-dashboard-card-row {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.description-section {
-    display: block;
-
-    mat-expansion-panel {
-        margin-left: -15px;
-
-        mat-expansion-panel-header {
-            padding: 15px;
-        }
-    }
-
-    .mat-expansion-panel:not([class*=mat-elevation-z]) {
-        box-shadow: none !important;
-    }
-
-    .mat-expansion-panel:not([class*=mat-elevation-z]) {
-        box-shadow: none !important;
-    }
-}
 
 .profile-dashboard-card-row span:first-of-type {
     display: inline-block;
@@ -159,11 +139,5 @@
 
     button {
         margin-bottom: 15px;
-    }
-
-    .description-section {
-        mat-expansion-panel {
-            margin-right: -15px;
-        }
     }
 }
