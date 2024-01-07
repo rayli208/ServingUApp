@@ -15,34 +15,14 @@ export class MenuItemService {
   ) { }
 
   // Create a new menu item
-  createMenuItem(menuItem: MenuItem, imageFile: File): Promise<void> {
-    const filePath = `menuItemPictures/${imageFile.name}_${new Date().getTime()}`;
-    const fileRef = this.storage.ref(filePath);
-
+  createMenuItem(menuItem: MenuItem): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.storage.upload(filePath, imageFile).snapshotChanges().pipe(
-        finalize(() => fileRef.getDownloadURL())
-      ).subscribe(
-        () => {}, // Intentionally left blank to handle intermediate states
-        (error) => {
-          console.error('Error uploading file: ', error);
-          reject(error);
-        },
-        async () => {
-          try {
-            const url = await fileRef.getDownloadURL().toPromise();
-            menuItem.imageUrl = url;
-            await this.afs.collection('menuItems').add(menuItem);
-            resolve();
-          } catch (error) {
-            console.error('Error getting download URL: ', error);
-            reject(error);
-          }
-        }
-      );
+      this.afs.collection('menuItems').add(menuItem)
+        .then(() => resolve())
+        .catch(error => reject(error));
     });
   }
-  
+
   updateMenuItem(menuItem: MenuItem): Promise<void> {
     return this.afs
       .collection("menuItems")
@@ -55,7 +35,6 @@ export class MenuItemService {
         // Handle error
       });
   }
-  
 
   // Delete a menu item
   deleteMenuItem(menuItemId: string) {

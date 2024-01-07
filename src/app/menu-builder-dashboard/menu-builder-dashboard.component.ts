@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable, Subject, catchError, from, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, from, of, switchMap, take, takeUntil } from 'rxjs';
 import { Section } from '../_models/section.model'; // Adjust the path as necessary
 import { SectionService } from '../_services/section.service'; // Adjust the path as necessary
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
-import { CreateMenuItemDialogComponent } from '../_dialogs/menu-items/create-menu-item-dialog/create-menu-item-dialog.component';
 import { MenuItemService } from '../_services/menu-item.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MenuItem } from '../_models/menu-item.model';
+import { CreateItemDialogComponent } from '../_dialogs/menu-items/create-item-dialog/create-item-dialog.component';
 
 @Component({
   selector: 'app-menu-builder-dashboard',
@@ -62,8 +62,8 @@ export class MenuBuilderDashboardComponent implements OnInit {
     this.showAddSection = true;
   }
 
-  editSection(sectionId: string, event: Event): void {
-    event.stopPropagation();
+  editSection(sectionId: string): void {
+
     this.editingSectionId = sectionId;
     this.editingSection = { ...this.sections.find(section => section.id === sectionId) };
   }
@@ -73,7 +73,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       const newSection: Section = {
         uid: this.userId,
         name: this.newSectionName,
-        order: this.sections.length + 1
+        order: this.sections?.length + 1
       };
       this.sectionService.createSection(newSection).then(docRef => {
         const sectionWithId: Section = { ...newSection, id: docRef.id };
@@ -90,8 +90,8 @@ export class MenuBuilderDashboardComponent implements OnInit {
     }
   }
 
-  saveSection(event: Event): void {
-    event.stopPropagation();
+  saveSection(): void {
+
     if (this.editingSection) {
       this.sectionService.updateSection(this.editingSection).then(() => {
         this.editingSectionId = null;
@@ -109,9 +109,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
     }
   }
 
-  deleteSection(sectionId: string, event: Event): void {
-    event.stopPropagation();
-
+  deleteSection(sectionId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: { text: `Are you sure you want to delete this section and all its menu items?` }
     });
@@ -159,8 +157,8 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
-  cancelEdit(event: Event): void {
-    event.stopPropagation();
+  cancelEdit(): void {
+
     this.editingSectionId = null;
     this.editingSection = null;
   }
@@ -172,38 +170,39 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
-  openCreateMenuItemDialog(sectionId: string, event): void {
-    event.stopPropagation();
-    
-    // Fetch the maximum order number of menu items in this section
-    this.menuItemService.getMenuItemsForSection(sectionId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(menuItems => {
-        const maxOrder = menuItems.length > 0 ? Math.max(...menuItems.map(item => item.order)) : 0;
-
-        const dialogRef = this.dialog.open(CreateMenuItemDialogComponent, {
-          width: '400px',
-          data: {
-            sectionId: sectionId,
-            uid: this.userId,
-            maxOrder: maxOrder
-          }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          if (result?.menuItemCreated) {
-            this.updateSectionMenuItems(sectionId);
-            // Refresh or update the menu items list for the section
-            this._snackBar.open('Menu item has been created!', '', {
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 2500,
-              panelClass: ['green-snackbar']
-            });
-          }
-        });
+  openCreateMenuItemDialog(sectionId: string): void {
+    console.log("openCreateMenuItemDialog called for section", sectionId);
+  
+    // Call a method to get the count of menu items
+    this.getMenuItemsCount(sectionId).then(maxOrder => {
+      const dialogRef = this.dialog.open(CreateItemDialogComponent, {
+        width: '400px',
+        data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder }
       });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("Dialog closed with result:", result);
+        if (result?.menuItemCreated) {
+          this.updateSectionMenuItems(sectionId);
+        }
+      });
+    }).catch(error => {
+      console.error("Error fetching menu items count:", error);
+      // Handle error appropriately
+    });
   }
+  
+  // Method to asynchronously get the count of menu items for a section
+  private async getMenuItemsCount(sectionId: string): Promise<number> {
+    try {
+      const menuItems = await this.menuItemService.getMenuItemsForSection(sectionId).pipe(take(1)).toPromise();
+      return menuItems.length;
+    } catch (error) {
+      console.error("Error in getMenuItemsCount:", error);
+      throw error; // Rethrow error to handle in the calling method
+    }
+  }
+  
 
   loadSectionsWithMenuItems(): void {
     this.sectionService.getSectionsListForUser(this.userId).subscribe(sectionsData => {

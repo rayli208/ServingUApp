@@ -7,11 +7,12 @@ import { MenuItemService } from 'src/app/_services/menu-item.service';
 import { MenuItem } from 'src/app/_models/menu-item.model';
 
 @Component({
-  selector: 'app-edit-menu-item-dialog',
-  templateUrl: './edit-menu-item-dialog.component.html',
-  styleUrls: ['./edit-menu-item-dialog.component.scss']
+  selector: 'app-edit-item-dialog',
+  standalone: false,
+  templateUrl: './edit-item-dialog.component.html',
+  styleUrl: './edit-item-dialog.component.scss'
 })
-export class EditMenuItemDialogComponent implements OnInit {
+export class EditItemDialogComponent {
   imgSrc: string;
   selectedImage: any = null;
   public editMenuItemForm: UntypedFormGroup;
@@ -20,7 +21,7 @@ export class EditMenuItemDialogComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private menuItemService: MenuItemService,
     private storage: AngularFireStorage,
-    public dialogRef: MatDialogRef<EditMenuItemDialogComponent>,
+    public dialogRef: MatDialogRef<EditItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MenuItem
   ) {
     this.editMenuItemForm = this.formBuilder.group({
