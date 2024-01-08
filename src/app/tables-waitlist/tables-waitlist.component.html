@@ -1,7 +1,6 @@
 <div class="tables-waitlist-container">
     <h1 class="tables-waitlist-header">Waitlist: <i class="fa-solid fa-circle-info"
             matTooltip='Default Text: "{{message}}"'></i></h1>
-
     <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" novalidate class="tables-waitlist-form">
         <div>
             <mat-form-field appearance="outline">
@@ -71,7 +70,6 @@
                     (click)="!textInProgress[reservation.id] && textTableReady(reservation)">
                     <i class="fa-solid fa-comment-sms"></i>
                 </div>
-
                 <div class="tables-waitlist-card-delete" (click)="deleteReservation(reservation)">
                     <i class="fa-solid fa-trash-can"></i>
                 </div>
