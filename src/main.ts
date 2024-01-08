@@ -11,7 +11,7 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .then(() => {
     if ('serviceWorker' in navigator && environment.production) {
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register('/custom-sw.js')
         .then((registration) => {
           // A new service worker is available
           const newWorker = registration.installing;
