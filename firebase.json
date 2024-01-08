@@ -8,7 +8,7 @@
     ],
     "headers": [
       {
-        "source": "/service-worker.js",
+        "source": "/custom-sw.js",
         "headers": [
           {
             "key": "Content-Type",
