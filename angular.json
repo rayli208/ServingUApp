@@ -26,7 +26,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
-              "src/custom-sw.ts"
+              "src/custom-sw.js"
             ],
             "styles": [
               "src/custom-theme.scss",

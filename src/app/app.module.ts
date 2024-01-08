@@ -203,7 +203,7 @@ import { EditItemDialogComponent } from './_dialogs/menu-items/edit-item-dialog/
         ReactiveFormsModule,
         HttpClientModule,
         QuillModule.forRoot(),
-        ServiceWorkerModule.register('custom-sw.ts', {
+        ServiceWorkerModule.register('custom-sw.js', {
             enabled: environment.production,
             registrationStrategy: 'registerWhenStable:30000'
         }),
