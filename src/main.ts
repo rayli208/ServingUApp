@@ -13,17 +13,18 @@ platformBrowserDynamic().bootstrapModule(AppModule)
     if ('serviceWorker' in navigator && environment.production) {
       navigator.serviceWorker.register('/custom-sw.js')
         .then((registration) => {
-          // A new service worker is available
-          const newWorker = registration.installing;
-
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                // New content is available; please refresh.
-                window.location.reload();
+          // Listen for updates to the Service Worker.
+          registration.onupdatefound = () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed') {
+                if (navigator.serviceWorker.controller) {
+                  // New content is available; please refresh.
+                  window.location.reload();
+                }
               }
-            }
-          });
+            });
+          };
         })
         .catch((err) => {
           console.log('Service Worker registration failed:', err);
@@ -31,3 +32,4 @@ platformBrowserDynamic().bootstrapModule(AppModule)
     }
   })
   .catch(err => console.error(err));
+
