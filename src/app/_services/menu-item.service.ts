@@ -41,8 +41,9 @@ export class MenuItemService {
     return this.afs.collection('menuItems').doc(menuItemId).delete();
   }
 
-  // Get menu items for a specific section
+  // Get menu items for a specific section, ordered by 'order'
   getMenuItemsForSection(sectionId: string) {
-    return this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).valueChanges();
+    return this.afs.collection<MenuItem>('menuItems', ref =>
+      ref.where('sectionId', '==', sectionId).orderBy('order')).valueChanges();
   }
 }

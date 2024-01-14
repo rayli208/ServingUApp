@@ -43,12 +43,14 @@ export class CreateItemDialogComponent {
 
   onSubmit() {
     this.isSubmitted = true;
+
+    // If no image is selected, submit the form without an image
     if (!this.selectedImage) {
-      this.showSnackBar("No image selected!", 'red-snackbar');
-      this.isSubmitted = false;
+      this.submitMenuItemForm();
       return;
     }
 
+    // If an image is selected, upload it first
     var filePath = `menuItemPictures/${this.selectedImage.name}_${new Date().getTime()}`;
     const fileRef = this.storage.ref(filePath);
 
@@ -56,19 +58,25 @@ export class CreateItemDialogComponent {
       finalize(async () => {
         const url = await fileRef.getDownloadURL().toPromise();
         this.menuItemForm.patchValue({ imageUrl: url });
-        this.menuItemService.createMenuItem(this.menuItemForm.value)
-          .then(() => {
-            this.showSnackBar("Menu item has been created!", 'green-snackbar');
-            this.dialogRef.close({ menuItemCreated: true });
-          })
-          .catch(error => {
-            console.error("Error creating menu item:", error);
-            this.showSnackBar("Error creating menu item!", 'red-snackbar');
-          })
-          .finally(() => this.isSubmitted = false);
+        this.submitMenuItemForm();
       })
     ).subscribe();
   }
+
+  // New method to handle form submission
+  submitMenuItemForm() {
+    this.menuItemService.createMenuItem(this.menuItemForm.value)
+      .then(() => {
+        this.showSnackBar("Menu item has been created!", 'green-snackbar');
+        this.dialogRef.close({ menuItemCreated: true });
+      })
+      .catch(error => {
+        console.error("Error creating menu item:", error);
+        this.showSnackBar("Error creating menu item!", 'red-snackbar');
+      })
+      .finally(() => this.isSubmitted = false);
+  }
+
   detectNewImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
@@ -82,7 +90,6 @@ export class CreateItemDialogComponent {
       this.menuItemForm.patchValue({ fileName: '' });
     }
   }
-  
 
   showSnackBar(message: string, color: string) {
     this._snackBar.open(message, '', {

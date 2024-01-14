@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable, Subject, catchError, from, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, from, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 import { Section } from '../_models/section.model'; // Adjust the path as necessary
 import { SectionService } from '../_services/section.service'; // Adjust the path as necessary
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -116,45 +116,59 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Fetch all menu items for the section, including their document IDs
-        this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).snapshotChanges().pipe(
-          switchMap(changes => {
-            // Create an array of deletion promises for each menu item
-            const deletionPromises = changes.map(change => {
-              const menuItemId = change.payload.doc.id;
-              const menuItemData = change.payload.doc.data() as MenuItem;
-              const imageRef = this.storage.refFromURL(menuItemData.imageUrl);
-              return imageRef.delete().toPromise().then(() => {
-                return this.afs.collection('menuItems').doc(menuItemId).delete();
-              });
-            });
-            return from(Promise.all(deletionPromises));
-          }),
-          catchError(error => {
-            console.error('Error deleting menu items:', error);
-            return of(null);
-          }),
-          switchMap(() => this.afs.collection('sections').doc(sectionId).delete())
-        ).subscribe(() => {
-          this.sections = this.sections.filter(section => section.id !== sectionId);
-          this.updateSectionOrders();
+        this.deleteSectionWithItems(sectionId).then(() => {
           this._snackBar.open('Section and its menu items have been deleted!', '', {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             duration: 2500,
             panelClass: ['red-snackbar']
           });
-        }, error => {
-          console.error('Error deleting section:', error);
-          this._snackBar.open('Error deleting section!', '', {
+        }).catch(error => {
+          this._snackBar.open('Error occurred during deletion!', '', {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             duration: 2500,
             panelClass: ['red-snackbar']
           });
+          console.error('Error during deletion:', error);
         });
       }
     });
+  }
+
+  async deleteSectionWithItems(sectionId: string): Promise<void> {
+    const menuItems = await this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).get().toPromise();
+
+    // Batch operation starts here
+    const batch = this.afs.firestore.batch();
+
+    for (const doc of menuItems.docs) {
+      const menuItemId = doc.id;
+      const menuItemData = doc.data() as MenuItem;
+
+      if (menuItemData.imageUrl) {
+        const imageRef = this.storage.refFromURL(menuItemData.imageUrl);
+
+        try {
+          await imageRef.delete().toPromise();
+          console.log(`Image deleted: ${menuItemData.imageUrl}`);
+        } catch (error) {
+          // Only log error, don't throw to continue with batch deletion
+          console.error(`Error deleting image: ${error.message}`);
+        }
+      }
+
+      // Delete document reference in batch
+      const menuItemDocRef = this.afs.collection('menuItems').doc(menuItemId).ref;
+      batch.delete(menuItemDocRef);
+    }
+
+    // Delete the section as part of the batch
+    const sectionDocRef = this.afs.collection('sections').doc(sectionId).ref;
+    batch.delete(sectionDocRef);
+
+    // Commit the batch
+    await batch.commit();
   }
 
   cancelEdit(): void {
@@ -172,14 +186,14 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
   openCreateMenuItemDialog(sectionId: string): void {
     console.log("openCreateMenuItemDialog called for section", sectionId);
-  
+
     // Call a method to get the count of menu items
     this.getMenuItemsCount(sectionId).then(maxOrder => {
       const dialogRef = this.dialog.open(CreateItemDialogComponent, {
         width: '400px',
         data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder }
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
         console.log("Dialog closed with result:", result);
         if (result?.menuItemCreated) {
@@ -191,7 +205,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       // Handle error appropriately
     });
   }
-  
+
   // Method to asynchronously get the count of menu items for a section
   private async getMenuItemsCount(sectionId: string): Promise<number> {
     try {
@@ -202,7 +216,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       throw error; // Rethrow error to handle in the calling method
     }
   }
-  
+
 
   loadSectionsWithMenuItems(): void {
     this.sectionService.getSectionsListForUser(this.userId).subscribe(sectionsData => {

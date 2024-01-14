@@ -1,6 +1,6 @@
 @import '../_styles/variables.scss';
 
-.space-top{
+.space-top {
     margin-top: 15px;
 }
 
@@ -59,16 +59,91 @@
     }
 }
 
-.menu-builder-empty {
+.no-section-or-item-message {
     font-style: italic;
     font-size: 14px;
     color: $text-muted;
     margin-top: 15px;
 }
-.mat-expansion-panel-header-title{
+
+.mat-expansion-panel-header-title {
     height: 44px;
 }
 
+.menu-item-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid $brand-primary;
+    border-radius: 20px;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: $white;
+
+    .menu-item-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 20px;
+    }
+
+    .menu-item-info {
+        flex-grow: 1;
+
+        h2 {
+            margin: 0;
+            font-size: 18px;
+            color: $black;
+        }
+
+        .menu-item-description {
+            font-style: italic;
+            font-size: 14px;
+            color: $text-muted;
+        }
+    }
+
+    .menu-item-price {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        strong {
+            font-size: 16px;
+            color: $black;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-actions {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
 @media (max-width: 768px) {
-    // Add responsive styles here if needed
+    .menu-item-card {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .menu-item-image {
+            margin-bottom: 15px;
+        }
+
+        .menu-item-info {
+            order: 3;
+        }
+
+        .menu-item-price {
+            order: 2;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            .menu-item-actions {
+                margin-top: 0;
+            }
+        }
+    }
 }

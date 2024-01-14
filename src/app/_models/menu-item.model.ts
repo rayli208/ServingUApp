@@ -6,5 +6,6 @@ export class MenuItem {
     name: string;
     description?: string; 
     price: number;
+    fileName?: string;
     imageUrl?: string;
   }

@@ -22,26 +22,30 @@
                 <div class="menu-builder-card-mini-header">
                     <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">{{ section.name }}
                     </h1>
-                    <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top">
+                    <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
+                        (click)="$event.stopPropagation();">
                         <input matInput [(ngModel)]="editingSection.name">
                     </mat-form-field>
                 </div>
             </mat-panel-title>
             <mat-panel-description class="menu-builder-card-buttons">
                 <button mat-mini-fab color="primary" *ngIf="editingSectionId !== section.id"
-                    (click)="editSection(section.id)" matTooltip="Edit Section" style="margin-left: 15px;">
+                    (click)="$event.stopPropagation(); editSection(section.id)" matTooltip="Edit Section"
+                    style="margin-left: 15px;">
                     <i class="fa-solid fa-edit"></i>
                 </button>
-                <button mat-mini-fab color="primary" *ngIf="editingSectionId === section.id" (click)="saveSection()"
-                    matTooltip="Save Section" style="margin-left: 15px;">
+                <button mat-mini-fab color="primary" *ngIf="editingSectionId === section.id"
+                    (click)="$event.stopPropagation(); saveSection()" matTooltip="Save Section"
+                    style="margin-left: 15px;">
                     <i class="fa-solid fa-save"></i>
                 </button>
-                <button mat-mini-fab color="accent" *ngIf="editingSectionId === section.id" (click)="cancelEdit()"
-                    matTooltip="Cancel" style="margin-left: 15px;">
+                <button mat-mini-fab color="accent" *ngIf="editingSectionId === section.id"
+                    (click)="$event.stopPropagation(); cancelEdit()" matTooltip="Cancel" style="margin-left: 15px;">
                     <i class="fa-solid fa-close"></i>
                 </button>
                 <button mat-mini-fab color="warn" *ngIf="editingSectionId !== section.id"
-                    (click)="deleteSection(section.id)" matTooltip="Delete Section" style="margin-left: 15px;">
+                    (click)="$event.stopPropagation(); deleteSection(section.id)" matTooltip="Delete Section"
+                    style="margin-left: 15px;">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </mat-panel-description>
@@ -54,15 +58,31 @@
             <div *ngIf="section.menuItems?.length === 0" class="no-section-or-item-message">
                 There are no menu items for this section.
             </div>
-            <div *ngFor="let menuItem of section.menuItems" class="menu-item">
-                <p>{{ menuItem.name }} - {{ menuItem.price }}</p>
-                <p>{{ menuItem.description }}</p>
-                <img [src]="menuItem.imageUrl" alt="{{ menuItem.name }}" style="width: 100px; height: 100px;">
+            <div *ngFor="let menuItem of section.menuItems" class="menu-item-card">
+                <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}"
+                    class="menu-item-image">
+                <div class="menu-item-info">
+                    <h2>{{ menuItem.name }}</h2>
+                    <p class="menu-item-description">{{ menuItem.description }}</p>
+                </div>
+
+                <div class="menu-item-price">
+                    <strong>${{ menuItem.price | number:'1.2-2' }}</strong>
+                    <div class="menu-item-actions">
+                        <button mat-mini-fab color="primary" matTooltip="Edit Item" style="margin-right: 10px;">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button mat-mini-fab color="warn" matTooltip="Delete Item">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
+
         </div>
     </mat-expansion-panel>
 </div>
 
-<div *ngIf="sections?.length === 0" class="menu-builder-empty">
+<div *ngIf="sections?.length === 0" class="no-section-or-item-message">
     There are no sections.
 </div>
