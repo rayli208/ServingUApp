@@ -235,10 +235,71 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
   updateSectionMenuItems(sectionId: string): void {
     this.menuItemService.getMenuItemsForSection(sectionId).subscribe(menuItems => {
-      const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
-      if (sectionIndex > -1) {
-        this.sections[sectionIndex].menuItems = menuItems;
+        const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
+        if (sectionIndex > -1) {
+            this.sections[sectionIndex].menuItems = menuItems.map(item => ({
+                ...item, // Spread the existing properties
+                id: item.id // Ensure the id is included
+            }));
+        }
+    });
+}
+
+  //Menu Item Section
+  deleteMenuItemWithConfirmation(sectionId: string, menuItemId: string, imageUrl: string | null): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { text: 'Are you sure you want to delete this menu item?' }
+    });
+
+    console.log(menuItemId);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.menuItemService.deleteMenuItem(menuItemId, imageUrl)
+          .then(() => {
+            this._snackBar.open('Menu item deleted!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['green-snackbar']
+            });
+            // Optionally, refresh the menu items for the section
+            this.updateSectionMenuItems(sectionId);
+          })
+          .catch(error => {
+            this._snackBar.open('Error occurred during deletion!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['red-snackbar']
+            });
+            console.error('Error during deletion:', error);
+          });
       }
     });
+  }
+
+
+  updateAfterDeletion(sectionId: string, deletedItemId: string): void {
+    const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
+    if (sectionIndex > -1) {
+      // Remove the deleted item from the local array
+      this.sections[sectionIndex].menuItems = this.sections[sectionIndex].menuItems
+        .filter(item => item.id !== deletedItemId);
+
+      // Update the order of remaining menu items
+      this.sections[sectionIndex].menuItems.forEach((item, index) => {
+        if (item.order !== index + 1) {
+          item.order = index + 1;
+          this.menuItemService.updateMenuItem(item).catch(error => {
+            console.error('Error updating item order:', error);
+            // Optionally, handle this error in the UI
+          });
+        }
+      });
+
+      // Refresh the section to reflect the changes in the UI
+      this.updateSectionMenuItems(sectionId);
+    }
   }
 }
