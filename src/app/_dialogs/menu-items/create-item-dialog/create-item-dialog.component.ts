@@ -5,7 +5,6 @@ import { MenuItemService } from 'src/app/_services/menu-item.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { MenuItem } from 'src/app/_models/menu-item.model';
 
 const DEFAULT_IMG_SRC = '../../../../assets/img/placeholder-food.png';
 

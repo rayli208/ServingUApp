@@ -69,13 +69,15 @@
                 <div class="menu-item-price">
                     <strong>${{ menuItem.price | number:'1.2-2' }}</strong>
                     <div class="menu-item-actions">
-                        <button mat-mini-fab color="primary" matTooltip="Edit Item" style="margin-right: 10px;">
+                        <button mat-mini-fab color="primary" (click)="openEditMenuItemDialog(menuItem, section.id)"
+                            matTooltip="Edit Item">
                             <i class="fa-solid fa-edit"></i>
                         </button>
                         <!-- In your HTML template -->
                         <button mat-mini-fab color="warn"
                             (click)="deleteMenuItemWithConfirmation(section.id, menuItem.id, menuItem.imageUrl)"
-                            matTooltip="Delete Item">
+                            matTooltip="Delete Item"
+                            style="margin-left: 15px;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>

@@ -11,6 +11,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MenuItem } from '../_models/menu-item.model';
 import { CreateItemDialogComponent } from '../_dialogs/menu-items/create-item-dialog/create-item-dialog.component';
+import { EditItemDialogComponent } from '../_dialogs/menu-items/edit-item-dialog/edit-item-dialog.component';
 
 @Component({
   selector: 'app-menu-builder-dashboard',
@@ -184,28 +185,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
-  openCreateMenuItemDialog(sectionId: string): void {
-    console.log("openCreateMenuItemDialog called for section", sectionId);
-
-    // Call a method to get the count of menu items
-    this.getMenuItemsCount(sectionId).then(maxOrder => {
-      const dialogRef = this.dialog.open(CreateItemDialogComponent, {
-        width: '400px',
-        data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log("Dialog closed with result:", result);
-        if (result?.menuItemCreated) {
-          this.updateSectionMenuItems(sectionId);
-        }
-      });
-    }).catch(error => {
-      console.error("Error fetching menu items count:", error);
-      // Handle error appropriately
-    });
-  }
-
   // Method to asynchronously get the count of menu items for a section
   private async getMenuItemsCount(sectionId: string): Promise<number> {
     try {
@@ -235,17 +214,41 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
   updateSectionMenuItems(sectionId: string): void {
     this.menuItemService.getMenuItemsForSection(sectionId).subscribe(menuItems => {
-        const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
-        if (sectionIndex > -1) {
-            this.sections[sectionIndex].menuItems = menuItems.map(item => ({
-                ...item, // Spread the existing properties
-                id: item.id // Ensure the id is included
-            }));
-        }
+      const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
+      if (sectionIndex > -1) {
+        this.sections[sectionIndex].menuItems = menuItems.map(item => ({
+          ...item, // Spread the existing properties
+          id: item.id // Ensure the id is included
+        }));
+      }
     });
-}
+  }
 
-  //Menu Item Section
+  /*
+    MENU ITEM SECTION
+  */
+  openCreateMenuItemDialog(sectionId: string): void {
+    console.log("openCreateMenuItemDialog called for section", sectionId);
+
+    // Call a method to get the count of menu items
+    this.getMenuItemsCount(sectionId).then(maxOrder => {
+      const dialogRef = this.dialog.open(CreateItemDialogComponent, {
+        width: '400px',
+        data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("Dialog closed with result:", result);
+        if (result?.menuItemCreated) {
+          this.updateSectionMenuItems(sectionId);
+        }
+      });
+    }).catch(error => {
+      console.error("Error fetching menu items count:", error);
+      // Handle error appropriately
+    });
+  }
+
   deleteMenuItemWithConfirmation(sectionId: string, menuItemId: string, imageUrl: string | null): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: { text: 'Are you sure you want to delete this menu item?' }
@@ -261,7 +264,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
               horizontalPosition: this.horizontalPosition,
               verticalPosition: this.verticalPosition,
               duration: 2500,
-              panelClass: ['green-snackbar']
+              panelClass: ['red-snackbar']
             });
             // Optionally, refresh the menu items for the section
             this.updateSectionMenuItems(sectionId);
@@ -278,7 +281,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
       }
     });
   }
-
 
   updateAfterDeletion(sectionId: string, deletedItemId: string): void {
     const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
@@ -301,5 +303,25 @@ export class MenuBuilderDashboardComponent implements OnInit {
       // Refresh the section to reflect the changes in the UI
       this.updateSectionMenuItems(sectionId);
     }
+  }
+
+  // In your main component
+  openEditMenuItemDialog(menuItem: MenuItem, sectionId: string) {
+    const dialogRef = this.dialog.open(EditItemDialogComponent, {
+      width: '400px',
+      data: menuItem
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.menuItemUpdated) {
+        this.updateSectionMenuItems(sectionId);
+        this._snackBar.open('Menu item edited!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['yellow-snackbar']
+        });
+      }
+    });
   }
 }
