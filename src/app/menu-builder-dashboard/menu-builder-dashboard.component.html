@@ -71,15 +71,24 @@
                 <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}"
                     class="menu-item-image">
                 <div class="menu-item-info">
-                    <h2>{{ menuItem.name }}</h2>
+                    <h2>{{menuItem.order}}. {{ menuItem.name }}</h2>
                     <p class="menu-item-description">{{ menuItem.description }}</p>
                 </div>
 
                 <div class="menu-item-price">
                     <strong>${{ menuItem.price | number:'1.2-2' }}</strong>
                     <div class="menu-item-actions">
+                        <button mat-mini-fab color="primary" [disabled]="menuItem.order === 1"
+                            (click)="moveMenuItem(menuItem.id, section.id, 'up')" matTooltip="Move Up One">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button mat-mini-fab color="primary" [disabled]="menuItem.order === section.menuItems.length"
+                            (click)="moveMenuItem(menuItem.id, section.id, 'down')" matTooltip="Move Down One"
+                            style="margin-left: 15px;">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
                         <button mat-mini-fab color="primary" (click)="openEditMenuItemDialog(menuItem, section.id)"
-                            matTooltip="Edit Item">
+                            matTooltip="Edit Item" style="margin-left: 15px;">
                             <i class="fa-solid fa-edit"></i>
                         </button>
                         <!-- In your HTML template -->

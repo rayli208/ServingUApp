@@ -143,24 +143,24 @@ export class MenuBuilderDashboardComponent implements OnInit {
   moveSection(sectionId: string, direction: 'up' | 'down'): void {
     const currentSectionIndex = this.sections.findIndex(section => section.id === sectionId);
     if (currentSectionIndex === -1) return;
-  
+
     const swapSectionIndex = direction === 'up' ? currentSectionIndex - 1 : currentSectionIndex + 1;
     if (swapSectionIndex < 0 || swapSectionIndex >= this.sections.length) return;
-  
+
     // Swap the order values
     const currentSection = this.sections[currentSectionIndex];
     const swapSection = this.sections[swapSectionIndex];
     [currentSection.order, swapSection.order] = [swapSection.order, currentSection.order];
-  
+
     // Update sections in Firestore
     this.sectionService.updateSection(currentSection).catch(error => console.error('Error updating section:', error));
     this.sectionService.updateSection(swapSection).catch(error => console.error('Error updating section:', error));
-  
+
     // Reflect the change in the local state
     this.sections[currentSectionIndex] = swapSection;
     this.sections[swapSectionIndex] = currentSection;
   }
-  
+
 
   async deleteSectionWithItems(sectionId: string): Promise<void> {
     const menuItems = await this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).get().toPromise();
@@ -305,8 +305,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
       data: { text: 'Are you sure you want to delete this menu item?' }
     });
 
-    console.log(menuItemId);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.menuItemService.deleteMenuItem(menuItemId, imageUrl)
@@ -317,8 +315,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
               duration: 2500,
               panelClass: ['red-snackbar']
             });
-            // Optionally, refresh the menu items for the section
-            this.updateSectionMenuItems(sectionId);
+            this.updateMenuItemsOrderAfterDeletion(sectionId, menuItemId);
           })
           .catch(error => {
             this._snackBar.open('Error occurred during deletion!', '', {
@@ -333,28 +330,22 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
-  updateAfterDeletion(sectionId: string, deletedItemId: string): void {
+  updateMenuItemsOrderAfterDeletion(sectionId: string, deletedItemId: string): void {
     const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
-    if (sectionIndex > -1) {
-      // Remove the deleted item from the local array
-      this.sections[sectionIndex].menuItems = this.sections[sectionIndex].menuItems
-        .filter(item => item.id !== deletedItemId);
+    if (sectionIndex === -1) return;
 
-      // Update the order of remaining menu items
-      this.sections[sectionIndex].menuItems.forEach((item, index) => {
-        if (item.order !== index + 1) {
-          item.order = index + 1;
-          this.menuItemService.updateMenuItem(item).catch(error => {
-            console.error('Error updating item order:', error);
-            // Optionally, handle this error in the UI
-          });
-        }
-      });
+    // Remove the deleted item from the array and update the order of remaining items
+    const updatedMenuItems = this.sections[sectionIndex].menuItems
+      .filter(item => item.id !== deletedItemId)
+      .map((item, index) => ({ ...item, order: index + 1 }));
 
-      // Refresh the section to reflect the changes in the UI
-      this.updateSectionMenuItems(sectionId);
-    }
+    // Update local state
+    this.sections[sectionIndex].menuItems = updatedMenuItems;
+
+    // Update in database
+    this.updateMenuItemsOrder(sectionId, updatedMenuItems);
   }
+
 
   openEditMenuItemDialog(menuItem: MenuItem, sectionId: string) {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
@@ -373,5 +364,40 @@ export class MenuBuilderDashboardComponent implements OnInit {
         });
       }
     });
+  }
+
+  moveMenuItem(menuItemId: string, sectionId: string, direction: 'up' | 'down'): void {
+    const sectionIndex = this.sections.findIndex(section => section.id === sectionId);
+    if (sectionIndex === -1) return;
+
+    let menuItems = [...this.sections[sectionIndex].menuItems];
+    const menuItemIndex = menuItems.findIndex(item => item.id === menuItemId);
+    if (menuItemIndex === -1) return;
+
+    if (direction === 'up' && menuItemIndex > 0) {
+      [menuItems[menuItemIndex], menuItems[menuItemIndex - 1]] = [menuItems[menuItemIndex - 1], menuItems[menuItemIndex]];
+    } else if (direction === 'down' && menuItemIndex < menuItems.length - 1) {
+      [menuItems[menuItemIndex], menuItems[menuItemIndex + 1]] = [menuItems[menuItemIndex + 1], menuItems[menuItemIndex]];
+    }
+
+    // Update orders after swapping
+    menuItems = menuItems.map((item, index) => ({ ...item, order: index + 1 }));
+
+    // Update local state
+    this.sections[sectionIndex].menuItems = menuItems;
+
+    // Update in database
+    this.updateMenuItemsOrder(sectionId, menuItems);
+  }
+
+  updateMenuItemsOrder(sectionId: string, menuItems: MenuItem[]): Promise<void> {
+    const batch = this.afs.firestore.batch();
+
+    menuItems.forEach(item => {
+      const menuItemDocRef = this.afs.collection('menuItems').doc(item.id).ref;
+      batch.update(menuItemDocRef, { order: item.order });
+    });
+
+    return batch.commit();
   }
 }
