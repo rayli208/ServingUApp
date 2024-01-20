@@ -20,7 +20,7 @@
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <div class="menu-builder-card-mini-header">
-                    <h1>#{{section.order}}</h1>
+                    <h1 class="menu-builder-card-header-name">{{section.order}}. </h1>
                     <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">{{ section.name }}
                     </h1>
                     <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
@@ -30,6 +30,14 @@
                 </div>
             </mat-panel-title>
             <mat-panel-description class="menu-builder-card-buttons">
+                <button mat-mini-fab color="primary" [disabled]="section.order === 1"
+                    (click)="moveSection(section.id, 'up')" matTooltip="Move Up One">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </button>
+                <button mat-mini-fab color="primary" [disabled]="section.order === sections.length"
+                    (click)="moveSection(section.id, 'down')" matTooltip="Move Down One">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </button>
                 <button mat-mini-fab color="primary" *ngIf="editingSectionId !== section.id"
                     (click)="$event.stopPropagation(); editSection(section.id)" matTooltip="Edit Section"
                     style="margin-left: 15px;">
@@ -77,8 +85,7 @@
                         <!-- In your HTML template -->
                         <button mat-mini-fab color="warn"
                             (click)="deleteMenuItemWithConfirmation(section.id, menuItem.id, menuItem.imageUrl)"
-                            matTooltip="Delete Item"
-                            style="margin-left: 15px;">
+                            matTooltip="Delete Item" style="margin-left: 15px;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>

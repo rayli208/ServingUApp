@@ -92,7 +92,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
   }
 
   saveSection(): void {
-
     if (this.editingSection) {
       this.sectionService.updateSection(this.editingSection).then(() => {
         this.editingSectionId = null;
@@ -141,6 +140,27 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
+  moveSection(sectionId: string, direction: 'up' | 'down'): void {
+    const currentSectionIndex = this.sections.findIndex(section => section.id === sectionId);
+    if (currentSectionIndex === -1) return;
+  
+    const swapSectionIndex = direction === 'up' ? currentSectionIndex - 1 : currentSectionIndex + 1;
+    if (swapSectionIndex < 0 || swapSectionIndex >= this.sections.length) return;
+  
+    // Swap the order values
+    const currentSection = this.sections[currentSectionIndex];
+    const swapSection = this.sections[swapSectionIndex];
+    [currentSection.order, swapSection.order] = [swapSection.order, currentSection.order];
+  
+    // Update sections in Firestore
+    this.sectionService.updateSection(currentSection).catch(error => console.error('Error updating section:', error));
+    this.sectionService.updateSection(swapSection).catch(error => console.error('Error updating section:', error));
+  
+    // Reflect the change in the local state
+    this.sections[currentSectionIndex] = swapSection;
+    this.sections[swapSectionIndex] = currentSection;
+  }
+  
 
   async deleteSectionWithItems(sectionId: string): Promise<void> {
     const menuItems = await this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).get().toPromise();
