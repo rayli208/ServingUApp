@@ -117,7 +117,11 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        const deletedSection = this.sections.find(section => section.id === sectionId);
+        const deletedSectionOrder = deletedSection ? deletedSection.order : 0;
+
         this.deleteSectionWithItems(sectionId).then(() => {
+          this.updateSectionOrdersAfterDeletion(deletedSectionOrder);
           this._snackBar.open('Section and its menu items have been deleted!', '', {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
@@ -136,6 +140,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       }
     });
   }
+
 
   async deleteSectionWithItems(sectionId: string): Promise<void> {
     const menuItems = await this.afs.collection<MenuItem>('menuItems', ref => ref.where('sectionId', '==', sectionId)).get().toPromise();
@@ -170,6 +175,20 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
     // Commit the batch
     await batch.commit();
+  }
+
+  updateSectionOrdersAfterDeletion(deletedSectionOrder: number): void {
+    // Filter out the sections that come after the deleted section
+    const updatedSections = this.sections.filter(section => section.order > deletedSectionOrder);
+
+    // Update the order of these sections
+    updatedSections.forEach(section => {
+      section.order -= 1;
+      this.sectionService.updateSection(section).catch(error => {
+        console.error('Error updating section order:', error);
+        // Optionally, handle this error in the UI
+      });
+    });
   }
 
   cancelEdit(): void {
@@ -223,6 +242,18 @@ export class MenuBuilderDashboardComponent implements OnInit {
       }
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
   /*
     MENU ITEM SECTION
@@ -305,7 +336,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
     }
   }
 
-  // In your main component
   openEditMenuItemDialog(menuItem: MenuItem, sectionId: string) {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
       width: '400px',

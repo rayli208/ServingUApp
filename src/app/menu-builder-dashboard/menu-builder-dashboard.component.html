@@ -20,6 +20,7 @@
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <div class="menu-builder-card-mini-header">
+                    <h1>#{{section.order}}</h1>
                     <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">{{ section.name }}
                     </h1>
                     <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
