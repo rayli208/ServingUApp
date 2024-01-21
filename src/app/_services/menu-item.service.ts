@@ -16,18 +16,44 @@ export class MenuItemService {
 
   // Create a new menu item
   createMenuItem(menuItem: MenuItem): Promise<void> {
+    // Convert Tag instances to plain objects
+    const tags = menuItem.tags?.map(tag => ({
+      abbreviation: tag.abbreviation,
+      name: tag.name,
+      color: tag.color
+    }));
+
+    // Create a new object with all the original fields, but replace the tags array with the converted one
+    const menuItemToSave = {
+      ...menuItem,
+      tags: tags
+    };
+
     return new Promise((resolve, reject) => {
-      this.afs.collection('menuItems').add(menuItem)
+      this.afs.collection('menuItems').add(menuItemToSave)
         .then(() => resolve())
         .catch(error => reject(error));
     });
   }
 
   updateMenuItem(menuItem: MenuItem): Promise<void> {
+    // Convert Tag instances to plain objects
+    const tags = menuItem.tags?.map(tag => ({
+      abbreviation: tag.abbreviation,
+      name: tag.name,
+      color: tag.color
+    }));
+
+    // Create a new object with all the original fields, but replace the tags array with the converted one
+    const menuItemToUpdate = {
+      ...menuItem,
+      tags: tags
+    };
+
     return this.afs
       .collection("menuItems")
       .doc(menuItem.id)
-      .update(menuItem)
+      .update(menuItemToUpdate)
       .then(() => {
         // Handle successful update
       })

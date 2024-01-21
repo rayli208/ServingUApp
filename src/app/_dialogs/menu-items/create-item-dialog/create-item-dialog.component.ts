@@ -5,6 +5,8 @@ import { MenuItemService } from 'src/app/_services/menu-item.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Tag } from 'src/app/_models/tag.model';
+import { HARDCODED_TAGS } from 'src/app/core/constants/tags';
 
 const DEFAULT_IMG_SRC = '../../../../assets/img/placeholder-food.png';
 
@@ -20,6 +22,8 @@ export class CreateItemDialogComponent {
   selectedImage: any = null;
   isSubmitted: boolean = false;
   imgSrc: string = DEFAULT_IMG_SRC;
+  availableTags: Tag[] = HARDCODED_TAGS;
+  selectedTags: Tag[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -36,12 +40,14 @@ export class CreateItemDialogComponent {
       description: new FormControl(''),
       price: new FormControl(null),
       fileName: new FormControl(''),
-      imageUrl: new FormControl('')  // Add imageUrl field to the form
+      imageUrl: new FormControl(''),
+      tags: new FormControl([])
     });
   }
 
   onSubmit() {
     this.isSubmitted = true;
+    this.menuItemForm.patchValue({ tags: this.selectedTags });
 
     // If no image is selected, submit the form without an image
     if (!this.selectedImage) {
@@ -97,5 +103,13 @@ export class CreateItemDialogComponent {
       duration: 2500,
       panelClass: [color]
     });
+  }
+
+  onTagChange(tag: Tag, isChecked: boolean) {
+    if (isChecked) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags = this.selectedTags.filter(t => t.abbreviation !== tag.abbreviation);
+    }
   }
 }

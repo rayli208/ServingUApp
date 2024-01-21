@@ -1,3 +1,5 @@
+import { Tag } from "./tag.model";
+
 export class MenuItem {
     id?: string;
     uid: string;
@@ -8,4 +10,5 @@ export class MenuItem {
     price: number;
     fileName?: string;
     imageUrl?: string;
+    tags?: Tag[]; 
   }

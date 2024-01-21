@@ -2,9 +2,8 @@
     <h1 mat-dialog-title>Edit Menu Item</h1>
     <div mat-dialog-content>
         <div style="text-align: center;">
-            <img [src]="imgSrc" width="100px" height="100px" 
-                 style="cursor: pointer; border-radius: 50%;" 
-                 (click)="fileUploader.click(); $event.stopPropagation()">
+            <img [src]="imgSrc" width="100px" height="100px" style="cursor: pointer; border-radius: 50%;"
+                (click)="fileUploader.click(); $event.stopPropagation()">
         </div>
         <input type="file" hidden #fileUploader (change)="detectNewImage($event)" accept="image/*">
         <div>
@@ -25,11 +24,17 @@
                 <input type="number" formControlName="price" matInput required>
             </mat-form-field>
         </div>
+        <div *ngFor="let tag of availableTags" style="margin-bottom: 10px;">
+            <mat-checkbox [checked]="isTagSelected(tag)" (change)="onTagChange(tag, $event.checked)"
+                [style.color]="tag.color">
+                {{ tag.name }}
+            </mat-checkbox>
+        </div>
     </div>
     <div mat-dialog-actions style="justify-content: space-between;">
         <button mat-raised-button mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" type="submit" 
-                [disabled]="!editMenuItemForm.valid || !editMenuItemForm.dirty">
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="!editMenuItemForm.valid || !editMenuItemForm.dirty">
             Update
         </button>
     </div>

@@ -284,7 +284,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
     // Call a method to get the count of menu items
     this.getMenuItemsCount(sectionId).then(maxOrder => {
       const dialogRef = this.dialog.open(CreateItemDialogComponent, {
-        width: '400px',
+        width: '500px',
         data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder }
       });
 
@@ -349,13 +349,17 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
   openEditMenuItemDialog(menuItem: MenuItem, sectionId: string) {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: menuItem
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result?.menuItemUpdated) {
-        this.updateSectionMenuItems(sectionId);
+        const sectionIndex = this.sections.findIndex(s => s.id === sectionId);
+        const itemIndex = this.sections[sectionIndex].menuItems.findIndex(i => i.id === menuItem.id);
+        if(itemIndex !== -1) {
+          this.sections[sectionIndex].menuItems[itemIndex] = result.updatedMenuItem;
+        }
         this._snackBar.open('Menu item edited!', '', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
@@ -365,6 +369,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       }
     });
   }
+  
 
   moveMenuItem(menuItemId: string, sectionId: string, direction: 'up' | 'down'): void {
     const sectionIndex = this.sections.findIndex(section => section.id === sectionId);

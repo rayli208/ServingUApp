@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { MenuItemService } from 'src/app/_services/menu-item.service';
 import { MenuItem } from 'src/app/_models/menu-item.model';
+import { Tag } from 'src/app/_models/tag.model';
+import { HARDCODED_TAGS } from 'src/app/core/constants/tags';
 
-const DEFAULT_IMG_SRC = 'path_to_default_placeholder_image'; // Replace with your actual default image path
+const DEFAULT_IMG_SRC = '../../../../assets/img/placeholder-food.png';
 
 @Component({
   selector: 'app-edit-item-dialog',
@@ -16,31 +18,35 @@ const DEFAULT_IMG_SRC = 'path_to_default_placeholder_image'; // Replace with you
 export class EditItemDialogComponent implements OnInit {
   imgSrc: string;
   selectedImage: any = null;
-  public editMenuItemForm: UntypedFormGroup;
+  public editMenuItemForm: FormGroup;
+  availableTags: Tag[] = HARDCODED_TAGS;
+  tempSelectedTags: Tag[] = [];
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private menuItemService: MenuItemService,
     private storage: AngularFireStorage,
     public dialogRef: MatDialogRef<EditItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MenuItem
   ) {
     this.editMenuItemForm = this.formBuilder.group({
-      name: new FormControl(data.name),
-      description: new FormControl(data.description),
-      price: new FormControl(data.price),
-      imageUrl: new FormControl(data.imageUrl),
-      fileName: new FormControl('')
+      name: new FormControl(data?.name || ''),
+      description: new FormControl(data?.description || ''),
+      price: new FormControl(data?.price || null),
+      imageUrl: new FormControl(data?.imageUrl || ''),
+      fileName: new FormControl(''),
+      tags: new FormControl(data?.tags || [])
     });
 
-    this.imgSrc = data.imageUrl || DEFAULT_IMG_SRC; // Set default image path
+    this.imgSrc = data?.imageUrl || DEFAULT_IMG_SRC;
+    this.tempSelectedTags = [...(data?.tags || [])];
   }
 
-  ngOnInit(): void {
-    // Additional initialization logic if needed
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
+    this.editMenuItemForm.patchValue({ tags: this.tempSelectedTags });
+
     if (this.selectedImage) {
       this.handleImageUpdate().then(newImageUrl => {
         if (newImageUrl) {
@@ -54,51 +60,40 @@ export class EditItemDialogComponent implements OnInit {
   }
 
   async handleImageUpdate(): Promise<string | null> {
-    if (this.selectedImage) {
-      // If there's an old image URL, delete the old image
-      if (this.data.imageUrl) {
-        const oldImageRef = this.storage.refFromURL(this.data.imageUrl);
-        await oldImageRef.delete().toPromise().catch(error => {
-          console.error('Error deleting old image:', error);
-        });
-      }
-
-      // Upload new image and return the new URL
-      const filePath = `menuItemPictures/${this.selectedImage.name}_${new Date().getTime()}`;
-      const fileRef = this.storage.ref(filePath);
-      await this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
-        finalize(async () => {
-          // Do nothing here, as we'll handle the URL outside this block
-        })
-      ).toPromise();
-
-      // Get and return the new image URL
-      return await fileRef.getDownloadURL().toPromise();
+    if (this.data.imageUrl) {
+      const oldImageRef = this.storage.refFromURL(this.data.imageUrl);
+      await oldImageRef.delete().toPromise().catch(error => {
+        console.error('Error deleting old image:', error);
+      });
     }
 
-    // If no new image is selected, return null
-    return null;
+    const filePath = `menuItemPictures/${this.selectedImage.name}_${new Date().getTime()}`;
+    const fileRef = this.storage.ref(filePath);
+    await this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
+      finalize(async () => {}))
+    .toPromise();
+
+    return await fileRef.getDownloadURL().toPromise();
   }
 
   updateMenuItem() {
     const updatedMenuItem: MenuItem = {
       ...this.data,
-      ...this.editMenuItemForm.value
+      ...this.editMenuItemForm.value,
+      tags: this.tempSelectedTags
     };
 
     this.menuItemService.updateMenuItem(updatedMenuItem).then(() => {
-      this.dialogRef.close({ menuItemUpdated: true });
+      this.dialogRef.close({ menuItemUpdated: true, updatedMenuItem });
     }).catch(error => {
       console.error('Error updating menu item:', error);
     });
   }
 
-
   detectNewImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        // Ensure the type of e.target.result is string
         this.imgSrc = e.target.result as string;
       };
       reader.readAsDataURL(event.target.files[0]);
@@ -106,9 +101,22 @@ export class EditItemDialogComponent implements OnInit {
       this.editMenuItemForm.patchValue({ fileName: event.target.files[0].name });
       this.editMenuItemForm.markAsDirty();
     } else {
-      this.imgSrc = this.data.imageUrl || DEFAULT_IMG_SRC; // Fallback to the current image or default
+      this.imgSrc = this.data.imageUrl || DEFAULT_IMG_SRC;
       this.selectedImage = null;
       this.editMenuItemForm.patchValue({ fileName: '' });
     }
   }
-}  
+
+  onTagChange(tag: Tag, isChecked: boolean) {
+    if (isChecked) {
+      this.tempSelectedTags.push(tag);
+    } else {
+      this.tempSelectedTags = this.tempSelectedTags.filter(t => t.abbreviation !== tag.abbreviation);
+    }
+    this.editMenuItemForm.markAsDirty();
+  }
+
+  isTagSelected(tag: Tag): boolean {
+    return this.tempSelectedTags.some(t => t.abbreviation === tag.abbreviation);
+  }
+}

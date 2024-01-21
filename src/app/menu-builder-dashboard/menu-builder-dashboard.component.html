@@ -30,33 +30,34 @@
                 </div>
             </mat-panel-title>
             <mat-panel-description class="menu-builder-card-buttons">
-                <button mat-mini-fab color="primary" [disabled]="section.order === 1"
-                    (click)="moveSection(section.id, 'up')" matTooltip="Move Up One">
-                    <i class="fa-solid fa-arrow-up"></i>
-                </button>
-                <button mat-mini-fab color="primary" [disabled]="section.order === sections.length"
-                    (click)="moveSection(section.id, 'down')" matTooltip="Move Down One">
-                    <i class="fa-solid fa-arrow-down"></i>
-                </button>
-                <button mat-mini-fab color="primary" *ngIf="editingSectionId !== section.id"
-                    (click)="$event.stopPropagation(); editSection(section.id)" matTooltip="Edit Section"
-                    style="margin-left: 15px;">
-                    <i class="fa-solid fa-edit"></i>
-                </button>
-                <button mat-mini-fab color="primary" *ngIf="editingSectionId === section.id"
-                    (click)="$event.stopPropagation(); saveSection()" matTooltip="Save Section"
-                    style="margin-left: 15px;">
-                    <i class="fa-solid fa-save"></i>
-                </button>
-                <button mat-mini-fab color="accent" *ngIf="editingSectionId === section.id"
-                    (click)="$event.stopPropagation(); cancelEdit()" matTooltip="Cancel" style="margin-left: 15px;">
-                    <i class="fa-solid fa-close"></i>
-                </button>
-                <button mat-mini-fab color="warn" *ngIf="editingSectionId !== section.id"
-                    (click)="$event.stopPropagation(); deleteSection(section.id)" matTooltip="Delete Section"
-                    style="margin-left: 15px;">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <div>
+                    <button mat-mini-fab color="primary" [disabled]="section.order === 1"
+                        (click)="moveSection(section.id, 'up')" matTooltip="Move Up One">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                    <button mat-mini-fab color="primary" [disabled]="section.order === sections.length"
+                        (click)="moveSection(section.id, 'down')" matTooltip="Move Down One">
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" *ngIf="editingSectionId !== section.id"
+                        (click)="$event.stopPropagation(); editSection(section.id)" matTooltip="Edit Section">
+                        <i class="fa-solid fa-edit"></i>
+                    </button>
+                    <button mat-mini-fab color="primary" *ngIf="editingSectionId === section.id"
+                        (click)="$event.stopPropagation(); saveSection()" matTooltip="Save Section">
+                        <i class="fa-solid fa-save"></i>
+                    </button>
+                    <button mat-mini-fab color="accent" *ngIf="editingSectionId === section.id"
+                        (click)="$event.stopPropagation(); cancelEdit()" matTooltip="Cancel">
+                        <i class="fa-solid fa-close"></i>
+                    </button>
+                    <button mat-mini-fab color="warn" *ngIf="editingSectionId !== section.id"
+                        (click)="$event.stopPropagation(); deleteSection(section.id)" matTooltip="Delete Section">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="section-content">
@@ -68,15 +69,23 @@
                 There are no menu items for this section.
             </div>
             <div *ngFor="let menuItem of section.menuItems" class="menu-item-card">
-                <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}"
-                    class="menu-item-image">
-                <div class="menu-item-info">
-                    <h2>{{menuItem.order}}. {{ menuItem.name }}</h2>
-                    <p class="menu-item-description">{{ menuItem.description }}</p>
+                <div class="menu-item-content">
+                    <div class="menu-item-top">
+                        <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}" class="menu-item-image">
+                        <div class="menu-item-info">
+                            <h2 style="margin-bottom: 0px;">{{ menuItem.order }}. {{ menuItem.name }} (${{ menuItem.price | number:'1.2-2' }})</h2>
+                            <p class="menu-item-description">{{ menuItem.description }}</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="menu-item-price">
-                    <strong>${{ menuItem.price | number:'1.2-2' }}</strong>
+                <div class="menu-item-tags-actions">
+                    <div class="menu-item-tags">
+                        <mat-chip-set aria-label="Menu item tags">
+                            <mat-chip *ngFor="let tag of menuItem.tags" [style.background-color]="tag.color" matTooltip="{{ tag.name }}">
+                                {{ tag.abbreviation }}
+                            </mat-chip>
+                        </mat-chip-set>
+                    </div>
                     <div class="menu-item-actions">
                         <button mat-mini-fab color="primary" [disabled]="menuItem.order === 1"
                             (click)="moveMenuItem(menuItem.id, section.id, 'up')" matTooltip="Move Up One">
@@ -91,7 +100,6 @@
                             matTooltip="Edit Item" style="margin-left: 15px;">
                             <i class="fa-solid fa-edit"></i>
                         </button>
-                        <!-- In your HTML template -->
                         <button mat-mini-fab color="warn"
                             (click)="deleteMenuItemWithConfirmation(section.id, menuItem.id, menuItem.imageUrl)"
                             matTooltip="Delete Item" style="margin-left: 15px;">
@@ -99,12 +107,10 @@
                         </button>
                     </div>
                 </div>
-            </div>
-
+            </div>                    
         </div>
     </mat-expansion-panel>
 </div>
-
 <div *ngIf="sections?.length === 0" class="no-section-or-item-message">
     There are no sections.
 </div>
