@@ -71,20 +71,21 @@
             <div *ngFor="let menuItem of section.menuItems" class="menu-item-card">
                 <div class="menu-item-content">
                     <div class="menu-item-top">
-                        <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}" class="menu-item-image">
+                        <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}"
+                            class="menu-item-image">
                         <div class="menu-item-info">
-                            <h2 style="margin-bottom: 0px;">{{ menuItem.order }}. {{ menuItem.name }} (${{ menuItem.price | number:'1.2-2' }})</h2>
+                            <h2 style="margin-bottom: 0px;">{{ menuItem.order }}. {{ menuItem.name }}
+                                (${{ menuItem.price | number:'1.2-2' }})</h2>
                             <p class="menu-item-description">{{ menuItem.description }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="menu-item-tags-actions">
                     <div class="menu-item-tags">
-                        <mat-chip-set aria-label="Menu item tags">
-                            <mat-chip *ngFor="let tag of menuItem.tags" [style.background-color]="tag.color" matTooltip="{{ tag.name }}">
-                                {{ tag.abbreviation }}
-                            </mat-chip>
-                        </mat-chip-set>
+                        <span *ngFor="let tag of menuItem.tags" [style.backgroundColor]="tag.color" class="menu-tag"
+                            [matTooltip]="tag.name">
+                            {{ tag.abbreviation }}
+                        </span>
                     </div>
                     <div class="menu-item-actions">
                         <button mat-mini-fab color="primary" [disabled]="menuItem.order === 1"
@@ -107,7 +108,7 @@
                         </button>
                     </div>
                 </div>
-            </div>                    
+            </div>
         </div>
     </mat-expansion-panel>
 </div>
