@@ -115,6 +115,15 @@
     }
 }
 
+@media (max-width: 768px) {
+    .punch-clock-dashboard-card-header-profile {
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        min-width: 45px;
+    }
+}
+
 
 @media (max-width:622px) {
     .punch-clock-dashboard-container-half:nth-child(1) {
