@@ -30,6 +30,7 @@
 
 .employee-dashboard-card-buttons{
     margin-right: 25px;
+    display: flex;
 
     button{
         margin-left: 10px;
@@ -100,34 +101,63 @@
 }
 
 
-@media (max-width:768px) {
-    .employee-dashboard-row span:first-of-type{
-        width: 100%;
-    }
-    
-    .employee-dashboard-row span:last-of-type{
-        width: 100%;
-    }
-    
-    .employee-dashboard-card-header{
-        padding-bottom: 5px;
+@media (max-width: 768px) {
+    .employee-dashboard-card-mini-header{
+        align-items: center;
+        min-width: 50%;
     }
 
-    .employee-dashboard-card-buttons{
-        margin-right: 0px;
+    .employee-dashboard-card-header-profile{
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        min-width: 45px;
+    }
+
+    .employee-dashboard-card-header-name, .employee-dashboard-card-header-position{
+        margin-left: 5px;
+    }
+
+    .employee-dashboard-card-header-name{
+        font-size: 18px;
+    }
+
+    .employee-dashboard-card-buttons {
+        margin-right: 0;
         margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap; /* Ensure buttons can wrap to the next line */
+        justify-content: space-evenly; /* Distribute space between and around items */
     }
 
-    .employee-dashboard-row{
+    .employee-dashboard-card-buttons div {
+        flex: 0 1 40%; /* Allow buttons to grow and ensure two buttons per line, adjust percentage as needed */
+    }
+
+    /* Remove right margin for every button to maximize space utilization */
+    .employee-dashboard-card-buttons div button {
+        margin-right: 0px;
         margin-left: 0px;
+        margin-bottom: 10px;
+        width: 100%; /* Ensure button width fills the container */
     }
 
-    .employee-dashboard-row{
+    /* Adjustments for other elements within .employee-dashboard-card for smaller screens */
+    .employee-dashboard-row {
+        margin-left: 0;
         display: flex;
         flex-direction: column;
     }
 
-    button{
+    .mat-expansion-panel-header {
+        padding: 0 !important;
+    }
+
+    .employee-dashboard-card-header {
+        padding-bottom: 5px;
+    }
+
+    button {
         margin-bottom: 15px;
     }
 }
