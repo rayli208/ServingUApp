@@ -212,6 +212,7 @@
 .centered-toggle-button {
   position: absolute;
   left: 50%;
+  bottom: 0px;
   transform: translateX(-50%);
 }
 
@@ -243,4 +244,10 @@
       margin: 10px 0px;
     }
   }
+
+  .centered-toggle-button {
+    left: inherit;
+    right: 5px;
+    top: 5px;
+}
 }

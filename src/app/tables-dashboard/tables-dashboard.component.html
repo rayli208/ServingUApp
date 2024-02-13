@@ -3,10 +3,15 @@
     <div class="table-dashboard-actions">
       <h1><span class="current-floor-label">Current Floor: </span>{{ getFloorName(currentFloor) }}</h1>
       <div class="arrow-buttons">
-        <i class="fa-regular fa-circle-left" style="margin:0px 15px;" (click)="decreaseFloorPlan()" [class.disabled]="currentFloor === 1"></i>
+        <i class="fa-regular fa-circle-left" style="margin:0px 15px;" (click)="decreaseFloorPlan()"
+          [class.disabled]="currentFloor === 1"></i>
         <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
       </div>
     </div>
+    <button mat-icon-button color="primary" class="centered-toggle-button"
+      (click)="togglePanel(); $event.stopPropagation();" matTooltip="Toggle All Table View">
+      <i class="fa-solid" [class]="panelOpenState ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+    </button>
     <div>
       <div style="margin-bottom: 15px;">
         <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
@@ -71,18 +76,11 @@
   <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
     <mat-drawer-content>
       <mat-expansion-panel [(expanded)]="panelOpenState" hideToggle="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <button mat-icon-button color="primary" class="centered-toggle-button" (click)="togglePanel(); $event.stopPropagation();">
-              <i class="fa-solid" [class]="panelOpenState ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
-            </button>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-      
         <div class="table-all-table-container">
-            <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
-            <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor" [tables]="filteredTables"></app-tables-all-table-view>
-          </div>        
+          <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
+          <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor"
+            [tables]="filteredTables"></app-tables-all-table-view>
+        </div>
       </mat-expansion-panel>
       <div class="table-dashboard-container-table-view">
         <div #tableView class="table-view"
