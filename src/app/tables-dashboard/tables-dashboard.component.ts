@@ -33,6 +33,7 @@ export class TablesDashboardComponent implements OnInit {
   seatsFilter: number;
   tableViewWidth: number;
   tableViewHeight: number;
+  panelOpenState = true;
 
   constructor(
     public dialog: MatDialog,
@@ -195,5 +196,9 @@ export class TablesDashboardComponent implements OnInit {
     this.isActiveFilter = 'all';
     this.seatsFilter = null;
     this.applyFilters();
+  }
+
+  togglePanel() {
+    this.panelOpenState = !this.panelOpenState;
   }
 }

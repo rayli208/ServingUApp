@@ -209,6 +209,12 @@
   align-items: center;
 }
 
+.centered-toggle-button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media (max-width: 1150px) {
   .table-view {
     margin: 10px auto;
@@ -238,9 +244,3 @@
     }
   }
 }
-
-
-  
-
-  
-

@@ -7,7 +7,6 @@
         <i class="fa-regular fa-circle-right" (click)="increaseFloorPlan()"></i>
       </div>
     </div>
-    
     <div>
       <div style="margin-bottom: 15px;">
         <button style="margin-left: 15px;" mat-raised-button (click)="drawer.toggle()"
@@ -71,11 +70,20 @@
 <div class="table-dashboard-container">
   <mat-drawer-container class="table-drawer-container" [hasBackdrop]="true">
     <mat-drawer-content>
-      <div class="table-all-table-container">
-        <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
-        <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor"
-          [tables]="filteredTables"></app-tables-all-table-view>
-      </div>
+      <mat-expansion-panel [(expanded)]="panelOpenState" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <button mat-icon-button color="primary" class="centered-toggle-button" (click)="togglePanel(); $event.stopPropagation();">
+              <i class="fa-solid" [class]="panelOpenState ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+            </button>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <div class="table-all-table-container">
+            <i class="table-all-table-container-no-tables" *ngIf="filteredTables?.length == 0">There are no tables.</i>
+            <app-tables-all-table-view [employees]="clockedInEmployees" [floorNumber]="currentFloor" [tables]="filteredTables"></app-tables-all-table-view>
+          </div>        
+      </mat-expansion-panel>
       <div class="table-dashboard-container-table-view">
         <div #tableView class="table-view"
           [ngStyle]="{'min-width.px': tableViewWidth, 'min-height.px': tableViewHeight}">
