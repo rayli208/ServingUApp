@@ -4,11 +4,17 @@
             matTooltip="Add Employee">
             <i class="fa-solid fa-plus"></i> Employee
         </button>
-        <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu"
-            style="margin-left: 15px;" matBadge="!" matBadgeColor="accent"
-            [matBadgeHidden]="!employeeNameFilter && !positionFilter && (floorEmployeeFilter === 'all')">
-            <i class="fa-solid fa-filter"></i>
-        </button>
+        <div>
+            <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Text Employees"
+                (click)="sendOutText()" style="margin-right: 15px;" [disabled]="!filteredEmployees.length">
+                <i class="fa-solid fa-comment"></i>
+            </button>
+            <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu" aria-label="Filter Menu" matBadge="!"
+                matBadgeColor="accent"
+                [matBadgeHidden]="!employeeNameFilter && !positionFilter && (floorEmployeeFilter === 'all')">
+                <i class="fa-solid fa-filter"></i>
+            </button>
+        </div>
     </div>
     <mat-menu #menu="matMenu">
         <div (click)="$event.stopPropagation()" style="padding: 15px;">

@@ -12,6 +12,9 @@ import { CreateScheduleDialogComponent } from '../_dialogs/schedules/create-sche
 import { Schedule } from '../_models/schedule.model';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { MassTextDialogComponent } from '../_dialogs/employee/mass-text-dialog/mass-text-dialog.component';
+import { MessagesService } from '../_services/messages.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -33,9 +36,11 @@ export class EmployeeDashboardComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
+    private authService: AuthService,
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
-    public scheduleService: ScheduleService
+    public scheduleService: ScheduleService,
+    public messagesService: MessagesService,
   ) {
     this.user = null;
   }
@@ -80,7 +85,7 @@ export class EmployeeDashboardComponent implements OnInit {
         text: `Are you sure you want to delete ${employee.name}?`
       }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //Get all schedules for that employee
@@ -165,15 +170,80 @@ export class EmployeeDashboardComponent implements OnInit {
     this.employeeNameFilter = '';
     this.positionFilter = '';
     this.floorEmployeeFilter = 'all';
-}
+  }
+
+
+  sendOutText(): void {
+    const dialogRef = this.dialog.open(MassTextDialogComponent, {
+      width: '500px',
+      data: { employees: this.filteredEmployees }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.selectedEmployees.length > 0) {
+        this.sendMassTexts(result.selectedEmployees, result.message);
+      }
+    });
+  }
+
+  sendMassTexts(selectedEmployees, messageContent) {
+    const messages = selectedEmployees.map(employee => ({
+      channelId: 'a31f78766da04f9e95ce52a85cf13bdd', // Use your actual channelId
+      to: '1' + employee.phone.replace(/-/g, ""),
+      type: 'text',
+      content: { text: messageContent }
+    }));
+  
+    console.log(`Total messages to send: ${messages.length}`);
+  
+    let totalMessagesCount = 0;
+    let messagesProcessed = 0; // Counter for processed messages
+  
+    messages.forEach((message, index) => {
+      this.messagesService.createMessage(message).then(() => {
+        totalMessagesCount += Math.ceil(message.content.text.length / 153);
+        messagesProcessed++; // Increment counter after each message is processed
+        console.log(`Message ${index + 1} sent successfully. Messages processed: ${messagesProcessed}`);
+  
+        if (messagesProcessed === messages.length) { // Check if all messages have been processed
+          console.log('All messages processed, updating texts count and showing snackbar.');
+          // Update texts count and show snackbar
+          this.authService.updateTextsThisMonth(totalMessagesCount).then(() => {
+            console.log('Texts count updated, showing success snackbar.');
+            this.showSnackBar("All texts have been sent!", "green-snackbar");
+          }).catch(error => {
+            console.error('Error updating texts count:', error);
+            this.showSnackBar("Error updating texts count!", "red-snackbar");
+          });
+        }
+      }).catch(error => {
+        console.error(`Error sending message ${index + 1}:`, error);
+        messagesProcessed++; // Increment counter even if a message fails to send
+        if (messagesProcessed === messages.length) { // Check if all messages have been processed
+          console.log('All messages processed with some errors, showing error snackbar.');
+          // Show snackbar indicating some texts might not have been sent
+          this.showSnackBar("Some texts might not have been sent!", "red-snackbar");
+        }
+      });
+    });
+  }  
+
+  showSnackBar(message: string, panelClass: string) {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: [panelClass]
+    });
+  }
 
 
   get filteredEmployees() {
-    return this.Employees?.filter(employee => 
-        (!this.employeeNameFilter || employee.name.toLowerCase().includes(this.employeeNameFilter.toLowerCase())) &&
-        (!this.positionFilter || employee.position.toLowerCase().includes(this.positionFilter.toLowerCase())) &&
-        (this.floorEmployeeFilter === 'all' || (this.floorEmployeeFilter === 'true' && employee.floorEmployee) || (this.floorEmployeeFilter === 'false' && !employee.floorEmployee))
+    return this.Employees?.filter(employee =>
+      (!this.employeeNameFilter || employee.name.toLowerCase().includes(this.employeeNameFilter.toLowerCase())) &&
+      (!this.positionFilter || employee.position.toLowerCase().includes(this.positionFilter.toLowerCase())) &&
+      (this.floorEmployeeFilter === 'all' || (this.floorEmployeeFilter === 'true' && employee.floorEmployee) || (this.floorEmployeeFilter === 'false' && !employee.floorEmployee))
     ) || [];
-}
+  }
 
 }

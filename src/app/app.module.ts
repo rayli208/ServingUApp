@@ -103,6 +103,7 @@ import { ReservationsDashboardComponent } from './reservations-dashboard/reserva
 import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-builder-dashboard.component';
 import { CreateItemDialogComponent } from './_dialogs/menu-items/create-item-dialog/create-item-dialog.component';
 import { EditItemDialogComponent } from './_dialogs/menu-items/edit-item-dialog/edit-item-dialog.component';
+import { MassTextDialogComponent } from './_dialogs/employee/mass-text-dialog/mass-text-dialog.component';
 
 @NgModule({
     declarations: [
@@ -119,6 +120,7 @@ import { EditItemDialogComponent } from './_dialogs/menu-items/edit-item-dialog/
         CreateEmployeeDialogComponent,
         ConfirmDialogComponent,
         EditEmployeeDialogComponent,
+        MassTextDialogComponent,
         EditJobDialogComponent,
         EditTableDialogComponent,
         CreateJobDialogComponent,
