@@ -1,7 +1,7 @@
 /// <reference lib="WebWorker" />
 
 // Version of the service worker
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'VERSION_PLACEHOLDER'; // Use a placeholder
 
 // Files to cache
 const CACHE_FILES = [
