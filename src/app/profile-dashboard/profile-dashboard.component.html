@@ -95,6 +95,14 @@
                 <span>App Version: </span>
                 <span>{{ version }}</span>
             </div>
+            <div *ngIf="(user | async)?.defaultText" class="profile-dashboard-card-row">
+                <span>Hard Refresh: </span>
+                <span>
+                    <button mat-mini-fab color="primary" matTooltip="Hard Refresh" (click)="hardRefresh($event)">
+                        <i class="fa-solid fa-refresh"></i>
+                    </button>
+                </span>
+            </div>
         </div>
         <div class="profile-dashboard-card-main-container-half">
             <div class="image-container" *ngIf="imageUrls.length; else noImages">

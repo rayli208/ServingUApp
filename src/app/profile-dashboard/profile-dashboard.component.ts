@@ -141,4 +141,21 @@ export class ProfileDashboardComponent implements OnInit {
     getSanitizedHtml(html: string): SafeHtml {
         return this.sanitizer.bypassSecurityTrustHtml(html);
     }
+
+    hardRefresh(event?: Event): void {
+        if (event) {
+          event.preventDefault(); // Prevent default anchor behavior
+        }
+        // Perform a fetch to the current URL with 'no-cache' header and then reload the page
+        window.fetch(window.location.href, {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        }).then(() => {
+          window.location.reload(); // Reload the current page without using the cache
+        }).catch((error) => {
+          console.error('Error performing hard refresh:', error);
+        });
+      }
 }
