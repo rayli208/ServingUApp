@@ -84,6 +84,13 @@
                             <input autocomplete="off" formControlName="pin" matInput placeholder="Pin" required>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
+                            <mat-label>Account Type</mat-label>
+                            <select formControlName="accountType" matNativeControl required>
+                                <option value="bronze">Bronze</option>
+                                <option value="silver">Silver</option>
+                            </select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Password</mat-label>
                             <input autocomplete="off" formControlName="password" type="password" matInput
                                 placeholder="Password" required>

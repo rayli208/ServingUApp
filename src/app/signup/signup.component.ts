@@ -42,6 +42,7 @@ export class SignupComponent implements OnInit {
             }),
             stepFour: this._formBuilder.group({
                 pin: ['', Validators.required],
+                accountType: ['', Validators.required],
                 password: ['', Validators.required],
                 confirmPassword: ['', Validators.required],
                 createUserPassword: ['', [Validators.required, this.createUserPasswordValidator]]
