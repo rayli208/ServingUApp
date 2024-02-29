@@ -1,16 +1,6 @@
 @import './../_styles/variables.scss';
 
-.employee-schedule-dashboard-back{
-    background-color: $white;
-    border: 1px solid $brand-primary;
-    color: $brand-primary;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.employee-schedule-dashboard-schedule-none{
+.employee-profile-dashboard-schedule-none{
     font-style: italic;
     margin-bottom: 15px;
     margin-top: -10px;
@@ -18,7 +8,7 @@
     color: $text-muted;
 }
 
-.employee-schedule-dashboard-schedule-card {
+.employee-profile-dashboard-schedule-card {
     border: 1px solid $brand-primary;
     border-radius: 4px;
     padding: 15px;
@@ -28,7 +18,7 @@
     justify-content: space-between;
 }
 
-.employee-schedule-dashboard-date {
+.employee-profile-dashboard-date {
     font-size: 20px;
     color: $black;
     font-weight: 600;
@@ -43,14 +33,14 @@
     }
 }
 
-.employee-schedule-dashboard-hours {
+.employee-profile-dashboard-hours {
     font-size: 12px;
     color: $grey;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.employee-schedule-dashboard-icons{
+.employee-profile-dashboard-icons{
     display: flex;
     font-size: 20px;
     color: $brand-primary;
@@ -63,10 +53,28 @@
     }
 }
 
-.employee-schedule-dashboard-none{
+.employee-profile-dashboard-none{
     font-style: italic;
     margin-bottom: 15px;
     margin-top: 10px;
     font-size: 14px;
     color: $text-muted;
 }
+
+.employee-notes-section {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; // Ensure the parent container has a defined height for this to work effectively
+  
+    .mat-form-field {
+      flex: 1; // This will make the form field fill the height of its container
+      width: 100%; // This will make the form field fill the width of its container
+  
+      textarea {
+        height: 100%; // Make the textarea fill the height of the form field
+      }
+    }
+  }
+  
+  

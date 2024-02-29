@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminDashboardComponent implements OnInit {
 
-    user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+    user: Observable<any>;
 
     constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {
         this.user = null;

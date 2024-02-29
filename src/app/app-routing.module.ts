@@ -1,6 +1,5 @@
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
-import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ScheduleDashboardComponent } from './schedule-dashboard/schedule-dashboard.component';
 import { PunchClockDashboardComponent } from './punch-clock-dashboard/punch-clock-dashboard.component';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
@@ -25,6 +24,7 @@ import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-bui
 import { LoginGuard } from './_guards/login.guard';
 import { MenuGuard } from './_guards/menu.guard';
 import { AuthGuard } from './_guards/auth.guard';
+import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard/employee-profile-dashboard.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,7 +41,7 @@ const routes: Routes = [
     { path: 'menu-builder-dashboard', component: MenuBuilderDashboardComponent, canActivate: [AuthGuard, MenuGuard] },
     { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
     { path: 'reservations-dashboard', component: ReservationsDashboardComponent, canActivate: [AuthGuard] },
-    { path: 'employee-schedule-dashboard/:id', component: EmployeeScheduleDashboardComponent, canActivate: [AuthGuard] },
+    { path: 'employee-profile-dashboard/:id', component: EmployeeProfileDashboardComponent, canActivate: [AuthGuard] },
     { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AuthGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [LoginGuard] },
     { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },

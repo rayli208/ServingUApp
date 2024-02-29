@@ -58,4 +58,10 @@ export class EmployeesService {
         floorEmployee: employee.floorEmployee
       });
   }
+
+  updateEmployeeNote(id: string, note: string) {
+    return this.afs.collection("employees").doc(id).update({
+      note: note
+    });
+  }  
 }

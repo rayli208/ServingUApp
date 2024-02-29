@@ -2,21 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ScheduleService } from './../_services/schedule.service';
-import { EmployeesService } from './../_services/employees.service';
+import { ScheduleService } from '../_services/schedule.service';
+import { EmployeesService } from '../_services/employees.service';
 import { Schedule } from '../_models/schedule.model';
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-employee-schedule-dashboard',
-  templateUrl: './employee-schedule-dashboard.component.html',
-  styleUrls: ['./employee-schedule-dashboard.component.scss']
+  selector: 'app-employee-profile-dashboard',
+  templateUrl: './employee-profile-dashboard.component.html',
+  styleUrls: ['./employee-profile-dashboard.component.scss']
 })
-export class EmployeeScheduleDashboardComponent implements OnInit {
+export class EmployeeProfileDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  viewMode = 'schedule';
   employeeRef: any;
   Schedules: any[] = [];
   allSchedules: any[] = [];
@@ -25,6 +26,8 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
     start: new FormControl(),
     end: new FormControl()
   });
+
+  noteForm: FormGroup;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -52,6 +55,16 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
         // Sort by date in ascending order
         return new Date(a.date).getTime() - new Date(b.date).getTime();
       });
+    });
+
+    this.noteForm = new FormGroup({
+      note: new FormControl('') // Initialize with an empty string or fetch existing note if available
+    });
+
+    // Fetch the note for the employee if it exists and populate the form
+    this.employeesService.getEmployeeDoc(id).subscribe(res => {
+      this.employeeRef = res;
+      this.noteForm.get('note').setValue(this.employeeRef.note || ''); // Set the note if it exists
     });
   }
 
@@ -121,6 +134,23 @@ export class EmployeeScheduleDashboardComponent implements OnInit {
           });
         });
       }
+    });
+  }
+
+  saveNote(): void {
+    const id = this.act.snapshot.paramMap.get('id');
+    const note = this.noteForm.get('note').value;
+    this.employeesService.updateEmployeeNote(id, note).then(() => {
+      // Handle success, such as showing a confirmation message
+      this._snackBar.open('Note has been saved!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['green-snackbar']
+      });
+    }).catch(error => {
+      // Handle error
+      console.error('Error saving note:', error);
     });
   }
   

@@ -25,7 +25,7 @@ export class EmployeeDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   userId;
-  user: Observable<any>;              // Example: store the user's info here (Cloud Firestore: collection is 'users', docId is the user's email, lower case)
+  user: Observable<any>;
   Employees: Employee[];
   Schedules: any[];
   employeeNameFilter: string = '';

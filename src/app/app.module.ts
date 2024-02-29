@@ -79,7 +79,6 @@ import { HoursPipe } from './_pipes/hours.pipe';
 import { PhoneNumberPipe } from './_pipes/phone-number.pipe';
 import { CustomTimeFormatPipe } from './_pipes/custom-time-format.pipe';
 import { PhoneNumberFormatDirective } from './_directives/phone-number.directive';
-import { EmployeeScheduleDashboardComponent } from './employee-schedule-dashboard/employee-schedule-dashboard.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.component';
@@ -104,6 +103,7 @@ import { MenuBuilderDashboardComponent } from './menu-builder-dashboard/menu-bui
 import { CreateItemDialogComponent } from './_dialogs/menu-items/create-item-dialog/create-item-dialog.component';
 import { EditItemDialogComponent } from './_dialogs/menu-items/edit-item-dialog/edit-item-dialog.component';
 import { MassTextDialogComponent } from './_dialogs/employee/mass-text-dialog/mass-text-dialog.component';
+import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard/employee-profile-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -135,7 +135,7 @@ import { MassTextDialogComponent } from './_dialogs/employee/mass-text-dialog/ma
         PhoneNumberPipe,
         CustomTimeFormatPipe,
         PhoneNumberFormatDirective,
-        EmployeeScheduleDashboardComponent,
+        EmployeeProfileDashboardComponent,
         ProfileDashboardComponent,
         TablesDashboardComponent,
         TablesWaitlistComponent,
