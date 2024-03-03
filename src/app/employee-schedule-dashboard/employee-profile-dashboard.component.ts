@@ -8,6 +8,7 @@ import { Schedule } from '../_models/schedule.model';
 import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-employee-profile-dashboard',
@@ -17,6 +18,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class EmployeeProfileDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  public userId: string;
   viewMode = 'schedule';
   employeeRef: any;
   Schedules: any[] = [];
@@ -36,10 +38,16 @@ export class EmployeeProfileDashboardComponent implements OnInit {
     public dialog: MatDialog,
     public employeesService: EmployeesService,
     public scheduleService: ScheduleService,
+    private afAuth: AngularFireAuth,
   ) {}
 
   ngOnInit(): void {
     const id = this.act.snapshot.paramMap.get('id');
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+    }});
 
     this.employeesService.getEmployeeDoc(id).subscribe(res => {
       this.employeeRef = res;

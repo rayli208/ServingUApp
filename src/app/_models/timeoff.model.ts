@@ -1,5 +1,5 @@
 export class Timeoff {
-    id: string;
+    id?: string;
     uid: string;
     employeeId: string;
     date: string;
