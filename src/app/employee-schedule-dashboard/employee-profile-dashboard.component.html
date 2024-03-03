@@ -1,10 +1,12 @@
 <app-header iconClass="fa-solid fa-address-book" title="{{employeeRef?.name}} Schedule Dashboard">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
         <div>
-            <button mat-button color="primary" (click)="backToSchedule()"  style="margin-right: 15px;" matTooltip="Go Back">
+            <button mat-button color="primary" (click)="backToSchedule()" style="margin-right: 15px;"
+                matTooltip="Go Back">
                 <i class="fa-solid fa-angles-left fa-2xl"></i>
             </button>
-            <mat-button-toggle-group name="viewMode" aria-label="View Mode" [(ngModel)]="viewMode" style="margin-right: 15px;">
+            <mat-button-toggle-group name="viewMode" aria-label="View Mode" [(ngModel)]="viewMode"
+                style="margin-right: 15px;">
                 <mat-button-toggle value="schedule">Schedule</mat-button-toggle>
                 <mat-button-toggle value="timeOff">Time Off</mat-button-toggle>
                 <mat-button-toggle value="notes">Notes</mat-button-toggle>
@@ -26,8 +28,11 @@
                 <i class="fa-solid fa-clock fa-2xl"></i>
             </button>
         </div>
+        <div *ngIf="viewMode === 'timeOff'">
+            <button mat-raised-button color="primary" (click)="saveTimeOff()" matTooltip="Save Timeoff Request" [disabled]="daysSelected.length === 0">Save</button>
+        </div>
         <div *ngIf="viewMode === 'notes'">
-            <button mat-button color="primary" (click)="saveNote()" matTooltip="Save Note">
+            <button mat-raised-button color="primary" (click)="saveNote()" matTooltip="Save Note">
                 Save
             </button>
         </div>
@@ -38,11 +43,11 @@
     <div class="employee-profile-dashboard-none" *ngIf="!Schedules.length && !range.value.start && !range.value.end">
         No dates have been selected.
     </div>
-    
+
     <div class="employee-profile-dashboard-none" *ngIf="!Schedules.length && (range.value.start || range.value.end)">
         {{employeeRef?.name}} is currently not scheduled in the selected date range. Please select a different range.
     </div>
-    
+
     <div *ngFor="let schedule of Schedules; let i = index">
         <div class="employee-profile-dashboard-schedule-card">
             <div>
@@ -63,7 +68,20 @@
 </div>
 
 <div *ngIf="viewMode === 'timeOff'">
-    Time off
+    <mat-chip-listbox>
+        <mat-chip *ngFor="let date of daysSelected" (removed)="deleteDate(date)">
+            {{ date | date }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-listbox>
+    <button mat-icon-button [matMenuTriggerFor]="timeOffMenu" (click)="$event.preventDefault()">
+        <mat-icon>calendar_today</mat-icon>
+    </button>
+    <mat-menu #timeOffMenu="matMenu" class="drop-calendar">
+        <div (click)="$event.stopPropagation()">
+            <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)" [dateClass]="isSelected"></mat-calendar>
+        </div>
+    </mat-menu>
 </div>
 
 <div *ngIf="viewMode === 'notes'">

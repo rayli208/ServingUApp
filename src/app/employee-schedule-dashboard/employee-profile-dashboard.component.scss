@@ -1,6 +1,6 @@
 @import './../_styles/variables.scss';
 
-.employee-profile-dashboard-schedule-none{
+.employee-profile-dashboard-schedule-none {
     font-style: italic;
     margin-bottom: 15px;
     margin-top: -10px;
@@ -24,7 +24,7 @@
     font-weight: 600;
     margin-bottom: 5px;
 
-    i{
+    i {
         font-size: 12px;
         color: $brand-primary;
         display: inline-block;
@@ -40,20 +40,20 @@
     text-transform: uppercase;
 }
 
-.employee-profile-dashboard-icons{
+.employee-profile-dashboard-icons {
     display: flex;
     font-size: 20px;
     color: $brand-primary;
     align-items: center;
     justify-content: flex-end;
     cursor: pointer;
-    
-    div{
+
+    div {
         margin-left: 10px;
     }
 }
 
-.employee-profile-dashboard-none{
+.employee-profile-dashboard-none {
     font-style: italic;
     margin-bottom: 15px;
     margin-top: 10px;
@@ -66,15 +66,30 @@
     display: flex;
     flex-direction: column;
     height: 100%; // Ensure the parent container has a defined height for this to work effectively
-  
+
     .mat-form-field {
-      flex: 1; // This will make the form field fill the height of its container
-      width: 100%; // This will make the form field fill the width of its container
-  
-      textarea {
-        height: 100%; // Make the textarea fill the height of the form field
-      }
+        flex: 1; // This will make the form field fill the height of its container
+        width: 100%; // This will make the form field fill the width of its container
+
+        textarea {
+            height: 100%; // Make the textarea fill the height of the form field
+        }
     }
+}
+
+/* In component's CSS file, or in styles.css for global scope */
+.mat-calendar-body-cell.selected {
+    background-color: #35B9DF !important;
+    color: #fff !important;
+    border-radius: 50%;
   }
   
+  /* Add this to your component's CSS file or the global styles.css/scss file */
+.mat-calendar-body-cell.timeoff-loaded {
+    background-color: $red;
+    color: #fff !important;
+    border-radius: 50%;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
   
