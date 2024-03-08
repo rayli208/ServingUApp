@@ -8,11 +8,28 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class MassTextDialogComponent {
   massTextMessage: string = '';
+  selectAllChecked = false;
+  isIndeterminate = false;
 
   constructor(
     public dialogRef: MatDialogRef<MassTextDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
+
+  // Method to toggle the selection of all employees
+  toggleAll() {
+    this.data.employees.forEach(emp => {
+      emp.selected = this.selectAllChecked;
+    });
+    this.checkSelection();
+  }
+
+  // Method to update the state of the "Select All" checkbox based on individual selections
+  checkSelection() {
+    const selectedCount = this.data.employees.filter(emp => emp.selected).length;
+    this.selectAllChecked = selectedCount === this.data.employees.length;
+    this.isIndeterminate = selectedCount > 0 && selectedCount < this.data.employees.length;
+  }
 
   // Check if any employee is selected
   get isAnyEmployeeSelected(): boolean {

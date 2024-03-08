@@ -1,19 +1,18 @@
 <h1 mat-dialog-title>Send Mass Text</h1>
 <div mat-dialog-content>
+    <mat-checkbox [(ngModel)]="selectAllChecked" (change)="toggleAll()" [indeterminate]="isIndeterminate">
+        Select All
+    </mat-checkbox>
     <div *ngFor="let employee of data.employees">
-        <mat-checkbox [(ngModel)]="employee.selected">
-            <div>
-                {{employee.name}}
-            </div>
+        <mat-checkbox [(ngModel)]="employee.selected" (change)="checkSelection()">
+            {{employee.name}}
         </mat-checkbox>
     </div>
     <mat-form-field appearance="outline" style="width: 100%; margin-top: 15px;">
-        <textarea matInput cdkAutosizeMinRows="5" placeholder="Mass Text Message"
-            [(ngModel)]="massTextMessage"></textarea>
+        <textarea matInput cdkAutosizeMinRows="5" placeholder="Mass Text Message" [(ngModel)]="massTextMessage"></textarea>
     </mat-form-field>
 </div>
 <div mat-dialog-actions style="justify-content: space-between;">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="!isAnyEmployeeSelected"
-        [mat-dialog-close]="prepareResult()">Send</button>
+    <button mat-raised-button color="primary" [disabled]="!isAnyEmployeeSelected" [mat-dialog-close]="prepareResult()">Send</button>
 </div>
