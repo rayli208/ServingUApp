@@ -2,6 +2,7 @@ import { ScheduleService } from './../../../_services/schedule.service';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Schedule } from 'src/app/_models/schedule.model';
 
 @Component({
   selector: 'app-create-schedule-dialog',
@@ -68,20 +69,24 @@ export class CreateScheduleDialogComponent implements OnInit {
 
   }
 
-  //Create job and redirect to dashboard
   onSubmit() {
-    this.loopThroughDates(this.daysSelected);
-    this.dialogRef.close({scheduleCreated: true});
-  }
+    const schedulesToSave: Schedule[] = this.daysSelected.map(date => ({
+      uid: this.scheduleForm.value.uid,
+      employeeId: this.scheduleForm.value.employeeId,
+      startTime: this.scheduleForm.value.startTime,
+      endTime: this.scheduleForm.value.endTime,
+      date,
+      note: this.scheduleForm.value.note
+    }));
 
-  loopThroughDates(dates) {
-    for (let i = 0; i < dates.length; i++) {
-      this.scheduleForm.patchValue({
-        date: dates[i],
+    this.scheduleService.saveBatchSchedules(schedulesToSave)
+      .then(() => {
+        console.log('Schedules saved successfully!');
+        this.dialogRef.close({ scheduleCreated: true });
+      })
+      .catch(error => {
+        console.error('Error saving schedules:', error);
+        // Handle error case
       });
-
-      this.scheduleService.createSchedule(this.scheduleForm.value);
-    }
   }
-
 }

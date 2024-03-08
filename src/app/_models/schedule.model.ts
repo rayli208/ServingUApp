@@ -1,5 +1,5 @@
 export class Schedule {
-    id: string;
+    id?: string;
     uid: string;
     employeeId: string;
     startTime: string;

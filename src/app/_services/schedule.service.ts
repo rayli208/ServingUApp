@@ -1,13 +1,17 @@
 import { Schedule } from './../_models/schedule.model';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScheduleService {
+  private schedulesCollection: AngularFirestoreCollection<Schedule>;
+
   constructor(private afs: AngularFirestore,
-  ) { }
+  ) {
+    this.schedulesCollection = afs.collection<Schedule>('schedules');
+   }
 
   //Get a schedule by a doc ID
   getScheduleDoc(id) {
@@ -60,5 +64,20 @@ export class ScheduleService {
         date: schedule.date,
         note: schedule.note,
       })
+  }
+
+  saveBatchSchedules(schedules: Schedule[]): Promise<void> {
+    const batch = this.afs.firestore.batch();
+
+    schedules.forEach((schedule) => {
+      const docRef = this.schedulesCollection.doc().ref;
+      batch.set(docRef, schedule);
+    });
+
+    return batch.commit().then(() => {
+      console.log('Batch schedules saved successfully!');
+    }).catch((error) => {
+      console.error('Error saving batch schedules:', error);
+    });
   }
 }
