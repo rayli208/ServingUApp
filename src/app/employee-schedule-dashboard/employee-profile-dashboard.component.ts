@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -49,6 +49,7 @@ export class EmployeeProfileDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private timeoffService: TimeoffService,
     private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +78,7 @@ export class EmployeeProfileDashboardComponent implements OnInit {
       note: new FormControl('') // Initialize with an empty string or fetch existing note if available
     });
 
-    // Load and console log all the time offs for the employee
+    // Load and all the time offs for the employee
     this.loadAndLogEmployeeTimeOffs();
   }
 
@@ -212,72 +213,50 @@ export class EmployeeProfileDashboardComponent implements OnInit {
     return date.toISOString().split('T')[0];
   }
 
-saveTimeOff(): void {
-  if (this.daysSelected.length === 0) {
-    console.log("No dates selected for saving.");
-    return; // Ensuring there are selected dates
-  }
-
-  console.log("Saving selected dates:", this.daysSelected);
-
-  // Create a function to save a single time off entry and return a promise
-  const saveTimeOffEntry = (date: string) => {
-    const timeOffEntry = { date, employeeId: this.employeeId, uid: this.userId };
-    return this.timeoffService.createTimeoff(timeOffEntry);
-  };
-
-  // Use a loop to handle each save operation sequentially
-  const saveOperations = this.daysSelected.map(date => saveTimeOffEntry(date));
-  let saveSequence = Promise.resolve(); // Start with a resolved promise for chaining
-
-  saveOperations.forEach(saveOp => {
-    saveSequence = saveSequence.then(() => saveOp);
-  });
-
-  // Once all saves are done, perform the final updates
-  saveSequence.then(() => {
-    console.log("All time-offs saved successfully.");
-
-    // Update loadedTimeOffs with new dates and ensure no duplicates
-    this.loadedTimeOffs = [...new Set([...this.loadedTimeOffs, ...this.daysSelected])];
-    console.log("Updated loaded time-offs:", this.loadedTimeOffs);
-
-    // Clear the selected dates after saving
-    this.daysSelected = [];
-    console.log("Cleared selected dates after saving.");
-
-    // Display success message
-    this._snackBar.open('Time off has been saved!', '', {
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 2500,
-      panelClass: ['green-snackbar']
-    });
-
-    // Force calendar refresh if it's open and force change detection
-    if (this.timeOffCalendar) {
-      this.timeOffCalendar.updateTodaysDate();
-      this.changeDetectorRef.detectChanges();
+  saveTimeOff(): void {
+    if (this.daysSelected.length === 0) {
+      console.log("No dates selected for saving.");
+      return; // Ensuring there are selected dates
     }
-  }).catch(error => {
-    console.error('Error saving time off:', error);
-    // Consider showing an error message here as well
-  });
-}
-
+  
+    console.log("Saving selected dates:", this.daysSelected);
+  
+    // Create an array of time-off objects
+    const timeOffsToSave: Timeoff[] = this.daysSelected.map(date => ({
+      date,
+      employeeId: this.employeeId,
+      uid: this.userId
+    }));
+  
+    // Save the batch of time-offs
+    this.timeoffService.saveBatchTimeoffs(timeOffsToSave)
+      .then(() => {  
+        // Update loadedTimeOffs with new dates and ensure no duplicates
+        this.loadedTimeOffs = [...new Set([...this.loadedTimeOffs, ...this.daysSelected])];
+  
+        // Clear the selected dates after saving
+        this.daysSelected = [];
+  
+        // Force calendar refresh if it's open and force change detection
+        if (this.timeOffCalendar) {
+          this.timeOffCalendar.updateTodaysDate();
+          this.changeDetectorRef.detectChanges();
+        }
+          this.showSuccessSnackbar("Time off has been saved!");
+      })
+      .catch(error => {
+        console.error('Error saving time off:', error);
+      });
+  }
+  
   saveNote(): void {
     const id = this.act.snapshot.paramMap.get('id');
     const note = this.noteForm.get('note').value;
     this.employeesService.updateEmployeeNote(id, note).then(() => {
       // Handle success, such as showing a confirmation message
-      this._snackBar.open('Note has been saved!', '', {
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        duration: 2500,
-        panelClass: ['green-snackbar']
-      });
+      this.showSuccessSnackbar("Note has been saved!");
+
     }).catch(error => {
-      // Handle error
       console.error('Error saving note:', error);
     });
   }
@@ -285,4 +264,14 @@ saveTimeOff(): void {
   backToSchedule() {
     this.router.navigate(['employee-dashboard']);
   }
+
+  showSuccessSnackbar(message: string): void {
+    this._snackBar.open(message, '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2500,
+      panelClass: ['green-snackbar']
+    });
+  }
+
 }

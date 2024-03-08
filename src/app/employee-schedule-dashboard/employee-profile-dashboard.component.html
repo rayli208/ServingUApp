@@ -8,7 +8,7 @@
             <mat-button-toggle-group name="viewMode" aria-label="View Mode" [(ngModel)]="viewMode"
                 style="margin-right: 15px;">
                 <mat-button-toggle value="schedule">Schedule</mat-button-toggle>
-                <!-- <mat-button-toggle value="timeOff">Time Off</mat-button-toggle> -->
+                <mat-button-toggle value="timeOff">Time Off</mat-button-toggle>
                 <mat-button-toggle value="notes">Notes</mat-button-toggle>
             </mat-button-toggle-group>
         </div>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<!-- <div *ngIf="viewMode === 'timeOff'">
+<div *ngIf="viewMode === 'timeOff'">
     <mat-chip-listbox>
         <mat-chip *ngFor="let date of daysSelected" (removed)="deleteDate(date)">
             {{ date | date }}
@@ -82,7 +82,7 @@
             <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)" [dateClass]="isSelected"></mat-calendar>
         </div>
     </mat-menu>
-</div> -->
+</div>
 
 <div *ngIf="viewMode === 'notes'">
     <form [formGroup]="noteForm" class="employee-notes-section">
