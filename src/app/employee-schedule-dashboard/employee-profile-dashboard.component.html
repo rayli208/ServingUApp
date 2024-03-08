@@ -1,19 +1,20 @@
 <app-header iconClass="fa-solid fa-address-book" title="{{employeeRef?.name}} Schedule Dashboard">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; flex-wrap: wrap;">
         <div class="left-controls">
-            <button mat-button color="primary" (click)="backToSchedule()" style="margin-right: 15px;" matTooltip="Go Back">
+            <button mat-button color="primary" (click)="backToSchedule()" style="margin-right: 15px;"
+                matTooltip="Go Back">
                 <i class="fa-solid fa-angles-left fa-2xl"></i>
             </button>
-            <mat-button-toggle-group name="viewMode" aria-label="View Mode" [(ngModel)]="viewMode" style="margin-right: 15px;">
+            <mat-button-toggle-group name="viewMode" aria-label="View Mode" [(ngModel)]="viewMode"
+                style="margin-right: 15px;">
                 <mat-button-toggle value="schedule">Schedule</mat-button-toggle>
                 <mat-button-toggle value="timeOff">Time Off</mat-button-toggle>
                 <mat-button-toggle value="notes">Notes</mat-button-toggle>
             </mat-button-toggle-group>
-            <button mat-raised-button color="primary" (click)="seeSchedules()" matTooltip="Get Schedules" *ngIf="viewMode === 'schedule'"
-            [disabled]="!range.value.start || !range.value.end">
-        <i class="fa-solid fa-clock fa-2xl"></i>
-    </button>
-    
+            <button mat-raised-button color="primary" (click)="seeSchedules()" matTooltip="Get Schedules"
+                *ngIf="viewMode === 'schedule'" [disabled]="!range.value.start || !range.value.end">
+                <i class="fa-solid fa-clock fa-2xl"></i>
+            </button>
         </div>
         <div *ngIf="viewMode === 'schedule'" class="date-range-picker">
             <mat-form-field appearance="outline" style="margin-right: 15px;">
@@ -28,7 +29,16 @@
                 <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
             </mat-form-field>
         </div>
-    </div>    
+        <div *ngIf="viewMode === 'timeOff'">
+            <button mat-raised-button color="primary" (click)="saveTimeOff()" matTooltip="Save Timeoff Request"
+                [disabled]="daysSelected.length === 0">Save</button>
+        </div>
+        <div *ngIf="viewMode === 'notes'">
+            <button mat-raised-button color="primary" (click)="saveNote()" matTooltip="Save Note">
+                Save
+            </button>
+        </div>
+    </div>
 </app-header>
 
 <div *ngIf="viewMode === 'schedule'">
@@ -71,7 +81,8 @@
     </button>
     <mat-menu #timeOffMenu="matMenu" class="drop-calendar">
         <div (click)="$event.stopPropagation()">
-            <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)" [dateClass]="isSelected"></mat-calendar>
+            <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)"
+                [dateClass]="isSelected"></mat-calendar>
         </div>
     </mat-menu>
 </div>
