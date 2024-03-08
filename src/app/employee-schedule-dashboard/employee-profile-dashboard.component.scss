@@ -93,3 +93,19 @@
     pointer-events: none;
   }
   
+  @media (max-width: 768px) {
+    .left-controls {
+        flex-basis: 100%; /* Make the left controls take the full width */
+        margin-bottom: 15px; /* Add some space between the controls and the date picker */
+    }
+
+    .date-range-picker {
+        flex-basis: 100%; /* Make the date range picker take the full width */
+        order: 1; /* Ensure the date range picker is below the left controls */
+    }
+
+    /* Adjust the date range picker field to full width for smaller screens */
+    .date-range-picker mat-form-field {
+        width: 100%;
+    }
+}
