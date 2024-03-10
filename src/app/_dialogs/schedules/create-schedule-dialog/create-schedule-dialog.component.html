@@ -225,11 +225,10 @@
         </mat-menu>
         <div style="max-width: 450px; margin-bottom: 15px;">
             <mat-chip-listbox>
-                <ng-container>
-                    <mat-chip-option *ngFor="let value of daysSelected" (click)="deleteDate(value)">
-                        {{ value | date }}
-                    </mat-chip-option>
-                </ng-container>
+                <mat-chip *ngFor="let value of daysSelected" (removed)="deleteDate(value)">
+                    {{ value | date }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
             </mat-chip-listbox>
         </div>
     </div>

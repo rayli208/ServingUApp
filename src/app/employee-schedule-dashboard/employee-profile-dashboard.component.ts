@@ -49,7 +49,6 @@ export class EmployeeProfileDashboardComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private timeoffService: TimeoffService,
     private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -194,7 +193,7 @@ export class EmployeeProfileDashboardComponent implements OnInit {
     }
 
     // Force the calendar to refresh its view
-    calendar.updateTodaysDate();
+    this.timeOffCalendar.updateTodaysDate();
   }
 
   deleteDate(date: string): void {

@@ -1,6 +1,9 @@
+@import '../../../_styles/variables.scss';
+
+
 .mat-calendar-body-cell.selected
 {
-  background-color: #35B9DF !important;
+  background-color: $brand-primary !important;
   color: #fff !important;
 
   border-radius: 50%
@@ -8,4 +11,20 @@
 .drop-calendar
 {
   width:30rem
+}
+
+.mat-calendar-body-cell.scheduled {
+  background-color: $green !important;
+  color: #fff !important;
+  border-radius: 50%;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.mat-calendar-body-cell.timeoff {
+  background-color: $red !important; /* Tomato red background */
+  color: #fff !important;
+  border-radius: 50%;
+  cursor: not-allowed;
+  pointer-events: none;
 }
