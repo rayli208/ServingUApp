@@ -17,7 +17,8 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
   public selectedEmployee: Employee;
   public userId: string;
   public user: Observable<any>;
-  public Employees: Employee[];
+  public Employees: Employee[] = [];
+  public scheduledEmployees: string[];
 
   constructor(
     public scheduleService: ScheduleService,
@@ -36,6 +37,7 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
       date: [data.date],
       note: [''],
     });
+    this.scheduledEmployees = data.scheduledEmployees || [];
   }
 
   ngOnInit() {
@@ -45,18 +47,29 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
 
         this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
           this.Employees = res.map(e => {
-            return {
+            const employee = {
               id: e.payload.doc.id,
               ...e.payload.doc.data() as {}
             } as Employee;
+        
+            // Mark employee as disabled if they are already scheduled
+            employee.disabled = this.scheduledEmployees.includes(employee.id);
+        
+            return employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
-          if (this.Employees.length > 0) {
-            this.selectedEmployee = this.Employees[0];
-          }
+        
+          // Select the first non-disabled employee by default
+          this.selectedEmployee = this.Employees.find(e => !e.disabled) || this.Employees[0];
         });
+        
+        
       }
     });
+
+    this.Employees = this.Employees.map(employee => ({
+      ...employee,
+      disabled: this.scheduledEmployees.includes(employee.id)
+    }));
   }
   
   onEmployeeChange(event: any) {

@@ -5,11 +5,11 @@
         <mat-form-field appearance="outline">
             <mat-label>Select an employee</mat-label>
             <mat-select (selectionChange)="onEmployeeChange($event)">
-                <mat-option *ngFor="let employee of Employees" [value]="employee">
-                    <img class="create-schedule-from-date-image" src="{{employee.imgUrl}}" />
-                    <span>{{employee.name}}</span>
+                <mat-option *ngFor="let employee of Employees" [value]="employee" [disabled]="employee.disabled">
+                  <img class="create-schedule-from-date-image" src="{{employee.imgUrl}}" />
+                  <span>{{employee.name}}</span>
                 </mat-option>
-            </mat-select>
+              </mat-select>                        
         </mat-form-field>
 
         <mat-form-field appearance="outline">
