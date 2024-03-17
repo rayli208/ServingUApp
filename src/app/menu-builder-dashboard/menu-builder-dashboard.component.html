@@ -25,7 +25,7 @@
                     </h1>
                     <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
                         (click)="$event.stopPropagation();">
-                        <input matInput [(ngModel)]="editingSection.name">
+                        <input matInput [(ngModel)]="editingSection.name" (keydown)="$event.stopPropagation()">
                     </mat-form-field>
                 </div>
             </mat-panel-title>
@@ -76,6 +76,7 @@
                         <div class="menu-item-info">
                             <h2 style="margin-bottom: 0px;">{{ menuItem.order }}. {{ menuItem.name }}
                                 (${{ menuItem.price | number:'1.2-2' }})</h2>
+                            <hr style="border-width: .5px; color: #ccc;">
                             <p class="menu-item-description">{{ menuItem.description }}</p>
                         </div>
                     </div>

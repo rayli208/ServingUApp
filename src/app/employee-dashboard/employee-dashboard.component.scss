@@ -149,6 +149,14 @@
         flex-direction: column;
     }
 
+    .employee-dashboard-row span:first-of-type{
+        width: 100%;
+    }
+    
+    .employee-dashboard-row span:last-of-type{
+        width: 100%;
+    }
+
     .mat-expansion-panel-header {
         padding: 0 !important;
     }
