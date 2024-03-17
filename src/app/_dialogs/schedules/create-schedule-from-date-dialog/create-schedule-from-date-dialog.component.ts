@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from 'src/app/_models/employee.model';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { Observable } from 'rxjs';
+import { Timeoff } from 'src/app/_models/timeoff.model';
 
 @Component({
   selector: 'app-create-schedule-from-date-dialog',
@@ -19,6 +20,7 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
   public user: Observable<any>;
   public Employees: Employee[] = [];
   public scheduledEmployees: string[];
+  timeOffs: Timeoff[];
 
   constructor(
     public scheduleService: ScheduleService,
@@ -38,6 +40,7 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
       note: [''],
     });
     this.scheduledEmployees = data.scheduledEmployees || [];
+    this.timeOffs = data.timeOffs;
   }
 
   ngOnInit() {
@@ -52,17 +55,15 @@ export class CreateScheduleFromDateDialogComponent implements OnInit {
               ...e.payload.doc.data() as {}
             } as Employee;
         
-            // Mark employee as disabled if they are already scheduled
-            employee.disabled = this.scheduledEmployees.includes(employee.id);
+            // Check if the employee has a time off
+            employee.hasTimeOff = this.timeOffs.some(timeOff => timeOff.employeeId === employee.id && timeOff.date === this.scheduleForm.value.date);
+            
+            // Check if the employee is already scheduled
+            employee.isScheduled = this.scheduledEmployees.includes(employee.id); // New property to indicate scheduling
         
             return employee;
           }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        
-          // Select the first non-disabled employee by default
-          this.selectedEmployee = this.Employees.find(e => !e.disabled) || this.Employees[0];
         });
-        
-        
       }
     });
 

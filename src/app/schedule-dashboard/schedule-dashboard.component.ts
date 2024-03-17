@@ -13,6 +13,8 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
 import { Employee } from '../_models/employee.model';
 import { EmployeesService } from '../_services/employees.service';
+import { TimeoffService } from '../_services/timeoff.service';
+import { Timeoff } from '../_models/timeoff.model';
 
 @Component({
   selector: 'app-schedule-dashboard',
@@ -31,9 +33,10 @@ export class ScheduleDashboardComponent implements OnInit {
   selectedView: string = 'Horizontal';
   views: string[] = ['Vertical', 'Horizontal'];
 
-  Schedules: Schedule[]; //ALL Schedules
-  daysOfWeek: string[] = []; // array to store the days of the week
-  base: number = 0; //What week we are on always starts on THIS week
+  Schedules: Schedule[];
+  timeOffs: Timeoff[] = [];
+  daysOfWeek: string[] = [];
+  base: number = 0;
   populatedSchedulesWithDates: any[] = [];
 
   constructor(
@@ -44,20 +47,37 @@ export class ScheduleDashboardComponent implements OnInit {
     public authService: AuthService,
     public _snackBar: MatSnackBar,
     private employeesService: EmployeesService,
+    private timeoffService: TimeoffService,
   ) {
     this.user = null;
   }
 
-  //Initialize the component
   ngOnInit(): void {
     this.generateSchedule();
     this.handleWindowResize(window.innerWidth);
+    this.fetchTimeOffs();
   }
 
   @HostListener('window:resize', ['$event.target.innerWidth'])
   onResize(innerWidth: number) {
     this.handleWindowResize(innerWidth);
   }
+
+  fetchTimeOffs() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.timeoffService.getTimeoffListForUser(user.uid).subscribe(res => {
+          this.timeOffs = res.map(e => {
+            return {
+              id: e.payload.doc.id,
+              ...e.payload.doc.data() as {}
+            } as Timeoff;
+          });
+        });
+      }
+    });
+  }
+
 
   generateSchedule() {
     this.afAuth.authState.subscribe(user => {
@@ -174,7 +194,6 @@ export class ScheduleDashboardComponent implements OnInit {
     }
   }
 
-
   //Edit Function
   editSchedule(schedule: Schedule, j, i) {
     const dialogRef = this.dialog.open(EditScheduleDialogComponent, {
@@ -279,9 +298,13 @@ export class ScheduleDashboardComponent implements OnInit {
   }
 
   public createSchedule(date: string) {
+    const scheduledEmployees = this.populatedSchedulesWithDates.find(d => d.date === date)?.schedule.map(s => s.employeeId) || [];
+
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
         date: date,
+        timeOffs: this.timeOffs,
+        scheduledEmployees: scheduledEmployees
       }
     });
 

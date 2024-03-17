@@ -11,6 +11,7 @@ export interface Employee {
     clockedInTime: Date | null;
     employeed: boolean;
     floorEmployee: boolean;
-    disabled?: boolean;
+    isScheduled?: boolean;
+    hasTimeOff?: boolean;
   }
   

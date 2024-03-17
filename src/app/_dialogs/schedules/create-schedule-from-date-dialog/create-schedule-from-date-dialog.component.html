@@ -5,10 +5,10 @@
         <mat-form-field appearance="outline">
             <mat-label>Select an employee</mat-label>
             <mat-select (selectionChange)="onEmployeeChange($event)">
-                <mat-option *ngFor="let employee of Employees" [value]="employee" [disabled]="employee.disabled">
-                  <img class="create-schedule-from-date-image" src="{{employee.imgUrl}}" />
-                  <span>{{employee.name}}</span>
-                </mat-option>
+                <mat-option *ngFor="let employee of Employees" [value]="employee" [ngClass]="{'time-off': employee.hasTimeOff, 'scheduled': employee.isScheduled}">
+                    <img class="create-schedule-from-date-image" src="{{employee.imgUrl}}" />
+                    <span>{{employee.name}}</span>
+                  </mat-option>                  
               </mat-select>                        
         </mat-form-field>
 
