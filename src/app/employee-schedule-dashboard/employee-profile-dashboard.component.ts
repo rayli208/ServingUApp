@@ -60,6 +60,12 @@ export class EmployeeProfileDashboardComponent implements OnInit {
 
     this.employeesService.getEmployeeDoc(this.employeeId).subscribe(res => {
       this.employeeRef = res;
+      this.noteForm.get('note').setValue(this.employeeRef.note); // Set the note in the form
+    });
+  
+
+    this.employeesService.getEmployeeDoc(this.employeeId).subscribe(res => {
+      this.employeeRef = res;
     });
 
     this.scheduleService.getSchedulesListForEmployee(this.employeeId).subscribe(res => {
@@ -251,14 +257,27 @@ export class EmployeeProfileDashboardComponent implements OnInit {
   saveNote(): void {
     const id = this.act.snapshot.paramMap.get('id');
     const note = this.noteForm.get('note').value;
+  
     this.employeesService.updateEmployeeNote(id, note).then(() => {
-      // Handle success, such as showing a confirmation message
-      this.showSuccessSnackbar("Note has been saved!");
-
+      this._snackBar.open('Note has been saved!', '', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['green-snackbar']
+      });
+  
+      // Update the form with the new note value
+      this.noteForm.get('note').setValue(note);
+  
+      // Optionally, also update the local employeeRef object if you're using it elsewhere
+      if (this.employeeRef) {
+        this.employeeRef.note = note;
+      }
+  
     }).catch(error => {
       console.error('Error saving note:', error);
     });
-  }
+  }  
 
   backToSchedule() {
     this.router.navigate(['employee-dashboard']);
