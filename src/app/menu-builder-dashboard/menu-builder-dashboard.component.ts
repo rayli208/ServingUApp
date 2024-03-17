@@ -25,6 +25,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
   user: Observable<any>;
   sections: Section[] = [];
   newSectionName: string = '';
+  newSectionDescription: string = '';
   editingSectionId: string | null = null;
   editingSection: Section | null = null;
   showAddSection: boolean = false;
@@ -74,7 +75,8 @@ export class MenuBuilderDashboardComponent implements OnInit {
       const newSection: Section = {
         uid: this.userId,
         name: this.newSectionName,
-        order: this.sections?.length + 1
+        order: this.sections?.length + 1,
+        description: this.newSectionDescription.trim() || null
       };
       this.sectionService.createSection(newSection).then(docRef => {
         const sectionWithId: Section = { ...newSection, id: docRef.id };
@@ -263,18 +265,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
   /*
     MENU ITEM SECTION
   */
@@ -352,12 +342,12 @@ export class MenuBuilderDashboardComponent implements OnInit {
       width: '500px',
       data: menuItem
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result?.menuItemUpdated) {
         const sectionIndex = this.sections.findIndex(s => s.id === sectionId);
         const itemIndex = this.sections[sectionIndex].menuItems.findIndex(i => i.id === menuItem.id);
-        if(itemIndex !== -1) {
+        if (itemIndex !== -1) {
           this.sections[sectionIndex].menuItems[itemIndex] = result.updatedMenuItem;
         }
         this._snackBar.open('Menu item edited!', '', {
@@ -369,7 +359,7 @@ export class MenuBuilderDashboardComponent implements OnInit {
       }
     });
   }
-  
+
 
   moveMenuItem(menuItemId: string, sectionId: string, direction: 'up' | 'down'): void {
     const sectionIndex = this.sections.findIndex(section => section.id === sectionId);

@@ -5,5 +5,6 @@ export class Section {
   uid: string;
   name: string;
   order: number;
+  description?: string;
   menuItems?: MenuItem[];
 }

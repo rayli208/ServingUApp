@@ -10,10 +10,14 @@
     <mat-form-field appearance="outline" class="space-top">
         <input matInput [(ngModel)]="newSectionName" placeholder="Section Name">
     </mat-form-field>
+    <mat-form-field appearance="outline" class="space-top">
+        <textarea matInput [(ngModel)]="newSectionDescription" placeholder="Description (Optional)"></textarea>
+    </mat-form-field>
     <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section">
         <i class="fa-solid fa-plus"></i>
     </button>
 </div>
+
 
 <div class="menu-builder-accordion">
     <mat-expansion-panel *ngFor="let section of sections" class="menu-builder-card">
@@ -61,10 +65,19 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="section-content">
+            <div *ngIf="editingSectionId === section.id">
+                <mat-form-field appearance="outline" (click)="$event.stopPropagation();" style="width: 100%;">
+                    <textarea matInput [(ngModel)]="editingSection.description" (keydown)="$event.stopPropagation()"
+                        placeholder="Description (Optional)"></textarea>
+                </mat-form-field>
+            </div>
             <button mat-raised-button color="primary" (click)="openCreateMenuItemDialog(section.id)"
                 style="margin-bottom: 10px;">
                 <i class="fa-solid fa-plus"></i> Menu Item
             </button>
+            <div *ngIf="section.description && editingSectionId !== section.id" class="section-item-description">
+                {{ section.description }}
+            </div>
             <div *ngIf="section.menuItems?.length === 0" class="no-section-or-item-message">
                 There are no menu items for this section.
             </div>

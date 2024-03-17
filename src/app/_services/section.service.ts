@@ -34,7 +34,8 @@ export class SectionService {
   updateSection(section: Section) {
     return this.afs.collection("sections").doc(section.id).update({
       name: section.name,
-      order: section.order
+      order: section.order,
+      description: section.description || null 
     });
   }
 }
