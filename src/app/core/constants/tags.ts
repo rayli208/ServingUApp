@@ -7,5 +7,9 @@ export const HARDCODED_TAGS: Tag[] = [
   new Tag('D', 'Contains Dairy', '#FF0000'),     // Red
   new Tag('Vgn', 'Vegan', '#90EE90'),            // Light Green
   new Tag('Veg', 'Vegetarian', '#006400'),       // Dark Green
-  new Tag('Nuts', 'Contains Nuts', '#A52A2A')    // Brown
+  new Tag('Nuts', 'Contains Nuts', '#A52A2A'),   // Brown
+  new Tag('Pes', 'Pescatarian', '#FA8072'),      // Salmon Color
+  new Tag('Soy', 'Contains Soy', '#D2B48C'),     // Tan Color
+  new Tag('S', 'Seasonal', '#FFD700')            // Gold Color
 ];
+
