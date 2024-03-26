@@ -1,35 +1,64 @@
 <app-header iconClass="fa-solid fa-utensils" title="Menu Builder Dashboard">
     <div class="header-actions">
-        <button mat-raised-button color="primary" (click)="onAddSectionClick()" matTooltip="Add Section">
-            <i class="fa-solid fa-plus"></i> Section
+        <ng-template #viewMode>
+            <button mat-raised-button color="secondary" (click)="editMenuDescription()" matTooltip="Edit Menu Description">
+                <i class="fa-solid fa-edit"></i> Menu Description
+            </button>
+            <button mat-raised-button color="primary" (click)="onAddSectionClick()" matTooltip="Add Section" style="margin-left: 15px;">
+                <i class="fa-solid fa-plus"></i> Section
+            </button>
+            <mat-expansion-panel #menuDescriptionPanel="matExpansionPanel" style="margin-top: 15px;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Menu Description
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+    
+                <p class="menu-description">{{ user?.menuDescription || "Please add menu description if you would like one." }}</p>
+            </mat-expansion-panel>
+        </ng-template>
+    </div>
+    <div *ngIf="editMode; else viewMode" class="edit-menu-description">
+        <mat-form-field appearance="outline" class="space-top">
+            <textarea matInput [(ngModel)]="editedMenuDescription" placeholder="Menu Description"></textarea>
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="saveMenuDescription()" matTooltip="Save"
+            style="margin-left: 15px">
+            <i class="fa-solid fa-save"></i>
+        </button>
+        <button mat-mini-fab color="accent" (click)="cancelMenuEdit()" matTooltip="Cancel" style="margin-left: 15px">
+            <i class="fa-solid fa-close"></i>
         </button>
     </div>
 </app-header>
 
 <div *ngIf="showAddSection">
     <mat-form-field appearance="outline" class="space-top">
-        <input matInput [(ngModel)]="newSectionName" placeholder="Section Name">
+        <input matInput [(ngModel)]="newSectionName" placeholder="Section Name" />
     </mat-form-field>
-    <mat-form-field appearance="outline" class="space-top">
+    <mat-form-field appearance="outline" class="space-top" style="margin-left: 15px">
         <textarea matInput [(ngModel)]="newSectionDescription" placeholder="Description (Optional)"></textarea>
     </mat-form-field>
-    <button style="margin-left: 15px;" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section">
+    <button style="margin-left: 15px" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section">
         <i class="fa-solid fa-plus"></i>
     </button>
+    <button style="margin-left: 15px" mat-mini-fab color="accent" (click)="closeSection()" matTooltip="Close Section">
+        <i class="fa-solid fa-close"></i>
+    </button>
 </div>
-
 
 <div class="menu-builder-accordion">
     <mat-expansion-panel *ngFor="let section of sections" class="menu-builder-card">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <div class="menu-builder-card-mini-header">
-                    <h1 class="menu-builder-card-header-name">{{section.order}}. </h1>
-                    <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">{{ section.name }}
+                    <h1 class="menu-builder-card-header-name">{{ section.order }}.</h1>
+                    <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">
+                        {{ section.name }}
                     </h1>
                     <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
-                        (click)="$event.stopPropagation();">
-                        <input matInput [(ngModel)]="editingSection.name" (keydown)="$event.stopPropagation()">
+                        (click)="$event.stopPropagation()">
+                        <input matInput [(ngModel)]="editingSection.name" (keydown)="$event.stopPropagation()" />
                     </mat-form-field>
                 </div>
             </mat-panel-title>
@@ -66,13 +95,13 @@
         </mat-expansion-panel-header>
         <div class="section-content">
             <div *ngIf="editingSectionId === section.id">
-                <mat-form-field appearance="outline" (click)="$event.stopPropagation();" style="width: 100%;">
+                <mat-form-field appearance="outline" (click)="$event.stopPropagation()" style="width: 100%">
                     <textarea matInput [(ngModel)]="editingSection.description" (keydown)="$event.stopPropagation()"
                         placeholder="Description (Optional)"></textarea>
                 </mat-form-field>
             </div>
             <button mat-raised-button color="primary" (click)="openCreateMenuItemDialog(section.id)"
-                style="margin-bottom: 10px;">
+                style="margin-bottom: 10px">
                 <i class="fa-solid fa-plus"></i> Menu Item
             </button>
             <div *ngIf="section.description && editingSectionId !== section.id" class="section-item-description">
@@ -85,11 +114,14 @@
                 <div class="menu-item-content">
                     <div class="menu-item-top">
                         <img *ngIf="menuItem.imageUrl" [src]="menuItem.imageUrl" alt="{{ menuItem.name }}"
-                            class="menu-item-image">
+                            class="menu-item-image" />
                         <div class="menu-item-info">
-                            <h2 style="margin-bottom: 0px;">{{ menuItem.order }}. {{ menuItem.name }}
-                                (${{ menuItem.price | number:'1.2-2' }})</h2>
-                            <hr style="border-width: .5px; color: #ccc;">
+                            <h2 style="margin-bottom: 0px">
+                                {{ menuItem.order }}. {{ menuItem.name }} (${{
+                                menuItem.price | number : "1.2-2"
+                                }})
+                            </h2>
+                            <hr style="border-width: 0.5px; color: #ccc" />
                             <p class="menu-item-description">{{ menuItem.description }}</p>
                         </div>
                     </div>
@@ -108,16 +140,20 @@
                         </button>
                         <button mat-mini-fab color="primary" [disabled]="menuItem.order === section.menuItems.length"
                             (click)="moveMenuItem(menuItem.id, section.id, 'down')" matTooltip="Move Down One"
-                            style="margin-left: 15px;">
+                            style="margin-left: 15px">
                             <i class="fa-solid fa-arrow-down"></i>
                         </button>
                         <button mat-mini-fab color="primary" (click)="openEditMenuItemDialog(menuItem, section.id)"
-                            matTooltip="Edit Item" style="margin-left: 15px;">
+                            matTooltip="Edit Item" style="margin-left: 15px">
                             <i class="fa-solid fa-edit"></i>
                         </button>
-                        <button mat-mini-fab color="warn"
-                            (click)="deleteMenuItemWithConfirmation(section.id, menuItem.id, menuItem.imageUrl)"
-                            matTooltip="Delete Item" style="margin-left: 15px;">
+                        <button mat-mini-fab color="warn" (click)="
+                deleteMenuItemWithConfirmation(
+                  section.id,
+                  menuItem.id,
+                  menuItem.imageUrl
+                )
+              " matTooltip="Delete Item" style="margin-left: 15px">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
