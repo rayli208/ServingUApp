@@ -1,25 +1,31 @@
 <app-header iconClass="fa-solid fa-utensils" title="Menu Builder Dashboard">
     <div class="header-actions">
         <ng-template #viewMode>
-            <button mat-raised-button color="secondary" (click)="editMenuDescription()" matTooltip="Edit Menu Description">
+            <button mat-raised-button color="secondary" (click)="editMenuDescription()"
+                matTooltip="Edit Menu Description">
                 <i class="fa-solid fa-edit"></i> Menu Description
             </button>
-            <button mat-raised-button color="primary" (click)="onAddSectionClick()" matTooltip="Add Section" style="margin-left: 15px;">
+            <button mat-raised-button color="primary" (click)="onAddSectionClick()" matTooltip="Add Section"
+                style="margin-left: 15px">
                 <i class="fa-solid fa-plus"></i> Section
             </button>
-            <mat-expansion-panel #menuDescriptionPanel="matExpansionPanel" style="margin-top: 15px;">
+            <mat-expansion-panel #menuDescriptionPanel="matExpansionPanel" style="margin-top: 15px">
                 <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Menu Description
-                    </mat-panel-title>
+                    <mat-panel-title> Menu Description </mat-panel-title>
                 </mat-expansion-panel-header>
-    
-                <p class="menu-description">{{ user?.menuDescription || "Please add menu description if you would like one." }}</p>
+
+                <p class="menu-description">
+                    {{
+                    user?.menuDescription ||
+                    "Please add menu description if you would like
+                    one."
+                    }}
+                </p>
             </mat-expansion-panel>
         </ng-template>
     </div>
     <div *ngIf="editMode; else viewMode" class="edit-menu-description">
-        <mat-form-field appearance="outline" class="space-top">
+        <mat-form-field appearance="outline" class="space-top full-width-small">
             <textarea matInput [(ngModel)]="editedMenuDescription" placeholder="Menu Description"></textarea>
         </mat-form-field>
         <button mat-mini-fab color="primary" (click)="saveMenuDescription()" matTooltip="Save"
@@ -33,13 +39,13 @@
 </app-header>
 
 <div *ngIf="showAddSection">
-    <mat-form-field appearance="outline" class="space-top">
+    <mat-form-field appearance="outline" class="space-top full-width-small">
         <input matInput [(ngModel)]="newSectionName" placeholder="Section Name" />
     </mat-form-field>
-    <mat-form-field appearance="outline" class="space-top" style="margin-left: 15px">
+    <mat-form-field appearance="outline" class="space-top" class="section-description full-width-small">
         <textarea matInput [(ngModel)]="newSectionDescription" placeholder="Description (Optional)"></textarea>
     </mat-form-field>
-    <button style="margin-left: 15px" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section">
+    <button style="margin-left: 15px" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section" [disabled]="!newSectionName">
         <i class="fa-solid fa-plus"></i>
     </button>
     <button style="margin-left: 15px" mat-mini-fab color="accent" (click)="closeSection()" matTooltip="Close Section">
@@ -56,8 +62,8 @@
                     <h1 class="menu-builder-card-header-name" *ngIf="editingSectionId !== section.id">
                         {{ section.name }}
                     </h1>
-                    <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id" class="space-top"
-                        (click)="$event.stopPropagation()">
+                    <mat-form-field appearance="outline" *ngIf="editingSectionId === section.id"
+                        class="space-top menu-item-input" (click)="$event.stopPropagation()">
                         <input matInput [(ngModel)]="editingSection.name" (keydown)="$event.stopPropagation()" />
                     </mat-form-field>
                 </div>
@@ -95,7 +101,8 @@
         </mat-expansion-panel-header>
         <div class="section-content">
             <div *ngIf="editingSectionId === section.id">
-                <mat-form-field appearance="outline" (click)="$event.stopPropagation()" style="width: 100%">
+                <mat-form-field appearance="outline" (click)="$event.stopPropagation()" style="width: 100%"
+                    class="menu-item-description">
                     <textarea matInput [(ngModel)]="editingSection.description" (keydown)="$event.stopPropagation()"
                         placeholder="Description (Optional)"></textarea>
                 </mat-form-field>
