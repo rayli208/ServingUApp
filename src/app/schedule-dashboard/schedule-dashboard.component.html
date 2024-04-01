@@ -10,6 +10,9 @@
       </mat-button-toggle-group>
       <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Text" (click)="sendOutText()" style="margin-right: 15px;" [disabled]="noSchedules()">
         <i class="fa-solid fa-comment"></i>
+      </button>   
+      <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Email" (click)="sendOutEmail()" style="margin-right: 15px;" [disabled]="noSchedules()">
+        <i class="fa-solid fa-envelope"></i>
       </button>      
       <label class="schedule-label">Select your view:</label>
       <mat-radio-group [(ngModel)]="selectedView">

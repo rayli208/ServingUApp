@@ -1,37 +1,42 @@
-import { EditScheduleDialogComponent } from '../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component';
-import { ScheduleService } from '../_services/schedule.service';
-import { Schedule } from '../_models/schedule.model';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MatDialog } from '@angular/material/dialog';
-import { CreateScheduleFromDateDialogComponent } from '../_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component';
-import { MessagesService } from '../_services/messages.service';
-import { Message } from '../_models/message.model';
-import { AuthService } from '../_services/auth.service';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
-import { Employee } from '../_models/employee.model';
-import { EmployeesService } from '../_services/employees.service';
-import { TimeoffService } from '../_services/timeoff.service';
-import { Timeoff } from '../_models/timeoff.model';
+import { EditScheduleDialogComponent } from "../_dialogs/schedules/edit-schedule-dialog/edit-schedule-dialog.component";
+import { ScheduleService } from "../_services/schedule.service";
+import { Schedule } from "../_models/schedule.model";
+import { Component, HostListener, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { MatDialog } from "@angular/material/dialog";
+import { CreateScheduleFromDateDialogComponent } from "../_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component";
+import { MessagesService } from "../_services/messages.service";
+import { Message } from "../_models/message.model";
+import { AuthService } from "../_services/auth.service";
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from "@angular/material/snack-bar";
+import { AngularFireFunctions } from "@angular/fire/compat/functions";
+import { ConfirmDialogComponent } from "../_dialogs/confirm/confirm-dialog/confirm-dialog.component";
+import { Employee } from "../_models/employee.model";
+import { EmployeesService } from "../_services/employees.service";
+import { TimeoffService } from "../_services/timeoff.service";
+import { Timeoff } from "../_models/timeoff.model";
 
 @Component({
-  selector: 'app-schedule-dashboard',
-  templateUrl: './schedule-dashboard.component.html',
-  styleUrls: ['./schedule-dashboard.component.scss']
+  selector: "app-schedule-dashboard",
+  templateUrl: "./schedule-dashboard.component.html",
+  styleUrls: ["./schedule-dashboard.component.scss"],
 })
 export class ScheduleDashboardComponent implements OnInit {
-  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  horizontalPosition: MatSnackBarHorizontalPosition = "right";
+  verticalPosition: MatSnackBarVerticalPosition = "top";
   userId;
   user: Observable<any>;
   isHorizontalModeDisabled: boolean = false;
   Employees: Employee[];
   employeeMap: { [id: string]: Employee } = {};
 
-  selectedView: string = 'Horizontal';
-  views: string[] = ['Vertical', 'Horizontal'];
+  selectedView: string = "Horizontal";
+  views: string[] = ["Vertical", "Horizontal"];
 
   Schedules: Schedule[];
   timeOffs: Timeoff[] = [];
@@ -48,6 +53,7 @@ export class ScheduleDashboardComponent implements OnInit {
     public _snackBar: MatSnackBar,
     private employeesService: EmployeesService,
     private timeoffService: TimeoffService,
+    private fns: AngularFireFunctions
   ) {
     this.user = null;
   }
@@ -58,19 +64,19 @@ export class ScheduleDashboardComponent implements OnInit {
     this.fetchTimeOffs();
   }
 
-  @HostListener('window:resize', ['$event.target.innerWidth'])
+  @HostListener("window:resize", ["$event.target.innerWidth"])
   onResize(innerWidth: number) {
     this.handleWindowResize(innerWidth);
   }
 
   fetchTimeOffs() {
-    this.afAuth.authState.subscribe(user => {
+    this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.timeoffService.getTimeoffListForUser(user.uid).subscribe(res => {
-          this.timeOffs = res.map(e => {
+        this.timeoffService.getTimeoffListForUser(user.uid).subscribe((res) => {
+          this.timeOffs = res.map((e) => {
             return {
               id: e.payload.doc.id,
-              ...e.payload.doc.data() as {}
+              ...(e.payload.doc.data() as {}),
             } as Timeoff;
           });
         });
@@ -78,37 +84,42 @@ export class ScheduleDashboardComponent implements OnInit {
     });
   }
 
-
   generateSchedule() {
-    this.afAuth.authState.subscribe(user => {
+    this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userId = user.uid;
 
-        this.employeesService.getEmployeesListForUser(this.userId).subscribe(res => {
-          this.Employees = res.map(e => {
-            const employee = {
-              id: e.payload.doc.id,
-              ...e.payload.doc.data() as {}
-            } as Employee;
+        this.employeesService
+          .getEmployeesListForUser(this.userId)
+          .subscribe((res) => {
+            this.Employees = res
+              .map((e) => {
+                const employee = {
+                  id: e.payload.doc.id,
+                  ...(e.payload.doc.data() as {}),
+                } as Employee;
 
-            // Update the mapping
-            this.employeeMap[employee.id] = employee;
+                // Update the mapping
+                this.employeeMap[employee.id] = employee;
 
-            return employee;
-          }).sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        });
-
-        this.scheduleService.getSchedulesListForUser(this.userId).subscribe(res => {
-          this.Schedules = res.map(e => {
-            return {
-              id: e.payload.doc.id,
-              ...e.payload.doc.data() as {}
-            } as Schedule;
+                return employee;
+              })
+              .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
           });
 
-          //Once we have all the schedules loaded, populate them into the actual object we display
-          this.populateSchedule();
-        });
+        this.scheduleService
+          .getSchedulesListForUser(this.userId)
+          .subscribe((res) => {
+            this.Schedules = res.map((e) => {
+              return {
+                id: e.payload.doc.id,
+                ...(e.payload.doc.data() as {}),
+              } as Schedule;
+            });
+
+            //Once we have all the schedules loaded, populate them into the actual object we display
+            this.populateSchedule();
+          });
       }
     });
   }
@@ -139,7 +150,7 @@ export class ScheduleDashboardComponent implements OnInit {
 
   handleWindowResize(innerWidth: number) {
     if (innerWidth <= 992) {
-      this.selectedView = 'Vertical';
+      this.selectedView = "Vertical";
       this.isHorizontalModeDisabled = true;
     } else {
       this.isHorizontalModeDisabled = false;
@@ -159,8 +170,8 @@ export class ScheduleDashboardComponent implements OnInit {
   }
 
   getEmployeeName(employeeId: string): string {
-    const employee = this.Employees.find(emp => emp.id === employeeId);
-    return employee ? employee.name : 'Unknown';
+    const employee = this.Employees.find((emp) => emp.id === employeeId);
+    return employee ? employee.name : "Unknown";
   }
 
   //Populates grand object with all the dates an employee works
@@ -173,8 +184,12 @@ export class ScheduleDashboardComponent implements OnInit {
 
       for (let j = 0; j < this.Schedules.length; j++) {
         if (this.Schedules[j]?.date) {
-          const [year, month, day] = this.Schedules[j].date.split("-").map(Number);
-          const d: any = new Date(Date.UTC(year, month - 1, day)).toISOString().slice(0, 10);
+          const [year, month, day] = this.Schedules[j].date
+            .split("-")
+            .map(Number);
+          const d: any = new Date(Date.UTC(year, month - 1, day))
+            .toISOString()
+            .slice(0, 10);
 
           if (d == this.daysOfWeek[i]) {
             schedule.push(this.Schedules[j]);
@@ -184,12 +199,16 @@ export class ScheduleDashboardComponent implements OnInit {
 
       // Sort the schedule array based on startTime in ascending order
       schedule.sort((a, b) => {
-        return a.startTime < b.startTime ? -1 : (a.startTime > b.startTime ? 1 : 0);
+        return a.startTime < b.startTime
+          ? -1
+          : a.startTime > b.startTime
+          ? 1
+          : 0;
       });
 
       this.populatedSchedulesWithDates.push({
         date: this.daysOfWeek[i],
-        schedule: schedule
+        schedule: schedule,
       });
     }
   }
@@ -197,41 +216,42 @@ export class ScheduleDashboardComponent implements OnInit {
   //Edit Function
   editSchedule(schedule: Schedule, j, i) {
     const dialogRef = this.dialog.open(EditScheduleDialogComponent, {
-      data: schedule
+      data: schedule,
     });
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.populatedSchedulesWithDates[i].schedules?.splice(j, 1, result);
 
       if (result) {
-        this._snackBar.open('Schedule has been edited!', '', {
+        this._snackBar.open("Schedule has been edited!", "", {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
-          panelClass: ['yellow-snackbar']
+          panelClass: ["yellow-snackbar"],
         });
       }
     });
   }
 
-  //Remove Schedule 
+  //Remove Schedule
   deleteSchedule(schedule: Schedule, j, i) {
-    const employeeName = this.employeeMap[schedule.employeeId]?.name || 'Unknown Employee';
+    const employeeName =
+      this.employeeMap[schedule.employeeId]?.name || "Unknown Employee";
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        text: `Are you sure you want to delete ${employeeName}'s schedule?`
-      }
+        text: `Are you sure you want to delete ${employeeName}'s schedule?`,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.scheduleService.deleteSchedule(schedule);
         this.populatedSchedulesWithDates[i].schedules?.splice(j, 1);
-        this._snackBar.open('Schedule has been deleted!', '', {
+        this._snackBar.open("Schedule has been deleted!", "", {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
-          panelClass: ['red-snackbar']
+          panelClass: ["red-snackbar"],
         });
       }
     });
@@ -245,7 +265,7 @@ export class ScheduleDashboardComponent implements OnInit {
   // This function takes a string in the format "YYYY-MM-DD" and returns a string in the format "Day of the week MM/DD/YY"
   public formatDate(date: string): string {
     if (!date) {
-      return 'Unknown Date';
+      return "Unknown Date";
     }
 
     const [year, month, day] = date.split("-").map(Number);
@@ -268,21 +288,21 @@ export class ScheduleDashboardComponent implements OnInit {
   private getDayOfWeek(dayOfWeek: number): string {
     switch (dayOfWeek) {
       case 0:
-        return 'Sun';
+        return "Sun";
       case 1:
-        return 'Mon';
+        return "Mon";
       case 2:
-        return 'Tues';
+        return "Tues";
       case 3:
-        return 'Wed';
+        return "Wed";
       case 4:
-        return 'Thurs';
+        return "Thurs";
       case 5:
-        return 'Fri';
+        return "Fri";
       case 6:
-        return 'Sat';
+        return "Sat";
       default:
-        throw new Error('Invalid day of week');
+        throw new Error("Invalid day of week");
     }
   }
 
@@ -298,24 +318,27 @@ export class ScheduleDashboardComponent implements OnInit {
   }
 
   public createSchedule(date: string) {
-    const scheduledEmployees = this.populatedSchedulesWithDates.find(d => d.date === date)?.schedule.map(s => s.employeeId) || [];
+    const scheduledEmployees =
+      this.populatedSchedulesWithDates
+        .find((d) => d.date === date)
+        ?.schedule.map((s) => s.employeeId) || [];
 
     const dialogRef = this.dialog.open(CreateScheduleFromDateDialogComponent, {
       data: {
         date: date,
         timeOffs: this.timeOffs,
-        scheduledEmployees: scheduledEmployees
-      }
+        scheduledEmployees: scheduledEmployees,
+      },
     });
 
     //Run code after closing dialog
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result?.scheduleCreated) {
-        this._snackBar.open('Schedule has been created!', '', {
+        this._snackBar.open("Schedule has been created!", "", {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
           duration: 2500,
-          panelClass: ['green-snackbar']
+          panelClass: ["green-snackbar"],
         });
       }
     });
@@ -340,7 +363,7 @@ export class ScheduleDashboardComponent implements OnInit {
           if (!schedulesByEmployee[employeePhone]) {
             schedulesByEmployee[employeePhone] = {
               name: employeeName,
-              schedules: []
+              schedules: [],
             };
           }
 
@@ -356,7 +379,7 @@ export class ScheduleDashboardComponent implements OnInit {
     for (let phoneNumber in schedulesByEmployee) {
       let messageText = `${startDate} to  ${endDate}\n${schedulesByEmployee[phoneNumber].name} schedule:\n`;
       for (let schedule of schedulesByEmployee[phoneNumber].schedules) {
-        let dateParts = schedule.date.split('-');
+        let dateParts = schedule.date.split("-");
         let formattedDate = `${dateParts[1]}/${dateParts[2]}`;
         let formattedStartTime = this.convertTo12HourFormat(schedule.startTime);
         let formattedEndTime = this.convertTo12HourFormat(schedule.endTime);
@@ -364,57 +387,143 @@ export class ScheduleDashboardComponent implements OnInit {
       }
 
       const message: Message = {
-        channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
-        to: '1' + phoneNumber.replace(/-/g, ""),
-        type: 'text',
+        channelId: "a31f78766da04f9e95ce52a85cf13bdd",
+        to: "1" + phoneNumber.replace(/-/g, ""),
+        type: "text",
         content: {
-          text: messageText
-        }
+          text: messageText,
+        },
       };
 
       messages.push(message);
     }
 
-    let totalMessagesCount = messages.reduce((count, message) => count + Math.ceil(message.content.text.length / 153), 0);
+    let totalMessagesCount = messages.reduce(
+      (count, message) => count + Math.ceil(message.content.text.length / 153),
+      0
+    );
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        text: `Are you sure you want to send ${totalMessagesCount} messages?`
-      }
+        text: `Are you sure you want to send ${totalMessagesCount} messages?`,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         for (let message of messages) {
           this.messagesService.createMessage(message);
         }
 
-        this.authService.updateTextsThisMonth(totalMessagesCount)
+        this.authService
+          .updateTextsThisMonth(totalMessagesCount)
           .then(() => {
-            this._snackBar.open('Text has been sent!', '', {
+            this._snackBar.open("Text has been sent!", "", {
               horizontalPosition: this.horizontalPosition,
               verticalPosition: this.verticalPosition,
               duration: 2500,
-              panelClass: ['green-snackbar']
+              panelClass: ["green-snackbar"],
             });
           })
-          .catch(error => {
+          .catch((error) => {
             // Handle the error if needed
           });
       }
     });
   }
 
+  sendOutEmail(): void {
+    let schedulesByEmail = {};
+  
+    // Populating schedulesByEmail similarly to schedulesByEmployee in sendOutText
+    for (let day of this.populatedSchedulesWithDates) {
+      for (let schedule of day.schedule) {
+        let employeeId = schedule.employeeId;
+        let employee = this.employeeMap[employeeId];
+  
+        if (employee) {
+          let employeeEmail = employee.email; // Assuming employee.email exists
+          let employeeName = employee.name;
+  
+          if (!schedulesByEmail[employeeEmail]) {
+            schedulesByEmail[employeeEmail] = {
+              name: employeeName,
+              schedules: [],
+            };
+          }
+  
+          schedulesByEmail[employeeEmail].schedules.push({
+            date: day.date,
+            startTime: this.convertTo12HourFormat(schedule.startTime),
+            endTime: this.convertTo12HourFormat(schedule.endTime)
+          });
+        }
+      }
+    }
+  
+    const totalEmailsCount = Object.keys(schedulesByEmail).length;
+  
+    // Confirmation dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to send emails to ${totalEmailsCount} employees?`,
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        Object.keys(schedulesByEmail).forEach(email => {
+          const employee = schedulesByEmail[email];
+          let emailBody = `<p>Dear ${employee.name},<br>Here is your schedule:</p>`;
+  
+          employee.schedules.forEach(schedule => {
+            emailBody += `<p>Date: ${schedule.date}, Start Time: ${schedule.startTime}, End Time: ${schedule.endTime}</p>`;
+          });
+  
+          // Construct the email object
+          const emailContent = {
+            to: email,
+            subject: 'Your Weekly Schedule',
+            html: emailBody
+          };
+  
+          // Call the Cloud Function
+          const sendEmailCallable = this.fns.httpsCallable('sendEmail');
+          sendEmailCallable(emailContent).subscribe({
+            next: (result) => {
+              this._snackBar.open("Email has been sent!", "", {
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 2500,
+                panelClass: ["green-snackbar"],
+              });
+            },
+            error: (error) => {
+              console.error('Error sending email:', error);
+              this._snackBar.open("Failed to send email.", "", {
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 2500,
+                panelClass: ["red-snackbar"],
+              });
+            }
+          });
+        });
+      }
+    });
+  }
+  
+  
   // This function converts a time in 24-hour format to 12-hour format
   convertTo12HourFormat(time: string): string {
-    let [hours, minutes] = time.split(':').map(Number);
-    let period = hours < 12 ? 'AM' : 'PM';
+    let [hours, minutes] = time.split(":").map(Number);
+    let period = hours < 12 ? "AM" : "PM";
     if (hours == 0) {
       hours = 12;
     } else if (hours > 12) {
       hours -= 12;
     }
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}${period}`;
+    return `${hours}:${minutes < 10 ? "0" : ""}${minutes}${period}`;
   }
 
   // This method returns true if there are no schedules during the selected weeks, and false otherwise
