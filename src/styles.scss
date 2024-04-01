@@ -58,3 +58,20 @@ h1 {
     text-transform: uppercase;
     margin-bottom: 10px;
 }
+
+@media print {
+    body{
+        overflow: visible !important;
+        page-break-inside: avoid; /* Avoid breaking inside a schedule card */
+
+      page-break-after: always; /* Force page break after each day */
+    }
+
+    html {
+        position: relative;
+        overflow: visible !important;
+        page-break-inside: avoid; /* Avoid breaking inside a schedule card */
+
+      page-break-after: always; /* Force page break after each day */
+    }
+}

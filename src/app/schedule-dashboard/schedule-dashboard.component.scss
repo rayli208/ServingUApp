@@ -60,7 +60,7 @@ mat-radio-button {
 
 .schedule-dashboard-name,
 .schedule-weekly-name {
-    font-size: 20px;
+    font-size: 1.2em;
     color: $black;
     font-weight: 600;
     margin-bottom: 5px;
@@ -169,7 +169,6 @@ mat-radio-button {
 
 
 @media print {
-
     .schedule-dashboard-icons,
     .schedule-dashboard-date-add-button,
     mat-card {
@@ -190,6 +189,10 @@ mat-radio-button {
         flex: 1 0 13%;
         margin: 15px .5%;
         overflow: hidden;
+    }
+    
+    .schedule-dashboard-name{
+        font-size: 1em;
     }
 
     .schedule-dashboard-name,
