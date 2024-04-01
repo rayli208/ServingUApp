@@ -72,6 +72,7 @@ export class AuthService {
                         pin: user.pin,
                         email_lower: emailLower,
                         textsThisMonth: 0,
+                        emailsThisMonth: 0,
                         uid: uid
                     });
 
@@ -206,6 +207,43 @@ export class AuthService {
                 throw error;
             });
     }
+
+    updateEmailsThisMonth(totalEmailsCount: number): Promise<void> {
+        return this.afAuth.currentUser
+            .then((user) => {
+                if (!user || !user.email) {
+                    throw new Error("User is not logged in.");
+                }
+      
+                const emailLower = user.email.toLowerCase();
+      
+                return this.afs
+                    .doc(`/users/${emailLower}`)
+                    .get()
+                    .toPromise()
+                    .then((doc) => {
+                        const userData = doc.data() as { emailsThisMonth?: number };
+      
+                        if (!userData || userData.emailsThisMonth === undefined) {
+                            throw new Error("User data not found.");
+                        }
+      
+                        const currentEmailsThisMonth = userData.emailsThisMonth || 0;
+                        const newEmailsThisMonth = currentEmailsThisMonth + totalEmailsCount;
+      
+                        return this.afs
+                            .doc(`/users/${emailLower}`)
+                            .update({ emailsThisMonth: newEmailsThisMonth });
+                    });
+            })
+            .catch((error) => {
+                console.log("Auth Service: updateEmailsThisMonth: error...");
+                console.log("error code", error.code);
+                console.log("error", error);
+                throw error;
+            });
+      }
+      
 
     // In AuthService
     getImageCount(userId: string): Observable<number> {

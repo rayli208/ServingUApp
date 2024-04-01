@@ -20,6 +20,7 @@ import { Employee } from "../_models/employee.model";
 import { EmployeesService } from "../_services/employees.service";
 import { TimeoffService } from "../_services/timeoff.service";
 import { Timeoff } from "../_models/timeoff.model";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 
 @Component({
   selector: "app-schedule-dashboard",
@@ -30,7 +31,7 @@ export class ScheduleDashboardComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = "right";
   verticalPosition: MatSnackBarVerticalPosition = "top";
   userId;
-  user: Observable<any>;
+  user: any;
   isHorizontalModeDisabled: boolean = false;
   Employees: Employee[];
   employeeMap: { [id: string]: Employee } = {};
@@ -53,12 +54,24 @@ export class ScheduleDashboardComponent implements OnInit {
     public _snackBar: MatSnackBar,
     private employeesService: EmployeesService,
     private timeoffService: TimeoffService,
-    private fns: AngularFireFunctions
+    private fns: AngularFireFunctions,
+    private afs: AngularFirestore
   ) {
     this.user = null;
   }
 
   ngOnInit(): void {
+    this.authService.getAuthState().subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+        let emailLower = user.email.toLowerCase();
+
+        this.authService.getCurrentUserInfo(emailLower).subscribe(userInfo => {
+          this.user = userInfo;
+        });
+      }
+    });
+
     this.generateSchedule();
     this.handleWindowResize(window.innerWidth);
     this.fetchTimeOffs();
@@ -434,86 +447,116 @@ export class ScheduleDashboardComponent implements OnInit {
 
   sendOutEmail(): void {
     let schedulesByEmail = {};
-  
-    // Populating schedulesByEmail similarly to schedulesByEmployee in sendOutText
+
     for (let day of this.populatedSchedulesWithDates) {
       for (let schedule of day.schedule) {
         let employeeId = schedule.employeeId;
         let employee = this.employeeMap[employeeId];
-  
+
         if (employee) {
-          let employeeEmail = employee.email; // Assuming employee.email exists
+          let employeeEmail = employee.email;
           let employeeName = employee.name;
-  
+
           if (!schedulesByEmail[employeeEmail]) {
             schedulesByEmail[employeeEmail] = {
               name: employeeName,
               schedules: [],
             };
           }
-  
+
           schedulesByEmail[employeeEmail].schedules.push({
             date: day.date,
             startTime: this.convertTo12HourFormat(schedule.startTime),
-            endTime: this.convertTo12HourFormat(schedule.endTime)
+            endTime: this.convertTo12HourFormat(schedule.endTime),
+            week: day.date < this.daysOfWeek[7] ? "Week 1" : "Week 2",
           });
         }
       }
     }
-  
+
     const totalEmailsCount = Object.keys(schedulesByEmail).length;
-  
-    // Confirmation dialog
+    const startDateFormatted = this.formatDateInEmail(
+      this.populatedSchedulesWithDates[0]?.date
+    );
+    const endDateFormatted = this.formatDateInEmail(
+      this.populatedSchedulesWithDates[13]?.date
+    );
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         text: `Are you sure you want to send emails to ${totalEmailsCount} employees?`,
       },
     });
-  
-    dialogRef.afterClosed().subscribe(confirmed => {
-      if (confirmed) {
-        Object.keys(schedulesByEmail).forEach(email => {
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed && totalEmailsCount > 0) {
+        const emailPromises = Object.keys(schedulesByEmail).map((email) => {
           const employee = schedulesByEmail[email];
-          let emailBody = `<p>Dear ${employee.name},<br>Here is your schedule:</p>`;
-  
-          employee.schedules.forEach(schedule => {
-            emailBody += `<p>Date: ${schedule.date}, Start Time: ${schedule.startTime}, End Time: ${schedule.endTime}</p>`;
+          let emailBody = `<h2 style="font-size: 18px; color: #000;">${employee.name} Schedule</h2><h3 style="font-size: 16px; color: #000;">(${startDateFormatted} - ${endDateFormatted})</h3>`;
+
+          let currentWeek = "";
+          employee.schedules.forEach((schedule) => {
+            if (currentWeek !== schedule.week) {
+              emailBody += `<h3 style="font-size: 20px; color: #000;">${schedule.week}</h3>`;
+              currentWeek = schedule.week;
+            }
+            const dateFormatted = this.formatDateInEmail(schedule.date);
+            emailBody += `<div style="border: 1px solid #35B9DF; border-radius: 4px; margin: 10px 0; padding: 10px;">
+              <h4 style="font-size: 16px; font-weight: 700; color: #000; margin: 0px;">${dateFormatted}</h4>
+              <p style="font-size: 14px; color: #555; margin: 0px;">Start Time: ${schedule.startTime}
+              <br>End Time: ${schedule.endTime}
+              </p>
+            </div>`;
           });
-  
-          // Construct the email object
+
+          emailBody += `<p style="font-style: italic; font-size: 14px; color: #555;">If you need changes to your schedule, please contact <strong>${this.user.location_name}</strong> management.</p>`;
+
           const emailContent = {
             to: email,
-            subject: 'Your Weekly Schedule',
-            html: emailBody
+            subject: `${this.user.location_name} Schedule for ${startDateFormatted} - ${endDateFormatted}`,
+            html: emailBody,
           };
-  
-          // Call the Cloud Function
-          const sendEmailCallable = this.fns.httpsCallable('sendEmail');
-          sendEmailCallable(emailContent).subscribe({
-            next: (result) => {
-              this._snackBar.open("Email has been sent!", "", {
-                horizontalPosition: this.horizontalPosition,
-                verticalPosition: this.verticalPosition,
-                duration: 2500,
-                panelClass: ["green-snackbar"],
-              });
-            },
-            error: (error) => {
-              console.error('Error sending email:', error);
-              this._snackBar.open("Failed to send email.", "", {
-                horizontalPosition: this.horizontalPosition,
-                verticalPosition: this.verticalPosition,
-                duration: 2500,
-                panelClass: ["red-snackbar"],
-              });
-            }
-          });
+
+          const sendEmailCallable = this.fns.httpsCallable("sendEmail");
+          return sendEmailCallable(emailContent).toPromise(); // Convert Observable to Promise for easy handling
+        });
+
+        Promise.allSettled(emailPromises).then((results) => {
+          const failed = results.some((result) => result.status === "rejected");
+          if (failed) {
+            this._snackBar.open("Failed to send some emails.", "", {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ["red-snackbar"],
+            });
+          } else {
+            this._snackBar.open("All emails have been sent successfully!", "", {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ["green-snackbar"],
+            });
+            // Update the count of emails sent this month
+            this.authService.updateEmailsThisMonth(totalEmailsCount);
+          }
         });
       }
     });
   }
-  
-  
+
+  // Ensure the formatDate function returns the date in the "Mon MM/DD" format.
+  formatDateInEmail(date: string): string {
+    if (!date) {
+      return "Unknown Date";
+    }
+    const dateObj = new Date(date);
+    const dayOfWeek = dateObj.toLocaleString("en-US", { weekday: "short" }); // "Mon"
+    const month = dateObj.toLocaleString("en-US", { month: "numeric" }); // "4"
+    const day = dateObj.toLocaleString("en-US", { day: "numeric" }); // "9"
+    return `${dayOfWeek} ${month}/${day}`; // "Mon 4/9"
+  }
+
   // This function converts a time in 24-hour format to 12-hour format
   convertTo12HourFormat(time: string): string {
     let [hours, minutes] = time.split(":").map(Number);
