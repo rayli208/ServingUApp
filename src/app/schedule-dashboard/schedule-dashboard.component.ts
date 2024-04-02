@@ -634,7 +634,12 @@ export class ScheduleDashboardComponent implements OnInit {
         })).map(({ id, ...rest }) => rest); // Destructure to omit 'id' and retain the rest
   
         this.scheduleService.saveBatchSchedules(copiedSchedules)
-          .then(() => this._snackBar.open('Schedules copied successfully!', '', { duration: 2500 }))
+          .then(() => this._snackBar.open('Schedules copied successfully!', '', { 
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ["green-snackbar"],
+          }))
           .catch(error => console.error('Error copying schedules:', error));
       }
     });
