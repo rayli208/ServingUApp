@@ -15,6 +15,8 @@ import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confi
 import { MassTextDialogComponent } from '../_dialogs/employee/mass-text-dialog/mass-text-dialog.component';
 import { MessagesService } from '../_services/messages.service';
 import { AuthService } from '../_services/auth.service';
+import { TimeoffService } from '../_services/timeoff.service';
+import { Timeoff } from '../_models/timeoff.model';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -40,6 +42,7 @@ export class EmployeeDashboardComponent implements OnInit {
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
     public scheduleService: ScheduleService,
+    private timeoffService: TimeoffService,
     public messagesService: MessagesService,
   ) {
     this.user = null;
@@ -99,6 +102,13 @@ export class EmployeeDashboardComponent implements OnInit {
           //Delete all schedules associated to employee
           this.Schedules.forEach(x => this.scheduleService.deleteSchedule(x));
         });
+        // Fetch all time-offs for the employee
+        this.timeoffService.getTimeoffListForEmployee(employee.id).subscribe(res => {
+          const timeoffs = res.map(e => ({ id: e.payload.doc.id, ...e.payload.doc.data() as {} })) as Timeoff[];
+          // Delete all time-offs associated with the employee
+          timeoffs.forEach(timeoff => this.timeoffService.deleteTimeoff(timeoff));
+        });
+
         //Delete all images associated to employee
         this.storage.storage.refFromURL(employee.imgUrl).delete();
         //Delete employee
