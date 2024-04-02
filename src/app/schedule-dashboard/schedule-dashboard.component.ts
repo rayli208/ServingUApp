@@ -2,7 +2,6 @@ import { EditScheduleDialogComponent } from "../_dialogs/schedules/edit-schedule
 import { ScheduleService } from "../_services/schedule.service";
 import { Schedule } from "../_models/schedule.model";
 import { Component, HostListener, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { MatDialog } from "@angular/material/dialog";
 import { CreateScheduleFromDateDialogComponent } from "../_dialogs/schedules/create-schedule-from-date-dialog/create-schedule-from-date-dialog.component";
@@ -44,6 +43,7 @@ export class ScheduleDashboardComponent implements OnInit {
   daysOfWeek: string[] = [];
   base: number = 0;
   populatedSchedulesWithDates: any[] = [];
+  canCopySchedules: boolean = true;
 
   constructor(
     public dialog: MatDialog,
@@ -75,6 +75,7 @@ export class ScheduleDashboardComponent implements OnInit {
     this.generateSchedule();
     this.handleWindowResize(window.innerWidth);
     this.fetchTimeOffs();
+    this.checkForFutureSchedules();
   }
 
   @HostListener("window:resize", ["$event.target.innerWidth"])
@@ -132,6 +133,7 @@ export class ScheduleDashboardComponent implements OnInit {
 
             //Once we have all the schedules loaded, populate them into the actual object we display
             this.populateSchedule();
+            this.checkForFutureSchedules();
           });
       }
     });
@@ -174,12 +176,14 @@ export class ScheduleDashboardComponent implements OnInit {
   incrementWeek(): void {
     this.base++;
     this.populateSchedule();
+    this.checkForFutureSchedules();
   }
 
   // function to decrement the dates by one week
   decrementWeek(): void {
     this.base--;
     this.populateSchedule();
+    this.checkForFutureSchedules();
   }
 
   getEmployeeName(employeeId: string): string {
@@ -581,5 +585,64 @@ export class ScheduleDashboardComponent implements OnInit {
 
     // If we've looped through all the dates and haven't found any schedules, return true
     return true;
+  }
+
+  checkForFutureSchedules(): void {
+    if (this.daysOfWeek.length > 0) {
+      // Safely access the last date of the currently viewed schedules
+      const lastDayInView = this.daysOfWeek[this.daysOfWeek.length - 1];
+  
+      // Ensure that lastDayInView is a valid date string
+      if (lastDayInView) {
+        const startDate = new Date(lastDayInView);
+  
+        // Check if startDate is a valid date
+        if (!isNaN(startDate.getTime())) {
+          // Start from the next day after the current viewing range
+          startDate.setDate(startDate.getDate() + 1);
+  
+          // Calculate the end date for checking, which is two weeks from the start date
+          const endDate = new Date(startDate);
+          endDate.setDate(startDate.getDate() + 13); // End date is two weeks from the start date
+  
+          this.scheduleService.getSchedulesInRange(this.userId, startDate, endDate)
+            .subscribe(schedules => {
+              this.canCopySchedules = schedules.length === 0;
+            });
+        } else {
+          console.error('Invalid date in daysOfWeek:', lastDayInView);
+        }
+      } else {
+        console.error('No valid date found in daysOfWeek.');
+      }
+    } else {
+      console.error('daysOfWeek is empty.');
+    }
+  }
+  
+  copySchedules(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { text: 'Are you sure you want to copy forward the schedules from these two weeks, into the next two weeks?' }
+    });
+  
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        const copiedSchedules = this.Schedules.map(schedule => ({
+          ...schedule,
+          date: this.addTwoWeeksToDate(schedule.date),
+          // Ensure 'id' field is not included in the copied schedule
+        })).map(({ id, ...rest }) => rest); // Destructure to omit 'id' and retain the rest
+  
+        this.scheduleService.saveBatchSchedules(copiedSchedules)
+          .then(() => this._snackBar.open('Schedules copied successfully!', '', { duration: 2500 }))
+          .catch(error => console.error('Error copying schedules:', error));
+      }
+    });
+  }  
+
+  private addTwoWeeksToDate(dateString: string): string {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 14);
+    return date.toISOString().split('T')[0];
   }
 }

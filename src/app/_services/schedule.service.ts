@@ -1,6 +1,7 @@
 import { Schedule } from './../_models/schedule.model';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,23 @@ export class ScheduleService {
     }).catch((error) => {
       console.error('Error saving batch schedules:', error);
     });
+  }
+
+  getSchedulesInRange(uid: string, startDate: Date, endDate: Date) {
+    const start = startDate.toISOString().split('T')[0];
+    const end = endDate.toISOString().split('T')[0];
+
+    return this.afs.collection<Schedule>('schedules', ref => 
+      ref.where('uid', '==', uid)
+         .where('date', '>=', start)
+         .where('date', '<=', end))
+      .snapshotChanges()
+      .pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Schedule;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
   }
 }

@@ -155,6 +155,10 @@ mat-radio-button {
     justify-content: space-between;
 }
 
+.action-button-container{
+    display: inline-block;
+}
+
 @media (max-width:768px) {
     .schedule-label {
         display: block;
@@ -164,6 +168,11 @@ mat-radio-button {
     .mass-text{
         display: block;
         margin: 15px 0px;
+    }
+
+    .action-button-container{
+        display: flex;
+        align-items: center;
     }
 }
 

@@ -8,12 +8,17 @@
         <mat-button-toggle (click)="incrementWeek()"><i class="fa-solid fa-plus"></i> 1 Week</mat-button-toggle>
         <mat-button-toggle (click)="onPrint()"><i class="fa-solid fa-print"></i> Print</mat-button-toggle>
       </mat-button-toggle-group>
-      <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Text" (click)="sendOutText()" style="margin-right: 15px;" [disabled]="noSchedules()">
-        <i class="fa-solid fa-comment"></i>
-      </button>   
-      <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Email" (click)="sendOutEmail()" style="margin-right: 15px;" [disabled]="noSchedules()">
-        <i class="fa-solid fa-envelope"></i>
-      </button>      
+      <div class="action-button-container">
+        <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Text" (click)="sendOutText()" style="margin-right: 15px;" [disabled]="noSchedules()">
+          <i class="fa-solid fa-comment"></i>
+        </button>   
+        <button mat-mini-fab class="mass-text" color="primary" matTooltip="Mass Email" (click)="sendOutEmail()" style="margin-right: 15px;" [disabled]="noSchedules()">
+          <i class="fa-solid fa-envelope"></i>
+        </button>    
+        <button mat-mini-fab color="primary" matTooltip="Mass copy these two weeks of schedules into next two weeks." (click)="copySchedules()" [disabled]="!canCopySchedules || noSchedules()" style="margin-right: 15px;">
+          <i class="fa-solid fa-copy"></i>
+        </button>  
+      </div>
       <label class="schedule-label">Select your view:</label>
       <mat-radio-group [(ngModel)]="selectedView">
         <mat-radio-button color="primary" *ngFor="let option of views" [value]="option" [disabled]="option === 'Horizontal' && isHorizontalModeDisabled">
