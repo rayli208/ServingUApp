@@ -31,8 +31,15 @@ export class EmployeeProfileDashboardComponent implements OnInit {
   allSchedules: any[] = [];
   daysSelected: string[] = [];
   loadedTimeOffs: string[] = [];
+  searchedTimeOffs: Timeoff[] = [];
+  searchPerformed = false; 
 
   range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
+
+  timeOffRange = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
   });
@@ -291,5 +298,40 @@ export class EmployeeProfileDashboardComponent implements OnInit {
       panelClass: ['green-snackbar']
     });
   }
+
+  searchTimeOffs(): void {
+    const startDate = this.timeOffRange.value.start;
+    const endDate = this.timeOffRange.value.end;
+
+    if (startDate && endDate) {
+      this.searchPerformed = true;
+      this.timeoffService.getTimeoffsInRange(this.employeeId, startDate, endDate).subscribe(res => {
+        this.searchedTimeOffs = res.map(e => ({ id: e.payload.doc.id, ...e.payload.doc.data() as Timeoff }));
+      });
+    }
+  }
+
+  confirmTimeOffDeletion(timeOff: Timeoff): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to delete this time off request for ${timeOff.date}?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.timeoffService.deleteTimeoff(timeOff).then(() => {
+          this.searchedTimeOffs = this.searchedTimeOffs.filter(to => to.id !== timeOff.id);
+          this._snackBar.open('Time off has been deleted!', '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 2500,
+            panelClass: ['green-snackbar']
+          });
+        });
+      }
+    });
+  }
+
 
 }

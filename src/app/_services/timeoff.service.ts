@@ -77,4 +77,16 @@ export class TimeoffService {
       console.error('Error saving batch time-offs:', error);
     });
   }
+
+  getTimeoffsInRange(employeeId: string, startDate: Date, endDate: Date) {
+    const startStr = startDate.toISOString().split('T')[0];
+    const endStr = endDate.toISOString().split('T')[0];
+  
+    return this.afs.collection<Timeoff>('timeoff', ref =>
+      ref.where('employeeId', '==', employeeId)
+        .where('date', '>=', startStr)
+        .where('date', '<=', endStr))
+      .snapshotChanges();
+  }
+  
 }

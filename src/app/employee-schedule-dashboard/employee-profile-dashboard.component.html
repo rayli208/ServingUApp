@@ -11,9 +11,9 @@
                 <mat-button-toggle value="timeOff">Time Off</mat-button-toggle>
                 <mat-button-toggle value="notes">Notes</mat-button-toggle>
             </mat-button-toggle-group>
-            <button mat-raised-button color="primary" (click)="seeSchedules()" matTooltip="Get Schedules"
+            <button mat-mini-fab color="primary" (click)="seeSchedules()" matTooltip="Get Schedules"
                 *ngIf="viewMode === 'schedule'" [disabled]="!range.value.start || !range.value.end">
-                <i class="fa-solid fa-clock fa-2xl"></i>
+                <i class="fa-solid fa-clock"></i>
             </button>
         </div>
         <div *ngIf="viewMode === 'schedule'" class="date-range-picker">
@@ -70,21 +70,52 @@
 </div>
 
 <div *ngIf="viewMode === 'timeOff'">
-    <mat-chip-listbox>
-        <mat-chip *ngFor="let date of daysSelected" (removed)="deleteDate(date)">
-            {{ date | date }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-    </mat-chip-listbox>
-    <button mat-icon-button [matMenuTriggerFor]="timeOffMenu" (click)="$event.preventDefault()">
-        <mat-icon>calendar_today</mat-icon>
-    </button>
-    <mat-menu #timeOffMenu="matMenu" class="drop-calendar">
-        <div (click)="$event.stopPropagation()">
-            <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)"
-                [dateClass]="isSelected"></mat-calendar>
-        </div>
-    </mat-menu>
+    <mat-tab-group>
+        <mat-tab label="Request Time Off">
+            <button mat-mini-fab color="primary" matTooltip="Select Days To Request Off"
+                [matMenuTriggerFor]="timeOffMenu" (click)="$event.preventDefault()" style="margin-top: 15px;">
+                <mat-icon>calendar_today</mat-icon>
+            </button>
+            <mat-menu #timeOffMenu="matMenu" class="drop-calendar">
+                <div (click)="$event.stopPropagation()">
+                    <mat-calendar #timeOffCalendar (selectedChange)="selectDate($event, timeOffCalendar)"
+                        [dateClass]="isSelected"></mat-calendar>
+                </div>
+            </mat-menu>
+            <mat-chip-listbox>
+                <mat-chip *ngFor="let date of daysSelected" (removed)="deleteDate(date)">
+                    {{ date | date }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-listbox>
+        </mat-tab>
+        <mat-tab label="Delete Time Off's">
+            <div style="display: flex; align-items: baseline; margin-top: 15px;">
+                <mat-form-field appearance="outline" style="margin-right: 15px;">
+                    <mat-label>Select date range</mat-label>
+                    <mat-date-range-input [formGroup]="timeOffRange" [rangePicker]="timeOffPicker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="timeOffPicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #timeOffPicker></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-mini-fab color="primary" (click)="searchTimeOffs()" matTooltip="Search Time Off's"
+                    [disabled]="!timeOffRange.valid">
+                    <i class="fa-solid fa-clock"></i>
+                </button>
+            </div>
+            <mat-chip-listbox *ngIf="searchedTimeOffs.length > 0">
+                <mat-chip *ngFor="let timeOff of searchedTimeOffs" (removed)="confirmTimeOffDeletion(timeOff)">
+                    {{ timeOff.date | date }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-listbox>
+            <div *ngIf="searchPerformed && searchedTimeOffs.length === 0" class="no-timeoffs-message">
+                There are no time offs for those dates.
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </div>
 
 <div *ngIf="viewMode === 'notes'">
