@@ -84,6 +84,10 @@
                 <span>{{ (user | async)?.textsThisMonth }}</span>
             </div>
             <div class="profile-dashboard-card-row">
+                <span>Total Emails This Month: </span>
+                <span>{{ (user | async)?.emailsThisMonth }}</span>
+            </div>
+            <div class="profile-dashboard-card-row">
                 <span>Max Overlapping Reservations: </span>
                 <span>{{ (user | async)?.maxOverLappingReservations }}</span>
             </div>
