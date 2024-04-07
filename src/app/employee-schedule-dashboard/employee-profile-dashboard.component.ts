@@ -110,8 +110,6 @@ export class EmployeeProfileDashboardComponent implements OnInit {
 
       // Store the fetched time off dates
       this.loadedTimeOffs = timeOffs.map(timeOff => timeOff.date);
-
-      console.log('Time Offs for Employee:', timeOffs);
     }, error => {
       console.error('Error loading time offs:', error);
     });
@@ -227,12 +225,9 @@ export class EmployeeProfileDashboardComponent implements OnInit {
 
   saveTimeOff(): void {
     if (this.daysSelected.length === 0) {
-      console.log("No dates selected for saving.");
       return; // Ensuring there are selected dates
     }
-  
-    console.log("Saving selected dates:", this.daysSelected);
-  
+    
     // Create an array of time-off objects
     const timeOffsToSave: Timeoff[] = this.daysSelected.map(date => ({
       date,
@@ -317,21 +312,31 @@ export class EmployeeProfileDashboardComponent implements OnInit {
         text: `Are you sure you want to delete this time off request for ${timeOff.date}?`
       }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.timeoffService.deleteTimeoff(timeOff).then(() => {
+          // Remove the deleted time off date from loadedTimeOffs
+          this.loadedTimeOffs = this.loadedTimeOffs.filter(date => date !== timeOff.date);
+  
+          // Update searchedTimeOffs to exclude the deleted time off
           this.searchedTimeOffs = this.searchedTimeOffs.filter(to => to.id !== timeOff.id);
+  
+          // Show success message
           this._snackBar.open('Time off has been deleted!', '', {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             duration: 2500,
-            panelClass: ['green-snackbar']
+            panelClass: ['red-snackbar']
           });
+  
+          // Refresh the calendar to update the highlighting
+          if (this.timeOffCalendar) {
+            this.timeOffCalendar.updateTodaysDate();
+            this.changeDetectorRef.detectChanges();
+          }
         });
       }
     });
-  }
-
-
+  }  
 }

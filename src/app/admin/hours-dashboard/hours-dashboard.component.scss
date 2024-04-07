@@ -31,7 +31,6 @@
 .employee-totals-card {
     border-radius: 5px;
     padding: 15px;
-    margin-top: 15px;
     margin-bottom: 15px;
     position: relative;
     background-color: $white;
@@ -54,7 +53,7 @@
 .timestamps-list .timestamps-list-card {
     border-radius: 5px;
     padding: 15px;
-    margin: 7.5px 15px;
+    margin: 0px 0px 15px;
     position: relative;
     background-color: $white;
     border: 1px solid $brand-primary;
@@ -96,5 +95,9 @@
             display: block;
             margin-bottom: 15px;
         }
+    }
+    
+    .employee-totals-card{
+        width: 100%;
     }
 }
