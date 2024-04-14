@@ -1,0 +1,278 @@
+<app-header iconClass="fa-solid fa-circle-info" title="Page Info">
+    <div class="header-description">
+        This page is dedicated to explaining what all the other pages do and how to
+        operate them.
+    </div>
+</app-header>
+<h2 style="margin: 8px 0px">Default Views</h2>
+<mat-accordion class="example-headers-align">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-address-book"></i><span class="title-style">Employees</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Employees" page serves as a comprehensive hub for managing personnel
+            within your organization. Here, administrators have the ability to not
+            only create, edit, and delete employee profiles but also schedule
+            employees directly from this interface. The page offers detailed access to
+            each employee's profile, where you can view their current schedule,
+            process requests for time off, and maintain detailed notes, enhancing
+            individual employee oversight. Additionally, this page features a "Not
+            Active" tab, ideal for managing seasonal or temporarily inactive
+            employees, allowing for easy toggling of their active status as needed.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Computer"></i>
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Phone"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-calendar"></i>
+                <span class="title-style">Schedule</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Schedule" page is designed to optimize the management and
+            organization of employee work shifts. This intuitive interface allows for
+            the arrangement of shifts in chronological order, from the earliest to the
+            latest, and displays the total number of personnel assigned to each day.
+            It identifies employees with multiple shifts in a single day or those
+            recommended for time off. For enhanced communication, schedules can be
+            disseminated directly via text, email, or printed out. A particularly
+            useful feature is the ability to copy two weeks of schedules forward,
+            provided the subsequent two weeks are clear; this facilitates consistent
+            scheduling and eases future planning tasks.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Computer"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Phone"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-stopwatch"></i>
+                <span class="title-style">Punch Clock</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Punch Clock" page is specifically designed to facilitate the time
+            tracking needs of your workforce. Displaying a comprehensive list of
+            employees, this page allows each individual to clock in at the start of
+            their shifts. Upon clocking in, the system begins tracking their work
+            hours immediately. If the employee is designated as a floor employee,
+            their status in the 'Tables' view is automatically updated to 'active,'
+            providing real-time visibility into staff availability. Employees can
+            clock out by selecting their profile, which not only ends their shift but
+            also logs the details for managerial review and record-keeping purposes.
+            This seamless integration ensures accurate time management and operational
+            efficiency.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-tablet-screen-button"></i>
+                <span class="title-style">Tables</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Tables View" page offers an interactive representation of your
+            establishment's floor layout. Users can configure the display scale to
+            suit their needs, providing a flexible view of all floor plans. This
+            module is crucial for managing where clocked-in floor employees are
+            assigned, showing which tables they are overseeing and the occupancy
+            status of each table, including whether it is actively hosting guests.
+            Additionally, this view integrates a real-time waitlist showing all active
+            entries for the day. The system allows for direct communication with
+            guests via text to notify them when their table is ready. Users can
+            customize table shapes, seating arrangements, and the overall floor plan.
+            Mass assignment of tables to employees is streamlined through the
+            interface, with capabilities to view specific assignments per employee and
+            filter tables based on activity status or seating capacity. The view is
+            highly modular, enabling users to switch between different floor layouts
+            and toggle the visibility of the table scroller. Enhanced interactivity is
+            provided through drag-and-drop functionality for table positioning and
+            double-tap actions to toggle their active status.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-bookmark"></i>
+                <span class="title-style">Reservations</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Reservations" page enables efficient management of guest reservations
+            across any specified day. When a reservation is set, it automatically
+            populates the day's waitlist, allowing for streamlined organization and
+            visibility. This feature allows users to set a maximum number of
+            reservations for each time slot, a parameter that can be adjusted in the
+            managerial settings to accommodate varying business needs. The interface
+            provides robust functionalities to edit, delete, and monitor all upcoming
+            reservations, ensuring optimal management of guest flow. This platform is
+            designed to be user-friendly and is highly recommended for use on both
+            phones and tablets, facilitating on-the-go management without the need for
+            a stationary setup.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Phone"></i>
+        </p>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<h2 style="margin: 8px 0px">Managerial Views</h2>
+<mat-accordion class="example-headers-align" style="padding-bottom: 15px">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-user"></i>
+                <span class="title-style">Profile Editor</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Profile Editor" page offers comprehensive tools for establishment
+            owners to enhance their public-facing profiles. This interface allows for
+            the customization of profile photos displayed on the customer-facing
+            website, ensuring a personalized touch. Additionally, owners can input
+            essential contact information for the restaurant, including details about
+            the owner, location name, and the website URL. A unique feature is the
+            ability to set the maximum number of overlapping reservations, which aids
+            in managing guest capacity efficiently. Users can also configure default
+            alert texts for tables, enhancing communication with staff during service.
+            The page supports rich content creation, allowing the addition of a
+            detailed establishment description with the option to include basic HTML
+            and CSS for more advanced customization. Furthermore, the 'Floor Assigner'
+            section facilitates the creation and naming of different floors, which
+            seamlessly integrate with the Table Manager to reflect accurate layouts in
+            real-time. This page is ideally used on both phones for on-the-go
+            management and computers for more detailed content creation.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Phone"></i>
+            <i class="fa-solid fa-computer" matTooltip="Computer"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-user-plus"></i>
+                <span class="title-style">Hiring Dashboard</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Hiring Dashboard" page empowers employers to create and promote job
+            openings directly from their dashboard. Each job posting can be customized
+            with an optional job icon, enhancing the visual appeal and recognition of
+            the position. Employers can define the job type, provide a detailed job
+            description, specify the job name, and indicate the total number of
+            available positions. This comprehensive setup allows potential applicants
+            to gain a clear understanding of what each position entails. The interface
+            includes a filtering option by job name, enabling employers to manage
+            listings more efficiently. All job details are updated and reflected in
+            real-time on the Servingu website, where prospective employees can sign in
+            with Google and submit their resumes directly. This seamless integration
+            ensures a streamlined hiring process and attracts a wide range of
+            qualified candidates.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Desktop"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Mobile"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span class="title-style">Hours Editor</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Hours Editor" page is a crucial tool for managing employee work hours
+            recorded via the Punch Clock screen. This interface allows managers to
+            select specific time ranges to review the documented hours of employees.
+            In instances where an employee may have forgotten to clock in or out, this
+            page provides the functionality to manually add, edit, or delete hours,
+            ensuring accurate and up-to-date record-keeping. For extended time ranges,
+            the system offers an export feature, which compiles and displays the hours
+            in an Excel sheet format. This capability is especially useful for payroll
+            preparation and auditing, streamlining the administrative workload
+            associated with managing employee hours.
+            <br /><br />
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Computer"></i>
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Phone"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-regular fa-newspaper"></i>
+                <span class="title-style">Resume Reviewer</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Resume Reviewer" page is designed to streamline the recruitment process by facilitating the review of
+            resumes submitted through the ServingU website. This interface captures essential applicant information
+            including their name, email, the specific job they applied for, and their resume. Users have the convenience
+            of downloading resumes directly for detailed review and possess the applicant's email for easy outreach.
+            Additionally, each application features a timestamp, providing visibility into when it was submitted. For
+            organizational purposes, resumes can be archived for later review or deleted if they do not meet the job
+            criteria. This flexible and efficient system is optimized for use across all devices, ensuring accessibility
+            whether on the go or at work.
+            <br><br>
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Desktop"></i>
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Mobile"></i>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel style="margin-bottom: 15px;">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <i class="fa-solid fa-utensils"></i>
+                <span class="title-style">Menu Builder</span>
+                <i class="fa-solid fa-star" style="color: silver; margin-left: auto;" matTooltip="Silver Accounts"></i>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="description-style">
+            The "Menu Builder" page offers a robust platform for restaurants to design and manage their menus directly.
+            Users can start from scratch to craft their restaurant's menu, creating sections each with its own
+            description. Within these sections, menu items can be added, complete with descriptions, pricing, and tags
+            to characterize the dish, enhancing menu navigation and customer understanding. Each menu item can also
+            include an optional photo, adding a visual appeal. Users have the flexibility to manage the order of both
+            sections and individual menu items to ensure the menu flows logically and is aligned with dining
+            experiences. Additionally, an overarching description can be added to the entire menu, providing a
+            comprehensive overview of what customers can expect. All this information is seamlessly integrated into the
+            ServingU website, where it can be accessed by customers through a QR code, making it easy for them to view
+            the menu on their own devices.
+            <br><br>
+            Recommended Device:
+            <i class="fa-solid fa-computer" matTooltip="Desktop"></i>
+            <i class="fa-solid fa-tablet" matTooltip="Tablet"></i>
+            <i class="fa-solid fa-mobile-screen-button" matTooltip="Mobile"></i>
+        </p>
+    </mat-expansion-panel>
+</mat-accordion>

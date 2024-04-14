@@ -80,6 +80,7 @@ import { PhoneNumberPipe } from './_pipes/phone-number.pipe';
 import { CustomTimeFormatPipe } from './_pipes/custom-time-format.pipe';
 import { PhoneNumberFormatDirective } from './_directives/phone-number.directive';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
+import { InfoComponent } from './info/info.component';
 import { TablesDashboardComponent } from './tables-dashboard/tables-dashboard.component';
 import { TablesWaitlistComponent } from './tables-waitlist/tables-waitlist.component';
 import { TablesAllTableViewComponent } from './tables-all-table-view/tables-all-table-view.component';
@@ -137,6 +138,7 @@ import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard
         PhoneNumberFormatDirective,
         EmployeeProfileDashboardComponent,
         ProfileDashboardComponent,
+        InfoComponent,
         TablesDashboardComponent,
         TablesWaitlistComponent,
         TablesAllTableViewComponent,

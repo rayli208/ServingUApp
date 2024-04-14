@@ -1,0 +1,30 @@
+@import "../_styles/variables.scss";
+
+.header-description {
+  display: inline-block;
+  font-style: italic;
+  margin-top: 15px;
+  font-size: 14px;
+  color: $grey;
+}
+
+.description-style {
+  font-size: 14px;
+  color: $grey;
+}
+
+i {
+  font-size: 1.2em;
+  color: $brand-primary;
+  margin-right: 5px;
+}
+
+.title-style {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.menu-builder-panel {
+    background-color: rgba(192, 192, 192, 0.5);;
+}
