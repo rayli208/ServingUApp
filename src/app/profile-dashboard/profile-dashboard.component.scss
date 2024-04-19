@@ -1,143 +1,155 @@
-@import './../_styles/variables.scss';
+@import "./../_styles/variables.scss";
 
 .green {
-    color: $green;
+  color: $green;
 }
 
 .red {
-    color: $red;
+  color: $red;
 }
 
 .primary {
-    color: $brand-primary;
-    text-decoration: none;
+  color: $brand-primary;
+  text-decoration: none;
 }
 
 .profile-dashboard-card {
-    border: 1px solid $brand-primary;
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    position: relative;
-    background-color: $white;
+  border: 1px solid $brand-primary;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  position: relative;
+  background-color: $white;
+}
+
+.profile-dashboard-card-sub-header {
+  font-size: 1.2em;
+  color: $black;
+  display: flex;
+
+  div {
+    margin-left: 15px;
+    white-space: nowrap;
+  }
+
+  i {
+    color: $brand-primary;
+  }
 }
 
 .profile-dashboard-card-main-container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .profile-dashboard-card-main-container-half {
-    display: inline-block;
-    width: 50%;
-    vertical-align: top;
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
 }
 
-
 .profile-dashboard-card-paying {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .profile-dashboard-card-header {
-    font-size: 20px;
-    font-weight: 600;
-    color: $black;
-    margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: $black;
+  white-space: nowrap;
 }
 
 .profile-dashboard-card-row {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
 }
 
-
 .profile-dashboard-card-row span:first-of-type {
-    display: inline-block;
-    width: 40%;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
+  display: inline-block;
+  width: 40%;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .profile-dashboard-card-row span:last-of-type {
-    display: inline-block;
-    width: 60%;
-    font-size: 14px;
+  display: inline-block;
+  width: 60%;
+  font-size: 14px;
 
-    i {
-        cursor: pointer;
-    }
+  i {
+    cursor: pointer;
+  }
 }
 
 .image-container {
-    width: 200px;
-    height: 200px;
-    display: flex;
-    overflow: hidden;
-    border-radius: 5px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    object-position: center;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .profile-missing {
-    display: inline-block;
-    font-style: italic;
-    font-size: 14px;
-    font-weight: normal !important;
-    text-transform: unset !important;
-    color: $text-muted;
+  display: inline-block;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: normal !important;
+  text-transform: unset !important;
+  color: $text-muted;
 }
 
 @keyframes slide-in {
-    0% {
-        transform: translateX(100%);
-    }
+  0% {
+    transform: translateX(100%);
+  }
 
-    100% {
-        transform: translateX(0);
-    }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .slide-in-image {
-    animation: 1s ease-out 0s 1 slide-in;
+  animation: 1s ease-out 0s 1 slide-in;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
+  .profile-dashboard-card-row span:first-of-type {
+    width: 100%;
+  }
 
-    .profile-dashboard-card-row span:first-of-type {
-        width: 100%;
-    }
+  .profile-dashboard-card-row span:last-of-type {
+    width: 100%;
+  }
 
-    .profile-dashboard-card-row span:last-of-type {
-        width: 100%;
-    }
+  .profile-dashboard-card-main-container {
+    flex-direction: column;
+  }
 
-    .profile-dashboard-card-main-container {
-        flex-direction: column;
-    }
+  .profile-dashboard-card-row {
+    flex-direction: column;
+  }
 
-    .profile-dashboard-card-row {
-        flex-direction: column;
-    }
+  .profile-dashboard-card-main-container-half:not(:first-child) {
+    margin-top: 15px;
+  }
 
-    .profile-dashboard-card-main-container-half:not(:first-child) {
-        margin-top: 15px;
-    }
+  .profile-dashboard-card-main-container-half {
+    width: 100%;
+  }
 
-    .profile-dashboard-card-main-container-half {
-        width: 100%;
-    }
-
-    button {
-        margin-bottom: 15px;
-    }
+  button {
+    margin-bottom: 15px;
+  }
 }

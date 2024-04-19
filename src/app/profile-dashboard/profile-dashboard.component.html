@@ -1,33 +1,47 @@
 <app-header iconClass="fa-solid fa-user" title="Profile">
+    <ng-container *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
+        <div style="margin-bottom: -20px; margin-top: 5px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Enter Pin</mat-label>
+                <input [(ngModel)]="pinValue" (input)="onInputChange($event)" type="password" matInput />
+            </mat-form-field>
+        </div>
+    </ng-container>
 </app-header>
-<div class="profile-dashboard-card" *ngIf="(user | async)">
-    <div class="profile-dashboard-card-header">
-        <i class="fa-solid fa-user"></i>
-        Profile Info: </div>
+
+<mat-expansion-panel class="profile-dashboard-card" *ngIf="user | async">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <div class="profile-dashboard-card-header">
+                Profile Info:
+            </div>
+            <mat-panel-description>
+                <div class="profile-dashboard-card-sub-header">
+                    <div *ngIf="(user | async)?.textsThisMonth">
+                        <i class="fa-solid fa-comment-sms" matTooltip="Texts This Month"></i>
+                        <span> : {{ (user | async)?.textsThisMonth }}</span>
+                    </div>
+                    <div *ngIf="(user | async)?.emailsThisMonth">
+                        <i class="fa-solid fa-envelope" matTooltip="Emails This Month"></i>
+                        <span> : {{ (user | async)?.emailsThisMonth }}</span>
+                    </div>
+                </div>
+            </mat-panel-description>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="profile-dashboard-card-main-container">
         <div class="profile-dashboard-card-main-container-half">
-            <div class="profile-dashboard-card-paying">
-                <span *ngIf="(user | async)?.isPaying" class="fa-stack green" style="vertical-align: top;">
-                    <i class="fa-regular fa-circle fa-stack-2x"></i>
-                    <i class="fa-solid fa-dollar-sign fa-stack-1x"></i>
-                </span>
-                <span *ngIf="!(user | async)?.isPaying" class="fa-stack red" style="vertical-align: top;">
-                    <i class="fa-regular fa-circle fa-stack-2x"></i>
-                    <i class="fa-solid fa-sack-xmark fa-stack-1x"></i>
-                </span>
-            </div>
             <div class="profile-dashboard-card-row">
                 <span>Account Type</span>
                 <span>
-                    {{ (user | async)?.accountType | titlecase}}
+                    {{ (user | async)?.accountType | titlecase }}
                     <i *ngIf="(user | async)?.accountType === 'bronze'" class="fa-solid fa-coins"
-                        style="color: #cd7f32;"></i>
+                        style="color: #cd7f32"></i>
                     <i *ngIf="(user | async)?.accountType === 'silver'" class="fa-solid fa-coins"
-                        style="color: silver;"></i>
-                    <i *ngIf="(user | async)?.accountType === 'gold'" class="fa-solid fa-coins"
-                        style="color: gold;"></i>
+                        style="color: silver"></i>
+                    <i *ngIf="(user | async)?.accountType === 'gold'" class="fa-solid fa-coins" style="color: gold"></i>
                     <i *ngIf="(user | async)?.accountType === 'platinum'" class="fa-solid fa-coins"
-                        style="color: #e5e4e2;"></i>
+                        style="color: #e5e4e2"></i>
                 </span>
             </div>
             <div class="profile-dashboard-card-row">
@@ -37,7 +51,8 @@
                     <i *ngIf="(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-check green"></i>
                     <i *ngIf="!(afAuth.user | async)?.emailVerified" class="fa-solid fa-circle-xmark red"></i>
                     <mat-error *ngIf="!(afAuth.user | async)?.emailVerified">&nbsp;(Please verify your email, check your
-                        email box or go to the resend email page.)</mat-error>
+                        email box or go to the
+                        resend email page.)</mat-error>
                 </span>
             </div>
             <div class="profile-dashboard-card-row">
@@ -67,7 +82,7 @@
                 <span>Website: </span>
                 <span>
                     {{ (user | async)?.website }}
-                    <a *ngIf="(user | async)?.website" target="_blank" href="{{(user | async)?.website}}"
+                    <a *ngIf="(user | async)?.website" target="_blank" href="{{ (user | async)?.website }}"
                         class="fa-solid fa-link primary"></a>
                     <ng-container *ngIf="!(user | async)?.website">
                         <span class="profile-missing">There is no website at the moment, please set it in profile
@@ -77,7 +92,7 @@
             </div>
             <div class="profile-dashboard-card-row">
                 <span>Active Employees: </span>
-                <span>{{Employees?.length}}</span>
+                <span>{{ Employees?.length }}</span>
             </div>
             <div class="profile-dashboard-card-row">
                 <span>Total Texts This Month: </span>
@@ -112,7 +127,7 @@
             <div class="image-container" *ngIf="imageUrls.length; else noImages">
                 <ng-container *ngFor="let imageUrl of imageUrls; index as i">
                     <img [class.slide-in-image]="i === currentIndex" *ngIf="i === currentIndex" [src]="imageUrl"
-                        class="image">
+                        class="image" />
                 </ng-container>
             </div>
             <ng-template #noImages>
@@ -120,22 +135,16 @@
             </ng-template>
         </div>
     </div>
-</div>
-<div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
-    <div class="profile-dashboard-card-header">
-        Available Views:
-    </div>
-    <div class="profile-dashboard-card-row">
-        <span>Pin: </span>
-        <span>
-            <div>
-                <mat-form-field>
-                    <mat-label>Pin</mat-label>
-                    <input [(ngModel)]="pinValue" (input)="onInputChange($event)" type="password" matInput>
-                </mat-form-field>
+</mat-expansion-panel>
+
+<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <div class="profile-dashboard-card-header">
+                Available Views:
             </div>
-        </span>
-    </div>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="profile-dashboard-card-row">
         <span>Employee: </span>
         <span>
@@ -177,30 +186,35 @@
             </mat-slide-toggle>
         </span>
     </div>
-</div>
-<div class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified">
-    <div class="profile-dashboard-card-header">
-        Manager Views:
-    </div>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Profile Editor"
+</mat-expansion-panel>
+
+<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <div class="profile-dashboard-card-header">
+                Manager Views:
+            </div>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Profile Editor"
         [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('profile-editor-dashboard')">
         <i class="fa-solid fa-user fa-2xl"></i>
     </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hiring Dashboard"
+    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Hiring Dashboard"
         [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hiring-dashboard')">
         <i class="fa-solid fa-user-plus fa-2xl"></i>
     </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Hours Editor"
+    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Hours Editor"
         [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
         <i class="fa-solid fa-clipboard-list fa-2xl"></i>
     </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Resume Reviewer"
+    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Resume Reviewer"
         [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
         <i class="fa-regular fa-newspaper fa-2xl"></i>
     </button>
-    <button mat-fab color="primary" style="margin-right: 15px;" matTooltip="Menu Builder"
+    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Menu Builder"
         *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" [disabled]="!(pinValue == (user | async)?.pin)"
         (click)="goToDashboard('menu-builder-dashboard')">
         <i class="fa-solid fa-utensils fa-2xl"></i>
     </button>
-</div>
+</mat-expansion-panel>
