@@ -110,6 +110,23 @@
   color: $text-muted;
 }
 
+.text-muted {
+  color: $text-muted;
+}
+
+.text-black {
+  color: $black;
+}
+
+.slide-in-image {
+  animation: 1s ease-out 0s 1 slide-in;
+}
+
+.profile-dashboard-button-container {
+  text-align: center;
+  margin-right: 15px;
+}
+
 @keyframes slide-in {
   0% {
     transform: translateX(100%);
@@ -118,10 +135,6 @@
   100% {
     transform: translateX(0);
   }
-}
-
-.slide-in-image {
-  animation: 1s ease-out 0s 1 slide-in;
 }
 
 @media (max-width: 768px) {

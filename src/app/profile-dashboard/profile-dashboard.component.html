@@ -137,7 +137,8 @@
     </div>
 </mat-expansion-panel>
 
-<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" [expanded]="true">
+<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified"
+    [expanded]="true">
     <mat-expansion-panel-header>
         <mat-panel-title>
             <div class="profile-dashboard-card-header">
@@ -188,7 +189,8 @@
     </div>
 </mat-expansion-panel>
 
-<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" [expanded]="true">
+<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified"
+    [expanded]="true">
     <mat-expansion-panel-header>
         <mat-panel-title>
             <div class="profile-dashboard-card-header">
@@ -196,25 +198,56 @@
             </div>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Profile Editor"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('profile-editor-dashboard')">
-        <i class="fa-solid fa-user fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Hiring Dashboard"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hiring-dashboard')">
-        <i class="fa-solid fa-user-plus fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Hours Editor"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
-        <i class="fa-solid fa-clipboard-list fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Resume Reviewer"
-        [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
-        <i class="fa-regular fa-newspaper fa-2xl"></i>
-    </button>
-    <button mat-fab color="primary" style="margin-right: 15px" matTooltip="Menu Builder"
-        *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" [disabled]="!(pinValue == (user | async)?.pin)"
-        (click)="goToDashboard('menu-builder-dashboard')">
-        <i class="fa-solid fa-utensils fa-2xl"></i>
-    </button>
+    <div style="display: flex; flex-wrap: wrap;">
+        <div class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Profile Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('profile-editor-dashboard')">
+                <i class="fa-solid fa-user fa-2xl"></i>
+            </button>
+            <div
+                [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+                Profile Editor
+            </div>
+        </div>
+        <div class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Hiring Dashboard"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hiring-dashboard')">
+                <i class="fa-solid fa-user-plus fa-2xl"></i>
+            </button>
+            <div
+                [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+                Hiring Dashboard
+            </div>
+        </div>
+        <div class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Hours Editor"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
+                <i class="fa-solid fa-clipboard-list fa-2xl"></i>
+            </button>
+            <div
+                [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+                Hours Editor
+            </div>
+        </div>
+        <div class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Resume Reviewer"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
+                <i class="fa-regular fa-newspaper fa-2xl"></i>
+            </button>
+            <div
+                [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+                Resume Reviewer
+            </div>
+        </div>
+        <div *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Menu Builder"
+                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('menu-builder-dashboard')">
+                <i class="fa-solid fa-utensils fa-2xl"></i>
+            </button>
+            <div
+                [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+                Menu Builder
+            </div>
+        </div>
+    </div>
 </mat-expansion-panel>
