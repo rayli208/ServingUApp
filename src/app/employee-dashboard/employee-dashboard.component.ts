@@ -185,7 +185,6 @@ export class EmployeeDashboardComponent implements OnInit {
 
   sendOutText(): void {
     const dialogRef = this.dialog.open(MassTextDialogComponent, {
-      width: '500px',
       data: { employees: this.filteredEmployees }
     });
 

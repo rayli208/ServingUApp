@@ -77,7 +77,7 @@ export class HiringDashboardComponent implements OnInit {
 
     createJob(): void {
         const dialogRef = this.dialog.open(CreateJobDialogComponent, {
-            width: '500px',
+
         });
         //Run code after closing dialog
         dialogRef.afterClosed().subscribe(result => {
@@ -94,7 +94,6 @@ export class HiringDashboardComponent implements OnInit {
 
     editJob(job: Job) {
         const dialogRef = this.dialog.open(EditJobDialogComponent, {
-            width: '500px',
             data: job
         });
         //Run code after closing dialog

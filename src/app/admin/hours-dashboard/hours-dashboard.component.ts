@@ -214,7 +214,6 @@ export class HoursDashboardComponent implements OnInit {
 
   openEditDialog(timestamp: TimeStamp) {
     const dialogRef = this.dialog.open(EditTimestampDialogComponent, {
-      width: '500px',
       data: { timestamp }
     });
 

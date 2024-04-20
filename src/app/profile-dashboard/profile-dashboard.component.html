@@ -137,57 +137,63 @@
     </div>
 </mat-expansion-panel>
 
-<mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified"
-    [expanded]="true">
-    <mat-expansion-panel-header>
+<mat-accordion>
+    <mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified" [expanded]="true">
+      <mat-expansion-panel-header>
         <mat-panel-title>
-            <div class="profile-dashboard-card-header">
-                Available Views:
-            </div>
+          <div class="profile-dashboard-card-header">
+            Available Views:
+          </div>
         </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="profile-dashboard-card-row">
+      </mat-expansion-panel-header>
+      <div class="profile-dashboard-card-row">
         <span>Employee: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="employeesActive" (change)="toggleFeatureActive('employeesActive', employeesActive)">
-            </mat-slide-toggle>
+          <mat-checkbox color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="employeesActive"
+            (change)="toggleFeatureActive('employeesActive', employeesActive)">
+            <span [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">Enable</span>
+          </mat-checkbox>
         </span>
-    </div>
-    <div class="profile-dashboard-card-row">
+      </div>
+      <div class="profile-dashboard-card-row">
         <span>Schedule: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="scheduleActive" (change)="toggleFeatureActive('scheduleActive', scheduleActive)">
-            </mat-slide-toggle>
+          <mat-checkbox color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="scheduleActive"
+            (change)="toggleFeatureActive('scheduleActive', scheduleActive)">
+            <span [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">Enable</span>
+          </mat-checkbox>
         </span>
-    </div>
-    <div class="profile-dashboard-card-row">
+      </div>
+      <div class="profile-dashboard-card-row">
         <span>Punch Clock: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="punchClockActive" (change)="toggleFeatureActive('punchClockActive', punchClockActive)">
-            </mat-slide-toggle>
+          <mat-checkbox color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="punchClockActive"
+            (change)="toggleFeatureActive('punchClockActive', punchClockActive)">
+            <span [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">Enable</span>
+          </mat-checkbox>
         </span>
-    </div>
-    <div class="profile-dashboard-card-row">
+      </div>
+      <div class="profile-dashboard-card-row">
         <span>Tables: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="tablesActive"
-                (change)="toggleFeatureActive('tablesActive', tablesActive)">
-            </mat-slide-toggle>
+          <mat-checkbox color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="tablesActive"
+            (change)="toggleFeatureActive('tablesActive', tablesActive)">
+            <span [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">Enable</span>
+          </mat-checkbox>
         </span>
-    </div>
-    <div class="profile-dashboard-card-row">
+      </div>
+      <div class="profile-dashboard-card-row">
         <span>Reservations: </span>
         <span>
-            <mat-slide-toggle color="primary" [disabled]="!(pinValue == (user | async)?.pin)"
-                [(ngModel)]="reservationsActive"
-                (change)="toggleFeatureActive('reservationsActive', reservationsActive)">
-            </mat-slide-toggle>
+          <mat-checkbox color="primary" [disabled]="!(pinValue == (user | async)?.pin)" [(ngModel)]="reservationsActive"
+            (change)="toggleFeatureActive('reservationsActive', reservationsActive)">
+            <span [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">Enable</span>
+          </mat-checkbox>
         </span>
-    </div>
-</mat-expansion-panel>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  
 
 <mat-expansion-panel class="profile-dashboard-card" *ngIf="(user | async) && (afAuth.user | async)?.emailVerified"
     [expanded]="true">
@@ -198,10 +204,10 @@
             </div>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <div style="display: flex; flex-wrap: wrap;">
+    <div class="profile-dashboard-button-manager-container">
         <div class="profile-dashboard-button-container">
-            <button mat-fab color="primary" matTooltip="Profile Editor"
-                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('profile-editor-dashboard')">
+            <button mat-fab color="primary" matTooltip="Profile Editor" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToDashboard('profile-editor-dashboard')">
                 <i class="fa-solid fa-user fa-2xl"></i>
             </button>
             <div
@@ -220,8 +226,8 @@
             </div>
         </div>
         <div class="profile-dashboard-button-container">
-            <button mat-fab color="primary" matTooltip="Hours Editor"
-                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('hours-dashboard')">
+            <button mat-fab color="primary" matTooltip="Hours Editor" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToDashboard('hours-dashboard')">
                 <i class="fa-solid fa-clipboard-list fa-2xl"></i>
             </button>
             <div
@@ -230,8 +236,8 @@
             </div>
         </div>
         <div class="profile-dashboard-button-container">
-            <button mat-fab color="primary" matTooltip="Resume Reviewer"
-                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('resume-dashboard')">
+            <button mat-fab color="primary" matTooltip="Resume Reviewer" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToDashboard('resume-dashboard')">
                 <i class="fa-regular fa-newspaper fa-2xl"></i>
             </button>
             <div
@@ -239,9 +245,10 @@
                 Resume Reviewer
             </div>
         </div>
-        <div *ngIf="['silver', 'gold'].includes((user | async)?.accountType)" class="profile-dashboard-button-container">
-            <button mat-fab color="primary" matTooltip="Menu Builder"
-                [disabled]="!(pinValue == (user | async)?.pin)" (click)="goToDashboard('menu-builder-dashboard')">
+        <div *ngIf="['silver', 'gold'].includes((user | async)?.accountType)"
+            class="profile-dashboard-button-container">
+            <button mat-fab color="primary" matTooltip="Menu Builder" [disabled]="!(pinValue == (user | async)?.pin)"
+                (click)="goToDashboard('menu-builder-dashboard')">
                 <i class="fa-solid fa-utensils fa-2xl"></i>
             </button>
             <div

@@ -111,10 +111,14 @@
 }
 
 .text-muted {
+  text-transform: capitalize !important;
+  font-weight: 400 !important;
   color: $text-muted;
 }
 
 .text-black {
+  text-transform: capitalize !important;
+  font-weight: 400 !important;
   color: $black;
 }
 
@@ -125,6 +129,15 @@
 .profile-dashboard-button-container {
   text-align: center;
   margin-right: 15px;
+
+  button {
+    margin-bottom: 5px;
+  }
+}
+
+.profile-dashboard-button-manager-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 @keyframes slide-in {
@@ -162,7 +175,11 @@
     width: 100%;
   }
 
-  button {
-    margin-bottom: 15px;
+  .profile-dashboard-button-manager-container {
+    justify-content: space-around;
+  }
+
+  .profile-dashboard-button-container {
+    margin-bottom: 5px;
   }
 }
