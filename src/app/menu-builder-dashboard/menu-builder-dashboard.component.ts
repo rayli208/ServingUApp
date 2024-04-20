@@ -336,7 +336,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
     this.getMenuItemsCount(sectionId)
       .then((maxOrder) => {
         const dialogRef = this.dialog.open(CreateItemDialogComponent, {
-          width: "500px",
           data: { sectionId: sectionId, uid: this.userId, maxOrder: maxOrder },
         });
 
@@ -411,7 +410,6 @@ export class MenuBuilderDashboardComponent implements OnInit {
 
   openEditMenuItemDialog(menuItem: MenuItem, sectionId: string) {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
-      width: "500px",
       data: menuItem,
     });
 
