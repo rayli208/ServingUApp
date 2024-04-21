@@ -45,7 +45,8 @@
     <mat-form-field appearance="outline" class="space-top" class="section-description full-width-small">
         <textarea matInput [(ngModel)]="newSectionDescription" placeholder="Description (Optional)"></textarea>
     </mat-form-field>
-    <button style="margin-left: 15px" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section" [disabled]="!newSectionName">
+    <button style="margin-left: 15px" mat-mini-fab color="primary" (click)="addSection()" matTooltip="Add Section"
+        [disabled]="!newSectionName">
         <i class="fa-solid fa-plus"></i>
     </button>
     <button style="margin-left: 15px" mat-mini-fab color="accent" (click)="closeSection()" matTooltip="Close Section">
@@ -128,8 +129,37 @@
                                 menuItem.price | number : "1.2-2"
                                 }})
                             </h2>
+                            <ng-container *ngFor="let addOn of menuItem.addOn; let i = index">
+                                <p class="menu-item-add-on">
+                                    +${{ addOn.price | number:"1.2-2" }} - {{ addOn.name }}
+                                    <i (click)="deleteAddOn(menuItem, i)" class="fa-solid fa-xmark"
+                                        matTooltip="Remove Add-On"></i>
+                                </p>
+                            </ng-container>
                             <hr style="border-width: 0.5px; color: #555" />
                             <p class="menu-item-description">{{ menuItem.description }}</p>
+                            <div class="menu-item-add-on-action" (click)="addingAddOn = menuItem.id"
+                                *ngIf="addingAddOn !== menuItem.id">
+                                <i class="fa-solid fa-plus"></i> Add On
+                            </div>
+                            <div *ngIf="addingAddOn === menuItem.id">
+                                <mat-form-field class="full-width-small" appearance="outline">
+                                    <input matInput placeholder="Add On Name" [(ngModel)]="newAddOnName" />
+                                </mat-form-field>
+                                <mat-form-field class="full-width-small" appearance="outline"
+                                    style="margin-left: 15px;">
+                                    <input matInput type="number" placeholder="Add On Price"
+                                        [(ngModel)]="newAddOnPrice" />
+                                </mat-form-field>
+                                <button mat-mini-fab color="primary" (click)="saveAddOn(menuItem)" matTooltip="Save"
+                                    style="margin-left: 15px;">
+                                    <i class="fa-solid fa-save"></i>
+                                </button>
+                                <button mat-mini-fab color="accent" (click)="addingAddOn = null" matTooltip="Cancel"
+                                    style="margin-left: 15px;">
+                                    <i class="fa-solid fa-close"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

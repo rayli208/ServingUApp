@@ -148,6 +148,30 @@
     margin-left: 15px;
 }
 
+.menu-item-add-on{
+    color: $grey;
+    font-size: 12px;
+    margin-bottom: 0px;
+    font-style: italic;
+
+    i{
+        cursor: pointer;
+        color: $red;
+        margin-left: 5px;
+        font-size: 14px;
+    }
+}
+
+.menu-item-add-on-action{
+    color: $brand-primary;
+    font-size: 1.2em;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0px 5px;
+    border-bottom: 2px solid $brand-primary;
+}
+
 @media (max-width: 768px) {
     .menu-item-card {
         flex-direction: column;

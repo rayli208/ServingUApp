@@ -1,3 +1,4 @@
+import { AddOn } from "./add-on.model";
 import { Tag } from "./tag.model";
 
 export class MenuItem {
@@ -11,4 +12,5 @@ export class MenuItem {
     fileName?: string;
     imageUrl?: string;
     tags?: Tag[]; 
+    addOn?: AddOn[]; 
   }

@@ -38,6 +38,11 @@ export class MenuBuilderDashboardComponent implements OnInit {
   editMode = false;
   editedMenuDescription: string;
 
+  //Add On Section
+  addingAddOn: string | null = null;
+  newAddOnName: string = '';
+  newAddOnPrice: number | null = null;
+
   horizontalPosition: MatSnackBarHorizontalPosition = "right";
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
@@ -514,5 +519,56 @@ export class MenuBuilderDashboardComponent implements OnInit {
         console.error("Error updating menu description:", error);
         // Optionally show an error notification
       });
+  }
+
+  //Add On Section
+  saveAddOn(menuItem: MenuItem): void {
+    if (!menuItem.addOn) {
+      menuItem.addOn = [];
+    }
+    menuItem.addOn.push({ name: this.newAddOnName, price: this.newAddOnPrice });
+    // Update menuItem in Firestore
+    this.menuItemService.updateMenuItem(menuItem).then(() => {
+      this.addingAddOn = null;
+      this.newAddOnName = '';
+      this.newAddOnPrice = null;
+    }).then(() => {
+      this._snackBar.open("You added an add on successfully!", "", {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ["green-snackbar"],
+      });
+    })
+      .catch(error => {
+        console.error("Error add on:", error);
+      });
+  }
+
+  deleteAddOn(menuItem: MenuItem, index: number): void {
+    if (!menuItem.addOn || menuItem.addOn.length <= index) {
+      return;
+    }
+    // Remove the add-on at the specified index
+    menuItem.addOn.splice(index, 1);
+    // Optionally, create a new array to trigger change detection
+    menuItem.addOn = [...menuItem.addOn];
+    // Update the menuItem in Firestore
+    this.menuItemService.updateMenuItem(menuItem).then(() => {
+      this._snackBar.open("Add-on removed successfully!", "", {
+        duration: 2500,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        panelClass: ["red-snackbar"],
+      });
+    }).catch(error => {
+      console.error("Error removing add-on:", error);
+      this._snackBar.open("Failed to remove add-on", "", {
+        duration: 2500,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        panelClass: ["red-snackbar"],
+      });
+    });
   }
 }
