@@ -37,7 +37,6 @@ export const sendEmail = functions.https.onCall(async (data, context) => {
   }
 });
 
-// Generate User Reports
 export const generateUserReports = functions.https.onRequest(async (request, response) => {
   const workbook = new Excel.Workbook();
   const worksheet = workbook.addWorksheet('User Reports');
@@ -55,12 +54,8 @@ export const generateUserReports = functions.https.onRequest(async (request, res
 
   const usersSnapshot = await admin.firestore().collection('users').get();
 
-  for (const doc of usersSnapshot.docs) {
+  usersSnapshot.docs.forEach(doc => {
     const userData = doc.data();
-    const employeesSnapshot = await admin.firestore().collection('employees')
-      .where('uid', '==', userData.uid).get();
-    const totalEmployees = employeesSnapshot.size;
-
     worksheet.addRow({
       locationName: userData.location_name,
       email: userData.email,
@@ -69,14 +64,13 @@ export const generateUserReports = functions.https.onRequest(async (request, res
       accountType: userData.accountType,
       textsThisMonth: userData.textsThisMonth,
       emailsThisMonth: userData.emailsThisMonth,
-      totalEmployees: totalEmployees,
+      totalEmployees: userData.totalEmployees, // assuming this data is directly available
     });
-  }
+  });
 
   const timestamp = new Date();
   const formattedDate = `${(timestamp.getMonth() + 1).toString().padStart(2, '0')}-${timestamp.getDate().toString().padStart(2, '0')}-${timestamp.getFullYear()}`;
-  const formattedTime = `${timestamp.getHours().toString().padStart(2, '0')}${timestamp.getMinutes().toString().padStart(2, '0')}${timestamp.getSeconds().toString().padStart(2, '0')}`;
-  const fileName = `UserReports-${formattedDate}-${formattedTime}.xlsx`;
+  const fileName = `UserReports-${formattedDate}.xlsx`;
 
   response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   response.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
@@ -85,20 +79,17 @@ export const generateUserReports = functions.https.onRequest(async (request, res
     response.status(200).end();
   }).catch(error => {
     console.error('Error streaming the Excel file:', error);
-    response.status(500).send({ error: 'Error generating the report' });
+    response.status(500).send('Error generating the report');
   });
 });
 
-//Reset count for emails and texts
 export const resetCounts = functions.https.onRequest(async (request, response) => {
-  // Use Basic Authentication to secure this function
-  // You may want to replace this with a more secure method in production
-  const auth = { login: 'admin', password: 'YRNJR6969' };
+  const auth = { login: 'admin', password: 'YRNJR6969' };  // Be cautious about exposing sensitive information
   const b64auth = (request.headers.authorization || '').split(' ')[1] || '';
   const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
 
-  if (!login || !password || login !== auth.login || password !== auth.password) {
-    response.set('WWW-Authenticate', 'Basic realm="401"');
+  if (login !== auth.login || password !== auth.password) {
+    response.set('WWW-Authenticate', 'Basic realm="401"');  // Challenge and response for basic auth
     response.status(401).send('Authentication required.');
     return;
   }
@@ -107,10 +98,43 @@ export const resetCounts = functions.https.onRequest(async (request, response) =
   const snapshot = await usersRef.get();
   const batch = admin.firestore().batch();
 
-  snapshot.forEach(doc => {
+  snapshot.docs.forEach(doc => {
     batch.update(doc.ref, { textsThisMonth: 0, emailsThisMonth: 0 });
   });
 
   await batch.commit();
   response.send("Counts reset successfully");
+});
+
+// New function to add IP-based rate limiting
+export const rateLimitedFormSubmission = functions.https.onRequest(async (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ref = admin.firestore().collection('rateLimits').doc(`${ip}`);
+  const now = new Date().getTime();
+  const limit = 5; // Max 5 requests
+  const timeWindow = 900000; // 15 minutes in milliseconds
+
+  try {
+    await admin.firestore().runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+      if (doc.exists) {
+        const data = doc.data();
+        const timePassed = now - data.timestamp;
+        if (timePassed < timeWindow && data.count >= limit) {
+          res.status(429).send('Rate limit exceeded');
+          return;
+        } else if (timePassed >= timeWindow) {
+          transaction.set(ref, { count: 1, timestamp: now });
+        } else {
+          transaction.update(ref, { count: data.count + 1, timestamp: now });
+        }
+      } else {
+        transaction.set(ref, { count: 1, timestamp: now });
+      }
+      res.send('Form submitted successfully');
+    });
+  } catch (error) {
+    console.error('Error processing request', error);
+    res.status(500).send('Error processing request');
+  }
 });
