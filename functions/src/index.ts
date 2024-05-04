@@ -144,7 +144,7 @@ exports.rateLimitedFormSubmission = functions.https.onRequest((req, res) => {
         transaction.set(ref, { count: 1, timestamp: now });
       }
     }).then(() => {
-      res.send('Form submitted successfully');
+      res.json({ message: 'Form submitted successfully' });
     }).catch(error => {
       console.error('Error processing request', error);
       res.status(500).send('Internal Server Error');
