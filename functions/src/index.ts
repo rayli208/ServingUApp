@@ -113,41 +113,52 @@ export const resetCounts = functions.https.onRequest(async (request, response) =
 
 // New function to add IP-based rate limiting
 exports.rateLimitedFormSubmission = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, () => {
+  corsHandler(req, res, async () => {
     if (req.method !== 'POST') {
       res.status(405).send('Method Not Allowed');
       return;
     }
 
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown IP';
+    const subscriber = req.body;  // Assuming the subscriber data is in the request body
     const ref = admin.firestore().collection('rateLimits').doc(ip.toString());
+    const subscriberRef = admin.firestore().collection('subscribers');
     const now = new Date().getTime();
     const limit = 5; // Max 5 requests
     const timeWindow = 900000; // 15 minutes in milliseconds
 
-    admin.firestore().runTransaction(async (transaction) => {
-      const doc = await transaction.get(ref);
-      if (doc.exists) {
-        const data = doc.data() || {};
-        const timePassed = now - data.timestamp;
+    try {
+      await admin.firestore().runTransaction(async (transaction) => {
+        const doc = await transaction.get(ref);
 
-        if (timePassed < timeWindow) {
-          if (data.count >= limit) {
+        if (doc.exists) {
+          const data = doc.data() || {};
+          const timePassed = now - data.timestamp;
+
+          if (timePassed < timeWindow && data.count >= limit) {
             res.status(429).send('Rate limit exceeded');
             return;
           }
-          transaction.update(ref, { count: data.count + 1 });
+
+          // Update the rate limit count
+          if (timePassed < timeWindow) {
+            transaction.update(ref, { count: data.count + 1 });
+          } else {
+            transaction.set(ref, { count: 1, timestamp: now });
+          }
+
+          // Add subscriber to the database
+          await transaction.set(subscriberRef.doc(), subscriber);
         } else {
           transaction.set(ref, { count: 1, timestamp: now });
+          await transaction.set(subscriberRef.doc(), subscriber);
         }
-      } else {
-        transaction.set(ref, { count: 1, timestamp: now });
-      }
-    }).then(() => {
+      });
+
       res.json({ message: 'Form submitted successfully' });
-    }).catch(error => {
+    } catch (error) {
       console.error('Error processing request', error);
       res.status(500).send('Internal Server Error');
-    });
+    }
   });
 });
