@@ -2,9 +2,14 @@ import * as functions from 'firebase-functions';
 import * as nodemailer from 'nodemailer';
 import * as admin from 'firebase-admin';
 import * as Excel from 'exceljs';
+import * as cors from 'cors';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
+
+const corsHandler = cors({
+  origin: 'https://servingu.agency'
+});
 
 const mailTransport = nodemailer.createTransport({
   service: 'gmail',
@@ -107,34 +112,44 @@ export const resetCounts = functions.https.onRequest(async (request, response) =
 });
 
 // New function to add IP-based rate limiting
-export const rateLimitedFormSubmission = functions.https.onRequest(async (req, res) => {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const ref = admin.firestore().collection('rateLimits').doc(`${ip}`);
-  const now = new Date().getTime();
-  const limit = 5; // Max 5 requests
-  const timeWindow = 900000; // 15 minutes in milliseconds
-
-  try {
-    await admin.firestore().runTransaction(async (transaction) => {
-      const doc = await transaction.get(ref);
-      if (doc.exists) {
-        const data = doc.data();
-        const timePassed = now - data.timestamp;
-        if (timePassed < timeWindow && data.count >= limit) {
-          res.status(429).send('Rate limit exceeded');
+exports.rateLimitedFormSubmission = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, () => {
+      if (req.method === 'OPTIONS') {
+          res.status(200).send(); // Responding to preflight request
           return;
-        } else if (timePassed >= timeWindow) {
-          transaction.set(ref, { count: 1, timestamp: now });
-        } else {
-          transaction.update(ref, { count: data.count + 1, timestamp: now });
-        }
-      } else {
-        transaction.set(ref, { count: 1, timestamp: now });
       }
-      res.send('Form submitted successfully');
-    });
-  } catch (error) {
-    console.error('Error processing request', error);
-    res.status(500).send('Error processing request');
-  }
+
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      console.log('IP:', ip); // Log IP for rate limiting
+      const ref = admin.firestore().collection('rateLimits').doc(ip.toString());
+      const now = new Date().getTime();
+      const limit = 5; // Max 5 requests
+      const timeWindow = 900000; // 15 minutes in milliseconds
+
+      admin.firestore().runTransaction(async (transaction) => {
+          const doc = await transaction.get(ref);
+          if (doc.exists) {
+              const data = doc.data()!;
+              const timePassed = now - data.timestamp;
+
+              if (timePassed < timeWindow) {
+                  if (data.count >= limit) {
+                      res.status(429).send('Rate limit exceeded');
+                      return;
+                  } else {
+                      transaction.update(ref, { count: data.count + 1, timestamp: now });
+                  }
+              } else {
+                  transaction.set(ref, { count: 1, timestamp: now });
+              }
+          } else {
+              transaction.set(ref, { count: 1, timestamp: now });
+          }
+          // Logic to handle the form submission
+          res.send('Form submitted successfully');
+      }).catch(error => {
+          console.error('Error processing request', error);
+          res.status(500).send('Error processing request');
+      });
+  });
 });
