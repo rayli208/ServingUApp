@@ -26,6 +26,8 @@ import { MenuGuard } from './_guards/menu.guard';
 import { AuthGuard } from './_guards/auth.guard';
 import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard/employee-profile-dashboard.component';
 import { InfoComponent } from './info/info.component';
+import { SubscribersDashboardComponent } from './subscribers-dashboard/subscribers-dashboard.component';
+import { SubscriberGuard } from './_guards/subscriber.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,6 +43,7 @@ const routes: Routes = [
     { path: 'info', component: InfoComponent, canActivate: [AuthGuard] },
     { path: 'resume-dashboard', component: ResumeDashboardComponent, canActivate: [AuthGuard] },
     { path: 'menu-builder-dashboard', component: MenuBuilderDashboardComponent, canActivate: [AuthGuard, MenuGuard] },
+    { path: 'subscribers-dashboard', component: SubscribersDashboardComponent, canActivate: [AuthGuard, SubscriberGuard] },
     { path: 'hours-dashboard', component: HoursDashboardComponent, canActivate: [AuthGuard] },
     { path: 'reservations-dashboard', component: ReservationsDashboardComponent, canActivate: [AuthGuard] },
     { path: 'employee-profile-dashboard/:id', component: EmployeeProfileDashboardComponent, canActivate: [AuthGuard] },

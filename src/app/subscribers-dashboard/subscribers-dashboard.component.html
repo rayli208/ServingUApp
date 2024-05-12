@@ -1,0 +1,148 @@
+<app-header iconClass="fa-solid fa-person-circle-plus" title="Subscribers Dashboard">
+    <div style="margin-top: 5px;">
+      <!-- Search Field -->
+      <mat-form-field appearance="outline">
+        <mat-label>Search Subscribers</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. John Doe" />
+      </mat-form-field>
+  
+      <!-- Edit and Cancel Buttons -->
+      <button
+        *ngIf="selection.selected.length === 1 && !editMode"
+        mat-mini-fab 
+        color="primary"
+        matTooltip="Edit Subscriber"
+        (click)="toggleEditSave()"
+        style="margin-left: 15px;"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+      <button
+        *ngIf="editMode"
+        mat-mini-fab 
+        color="primary"
+        (click)="toggleEditSave()"
+        style="margin-left: 15px;"
+      >
+        <i class="fa-solid fa-save"></i>
+      </button>
+      <button
+        *ngIf="editMode"
+        mat-mini-fab 
+        color="warn"
+        matTooltip="Cancel Edit"
+        (click)="cancelEdit()"
+        style="margin-left: 15px;"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+  
+      <!-- Delete Button -->
+      <button
+        *ngIf="selection.selected.length > 0"
+        mat-mini-fab 
+        color="warn"
+        matTooltip="Delete Selected"
+        (click)="deleteSelected()"
+        style="margin-left: 15px;"
+      >
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    </div>
+  </app-header>
+  
+  <!-- Table Layout -->
+  <div class="mat-elevation-z8" style="margin-top: 15px; margin-bottom: 15px;">
+    <mat-table [dataSource]="dataSource" matSort>
+      <!-- Select Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef style="max-width: fit-content; padding: 0px;">
+          <mat-checkbox
+            (change)="masterToggle()"
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          ></mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="max-width: fit-content; padding: 0px;">
+          <mat-checkbox
+            *ngIf="shouldShowCheckbox(element)"
+            (click)="$event.stopPropagation()"
+            (change)="toggleRow(element)"
+            [checked]="selection.isSelected(element)"
+          ></mat-checkbox>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell
+          *matCellDef="let element"
+          [class.editing-row]="isRowEditing(element)"
+        >
+          <input
+            matInput
+            appearance="outline"
+            *ngIf="isRowEditing(element)"
+            [(ngModel)]="element.name"
+            placeholder="Name"
+          />
+          <span *ngIf="!isRowEditing(element)">{{ element.name }}</span>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Phone Column -->
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+        <mat-cell
+          *matCellDef="let element"
+          [class.editing-row]="isRowEditing(element)"
+        >
+          <input
+            matInput
+            appearance="outline"
+            *ngIf="isRowEditing(element)"
+            [(ngModel)]="element.phone"
+            placeholder="Phone"
+          />
+          <span *ngIf="!isRowEditing(element)">
+            {{ formatPhone(element.phone) || '---' }}
+          </span>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+        <mat-cell
+          *matCellDef="let element"
+          [class.editing-row]="isRowEditing(element)"
+        >
+          <input
+            matInput
+            appearance="outline"
+            *ngIf="isRowEditing(element)"
+            [(ngModel)]="element.email"
+            placeholder="Email"
+          />
+          <span *ngIf="!isRowEditing(element)">
+            {{ element.email || '---' }}
+          </span>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Headers and Rows -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.editing-row]="isRowEditing(row)"
+      ></mat-row>
+    </mat-table>
+  
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSizeOptions]="[10, 25, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+  

@@ -105,6 +105,7 @@ import { CreateItemDialogComponent } from './_dialogs/menu-items/create-item-dia
 import { EditItemDialogComponent } from './_dialogs/menu-items/edit-item-dialog/edit-item-dialog.component';
 import { MassTextDialogComponent } from './_dialogs/employee/mass-text-dialog/mass-text-dialog.component';
 import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard/employee-profile-dashboard.component';
+import { SubscribersDashboardComponent } from './subscribers-dashboard/subscribers-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -156,7 +157,8 @@ import { EmployeeProfileDashboardComponent } from './employee-schedule-dashboard
         FloorAssignerComponent,
         ResumeDashboardComponent,
         ReservationsDashboardComponent,
-        MenuBuilderDashboardComponent
+        MenuBuilderDashboardComponent,
+        SubscribersDashboardComponent
     ],
     imports: [
         BrowserModule,

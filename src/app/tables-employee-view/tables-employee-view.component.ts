@@ -44,6 +44,8 @@ export class TablesEmployeeViewComponent implements OnInit, OnChanges {
   }
 
   toggleActive(table: Table) {
+    console.log(table.employeeId)
+
     if (table.employeeId == null) {
       return;
     }

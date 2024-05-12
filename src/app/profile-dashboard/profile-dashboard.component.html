@@ -260,5 +260,16 @@
                 Menu Builder
             </div>
         </div>
+        <div *ngIf="['gold'].includes((user | async)?.accountType)"
+        class="profile-dashboard-button-container">
+        <button mat-fab color="primary" matTooltip="Subscribers Dashboard" [disabled]="!(pinValue == (user | async)?.pin)"
+            (click)="goToDashboard('subscribers-dashboard')">
+            <i class="fa-solid fa-person-circle-plus fa-2xl"></i>
+        </button>
+        <div
+            [ngClass]="{'text-muted': !(pinValue == (user | async)?.pin), 'text-black': (pinValue == (user | async)?.pin)}">
+            Subscribers Dashboard
+        </div>
+    </div>
     </div>
 </mat-expansion-panel>
