@@ -9,6 +9,9 @@ import { Subscriber } from '../_models/subscriber.model';
 import { SubscribersService } from '../_services/subscribers.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../_dialogs/confirm/confirm-dialog/confirm-dialog.component';
+import { MessagesService } from '../_services/messages.service';
+import { AuthService } from '../_services/auth.service';
+import { Message } from '../_models/message.model';
 
 @Component({
   selector: 'app-subscribers-dashboard',
@@ -24,6 +27,8 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<Subscriber>(true, []);
   editMode = false;
   editingRow: string | null = null;
+  messageMode = false;
+  messageText = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,7 +37,9 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     public afAuth: AngularFireAuth,
     private _snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private subscribersService: SubscribersService
+    private subscribersService: SubscribersService,
+    private messagesService: MessagesService,
+    private authService: AuthService
   ) {
     this.dataSource = new MatTableDataSource<Subscriber>([]);
   }
@@ -59,7 +66,6 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  // Apply filter based on the search input
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -68,27 +74,22 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Check if all rows are selected
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  // Select/deselect all rows
   masterToggle() {
     this.isAllSelected() ? this.selection.clear() : this.selection.select(...this.dataSource.data);
   }
 
-  // Toggle selection for a specific row
   toggleRow(row: Subscriber) {
     this.selection.toggle(row);
   }
 
-  // Toggle edit/save mode and update selection
   toggleEditSave() {
     if (this.editMode && this.editingRow) {
-      // Save changes if editing
       const subscriberToUpdate = this.dataSource.data.find(s => s.id === this.editingRow);
       if (subscriberToUpdate) {
         this.subscribersService.updateSubscriber(subscriberToUpdate.id, {
@@ -117,43 +118,41 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     this.editingRow = this.editMode ? this.selection.selected[0]?.id : null;
 
     if (!this.editMode) {
-      this.selection.clear(); // Clear selection if exiting edit mode
+      this.selection.clear();
     }
   }
 
-  // Cancel editing and revert changes
   cancelEdit() {
     this.editMode = false;
     this.editingRow = null;
     this.selection.clear();
   }
 
-  // Delete selected rows
   deleteSelected() {
     const selectedIds = this.selection.selected.map(s => s.id);
 
     if (selectedIds.length > 1) {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          data: {
-            text: `Are you sure you want to delete multiple subscribers?`
-          }
-        });
-    
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.subscribersService.deleteMultipleSubscribers(selectedIds).then(() => {
-              this._snackBar.open('Deleted timestamp!', '', {
-                horizontalPosition: this.horizontalPosition,
-                verticalPosition: this.verticalPosition,
-                duration: 2500,
-                panelClass: ['red-snackbar']
-              });
-              this.selection.clear();
-            }).catch((error) => {
-              console.error('Failed to delete subscribers: ' + error.message);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          text: `Are you sure you want to delete multiple subscribers?`
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.subscribersService.deleteMultipleSubscribers(selectedIds).then(() => {
+            this._snackBar.open('Deleted timestamp!', '', {
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 2500,
+              panelClass: ['red-snackbar']
             });
-          }
-        });
+            this.selection.clear();
+          }).catch((error) => {
+            console.error('Failed to delete subscribers: ' + error.message);
+          });
+        }
+      });
 
     } else if (selectedIds.length === 1) {
       this.subscribersService.deleteSubscriber(selectedIds[0])
@@ -177,12 +176,10 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Check if a row is currently being edited
   isRowEditing(row: Subscriber) {
     return this.editMode && this.editingRow === row.id;
   }
 
-  // Hide checkboxes if in edit mode
   shouldShowCheckbox(row: Subscriber) {
     return !this.editMode || this.isRowEditing(row);
   }
@@ -191,15 +188,82 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
     if (!phone) {
       return null;
     }
-  
-    // Remove non-numeric characters and format
+
     const cleanPhone = phone.replace(/\D/g, '');
     if (cleanPhone.length === 10) {
       return cleanPhone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     }
-  
-    // If it's not 10 digits, return the original value
+
     return phone;
   }
-  
+
+  toggleMessageMode() {
+    this.messageMode = !this.messageMode;
+    if (!this.messageMode) {
+      this.messageText = '';
+    }
+  }
+
+  cancelMessage() {
+    this.messageMode = false;
+    this.messageText = '';
+  }
+
+  confirmSendText() {
+    const totalMessagesCount = Math.ceil(this.messageText.length / 153) * this.selection.selected.length;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        text: `Are you sure you want to send ${totalMessagesCount} messages?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.sendTextMessages();
+      }
+    });
+  }
+
+  sendTextMessages() {
+    const totalMessagesCount = Math.ceil(this.messageText.length / 153) * this.selection.selected.length;
+    const promises = this.selection.selected.map(subscriber => {
+      const message: Message = {
+        channelId: 'a31f78766da04f9e95ce52a85cf13bdd',
+        to: '1' + subscriber.phone.replace(/-/g, ''),
+        type: 'text',
+        content: {
+          text: this.messageText
+        }
+      };
+      return this.messagesService.createMessage(message);
+    });
+
+    Promise.all(promises).then(() => {
+      this.authService.updateTextsThisMonth(totalMessagesCount).then(() => {
+        this._snackBar.open('Text messages sent successfully!', '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['green-snackbar']
+        });
+      }).catch((error) => {
+        this._snackBar.open('Failed to update textsThisMonth: ' + error.message, 'Close', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: 2500,
+          panelClass: ['red-snackbar']
+        });
+      });
+    }).catch((error) => {
+      this._snackBar.open('Failed to send some text messages: ' + error.message, 'Close', {
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 2500,
+        panelClass: ['red-snackbar']
+      });
+    });
+
+    this.messageMode = false;
+    this.messageText = '';
+  }
 }

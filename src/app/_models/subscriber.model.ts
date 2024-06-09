@@ -4,4 +4,5 @@ export class Subscriber {
     name: string;
     phone: string; 
     email: string;
+    textsThisMonth?: number;
 }
