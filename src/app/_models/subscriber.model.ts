@@ -3,6 +3,7 @@ export class Subscriber {
     uid: string;  
     name: string;
     phone: string; 
-    email: string;
+    timestamp: string;
     textsThisMonth?: number;
-}
+  }
+  

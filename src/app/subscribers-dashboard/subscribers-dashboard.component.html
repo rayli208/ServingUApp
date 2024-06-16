@@ -164,23 +164,20 @@
       </mat-cell>
     </ng-container>
 
-    <!-- Email Column -->
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+    <!-- Timestamp Column -->
+    <ng-container matColumnDef="timestamp">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        class="hide-on-small-screens"
+        >Timestamp</mat-header-cell
+      >
       <mat-cell
         *matCellDef="let element"
         [class.editing-row]="isRowEditing(element)"
+        class="hide-on-small-screens"
       >
-        <input
-          matInput
-          appearance="outline"
-          *ngIf="isRowEditing(element)"
-          [(ngModel)]="element.email"
-          placeholder="Email"
-        />
-        <span *ngIf="!isRowEditing(element)">
-          {{ element.email || "---" }}
-        </span>
+        <span>{{ element.timestamp | date : "MM/dd/yyyy" }}</span>
       </mat-cell>
     </ng-container>
 
@@ -194,6 +191,7 @@
 
   <!-- Paginator -->
   <mat-paginator
+    class="mb-small"
     [pageSizeOptions]="[10, 25, 100]"
     showFirstLastButtons
   ></mat-paginator>

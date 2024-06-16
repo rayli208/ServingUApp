@@ -23,7 +23,7 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   userId: string;
   dataSource: MatTableDataSource<Subscriber>;
-  displayedColumns = ['select', 'name', 'phone', 'email'];
+  displayedColumns = ['select', 'name', 'phone', 'timestamp'];
   selection = new SelectionModel<Subscriber>(true, []);
   editMode = false;
   editingRow: string | null = null;
@@ -94,8 +94,7 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
       if (subscriberToUpdate) {
         this.subscribersService.updateSubscriber(subscriberToUpdate.id, {
           name: subscriberToUpdate.name,
-          phone: subscriberToUpdate.phone,
-          email: subscriberToUpdate.email
+          phone: subscriberToUpdate.phone
         }).then(() => {
           this._snackBar.open('Subscriber updated successfully!', '', {
             horizontalPosition: this.horizontalPosition,
@@ -141,7 +140,7 @@ export class SubscribersDashboardComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.subscribersService.deleteMultipleSubscribers(selectedIds).then(() => {
-            this._snackBar.open('Deleted timestamp!', '', {
+            this._snackBar.open('Deleted subscribers successfully!', '', {
               horizontalPosition: this.horizontalPosition,
               verticalPosition: this.verticalPosition,
               duration: 2500,

@@ -3,3 +3,13 @@
 .editing-row {
   background-color: $brand30;
 }
+
+@media (max-width: 768px) {
+  .hide-on-small-screens {
+    display: none;
+  }
+
+  .mb-small{
+    padding-bottom: 8px;
+  }
+}
