@@ -111,7 +111,6 @@ export const resetCounts = functions.https.onRequest(async (request, response) =
   response.send("Counts reset successfully");
 });
 
-// New function to add IP-based rate limiting
 exports.rateLimitedFormSubmission = functions.https.onRequest((req, res) => {
   corsHandler(req, res, async () => {
     if (req.method !== 'POST') {
@@ -161,4 +160,45 @@ exports.rateLimitedFormSubmission = functions.https.onRequest((req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
+});
+
+export const handleIncomingMessages = functions.https.onRequest(async (req, res) => {
+  console.log('Received request:', req.body);  // Log the incoming request body
+  const phoneNumber = req.body.originator;
+  const messageContent = req.body.payload;
+
+  if (!phoneNumber || !messageContent) {
+    console.error('Missing phone number or message content.');
+    res.status(400).send('Bad Request: Missing phone number or message content.');
+    return;
+  }
+
+  if (messageContent.trim().toUpperCase() === 'UNSUBSCRIBE') {  // Change keyword to "UNSUBSCRIBE"
+    try {
+      console.log(`Searching for subscriber with phone number: ${phoneNumber}`);
+      // Find the subscriber by phone number
+      const subscribersSnapshot = await admin.firestore().collection('subscribers').where('phone', '==', phoneNumber).get();
+
+      if (subscribersSnapshot.empty) {
+        console.log(`No subscriber found with phone number: ${phoneNumber}`);
+        res.status(404).send('Subscriber not found.');
+        return;
+      }
+
+      const batch = admin.firestore().batch();
+      subscribersSnapshot.forEach(doc => {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+
+      console.log(`Deleted subscriber with phone number: ${phoneNumber}`);
+      res.status(200).send('Subscriber deleted.');
+    } catch (error) {
+      console.error('Error deleting subscriber:', error);
+      res.status(500).send('Error deleting subscriber.');
+    }
+  } else {
+    res.status(200).send('No action required.');
+  }
 });
