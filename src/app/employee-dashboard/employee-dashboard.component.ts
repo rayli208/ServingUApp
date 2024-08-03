@@ -17,6 +17,8 @@ import { MessagesService } from '../_services/messages.service';
 import { AuthService } from '../_services/auth.service';
 import { TimeoffService } from '../_services/timeoff.service';
 import { Timeoff } from '../_models/timeoff.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { TablesService } from '../_services/tables.service';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -38,12 +40,14 @@ export class EmployeeDashboardComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
     private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
     private authService: AuthService,
     private employeesService: EmployeesService,
     private storage: AngularFireStorage,
     public scheduleService: ScheduleService,
     private timeoffService: TimeoffService,
     public messagesService: MessagesService,
+    private tablesService: TablesService,
   ) {
     this.user = null;
   }
@@ -88,42 +92,71 @@ export class EmployeeDashboardComponent implements OnInit {
         text: `Are you sure you want to delete ${employee.name}?`
       }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        //Get all schedules for that employee
+        const batch = this.afs.firestore.batch();
+  
+        // Fetch all schedules for the employee
         this.scheduleService.getSchedulesListForEmployee(employee.id).subscribe(res => {
-          this.Schedules = res.map(e => {
-            return {
-              id: e.payload.doc.id,
-              ...e.payload.doc.data() as {}
-            } as Schedule;
+          const schedules = res.map(e => {
+            const data = e.payload.doc.data() as Schedule;
+            const id = e.payload.doc.id;
+            return { id, ...data };
           });
-          //Delete all schedules associated to employee
-          this.Schedules.forEach(x => this.scheduleService.deleteSchedule(x));
-        });
-        // Fetch all time-offs for the employee
-        this.timeoffService.getTimeoffListForEmployee(employee.id).subscribe(res => {
-          const timeoffs = res.map(e => ({ id: e.payload.doc.id, ...e.payload.doc.data() as {} })) as Timeoff[];
-          // Delete all time-offs associated with the employee
-          timeoffs.forEach(timeoff => this.timeoffService.deleteTimeoff(timeoff));
-        });
-
-        //Delete all images associated to employee
-        this.storage.storage.refFromURL(employee.imgUrl).delete();
-        //Delete employee
-        this.employeesService.deleteEmployee(employee);
-        //Alert
-        this._snackBar.open('Employee has been deleted!', '', {
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          duration: 2500,
-          panelClass: ['red-snackbar']
+  
+          // Add delete operations for all schedules to the batch
+          schedules.forEach(schedule => {
+            const scheduleRef = this.afs.collection('schedules').doc(schedule.id).ref;
+            batch.delete(scheduleRef);
+          });
+  
+          // Fetch all time-offs for the employee
+          this.timeoffService.getTimeoffListForEmployee(employee.id).subscribe(res => {
+            const timeoffs = res.map(e => ({ id: e.payload.doc.id, ...e.payload.doc.data() as {} })) as Timeoff[];
+  
+            // Add delete operations for all time-offs to the batch
+            timeoffs.forEach(timeoff => {
+              const timeoffRef = this.afs.collection('timeoff').doc(timeoff.id).ref;
+              batch.delete(timeoffRef);
+            });
+  
+            // Update tables associated with the employee
+            this.tablesService.updateTablesOnEmployeeRemoval(this.userId, employee.id).then(() => {
+              // Add delete operation for the employee to the batch
+              const employeeRef = this.afs.collection('employees').doc(employee.id).ref;
+              batch.delete(employeeRef);
+  
+              // Commit the batch
+              batch.commit().then(() => {
+                // Delete all images associated to the employee
+                this.storage.storage.refFromURL(employee.imgUrl).delete();
+  
+                // Alert
+                this._snackBar.open('Employee has been deleted!', '', {
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  duration: 2500,
+                  panelClass: ['red-snackbar']
+                });
+              }).catch(error => {
+                console.error('Error deleting employee:', error);
+                this._snackBar.open('Error deleting employee!', '', {
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  duration: 2500,
+                  panelClass: ['red-snackbar']
+                });
+              });
+            }).catch(error => {
+              console.error('Error updating tables on employee removal:', error);
+            });
+          });
         });
       }
     });
   }
-
+  
   editEmployee(employee: Employee) {
     const dialogRef = this.dialog.open(EditEmployeeDialogComponent, {
       data: employee
