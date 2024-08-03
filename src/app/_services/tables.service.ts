@@ -64,4 +64,52 @@ export class TablesService {
         positionY: table.positionY
       })
   }
+
+  async updateTablesOnEmployeeClockOut(userId: string, employeeId: string): Promise<void> {
+    const db = this.afs.firestore;
+    const batch = db.batch();
+    
+    try {
+      const snapshot = await this.afs.collection('tables', ref => 
+        ref.where('uid', '==', userId).where('employeeId', '==', employeeId)
+      ).get().toPromise();
+
+      snapshot.docs.forEach(doc => {
+        batch.update(doc.ref, { 
+          employeeId: null, 
+          isActive: false 
+        });
+      });
+
+      await batch.commit();
+      console.log(`Successfully updated tables for employee ${employeeId}`);
+    } catch (error) {
+      console.error('Error updating tables on employee clock out:', error);
+      throw error;
+    }
+  }
+
+  async updateTablesOnEmployeeRemoval(userId: string, employeeId: string): Promise<void> {
+    const db = this.afs.firestore;
+    const batch = db.batch();
+    
+    try {
+      const snapshot = await this.afs.collection('tables', ref => 
+        ref.where('uid', '==', userId).where('employeeId', '==', employeeId)
+      ).get().toPromise();
+  
+      snapshot.docs.forEach(doc => {
+        batch.update(doc.ref, { 
+          employeeId: null, 
+          isActive: false 
+        });
+      });
+  
+      await batch.commit();
+      console.log(`Successfully updated tables for removed employee ${employeeId}`);
+    } catch (error) {
+      console.error('Error updating tables on employee removal:', error);
+      throw error;
+    }
+  }
 }

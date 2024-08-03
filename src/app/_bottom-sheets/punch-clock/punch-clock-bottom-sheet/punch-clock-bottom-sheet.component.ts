@@ -54,44 +54,39 @@ export class PunchClockBottomSheetComponent implements OnInit {
   }
 
   async handleClockInOrOut(): Promise<void> {
-    if (!this.employee.clockedIn) {
-      // Clock-in case
-      this.employee.clockedIn = true;
-      this.employee.clockedInTime = new Date();
-      await this.employeesService.updateEmployee(this.employee, this.employee.id);
-      this.showSnackBar('You have clocked in!');
-      this.closeBottomSheet();
-    } else {
-      // Clock-out case
-      const endTime = new Date();
-      const startTime = new Date((this.employee.clockedInTime as any).toDate());
-      const hoursWorked = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60));
-      const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
-      const message = `You have clocked out! You worked ${hoursWorked} hour${hoursWorked == 1 ? '' : 's'} and ${minutesWorked} minute${minutesWorked == 1 ? '' : 's'}.`;
-      await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
-  
-      // Fetch all tables assigned to this employee
-      const subscription = this.tablesService.getTablesListForUser(this.employee.uid).subscribe(async tablesSnapshot => {
-        const tables = tablesSnapshot.map(doc => ({ id: doc.payload.doc.id, ...doc.payload.doc.data() as Table }));
-  
-        // Filter tables assigned to this employee
-        const assignedTables = tables.filter(table => table.employeeId === this.employee.id);
-  
-        // Update each assigned table
-        for (let table of assignedTables) {
-          table.isActive = false;
-          table.employeeId = null;  // Set employeeId to null
-          await this.tablesService.updateTable(table, table.id);
-        }
-      });
-  
-      this.employee.clockedIn = false;
-      this.employee.clockedInTime = null;
-      await this.employeesService.updateEmployee(this.employee, this.employee.id);
-      this.showSnackBar(message);
-      this.closeBottomSheet();
-      subscription.unsubscribe();
-      this.subscriptions.push(subscription);
+    try {
+      if (!this.employee.clockedIn) {
+        // Clock-in case
+        this.employee.clockedIn = true;
+        this.employee.clockedInTime = new Date();
+        await this.employeesService.updateEmployee(this.employee, this.employee.id);
+        this.showSnackBar('You have clocked in!');
+        this.closeBottomSheet();
+      } else {
+        // Clock-out case
+        const endTime = new Date();
+        const startTime = new Date((this.employee.clockedInTime as any).toDate());
+        const hoursWorked = Math.floor((endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60));
+        const minutesWorked = Math.floor(((endTime.getTime() - startTime.getTime()) / (1000 * 60)) % 60);
+        const message = `You have clocked out! You worked ${hoursWorked} hour${hoursWorked == 1 ? '' : 's'} and ${minutesWorked} minute${minutesWorked == 1 ? '' : 's'}.`;
+        
+        // Update timestamp
+        await this.timeStampService.createTimeStampWithEmployee(this.employee, endTime);
+        
+        // Update tables
+        await this.tablesService.updateTablesOnEmployeeClockOut(this.employee.uid, this.employee.id);
+        
+        // Update employee
+        this.employee.clockedIn = false;
+        this.employee.clockedInTime = null;
+        await this.employeesService.updateEmployee(this.employee, this.employee.id);
+        
+        this.showSnackBar(message);
+        this.closeBottomSheet();
+      }
+    } catch (error) {
+      console.error('Error in handleClockInOrOut:', error);
+      this.showSnackBar('An error occurred. Please try again.');
     }
   }
   
